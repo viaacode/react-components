@@ -45,6 +45,13 @@ storiesOf('components/DatePicker', module)
 			</DatePickerStoryComponent>
 		</Fragment>
 	))
+	.add('DatePicker placement right-start', () => (
+		<Fragment>
+			<DatePickerStoryComponent>
+				<DatePicker popperPlacement="right-start" onChange={action('onChange')} />
+			</DatePickerStoryComponent>
+		</Fragment>
+	))
 	.add('DateTimePicker', () => (
 		<Fragment>
 			<Spacer margin="bottom">
