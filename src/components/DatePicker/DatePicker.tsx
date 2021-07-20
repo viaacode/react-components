@@ -21,6 +21,7 @@ export interface DatePickerPropsSchema extends DefaultProps {
 	placeholder?: string;
 	value?: Date | null;
 	onChange?: (date: Date | null) => void;
+	popperPlacement?: string;
 }
 
 export const DatePicker: FunctionComponent<DatePickerPropsSchema> = ({
@@ -30,6 +31,7 @@ export const DatePicker: FunctionComponent<DatePickerPropsSchema> = ({
 	showTimeInput = false,
 	placeholder,
 	value,
+	popperPlacement,
 	onChange = () => {},
 }) => {
 	return (
@@ -47,6 +49,7 @@ export const DatePicker: FunctionComponent<DatePickerPropsSchema> = ({
 				timeCaption="tijd"
 				showTimeSelect={showTimeInput}
 				injectTimes={[setHours(setMinutes(new Date(), 59), 23)]}
+				popperPlacement={popperPlacement}
 			/>
 			<Icon name="calendar" />
 		</div>
