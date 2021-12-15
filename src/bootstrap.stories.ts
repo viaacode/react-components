@@ -1,2 +1,2 @@
-import './styles/main.scss';
+import './styles/avo2.scss';
 import './styles/styleguide.scss';
