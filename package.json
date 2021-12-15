@@ -1,5 +1,5 @@
 {
-	"name": "@viaa/avo2-components",
+	"name": "@meemoo/react-components",
 	"version": "1.78.0",
 	"main": "dist/cjs/index.js",
 	"module": "dist/esm/index.js",
