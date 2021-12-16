@@ -17,7 +17,7 @@ pipeline {
           labels:
             component: builder
             lang: nodejs
-            app: avo-components
+            app: react-components
         spec:
           containers:
           - name: oc
@@ -64,11 +64,7 @@ pipeline {
                 }
             }
         }
-        stage('Bootstrap') {
-            steps {
-                sh 'echo disabled #make -f ./openshift/Makefile bootstrap'
-            }
-        }
+
         stage('Build code') {
             when {
                 not {
@@ -79,13 +75,7 @@ pipeline {
                 container('oc') {
                     script {
                         sh '''#!/bin/bash
-                        #oc project $OC_PROJECT
-                        #oc import-image $BASE_IMG --confirm
-                        #oc new-build -l ref=$BRANCH_NAME --strategy=docker --name $APP_NAME-$GIT_SHORT_COMMIT --to $APP_NAME:$GIT_SHORT_COMMIT --binary --context-dir="" || echo "Probably already exists, start new build"
-                        #sleep 3
-                        #oc annotate --overwrite buildconfig/$APP_NAME-$GIT_SHORT_COMMIT ref=$BRANCH_NAME shortcommit=$GIT_SHORT_COMMIT
-                        #oc start-build $APP_NAME-$GIT_SHORT_COMMIT --from-dir=. --wait=true
-			echo no build atm
+			echo no deployment for this build atm
                         '''
                     }
                    }
@@ -120,61 +110,7 @@ pipeline {
               }// end container
             } // steps
         } // stage
-        stage('Deploy INT') {
-            when {
-                anyOf {
-                    changeRequest target: 'master'
-                    changeRequest target: 'main'
-                }
-            }
-            steps {
-                container('oc') {
-                    tagNewImage('int')
-                }
-            }
-            post {
-                always {
-                    script {
-                        env.BRANCH_NAME = env.CHANGE_BRANCH
-                    }
-                    jiraSendDeploymentInfo site: "${JIRA_URL}", environmentId: 'int', environmentName: 'int', environmentType: 'testing'
-                }
-            }
-        }
-        stage('Deploy QAS') {
-            when {
-                anyOf { branch 'master'; branch 'main' }
-            }
-            steps {
-                container('oc') {
-                    tagNewImage('qas')
-                }
-            }
-            post {
-                always {
-                    jiraSendDeploymentInfo site: "${JIRA_URL}", environmentId: 'qas', environmentName: 'qas', environmentType: 'staging'
-                }
-            }
-        }
-        stage('Deploy PRD') {
-            when {
-                buildingTag()
-            }
-            steps {
-                container('oc') {
-                    tagNewImage('prd')
-                }
-            }
-            post {
-                always {
-                    script {
-                        previous_tag = sh(script: 'git describe --abbrev=0 --tags `git rev-list --tags --skip=1 --max-count=1`', returnStdout: true).trim()
-                        echo getAllCommitsBetweenTags(previous_tag, env.TAG_NAME)
-                    }
-                    jiraSendDeploymentInfo site: "${JIRA_URL}", environmentId: 'prd', environmentName: 'prd', environmentType: 'production'
-                }
-            }
-        }
+
     }
     post {
         success {
@@ -208,7 +144,7 @@ pipeline {
 }
 
 void getImageFromDockerfile() {
-    return 'node:12-alpine'
+    return 'node:lts'
 }
 
 void setGitHubBuildStatus(String message, String state) {
