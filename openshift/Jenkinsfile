@@ -108,7 +108,7 @@ pipeline {
 
                 script {
 					echo "Publishing package to registry"
-					configFileProvider([configFile(fileId: "npm-config", variable: 'configFile')]) {
+					configFileProvider([configFile(fileId: "npmrc", variable: 'configFile')]) {
 						sh "cat $configFile > .npmrc"
 					}
 					sh '''#/bin/bash
