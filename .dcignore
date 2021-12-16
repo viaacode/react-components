@@ -1,6 +1,0 @@
-node_modules
-.idea
-dist
-logs
-temp
-.env

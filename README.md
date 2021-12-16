@@ -1,4 +1,4 @@
-# Het Archief voor Onderwijs - react components
+# Meemoo - React components
 
 ## Synopsis
 
