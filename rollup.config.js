@@ -5,7 +5,7 @@ import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 
 export default {
-	input: ['src/index.ts', 'src/wysiwyg.ts'],
+	input: ['src/index.ts', 'src/v1/index.ts', 'src/v1/wysiwyg.ts'],
 	output: [
 		{
 			dir: 'dist/esm',
