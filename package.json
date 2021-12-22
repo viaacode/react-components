@@ -21,6 +21,7 @@
     "icons": "rimraf src/components/Icon/Icons && svgr -d src/components/Icon/Icons src/icons --ext ts",
     "posticons": "named-exports --dir=src/components/Icon/Icons && renamer --find .ts --replace .tsx \"./src/components/Icon/Icons/**\"",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint:scss": "stylelint 'src/**/*.{css,scss}' --allow-empty-input",
     "start": "start-storybook -p 3020 --ci",
     "test": "jest --cache",
     "test:v1": "jest --cache --config src/v1/jest.config.js",
@@ -124,6 +125,9 @@
     "source-map-explorer": "2.5.2",
     "storybook-addon-jsx": "7.3.14",
     "style-loader": "3.3.1",
+    "stylelint": "14.2.0",
+    "stylelint-config-prettier": "9.0.3",
+    "stylelint-config-standard-scss": "3.0.0",
     "ts-jest": "27.1.2",
     "typescript": "4.5.4"
   },
