@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import React, { FunctionComponent } from 'react';
 
-import { Button } from '../..';
+import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
 import { IconNameSchema } from '../Icon/Icon.types';
 import { Spinner } from '../Spinner/Spinner';

@@ -1,4 +1,2 @@
-const { addDecorator } = require("@storybook/react");
-const { jsxDecorator } = require("storybook-addon-jsx");
-
-addDecorator(jsxDecorator);
+import '../src/v1/styles/styleguide.scss';
+import '../src/v1/styles/themes/avo2/avo2.scss';
