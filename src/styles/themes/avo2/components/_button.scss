@@ -1,6 +1,6 @@
 @use 'sass:math';
-@import '../../styles/themes/avo2/settings/colors';
-@import '../../styles/themes/avo2/settings/variables';
+@import '../settings/colors';
+@import '../settings/variables';
 
 /* ==========================================================================
    Component: Buttons
@@ -179,4 +179,4 @@ a.c-button {
 /* Button skins
    ========================================================================== */
 
-@import './Button-skins';
+@import './button-skins';
