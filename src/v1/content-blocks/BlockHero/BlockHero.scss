@@ -1,0 +1,109 @@
+@import '../../../styles/themes/avo2/settings/colors';
+@import '../../../styles/themes/avo2/settings/variables';
+
+.c-home-hero {
+	position: relative;
+	z-index: 10;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	@media (min-width: $g-bp2) {
+		padding: 2.4rem;
+		flex-direction: row;
+		display: flex;
+		align-items: center;
+	}
+
+	.c-video-player {
+		background-color: #18242a;
+	}
+}
+
+@media (min-width: $g-bp2) {
+	.c-home-hero__content {
+		margin-right: 3.2rem;
+	}
+}
+
+@media (min-width: $g-bp2) {
+	.c-home-hero__image {
+		flex: 1 0 55%;
+	}
+}
+
+@media (max-width: $g-bp2) {
+	.c-home-hero__image {
+		order: 1;
+	}
+
+	.c-home-hero__content {
+		order: 2;
+		margin-top: 30px;
+	}
+
+	.c-cta-pupils {
+		margin-top: 2.4rem;
+		order: 3;
+	}
+}
+
+.c-home-hero__image {
+	border-radius: 0.4rem;
+	overflow: hidden;
+
+	img {
+		display: block;
+		width: 100%;
+		border-radius: 0.4rem;
+		position: relative;
+		z-index: 10;
+		@media (max-width: $g-bp2) {
+			margin-bottom: 1.6rem;
+		}
+	}
+}
+
+.c-home-hero__title {
+	color: #FFF;
+	font-size: 3.2rem;
+	margin: 0 0 1.2rem;
+	line-height: 1.25;
+	@media (min-width: $g-bp2) {
+		font-size: 3.8rem;
+		margin: 0 0 2rem;
+	}
+	font-weight: $g-headings-font-weight;
+	font-family: $g-headings-font-family;
+
+}
+
+.c-tri__tr {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 54%;
+	height: 54%;
+	background-color: rgba(0, 0, 0, 0.15);
+	background-size: cover;
+	clip-path: polygon(100% 0, 100% 100%, 0 0);
+}
+
+.c-tri__bl {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 54%;
+	height: 54%;
+	background-color: rgba(0, 0, 0, 0.075);
+	background-size: cover;
+	clip-path: polygon(0 100%, 100% 100%, 0 0);
+}
+
+.c-tri__half-split {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.05);
+}

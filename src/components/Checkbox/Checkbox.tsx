@@ -1,44 +1,42 @@
-import classnames from 'classnames';
-import React, { ChangeEvent, FunctionComponent, ReactNode } from 'react';
+import clsx from 'clsx';
+import React, { FC } from 'react';
 
-import { DefaultProps } from '../../types';
+import { bemCls } from '../../utils/bem-class';
+import { getVariantClasses } from '../../utils/variant-classes';
 
-export interface CheckboxPropsSchema extends DefaultProps {
-	label: string | ReactNode;
-	checked?: boolean;
-	id?: string;
-	disabled?: boolean;
-	onChange?: (checked: boolean) => void;
-}
+import { CheckboxProps } from './Checkbox.types';
 
-export const Checkbox: FunctionComponent<CheckboxPropsSchema> = ({
+const Checkbox: FC<CheckboxProps> = ({
 	className,
 	label,
 	id,
 	disabled = false,
 	checked = false,
-	onChange = () => {},
+	checkIcon,
+	rootClassName: root = 'c-checkbox',
+	variants,
+	onChange = () => null,
 }) => {
-	function onValueChange(event: ChangeEvent<HTMLInputElement>) {
-		const currentCheckedValue = event.target.checked;
-
-		if (currentCheckedValue !== checked) {
-			onChange(currentCheckedValue);
-		}
-	}
+	const bem = bemCls.bind(root);
+	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
+		[bem('', 'checked')]: checked,
+		[bem('', 'disabled')]: disabled,
+	});
 
 	return (
-		<div className={classnames(className, 'c-checkbox')}>
-			<label>
-				<input
-					type="checkbox"
-					id={id}
-					checked={checked}
-					disabled={disabled}
-					onChange={onValueChange}
-				/>
-				{label}
-			</label>
-		</div>
+		<label className={rootCls}>
+			<input
+				className={bem('input')}
+				type="checkbox"
+				id={id}
+				checked={checked}
+				disabled={disabled}
+				onChange={onChange}
+			/>
+			<span className={bem('check-icon')}>{checkIcon}</span>
+			<span className={bem('label')}>{label}</span>
+		</label>
 	);
 };
+
+export default Checkbox;

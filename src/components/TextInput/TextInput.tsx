@@ -1,72 +1,62 @@
-import classnames from 'classnames';
-import React, { ChangeEvent, FunctionComponent, KeyboardEvent } from 'react';
+import clsx from 'clsx';
+import React, { FC, ReactNode } from 'react';
 
-import { DefaultProps } from '../../types';
-import { Icon } from '../Icon/Icon';
-import { IconNameSchema } from '../Icon/Icon.types';
+import { bemCls } from '../../utils/bem-class';
+import { getVariantClasses } from '../../utils/variant-classes';
 
-type InputType = 'password' | 'text' | 'email' | 'search' | 'number' | 'tel' | 'url';
+import { TextInputProps } from './TextInput.types';
 
-export interface TextInputPropsSchema extends DefaultProps {
-	id?: string;
-	disabled?: boolean;
-	placeholder?: string;
-	value?: string;
-	icon?: IconNameSchema;
-	type?: InputType;
-	ariaLabel?: string;
-	onChange?: (value: string) => void;
-	onBlur?: (event: ChangeEvent<HTMLInputElement>) => void;
-	onKeyUp?: (event: KeyboardEvent<HTMLInputElement>) => void;
-}
-
-export const TextInput: FunctionComponent<TextInputPropsSchema> = ({
+const TextInput: FC<TextInputProps> = ({
+	ariaLabel,
 	className,
-	id,
 	disabled = false,
+	iconEnd = null,
+	iconStart = null,
+	id,
 	placeholder,
-	value = '',
-	icon,
+	rootClassName: root = 'c-input',
 	type = 'text',
-	ariaLabel = '',
-	onChange = () => {},
-	onBlur = () => {},
-	onKeyUp = () => {},
+	value = '',
+	variants,
+	onBlur = () => null,
+	onChange = () => null,
+	onKeyUp = () => null,
 }) => {
-	function onValueChange(event: ChangeEvent<HTMLInputElement>) {
-		onChange(event.target.value);
-	}
+	const bem = bemCls.bind(root);
+	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
+		[bem('', 'disabled')]: disabled,
+		[bem('', 'icon-start')]: iconStart,
+		[bem('', 'icon-end')]: iconEnd,
+	});
 
-	const classes = classnames(className, icon ? 'c-input-with-icon' : 'c-input');
+	const renderIcon = (iconNode: ReactNode, side?: 'start' | 'end') => (
+		<span
+			className={clsx(bem('icon'), {
+				[bem('icon', side)]: side,
+			})}
+		>
+			{iconNode}
+		</span>
+	);
 
-	return icon ? (
-		<div className={classes}>
+	return (
+		<div className={rootCls}>
+			{iconStart && renderIcon(iconStart, 'start')}
 			<input
-				className="c-input"
+				{...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
+				className={bem('field')}
 				type={type}
 				id={id}
 				value={value}
 				disabled={disabled}
 				placeholder={placeholder}
-				{...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
-				onChange={onValueChange}
 				onBlur={onBlur}
+				onChange={onChange}
 				onKeyUp={onKeyUp}
 			/>
-			<Icon name={icon} />
+			{iconEnd && renderIcon(iconEnd, 'end')}
 		</div>
-	) : (
-		<input
-			className={classes}
-			type={type}
-			id={id}
-			value={value}
-			disabled={disabled}
-			placeholder={placeholder}
-			{...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
-			onChange={onValueChange}
-			onBlur={onBlur}
-			onKeyUp={onKeyUp}
-		/>
 	);
 };
+
+export default TextInput;

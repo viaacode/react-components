@@ -1,0 +1,11 @@
+@import '../../../../styles/themes/avo2/settings/colors';
+@import '../../../../styles/themes/avo2/settings/variables';
+
+/* ==========================================================================
+   Component: Toolbar title
+   ========================================================================== */
+
+.c-toolbar__title {
+	font-weight: $g-headings-font-weight;
+	font-size: 1.8rem;
+}

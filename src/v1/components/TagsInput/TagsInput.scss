@@ -1,0 +1,81 @@
+@import '../../../styles/themes/avo2/settings/colors';
+
+.c-tags-input {
+	.c-tags-input__menu {
+		z-index: 12;
+	}
+
+	&.c-tags-input--is-disabled {
+		.c-tags-input__control {
+			background-color: $color-gray-100;
+		}
+	}
+
+	.c-tags-input__value-container {
+		padding: 0 6px;
+	}
+
+	.c-tags-input__control {
+		border-radius: 0.3rem;
+		background-color: #fff;
+		box-shadow: inset 0 0 0.3rem rgba(0, 0, 0, 0.1);
+		border: 1px solid $color-gray-150;
+		font-size: inherit;
+		min-height: 3.6rem;
+		width: 100%;
+		appearance: none;
+		transition: all 0.15s ease-in-out;
+
+		&:hover {
+			border: 1px solid $color-gray-150;
+		}
+
+		&.c-tags-input__control--is-focused {
+			outline: 0;
+			border-color: $color-border-color;
+			box-shadow: inset 0 0 0 0.1rem $color-border-color, 0 0 0.5rem $color-input-box-shadow;
+		}
+
+		.c-tags-input__multi-value {
+			background-color: #fff;
+			border: 1px solid $color-gray-150;
+			border-radius: 2.4rem;
+			padding: 0.3rem 1.6rem;
+			display: flex;
+			align-items: center;
+			text-decoration: none;
+			font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+			line-height: 1.5;
+			color: #2B414F;
+			font-size: 13px;
+
+			.c-tags-input__multi-value__remove {
+				border-radius: 100%;
+				background-color: #9CAFBD;
+				color: #FFF;
+				text-align: center;
+				border: none;
+				width: 1.8rem;
+				height: 1.8rem;
+				line-height: 1.8rem;
+				position: relative;
+				left: 0.8rem;
+
+				&:hover {
+					background-color: $color-error;
+					text-decoration: none;
+					color: #FFF;
+					box-shadow: 0 0 0 2px #FFF;
+				}
+
+				svg {
+					display: block;
+					width: 1.8rem;
+					height: 1.8rem;
+					line-height: 1.8rem;
+					transform: scale(1.5);
+				}
+			}
+		}
+	}
+}

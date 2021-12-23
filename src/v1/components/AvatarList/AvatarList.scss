@@ -1,0 +1,51 @@
+@import '../../../styles/themes/avo2/settings/colors';
+
+/* ==========================================================================
+   Component: Avatar list
+   ========================================================================== */
+
+.c-avatar--multiple {
+	margin-left: 0.8rem;
+	display: flex;
+
+	.c-avatar {
+		position: relative;
+		margin-left: -0.8rem;
+
+		&:nth-child(1) {
+			z-index: 4;
+		}
+		&:nth-child(2) {
+			z-index: 3;
+		}
+		&:nth-child(3) {
+			z-index: 2;
+		}
+		&:nth-child(4) {
+			z-index: 1;
+		}
+	}
+
+	.c-avatar-dropdown {
+		margin-left: 0.8rem;
+		border: none;
+		background-color: $color-gray-100;
+		color: $color-gray-700;
+	}
+
+	.c-menu {
+		.c-avatar {
+			margin-left: 0;
+		}
+
+		&.c-menu--visible {
+			margin-top: 4px;
+		}
+	}
+}
+
+.c-avatar-meta {
+	font-size: 1.2rem;
+	color: $color-gray-400;
+	text-transform: uppercase;
+}

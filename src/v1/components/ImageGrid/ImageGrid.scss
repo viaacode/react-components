@@ -1,0 +1,28 @@
+@import '../../../styles/themes/avo2/settings/colors';
+
+.c-image-grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+
+	h3 {
+		font-size: 20px;
+	}
+
+	img {
+		display: block;
+	}
+
+	.c-image-grid__item {
+		margin: 1rem;
+	}
+
+	&.c-image-grid-selectable {
+		.c-image-grid__item {
+			&.c-image-grid__item-selected,
+			&:hover {
+				outline: 0.5rem solid $color-border-color;
+			}
+		}
+	}
+}

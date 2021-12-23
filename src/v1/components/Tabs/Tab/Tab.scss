@@ -1,0 +1,80 @@
+@import '../../../../styles/themes/avo2/settings/colors';
+@import '../../../../styles/themes/avo2/settings/variables';
+
+/* ==========================================================================
+   Component: Tab item
+   ========================================================================== */
+
+/* Variables
+   ========================================================================== */
+
+$c-tabs-item-color: $color-gray-300 !default;
+$c-tabs-item-active-color: $color-teal-bright !default;
+$c-tabs-item-border-color: $color-primary !default;
+$c-tabs-item-hover-border-color: $color-gray-200 !default;
+
+$c-tabs-item-dark-color: $color-gray-100 !default;
+$c-tabs-item-dark-active-color: #FFF !default;
+$c-tabs-item-dark-border-color: #FFF !default;
+$c-tabs-item-dark-hover-border-color: $color-gray-25 !default;
+
+/* Component
+   ========================================================================== */
+
+.c-tab-item {
+	color: $c-tabs-item-color;
+	padding: 1.2rem;
+	font-weight: 500;
+	transition: color 0.1s linear;
+
+	&.c-tab-item__dark {
+		color: $c-tabs-item-dark-color;
+		text-shadow: rgba(0, 0, 0, 0.2) 0 0 5px;
+	}
+
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+
+	.o-svg-icon {
+		margin-right: 1rem;
+		width: 1.8rem;
+		height: 1.8rem;
+	}
+
+	&:hover {
+		color: $c-tabs-item-active-color;
+
+		&.c-tab-item__dark {
+			color: $c-tabs-item-dark-active-color;
+		}
+	}
+
+	&:focus {
+		color: $c-tabs-item-active-color;
+
+		&.c-tab-item__dark {
+			color: $c-tabs-item-dark-active-color;
+		}
+	}
+
+	&.c-tab-item__active {
+		box-shadow: inset 0 -0.2rem 0 $c-tabs-item-border-color;
+		margin-bottom: -0.1rem;
+		color: $c-tabs-item-active-color;
+		font-weight: $g-headings-font-weight;
+		position: relative; // makes box-shadow to be on top of the global border
+		z-index: $g-c-tabs-z;
+
+		&.c-tab-item__dark {
+			color: $c-tabs-item-dark-active-color;
+			box-shadow: inset 0 -0.2rem 0 $c-tabs-item-dark-border-color;
+			text-shadow: rgba(0, 0, 0, 0.5) 0 0 5px;
+		}
+	}
+
+	&-length {
+		font-weight: 400;
+		margin-left: 0.4rem;
+	}
+}

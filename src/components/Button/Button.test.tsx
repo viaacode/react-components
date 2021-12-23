@@ -1,164 +1,66 @@
-import { shallow } from 'enzyme';
-import React from 'react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import React, { PropsWithChildren } from 'react';
 
-import { Button } from './Button';
+import Button from './Button';
+import { ButtonProps } from './Button.types';
 
-describe('<Button />', () => {
-	it('Should be able to render', () => {
-		shallow(<Button ariaLabel="test button" />);
+const mockLabel = 'Click me!';
+
+const renderButton = ({ children = mockLabel, ...rest }: PropsWithChildren<ButtonProps>) => {
+	return render(<Button {...rest}>{children}</Button>);
+};
+
+describe('components/<Button />', () => {
+	it('Should render children before label', () => {
+		const label = 'Button label';
+		renderButton({ label });
+
+		const buttonChild = screen.queryByText(mockLabel);
+		const buttonLabel = screen.queryByText(label);
+		expect(buttonChild).toBeInTheDocument();
+		expect(buttonLabel).not.toBeInTheDocument();
 	});
 
-	it('Should set the correct aria label', () => {
-		const buttonComponent = shallow(<Button ariaLabel="test button" />);
+	it('Should render a label when given', () => {
+		const label = 'Button label';
+		renderButton({ children: null, label });
 
-		expect(buttonComponent.prop('aria-label')).toEqual('test button');
+		const buttonLabel = screen.queryByText(label);
+		expect(buttonLabel).toBeInTheDocument();
 	});
 
 	it('Should set the correct className', () => {
-		const customClass = 'c-button-custom';
-		const buttonComponent = shallow(<Button className={customClass} ariaLabel="test button" />);
+		const customClass = 'custom-class';
+		const customVariants = ['small', 'outline'];
+		renderButton({ className: customClass, variants: customVariants });
 
-		expect(buttonComponent.hasClass('c-button')).toEqual(true);
-		expect(buttonComponent.hasClass(customClass)).toEqual(true);
+		const button = screen.queryByText(mockLabel);
+		expect(button).toHaveClass('c-button');
+		expect(button).toHaveClass(customClass);
+		expect(button).toHaveClass(`c-button--${customVariants[0]}`);
+		expect(button).toHaveClass(`c-button--${customVariants[1]}`);
 	});
 
-	it('Should set the correct size className', () => {
-		const buttonComponent = shallow(<Button size="small" ariaLabel="test button" />);
+	it('Should pass the correct button attributes', () => {
+		const ariaLabel = 'label';
+		const id = 'button-id';
+		const title = 'title';
+		const type = 'submit';
+		renderButton({ ariaLabel, id, title, type });
 
-		expect(buttonComponent.hasClass('c-button--small')).toEqual(true);
+		const button = screen.queryByText(mockLabel);
+		expect(button).toHaveAttribute('aria-label', ariaLabel);
+		expect(button).toHaveAttribute('id', id);
+		expect(button).toHaveAttribute('title', title);
+		expect(button).toHaveAttribute('type', type);
 	});
 
-	it('Should set the correct width className when passing block option', () => {
-		const buttonDefaultComponent = shallow(<Button ariaLabel="test button" />);
-		const buttonBlockTrueComponent = shallow(<Button block={true} ariaLabel="test button" />);
-		const buttonBlockFalseComponent = shallow(<Button block={false} ariaLabel="test button" />);
+	it('Should call the onClick handler when clicked', () => {
+		const onClick = jest.fn();
+		renderButton({ onClick });
 
-		expect(buttonDefaultComponent.hasClass('c-button--block')).toEqual(false);
-		expect(buttonBlockTrueComponent.hasClass('c-button--block')).toEqual(true);
-		expect(buttonBlockFalseComponent.hasClass('c-button--block')).toEqual(false);
-	});
-
-	it('Should set the correct type className', () => {
-		const secondaryButtonComponent = shallow(<Button type="secondary" ariaLabel="test button" />);
-		const dangerButtonComponent = shallow(<Button type="danger" ariaLabel="test button" />);
-		const linkButtonComponent = shallow(<Button type="link" ariaLabel="test button" />);
-		const inlineLinkButtonComponent = shallow(
-			<Button type="inline-link" ariaLabel="test button" />
-		);
-
-		expect(secondaryButtonComponent.hasClass('c-button--secondary')).toEqual(true);
-		expect(dangerButtonComponent.hasClass('c-button--danger')).toEqual(true);
-		expect(linkButtonComponent.hasClass('c-button--link')).toEqual(true);
-		expect(inlineLinkButtonComponent.hasClass('c-button--inline-link')).toEqual(true);
-	});
-
-	it('Should set the correct className when passing autoHeight option', () => {
-		const autoHeightButtonComponent = shallow(<Button autoHeight />);
-
-		expect(autoHeightButtonComponent.hasClass('c-button--auto')).toEqual(true);
-	});
-
-	it('Should be able to render a label', () => {
-		const label = 'Click me!';
-		const buttonComponent = shallow(<Button label={label} ariaLabel="test button" />);
-
-		const labelElement = buttonComponent.find('.c-button__label');
-
-		expect(labelElement).toHaveLength(1);
-		expect(labelElement.text()).toEqual(label);
-	});
-
-	it('Should not to render a label when none is passed', () => {
-		const buttonComponent = shallow(<Button ariaLabel="test button" />);
-
-		const labelElement = buttonComponent.find('.c-button__label');
-
-		expect(labelElement).toHaveLength(0);
-	});
-
-	it('Should be able to render a label and an icon', () => {
-		const label = 'Click me!';
-		const icon = 'search';
-		const buttonComponent = shallow(<Button label={label} icon={icon} ariaLabel="test button" />);
-
-		const labelElement = buttonComponent.find('.c-button__label');
-		const iconComponent = buttonComponent.find('.c-button__icon');
-
-		expect(labelElement).toHaveLength(1);
-		expect(labelElement.text()).toEqual(label);
-		expect(iconComponent).toHaveLength(1);
-		expect(iconComponent.props()).toMatchObject({ name: icon });
-	});
-
-	it('Should get a special className when only an icon is passed', () => {
-		const buttonComponent = shallow(<Button icon="link" ariaLabel="test button" />);
-
-		expect(buttonComponent.hasClass('c-button--icon')).toEqual(true);
-	});
-
-	it('Should be able to render an arrow at the end of the button', () => {
-		const buttonComponent = shallow(<Button arrow ariaLabel="test button" />);
-
-		const arrowComponent = buttonComponent.find('.c-button__icon');
-
-		expect(arrowComponent).toHaveLength(1);
-		expect(arrowComponent.props()).toMatchObject({ name: 'caret-down' });
-	});
-
-	it('Should call the `onClick`-handler when clicked', () => {
-		const onClickHandler = jest.fn();
-
-		const buttonComponent = shallow(<Button onClick={onClickHandler} ariaLabel="test button" />);
-
-		const buttonElement = buttonComponent.find('button');
-
-		buttonElement.simulate('click');
-
-		expect(onClickHandler).toHaveBeenCalled();
-		expect(onClickHandler).toHaveBeenCalledTimes(1);
-
-		buttonElement.simulate('click');
-
-		expect(onClickHandler).toHaveBeenCalledTimes(2);
-	});
-
-	it('Should pass on the `disabled`-attribute', () => {
-		const buttonComponent = shallow(<Button disabled ariaLabel="test button" />);
-
-		const buttonElement = buttonComponent.find('button');
-
-		expect(buttonElement.prop('disabled')).toEqual(true);
-	});
-
-	it('Should set the correct classnames when `active` is passed', () => {
-		const buttonComponent = shallow(<Button active={true} ariaLabel="test button" />);
-
-		const buttonElement = buttonComponent.find('button');
-
-		expect(buttonElement.hasClass('c-button--active')).toEqual(true);
-	});
-
-	it('Should pass on the title attribute', () => {
-		const testTitle = 'test title';
-		const buttonComponent = shallow(<Button title={testTitle} />);
-
-		const buttonElement = buttonComponent.find('button');
-
-		expect(buttonElement.prop('title')).toEqual(testTitle);
-	});
-
-	it('Should pass on the `active`-prop to the button icon', () => {
-		const activeButtonComponent = shallow(
-			<Button active={true} icon="heart" ariaLabel="test button" />
-		);
-		const inactiveButtonComponent = shallow(
-			<Button active={false} icon="heart" ariaLabel="test button" />
-		);
-
-		const activeIconComponent = activeButtonComponent.find('.c-button__icon');
-		const inactiveIconComponent = inactiveButtonComponent.find('.c-button__icon');
-
-		expect(activeIconComponent.prop('active')).toEqual(true);
-		expect(inactiveIconComponent.prop('active')).toEqual(false);
+		const button = screen.getByText(mockLabel);
+		fireEvent.click(button);
+		expect(onClick).toHaveBeenCalledTimes(1);
 	});
 });

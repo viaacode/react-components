@@ -1,0 +1,104 @@
+@import '../../../styles/themes/avo2/settings/colors';
+
+/* ==========================================================================
+   Component: Avatar
+   ---
+   A profile image for users. When there is no image, display the initials of the user.
+   ========================================================================== */
+
+/* Variables
+   ========================================================================== */
+
+$c-avatar-default-bg: $color-night-blue !default;
+$c-avatar-dimensions: 3.2rem !default;
+$c-avatar-dimensions-s: 2.4rem !default;
+$c-avatar-dimensions-l: 9.6rem !default;
+
+/* Component
+   ========================================================================== */
+
+.c-avatar {
+	width: $c-avatar-dimensions;
+	height: $c-avatar-dimensions;
+	min-width: $c-avatar-dimensions;
+	min-height: $c-avatar-dimensions;
+	font-size: 1.2rem;
+	display: inline-flex;
+	justify-content: center;
+	border-radius: 50%;
+	background-color: $c-avatar-default-bg;
+	color: #fff;
+	align-items: center;
+
+	.o-svg-icon,
+	img {
+		width: 2.4rem;
+		height: 2.4rem;
+	}
+}
+
+.c-avatar--small {
+	width: $c-avatar-dimensions-s;
+	height: $c-avatar-dimensions-s;
+	min-width: $c-avatar-dimensions-s;
+	min-height: $c-avatar-dimensions-s;
+	line-height: $c-avatar-dimensions-s;
+	font-size: 80%;
+
+	.o-svg-icon,
+	img {
+		width: 1.6rem;
+		height: 1.6rem;
+	}
+}
+
+.c-avatar--large {
+	width: $c-avatar-dimensions-l;
+	height: $c-avatar-dimensions-l;
+	min-width: $c-avatar-dimensions-l;
+	min-height: $c-avatar-dimensions-l;
+	background-color: $color-gray-200;
+
+	.o-svg-icon,
+	img {
+		width: 5.6rem;
+		height: 5.6rem;
+	}
+}
+
+.c-avatar--muted {
+	background-color: $color-gray-150;
+}
+
+.c-avatar--img {
+	background: none;
+
+	img {
+		object-fit: cover;
+		border-radius: 50%;
+	}
+}
+
+.c-avatar-and-text {
+	display: flex;
+	align-items: center;
+	min-width: 0;
+
+	.c-avatar-and-text__text {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.c-avatar-and-text__text p {
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+
+	.c-avatar {
+		margin-right: 0.8rem;
+	}
+
+	.c-avatar.c-avatar--small {
+		margin-right: 1.2rem;
+	}
+}

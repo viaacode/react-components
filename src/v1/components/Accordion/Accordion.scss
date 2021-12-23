@@ -1,0 +1,73 @@
+@import '../../../styles/themes/avo2/settings/colors';
+
+/* ==========================================================================
+   Component: Accordion
+   ========================================================================== */
+
+/* Variables
+   ========================================================================== */
+
+$c-accordion-border: $color-gray-100 !default;
+
+/* Component
+   ========================================================================== */
+
+.c-accordion {
+	background-color: #FFF;
+	border-radius: 0.5rem;
+	border: 0.1rem solid $c-accordion-border;
+
+	.c-toolbar__left {
+		flex: 1 1 auto;
+		z-index: 0;
+	}
+
+	.c-toolbar__right {
+		flex: 1 1 auto;
+		z-index: 0;
+	}
+
+	// Opened by default
+	.c-accordion__body {
+		display: block;
+	}
+
+	.c-accordion__icon {
+		display: block;
+	}
+
+	&.c-accordion--closed {
+		.c-accordion__body {
+			display: none;
+		}
+	}
+
+	+.c-accordion {
+		margin-top: 2rem;
+	}
+}
+
+.c-accordion__header {
+	padding: 1rem 1.6rem;
+
+	> .c-toolbar {
+		height: inherit;
+		min-height: inherit;
+	}
+}
+
+.c-accordion__header-title {
+	color: $color-gray-700;
+	font-size: 1.6rem;
+	font-weight: 500;
+}
+
+.c-accordion__item {
+	padding: 0.8rem 1.6rem;
+}
+
+
+.c-accordion__body {
+	border-top: 1px solid $c-accordion-border;
+	color: $color-gray-700 !important;
+}

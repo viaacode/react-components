@@ -1,101 +1,53 @@
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { Icon } from '../Icon/Icon';
+import TextInput from './TextInput';
+import { TextInputProps } from './TextInput.types';
 
-import { TextInput } from './TextInput';
+const mockValue = 'Text value';
 
-const customClass = 'c-input-custom';
+const renderTextInput = ({ value = mockValue, ...rest }: TextInputProps = {}) => {
+	return render(<TextInput {...rest} value={value} />);
+};
 
-describe('<TextInput />', () => {
-	it('Should be able to render', () => {
-		shallow(<TextInput />);
-	});
-
+describe('components/<TextInput />', () => {
 	it('Should set the correct className', () => {
-		const inputComponent = shallow(<TextInput className={customClass} />);
+		const rootClassName = 'root-class';
+		const className = 'custom-class';
+		const variants = ['large', 'rounded'];
+		renderTextInput({ className, rootClassName, variants });
 
-		const inputElement = inputComponent.find('input');
-
-		expect(inputComponent.hasClass(customClass)).toEqual(true);
-		expect(inputElement.hasClass('c-input')).toEqual(true);
+		const input = screen.getByDisplayValue(mockValue);
+		const inputContainer = input.parentElement;
+		expect(input).toHaveClass(`${rootClassName}__field`);
+		expect(inputContainer).toHaveClass(rootClassName);
+		expect(inputContainer).toHaveClass(className);
+		expect(inputContainer).toHaveClass(`${rootClassName}--${variants[0]}`);
+		expect(inputContainer).toHaveClass(`${rootClassName}--${variants[1]}`);
 	});
 
-	it('Should pass on the id', () => {
-		const id = 'test';
+	it('Should pass the correct input attributes', () => {
+		const ariaLabel = 'label';
+		const id = 'input-id';
+		const placeholder = 'placeholder';
+		const type = 'tel';
+		renderTextInput({ ariaLabel, id, placeholder, type });
 
-		const inputComponent = shallow(<TextInput id={id} />);
-
-		const inputElement = inputComponent.find('input');
-
-		expect(inputElement.prop('id')).toEqual(id);
+		const input = screen.queryByDisplayValue(mockValue);
+		expect(input).toHaveAttribute('aria-label', ariaLabel);
+		expect(input).toHaveAttribute('id', id);
+		expect(input).toHaveAttribute('placeholder', placeholder);
+		expect(input).toHaveAttribute('type', type);
 	});
 
-	it('Should be able to set the disabled state', () => {
-		const inputComponent = shallow(<TextInput disabled />);
+	it('Should call the onChange handler on every input', () => {
+		const inputValue = 'My value';
+		const onChange = jest.fn();
+		renderTextInput({ onChange });
 
-		const inputElement = inputComponent.find('input');
-
-		expect(inputElement.prop('disabled')).toEqual(true);
-	});
-
-	it('Should be able to set the placeholder value', () => {
-		const placeholder = 'this is a test placeholder';
-
-		const inputComponent = shallow(<TextInput placeholder={placeholder} />);
-
-		const inputElement = inputComponent.find('input');
-
-		expect(inputElement.prop('placeholder')).toEqual(placeholder);
-	});
-
-	it('Should be able to set the type value', () => {
-		const type = 'password';
-
-		const inputComponent = shallow(<TextInput type={type} />);
-
-		const inputElement = inputComponent.find('input');
-
-		expect(inputElement.prop('type')).toEqual(type);
-	});
-
-	it('Should be able to set an initial value', () => {
-		const value = 'default test value';
-
-		const inputComponent = shallow(<TextInput value={value} />);
-
-		const inputElement = inputComponent.find('input');
-
-		expect(inputElement.prop('value')).toEqual(value);
-	});
-
-	it('Should be able to render with an icon', () => {
-		const icon = 'search';
-
-		const inputComponent = shallow(<TextInput className={customClass} icon={icon} />);
-
-		const iconComponent = inputComponent.find(Icon);
-
-		expect(inputComponent.hasClass(customClass)).toEqual(true);
-		expect(iconComponent.prop('name')).toEqual(icon);
-	});
-
-	it('Should call the onChange handler when the input changes', () => {
-		const onChangeHandler = jest.fn();
-
-		const inputComponent = shallow(<TextInput onChange={onChangeHandler} />);
-
-		const inputElement = inputComponent.find('input');
-
-		inputElement.simulate('change', { target: { value: 'test' } });
-
-		expect(onChangeHandler).toHaveBeenCalled();
-		expect(onChangeHandler).toHaveBeenCalledTimes(1);
-		expect(onChangeHandler).toHaveBeenCalledWith('test');
-
-		inputElement.simulate('change', { target: { value: 'testing' } });
-
-		expect(onChangeHandler).toHaveBeenCalledTimes(2);
-		expect(onChangeHandler).toHaveBeenCalledWith('testing');
+		const input = screen.getByDisplayValue(mockValue);
+		userEvent.type(input, inputValue);
+		expect(onChange).toHaveBeenCalledTimes(inputValue.length);
 	});
 });

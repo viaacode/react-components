@@ -1,42 +1,16 @@
-import { storiesOf } from '@storybook/react';
-import React, { cloneElement, ReactElement, useState } from 'react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import React from 'react';
 
-import { action } from '../../helpers';
+import Checkbox from './Checkbox';
 
-import { Checkbox } from './Checkbox';
+export default {
+	title: 'Components/Checkbox',
+	component: Checkbox,
+} as ComponentMeta<typeof Checkbox>;
 
-const CheckboxStoryComponent = ({
-	children,
-	defaultChecked,
-}: {
-	children: ReactElement;
-	defaultChecked?: boolean;
-}) => {
-	const [checked, setChecked] = useState(defaultChecked);
+const Template: ComponentStory<typeof Checkbox> = (args) => <Checkbox {...args} />;
 
-	return cloneElement(children, {
-		checked,
-		onChange: (checked: boolean) => {
-			action('Checkbox toggled')(checked);
-			setChecked(checked);
-		},
-	});
+export const Default = Template.bind({});
+Default.args = {
+	label: 'Check me!',
 };
-
-storiesOf('components/Checkbox', module)
-	.addParameters({ jest: ['Checkbox'] })
-	.add('Checkbox', () => (
-		<CheckboxStoryComponent>
-			<Checkbox label="One" />
-		</CheckboxStoryComponent>
-	))
-	.add('Checkbox default checked', () => (
-		<CheckboxStoryComponent defaultChecked={true}>
-			<Checkbox label="One" />
-		</CheckboxStoryComponent>
-	))
-	.add('Checkbox default unchecked', () => (
-		<CheckboxStoryComponent defaultChecked={false}>
-			<Checkbox label="One" />
-		</CheckboxStoryComponent>
-	));

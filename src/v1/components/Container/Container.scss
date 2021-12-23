@@ -1,0 +1,144 @@
+@import '../../../styles/themes/avo2/settings/colors';
+@import '../../../styles/themes/avo2/settings/variables';
+
+/* ==========================================================================
+   Object: Container
+   ---
+   Fluid container for content
+   ========================================================================== */
+
+/* Variables
+   ========================================================================== */
+
+$o-container-width-bp1: calc(100% - 2.4rem);
+$o-container-width-bp2: calc(100% - 3.2rem);
+$o-container-width-bp3: calc(100% - 4.8rem);
+$o-container-width-bp4: calc(100% - 6.4rem);
+
+$o-container-max-width-small: 56rem;
+$o-container-max-width-medium: 72rem;
+$o-container-max-width-large: 94rem;
+$o-container-max-width: 130rem;
+
+/* Object
+   ========================================================================== */
+
+.o-container {
+	margin: 0 auto;
+	max-width: $o-container-max-width;
+	width: $o-container-width-bp1;
+
+	@media (min-width: $g-bp2) {
+		width: $o-container-width-bp2;
+	}
+	@media (min-width: $g-bp3) {
+		width: $o-container-width-bp3;
+	}
+	@media (min-width: $g-bp4) {
+		width: $o-container-width-bp4;
+	}
+}
+
+.o-container--small {
+	max-width: $o-container-max-width-small;
+	padding: 0 5px; // Avoid cropping in focus effect because of overflow-x: hidden
+}
+
+.o-container--medium {
+	max-width: $o-container-max-width-medium;
+	padding: 0 5px; // Avoid cropping in focus effect because of overflow-x: hidden
+}
+
+.o-container--large {
+	max-width: $o-container-max-width-large;
+	padding: 0 5px; // Avoid cropping in focus effect because of overflow-x: hidden
+}
+
+.o-container--full-width {
+	max-width: none;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+@media (min-width: $g-bp2) {
+	.o-container-bp2 {
+		max-width: $o-container-max-width;
+	}
+
+	.o-container-bp2--small {
+		max-width: $o-container-max-width-small;
+	}
+
+	.o-container-bp2--medium {
+		max-width: $o-container-max-width-medium;
+	}
+
+	.o-container-bp2--large {
+		max-width: $o-container-max-width-large;
+	}
+}
+
+
+/* ==========================================================================
+   Container vertical
+   ========================================================================== */
+
+/* Block spacing
+   ========================================================================== */
+
+.o-container-vertical { // Standard padding
+	padding: 3.6rem 0;
+}
+
+// Modifiers
+
+.o-container-vertical--small {
+	padding: 2.4rem 0;
+}
+
+.o-container-vertical--medium {
+	padding: 4.8rem 0;
+}
+
+.o-container-vertical--large {
+	padding: 6.4rem 0;
+}
+
+.o-container-vertical--large-bp3 {
+	@media (min-width: $g-bp3) {
+		padding: 6.4rem 0;
+	}
+}
+
+/* Block modifiers
+   Change the look of the entire block
+   ========================================================================== */
+
+.o-container-vertical--bg-alt {
+	background-color: $color-gray-50;
+}
+
+.o-container-vertical--bottom-bordered {
+	border-bottom: 1px solid $color-gray-100;
+}
+
+
+.o-container-vertical--bg-inverse {
+	background-color: $color-gray-700;
+}
+
+/* ==========================================================================
+  Block types (attached to vertical containers, since this is often the parent)
+   ========================================================================== */
+
+/* Block type: anchor list
+   ========================================================================== */
+
+.o-container-vertical-anchor-list__list {
+	text-align: center;
+
+	li {
+		display: inline-block;
+		margin: 1rem;
+	}
+}

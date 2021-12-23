@@ -1,0 +1,136 @@
+@import '../../../styles/themes/avo2/settings/colors';
+
+/* ==========================================================================
+   Component: Alert
+   ---
+   Use alerts for messaging across the application.
+   ---
+   Rules of this file: this file is ONLY for layout, please see alert-skins.scss for colors
+   ========================================================================== */
+
+/* Variables
+   ========================================================================== */
+
+$c-alert-danger-bg-color: #FEF2F0 !default;
+$c-alert-info-bg-color: #F2F9FA !default;
+$c-alert-spinner-bg-color: #FAFCFC !default;
+$c-alert-success-bg-color: #EFF9F6 !default;
+$c-dark-alert-bg-color: $color-gray-700 !default;
+
+/* Component
+   ========================================================================== */
+
+.c-alert {
+	background-color: #FFF;
+	border-radius: 0.3rem;
+	border: 1px solid $color-gray-100;
+	padding: 1.2rem 1.6rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+
+	.o-svg-icon-button-actions-close {
+		cursor: pointer;
+	}
+
+	.c-content {
+		h1, h2, h3, h4, h5, h6 {
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+	}
+}
+
+.c-alert__body {
+	display: flex;
+	align-items: flex-start;
+
+	> .o-svg-icon,
+	> .c-spinner {
+		margin: 5px 12px 4px 0;
+	}
+
+	> .o-svg-icon {
+		flex-shrink: 0;
+	}
+}
+
+.c-alert__message {
+	margin: 4px 0;
+}
+
+.c-alert--floating {
+	border-radius: 3px;
+	display: flex;
+	padding: 1.6rem;
+	transform: translateX(-50%);
+	z-index: 100;
+	min-width: 15rem;
+}
+
+/* Skins
+   ========================================================================== */
+
+.c-alert--info {
+	background-color: $c-alert-info-bg-color;
+	border-color: darken($c-alert-info-bg-color, 10%);
+}
+
+.c-alert--danger {
+	background-color: $c-alert-danger-bg-color;
+	border-color: darken($c-alert-danger-bg-color, 10%);
+	border-color: rgba($color-error-200, 0.33);
+}
+
+.c-alert--success {
+	background-color: $c-alert-success-bg-color;
+	border-color: darken($c-alert-success-bg-color, 10%);
+}
+
+.c-alert--spinner {
+	background-color: $c-alert-spinner-bg-color;
+}
+
+.c-alert--dark {
+	border: none;
+	background-color: $c-dark-alert-bg-color;
+	color: #FFF;
+
+	a {
+		color: #FFF;
+	}
+}
+
+/* Animations
+   ========================================================================== */
+
+.c-alert--floating--animate-in {
+	animation: 0.3s ease-in 0.2s both floating-alert-in;
+}
+
+.c-alert--floating--animate-out {
+	animation: 0.3s ease-out 0.2s both floating-alert-out;
+}
+
+@keyframes floating-alert-in {
+	0% {
+		opacity: 0;
+		transform: translateX(-50%) translateY(-1rem);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+}
+
+@keyframes floating-alert-out {
+	100% {
+		opacity: 0;
+		transform: translateX(-50%) translateY(-1rem);
+	}
+	0% {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+}

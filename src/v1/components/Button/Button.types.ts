@@ -1,0 +1,16 @@
+export type ButtonTypeSchema =
+	| 'borderless-i'
+	| 'borderless'
+	| 'danger-hover'
+	| 'danger'
+	| 'link'
+	| 'inline-link'
+	| 'underlined-link'
+	| 'primary'
+	| 'secondary-i'
+	| 'secondary'
+	| 'tertiary'
+	| 'pupil-primary'
+	| 'pupil-link'
+	| 'pupil-inline-link'
+	| 'pupil-underlined-link';

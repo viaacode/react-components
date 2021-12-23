@@ -1,113 +1,73 @@
-import classnames from 'classnames';
-import React, { FunctionComponent, MouseEvent, ReactNode } from 'react';
+import clsx from 'clsx';
+import React, { FC, MouseEvent, ReactNode } from 'react';
 
-import { DefaultProps } from '../../types';
-import { Icon } from '../Icon/Icon';
-import { IconNameSchema, IconTypeSchema } from '../Icon/Icon.types';
-import { Tooltip } from '../Tooltip/Tooltip';
-import { TooltipContent, TooltipTrigger } from '../Tooltip/Tooltip.slots';
+import { bemCls } from '../../utils/bem-class';
+import { getVariantClasses } from '../../utils/variant-classes';
 
-import './Button.scss';
-import { ButtonTypeSchema } from './Button.types';
+import { ButtonProps } from './Button.types';
 
-export interface ButtonPropsSchema extends DefaultProps {
-	active?: boolean;
-	ariaLabel?: string;
-	arrow?: boolean;
-	autoHeight?: boolean;
-	block?: boolean;
-	children?: ReactNode;
-	disabled?: boolean;
-	icon?: IconNameSchema;
-	iconType?: IconTypeSchema;
-	label?: string;
-
-	onClick?(event: MouseEvent<HTMLElement>): void;
-
-	size?: 'small' | 'large';
-	title?: string;
-	altTitle?: string;
-	tooltip?: string;
-	type?: ButtonTypeSchema;
-	id?: string;
-}
-
-const Button: FunctionComponent<ButtonPropsSchema> = ({
-	active,
+const Button: FC<ButtonProps> = ({
 	ariaLabel,
-	arrow,
-	autoHeight = false,
-	block = false,
 	children,
 	className,
-	disabled,
+	disabled = false,
 	icon,
-	label,
-	onClick,
-	size,
-	title,
-	tooltip,
-	iconType,
-	type = 'primary',
+	iconStart = null,
+	iconEnd = null,
 	id,
+	label,
+	rootClassName: root = 'c-button',
+	title,
+	type = 'button',
+	variants,
+	onClick,
 }) => {
-	const handleButtonClick = (evt: MouseEvent<HTMLElement>) => {
-		if (!disabled && onClick) {
-			onClick(evt);
+	const bem = bemCls.bind(root);
+	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
+		[bem('', 'disabled')]: disabled,
+		[bem('', 'icon')]: icon,
+	});
+
+	const onButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
+		if (!disabled && typeof onClick === 'function') {
+			onClick(event);
 		}
 	};
 
-	const renderButton = () => {
-		return (
-			<button
-				className={classnames(className, 'c-button', {
-					'c-button--active': active,
-					'c-button--auto': autoHeight,
-					'c-button--small': size === 'small',
-					'c-button--large': size === 'large',
-					'c-button--block': block,
-					'c-button--icon': icon && !label,
-					[`c-button--${type}`]: type,
-				})}
-				onClick={handleButtonClick}
-				disabled={disabled}
-				aria-label={ariaLabel}
-				title={title}
-				id={id}
-			>
-				{children ? (
-					children
-				) : (
-					<div className="c-button__content">
-						{icon && (
-							<Icon
-								className="c-button__icon"
-								name={icon}
-								active={active}
-								type={iconType}
-							/>
-						)}
-						{label && <div className="c-button__label">{label}</div>}
-						{arrow && <Icon className="c-button__icon" name="caret-down" />}
-					</div>
-				)}
-			</button>
-		);
-	};
+	const renderIcon = (iconNode: ReactNode, side?: 'start' | 'end') => (
+		<span
+			className={clsx(bem('icon'), {
+				[bem('icon', side)]: side,
+			})}
+		>
+			{iconNode}
+		</span>
+	);
 
-	if (tooltip && tooltip.trim()) {
-		return (
-			<Tooltip contentClassName="c-button__tooltip" position="top" offset={20}>
-				<TooltipTrigger>
-					<span>{renderButton()}</span>
-				</TooltipTrigger>
-				<TooltipContent>
-					<span>{tooltip}</span>
-				</TooltipContent>
-			</Tooltip>
-		);
-	}
-	return renderButton();
+	return (
+		<button
+			aria-label={ariaLabel}
+			className={rootCls}
+			id={id}
+			title={title}
+			type={type}
+			onClick={onButtonClick}
+		>
+			{children || (
+				<div className={bem('content')}>
+					{icon ? (
+						renderIcon(icon)
+					) : (
+						<>
+							{iconStart && renderIcon(iconStart, 'start')}
+							<span className={bem('label')}>{label}</span>
+							{iconEnd && renderIcon(iconEnd, 'end')}
+						</>
+					)}
+				</div>
+			)}
+		</button>
+	);
 };
 
-export { Button };
+export default Button;

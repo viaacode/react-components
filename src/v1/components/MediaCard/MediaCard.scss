@@ -1,0 +1,107 @@
+@use 'sass:math';
+@import '../../../styles/themes/avo2/settings/colors';
+@import '../../../styles/themes/avo2/settings/variables';
+
+/* ==========================================================================
+   Component: Media card
+   ========================================================================== */
+
+.c-media-card {
+	display: flex;
+	flex-direction: column;
+	border-radius: 0.5rem;
+	max-width: 45rem;
+}
+
+.c-media-card-content {
+	margin-top: 0.8rem;
+}
+
+.c-media-card__title {
+	margin-bottom: 0.8rem;
+	font-weight: $g-headings-font-weight;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	a {
+		font-size: 1.7rem;
+		color: $color-gray-800;
+		font-weight: $g-headings-font-weight;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+/* Media card list
+   ========================================================================== */
+
+.c-media-card-list {
+	a {
+		text-decoration: none;
+
+		&:hover .c-media-card__title {
+			text-decoration: underline;
+		}
+	}
+
+	.c-media-card {
+		margin-bottom: 2.4rem;
+	}
+}
+
+/* Horizontal media card
+   ========================================================================== */
+
+.c-media-card--horizontal {
+	display: flex;
+	flex-direction: row;
+
+	.c-media-card-thumb {
+		flex: 1;
+		margin-right: 0.8rem;
+	}
+
+	.c-media-card-content {
+		flex: 2;
+		margin-top: 0;
+	}
+}
+
+/* Specific colors for each media type
+   ========================================================================== */
+
+.c-media-card {
+	.c-media-card__title {
+		color: $color-teal-bright;
+	}
+
+	&.c-media-card--collection {
+		.c-media-card__title {
+			color: $color-ocean-green;
+		}
+	}
+
+	&.c-media-card--video {
+		.c-media-card__title {
+			color: $color-yellow;
+		}
+	}
+
+	&.c-media-card--audio {
+		.c-media-card__title {
+			color: $color-teal-bright;
+		}
+	}
+}
+
+/* Different thumbnail size for folders
+   ========================================================================== */
+
+.c-media-card--folder {
+	.c-thumbnail {
+		padding-top: math.div(100% * 1, 0.70625); // calculate A4 ratio for folder images
+	}
+}

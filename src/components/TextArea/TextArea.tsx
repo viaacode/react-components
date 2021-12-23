@@ -1,64 +1,54 @@
 import autosize from 'autosize';
-import classnames from 'classnames';
-import React, { ChangeEvent, FunctionComponent, useEffect } from 'react';
+import clsx from 'clsx';
+import React, { FunctionComponent, useEffect } from 'react';
 
-import { useCallbackRef } from '../../hooks/useCallbackRef';
-import { DefaultProps } from '../../types';
+import { useCallbackRef } from '../../hooks/use-callback-ref';
+import { bemCls } from '../../utils/bem-class';
+import { getVariantClasses } from '../../utils/variant-classes';
 
-export interface TextAreaPropsSchema extends DefaultProps {
-	id?: string;
-	name?: string;
-	rows?: number;
-	disabled?: boolean;
-	placeholder?: string;
-	value?: string;
-	height?: 'auto' | 'small' | 'medium' | 'large';
-	width?: 'xsmall' | 'small' | 'medium' | 'large';
-	onChange?: (value: string) => void;
-	onBlur?: () => void;
-}
+import { TextAreaProps } from './TextArea.types';
 
-
-export const TextArea: FunctionComponent<TextAreaPropsSchema> = ({
+const TextArea: FunctionComponent<TextAreaProps> = ({
+	autoHeight = false,
 	className,
+	disabled = false,
 	id,
 	name,
-	rows,
-	disabled = false,
 	placeholder,
+	rootClassName: root = 'c-input',
+	rows,
 	value = '',
-	height,
-	width,
-	onChange = () => {},
-	onBlur = () => {},
+	variants,
+	onChange = () => null,
+	onBlur = () => null,
 }) => {
+	const bem = bemCls.bind(root);
+	const rootCls = clsx(className, root, bem('', 'textarea'), getVariantClasses(root, variants));
+
 	const [textArea, textAreaRef] = useCallbackRef<HTMLTextAreaElement>();
 
 	useEffect(() => {
-		if (height === 'auto' && textArea) {
+		if (autoHeight && textArea) {
 			autosize(textArea);
 		}
-	}, [height, textArea, textAreaRef]);
-
-	function onValueChange(event: ChangeEvent<HTMLTextAreaElement>) {
-		onChange(event.target.value);
-	}
+	}, [autoHeight, textArea, textAreaRef]);
 
 	return (
-		<textarea
-			className={classnames(className, 'c-input', {
-				[`c-input--h-${height}`]: height && height !== 'auto',
-				[`c-input--w-${width}`]: width,
-			})}
-			id={id}
-			name={name}
-			rows={rows}
-			disabled={disabled}
-			placeholder={placeholder}
-			value={value}
-			onChange={onValueChange}
-			onBlur={onBlur}
-			ref={textAreaRef}
-		/>
+		<div className={rootCls}>
+			<textarea
+				ref={textAreaRef}
+				className={bem('field')}
+				id={id}
+				name={name}
+				rows={rows}
+				disabled={disabled}
+				placeholder={placeholder}
+				value={value}
+				onChange={onChange}
+				onBlur={onBlur}
+			/>
+		</div>
 	);
 };
+
+export default TextArea;

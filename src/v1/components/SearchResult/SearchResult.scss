@@ -1,0 +1,73 @@
+@import '../../../styles/themes/avo2/settings/colors';
+@import '../../../styles/themes/avo2/settings/variables';
+
+/* ==========================================================================
+   Component: Search results
+   ========================================================================== */
+
+.c-search-result {
+	display: flex;
+	flex-direction: column;
+}
+
+.c-search-result__image {
+	flex: 2;
+	margin-bottom: 1.6rem;
+
+	.c-media-card {
+		max-width: 100%;
+	}
+}
+
+.c-search-result__content {
+	flex: 4;
+
+	p {
+		padding: 0.8rem 0;
+		font-size: 1.4rem;
+	}
+}
+
+.c-search-result__title {
+	font-size: 2.1rem;
+	font-family: $g-headings-font-family;
+	font-weight: $g-headings-font-weight;
+
+	a {
+		color: $color-teal-bright;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+@media (min-width: $o-grid-bp2) {
+	.c-search-result {
+		flex-direction: row;
+		align-items: stretch;
+	}
+
+	.c-search-result__content {
+		margin-left: 1.6rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+	}
+}
+@media (min-width: $o-grid-bp3) {
+	.c-search-result__title {
+		font-size: 2.4rem;
+	}
+
+	.c-search-result__image {
+		margin-bottom: 0;
+	}
+}
+
+.c-search-result-list {
+	.c-search-result {
+		margin-bottom: 3.2rem;
+	}
+}

@@ -1,16 +1,19 @@
-export type ButtonTypeSchema =
-	| 'borderless-i'
-	| 'borderless'
-	| 'danger-hover'
-	| 'danger'
-	| 'link'
-	| 'inline-link'
-	| 'underlined-link'
-	| 'primary'
-	| 'secondary-i'
-	| 'secondary'
-	| 'tertiary'
-	| 'pupil-primary'
-	| 'pupil-link'
-	| 'pupil-inline-link'
-	| 'pupil-underlined-link';
+import { ButtonHTMLAttributes, MouseEvent, ReactNode } from 'react';
+
+import { DefaultComponentProps } from '../../types';
+
+type HTMLButtonAttrs = ButtonHTMLAttributes<HTMLButtonElement>;
+
+export interface ButtonProps extends DefaultComponentProps {
+	ariaLabel?: string;
+	autoHeight?: boolean;
+	disabled?: boolean;
+	icon?: ReactNode;
+	iconStart?: ReactNode;
+	iconEnd?: ReactNode;
+	id?: HTMLButtonAttrs['id'];
+	label?: string;
+	title?: HTMLButtonAttrs['title'];
+	type?: HTMLButtonAttrs['type'];
+	onClick?(event: MouseEvent<HTMLButtonElement>): void;
+}

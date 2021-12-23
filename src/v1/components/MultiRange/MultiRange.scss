@@ -1,0 +1,47 @@
+@import '../../../styles/themes/avo2/settings/colors';
+
+$rangeColor: hsl(190, 80%, 40%);
+
+.c-input-range {
+	display: flex;
+	align-items: center;
+
+	> div:first-child {
+		flex-grow: 1;
+		margin-right: 20px;
+	}
+
+	> .c-input {
+		width: 60px;
+	}
+
+	[role="slider"]:focus {
+		outline: 0;
+
+		&::before {
+			border-color: $color-border-color;
+			box-shadow: inset 0 0 0 0.1rem $color-border-color, 0 0 0.5rem #69c2df;
+			border-radius: 50%;
+		}
+	}
+
+	[role="slider"]::before {
+		content: "";
+		display: block;
+		position: absolute;
+		width: 20px;
+		height: 20px;
+		border: 1px solid grey;
+		box-sizing: border-box;
+		left: 10px;
+		top: 10px;
+		border-radius: 50%;
+		background-color: rgb(250, 250, 250); /* Old browsers */
+		background: linear-gradient(to bottom, rgba(250, 250, 250, 1) 0%, rgba(244, 244, 244, 1) 49%, rgba(240, 240, 240, 1) 51%, rgba(254, 254, 254, 1) 100%);
+	}
+
+	&.c-input-range__disabled {
+		pointer-events: none;
+		opacity: 0.5;
+	}
+}

@@ -1,4 +1,11 @@
-const { addDecorator } = require("@storybook/react");
-const { jsxDecorator } = require("storybook-addon-jsx");
+import '../src/styles/styleguide.scss';
+import '../src/styles/themes/themes.scss';
 
-addDecorator(jsxDecorator);
+export const parameters = {
+	actions: { argTypesRegex: "^on[A-Z].*" },
+	options: {
+		storySort: {
+			order: ['Components', 'v1'],
+		},
+	},
+};
