@@ -1,4 +1,4 @@
-import { getVariantClasses } from '.';
+import { getVariantClasses } from './variant-classes';
 
 const mockClass = 'my-class';
 const mockVariants = ['active', 'disabled'];
