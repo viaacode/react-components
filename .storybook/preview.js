@@ -1,2 +1,11 @@
-import '../src/v1/styles/styleguide.scss';
-import '../src/v1/styles/themes/avo2/avo2.scss';
+import '../src/styles/styleguide.scss';
+import '../src/styles/themes/themes.scss';
+
+export const parameters = {
+	actions: { argTypesRegex: "^on[A-Z].*" },
+	options: {
+		storySort: {
+			order: ['Components', 'v1'],
+		},
+	},
+};

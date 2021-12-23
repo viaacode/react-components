@@ -10,29 +10,29 @@
 /* Settings: preprocessor variables, colors, global settings
    ========================================================================== */
 
-@import './settings/index';
+@import "./settings/index";
 
 /* Generic: CSS reset, box-sizing, global CSS tweaks
    ========================================================================== */
 
-@import './generic/reset';
+@import "./generic/reset";
 
 /* Elements: element selectors, CMS-generated content
    ========================================================================== */
 
-@import './elements/base';
+@import "./elements/base";
 
 /* Components: separately styled components (buttons, form inputs, toolbars...)
    ========================================================================== */
 
-@import './components/index';
+@import "./components/index";
 
 /* Utilities: specific helper classes, overrides
    ========================================================================== */
 
-@import './utilities/index';
+@import "./utilities/index";
 
 /* Trumps
    ========================================================================== */
 
-@import './trumps/mq-debug';
+@import "./trumps/mq-debug";

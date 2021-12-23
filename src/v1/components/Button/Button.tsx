@@ -7,7 +7,6 @@ import { IconNameSchema, IconTypeSchema } from '../Icon/Icon.types';
 import { Tooltip } from '../Tooltip/Tooltip';
 import { TooltipContent, TooltipTrigger } from '../Tooltip/Tooltip.slots';
 
-import './Button.scss';
 import { ButtonTypeSchema } from './Button.types';
 
 export interface ButtonPropsSchema extends DefaultProps {
