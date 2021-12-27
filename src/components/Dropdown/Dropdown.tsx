@@ -74,7 +74,7 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
 	});
 
 	const bem = bemCls.bind(root);
-	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
+	const rootCls = clsx(className, triggerClassName, root, getVariantClasses(root, variants), {
 		[bem('trigger')]: triggerWidth === 'fit-content',
 	});
 
@@ -95,7 +95,7 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
 	return (
 		<>
 			<div
-				className={clsx(triggerClassName, rootCls)}
+				className={rootCls}
 				onClick={() => toggle()}
 				onKeyPress={(e) => (e.key === 'Space' ? toggle() : () => null)}
 				role="button"
