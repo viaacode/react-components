@@ -70,6 +70,11 @@ module.exports = {
 		},
 	],
 	settings: {
+		'import/resolver': {
+			node: {
+				paths: ['src'],
+			},
+		},
 		react: {
 			version: 'detect',
 		},
