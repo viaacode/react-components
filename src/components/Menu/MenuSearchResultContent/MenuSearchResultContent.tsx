@@ -1,22 +1,16 @@
-import classnames from 'classnames';
+import clsx from 'clsx';
 import React, { FunctionComponent } from 'react';
 
+import { getVariantClasses } from '../../../utils/variant-classes';
 import { Icon } from '../../../v1/components/Icon/Icon';
 import { CATEGORY_TO_ICON } from '../../../v1/components/Thumbnail/Thumbnail';
-import { DefaultProps, EnglishContentType } from '../../../v1/types';
-import { MenuContent } from '../MenuContent/MenuContent';
+import { EnglishContentType } from '../../../v1/types';
+import MenuContent from '../MenuContent/MenuContent';
 
-export interface MenuSearchResultItemInfoSchema {
-	label: string;
-	id: string | number;
-	type: EnglishContentType;
-}
-
-export interface MenuSearchResultContentPropsSchema extends DefaultProps {
-	menuItems: MenuSearchResultItemInfoSchema[];
-	noResultsLabel?: string;
-	onClick?: (menuItemId: string | number) => void;
-}
+import {
+	MenuSearchResultContentProps,
+	MenuSearchResultItemInfo,
+} from './MenuSearchResultContent.types';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export const CONTENT_TYPE_TO_LABEL: { [contentType in EnglishContentType]?: string } = {
@@ -28,16 +22,20 @@ export const CONTENT_TYPE_TO_LABEL: { [contentType in EnglishContentType]?: stri
 	search: 'Zoekopdracht',
 };
 
-export const MenuSearchResultContent: FunctionComponent<MenuSearchResultContentPropsSchema> = ({
+const MenuSearchResultContent: FunctionComponent<MenuSearchResultContentProps> = ({
 	className,
 	menuItems,
 	noResultsLabel,
 	onClick = () => null,
+	rootClassName: root = 'c-menu__item',
+	variants,
 }) => {
-	const renderMenuItem = (menuItemInfo: MenuSearchResultItemInfoSchema) => {
+	const rootCls = clsx(className, root, getVariantClasses(root, variants), {});
+
+	const renderMenuItem = (menuItemInfo: MenuSearchResultItemInfo) => {
 		return (
 			<div
-				className={classnames(className, 'c-menu__item')}
+				className={rootCls}
 				onClick={() => onClick(menuItemInfo.id)}
 				onKeyPress={(e) => (e.key === 'Space' ? onClick(menuItemInfo.id) : () => null)}
 				role="menuitem"
@@ -66,3 +64,5 @@ export const MenuSearchResultContent: FunctionComponent<MenuSearchResultContentP
 		/>
 	);
 };
+
+export default MenuSearchResultContent;

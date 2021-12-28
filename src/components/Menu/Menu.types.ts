@@ -2,11 +2,11 @@ import { CSSProperties, ReactNode } from 'react';
 
 import { DefaultComponentProps } from '../../types';
 
-import { MenuItemInfoSchema } from './MenuContent/MenuContent';
+import { MenuItemInfo } from './MenuContent/MenuContent.types';
 
 export interface MenuProps extends DefaultComponentProps {
-	menuItems?: MenuItemInfoSchema[] | MenuItemInfoSchema[][]; // Between arrays, there will be a divider
-	renderItem?: (menuItem: MenuItemInfoSchema) => ReactNode; // If you want to render your own item
+	menuItems?: MenuItemInfo[] | MenuItemInfo[][]; // Between arrays, there will be a divider
+	renderItem?: (menuItem: MenuItemInfo) => ReactNode; // If you want to render your own item
 	noResultsLabel?: string;
 	onClick?: (menuItemId: string | number) => void;
 	isOpen?: boolean;

@@ -6,7 +6,7 @@ import { getVariantClasses } from '../../utils/variant-classes';
 
 import './Menu.scss';
 import { MenuProps } from './Menu.types';
-import { MenuContent } from './MenuContent/MenuContent';
+import MenuContent from './MenuContent/MenuContent';
 
 const Menu: FunctionComponent<MenuProps> = ({
 	className,
