@@ -1,8 +1,9 @@
 import classnames from 'classnames';
 import React, { FunctionComponent } from 'react';
 
-import { PaginationProps } from '../../v1';
 import { Icon } from '../../v1/components/Icon/Icon';
+
+import { PaginationProps } from './Pagination.types';
 
 import './Pagination.scss';
 
