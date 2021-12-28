@@ -1,0 +1,46 @@
+@import "../../../styles/themes/avo2/settings/colors";
+
+/* ==========================================================================
+   Component: Pagination
+   ========================================================================== */
+
+.c-pagination {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+}
+
+.c-pagination__pages {
+	display: flex;
+	margin-right: 2.4rem;
+	margin-left: 2.4rem;
+}
+
+.c-pagination__btn {
+	width: 3.6rem;
+	height: 3.6rem;
+	margin: 0 0.1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 0.4rem;
+	text-decoration: none;
+	color: $color-gray-700;
+	cursor: pointer;
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: $color-gray-50;
+	}
+}
+
+.c-pagination__btn--active {
+	background-color: $color-gray-100
+}
+
+.c-pagination__btn--disabled {
+	opacity: 0.3;
+	cursor: default;
+	pointer-events: none;
+}
