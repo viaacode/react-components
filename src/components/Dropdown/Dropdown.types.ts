@@ -2,11 +2,12 @@ import { Placement } from '@popperjs/core';
 import { ReactNode } from 'react';
 
 import { DefaultComponentProps } from '../../types';
-import { IconNameSchema } from '../../v1/components/Icon/Icon.types';
 
 export interface DropdownProps extends DefaultComponentProps {
 	children: ReactNode;
-	icon?: IconNameSchema;
+	icon?: ReactNode;
+	iconOpen?: ReactNode;
+	iconClosed?: ReactNode;
 	isOpen: boolean;
 	label?: string;
 	menuClassName?: string;

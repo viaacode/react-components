@@ -7,7 +7,6 @@ import { useKeyPress } from '../../hooks/use-key-press';
 import { useSlot } from '../../hooks/use-slot';
 import { bemCls } from '../../utils/bem-class';
 import { getVariantClasses } from '../../utils/variant-classes';
-import { Icon } from '../../v1/components/Icon/Icon';
 import Button from '../Button/Button';
 import Menu from '../Menu/Menu';
 
@@ -24,13 +23,12 @@ import { DropdownProps } from './Dropdown.types';
  * - The flyout element that contains the children is called the "popper"
  */
 
-// TODO
-// icon
-// element
 const Dropdown: FunctionComponent<DropdownProps> = ({
 	children,
 	className,
 	icon,
+	iconOpen,
+	iconClosed,
 	isOpen,
 	label = '',
 	menuClassName,
@@ -84,8 +82,7 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
 		}
 	};
 
-	// TODO
-	// const renderIcon = (iconNode: ReactNode) => <span>{iconNode}</span>;
+	// const renderIcon = (iconNode: ReactNode | string) => <span>{iconNode}</span>;
 
 	const toggleClosed = () => toggle(false);
 
@@ -103,19 +100,12 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
 				ref={setReferenceElement}
 			>
 				{dropdownButtonSlot || (
-					<Button type="button">
-						<div className="c-button__content">
-							{/* {icon && <Icon name={icon} />} */}
-							{label && <div className="c-button__label">{label}</div>}
-							{!icon && (
-								<Icon
-									name={isOpen ? 'caret-up' : 'caret-down'}
-									size="small"
-									type="arrows"
-								/>
-							)}
-						</div>
-					</Button>
+					<Button
+						type="button"
+						iconStart={icon}
+						label={label}
+						iconEnd={isOpen ? iconOpen : iconClosed}
+					/>
 				)}
 			</div>
 
