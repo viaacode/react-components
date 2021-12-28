@@ -1,107 +1,123 @@
-import { mount, shallow } from 'enzyme';
-import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
+import React, { PropsWithChildren } from 'react';
 
-import { Menu } from './Menu';
+import { documentOf } from '../../helpers/document-of';
+
+import Menu from './Menu';
 import {
 	menuItems,
 	menuItemsWithDivider,
 	menuItemsWithIcons,
 	menuItemsWithSearch,
 } from './Menu.mocks';
-import { MenuItemInfoSchema } from './MenuContent/MenuContent';
-import { MenuSearchResultContent } from './MenuSearchResultContent/MenuSearchResultContent';
+import { MenuProps } from './Menu.types';
+import { MenuItemInfo } from './MenuContent';
+import MenuSearchResultContent from './MenuSearchResultContent/MenuSearchResultContent';
+const renderMenu = ({ children = null, ...args }: PropsWithChildren<MenuProps>) => {
+	return render(<Menu {...args}>{children}</Menu>);
+};
 
 describe('<MenuItem />', () => {
 	it('Should be able to render', () => {
-		shallow(<Menu menuItems={menuItems} />);
+		const menu = renderMenu({ menuItems });
+
+		const menuComponent = documentOf(menu).getElementsByClassName('c-menu')[0];
+		expect(menuComponent).not.toBeUndefined();
 	});
 
 	it('Should set the correct className', () => {
-		const customClass = 'c-menu-custom';
+		const className = 'c-menu-custom';
 
-		const menuComponent = shallow(<Menu className={customClass} menuItems={menuItems} />);
+		const menu = renderMenu({ menuItems, className });
 
-		expect(menuComponent.hasClass(customClass)).toEqual(true);
-		expect(menuComponent.hasClass('c-menu')).toEqual(true);
-		expect(menuComponent.hasClass('c-menu--visible')).toEqual(true);
+		const menuComponent = documentOf(menu).getElementsByClassName('c-menu')[0];
+
+		expect(menuComponent).toHaveClass(className);
+		expect(menuComponent).toHaveClass('c-menu--visible--default');
 	});
 
 	it('Should render the correct number of menu items', () => {
-		const menuComponent = mount(<Menu menuItems={menuItems} />);
+		const menu = renderMenu({ menuItems });
 
-		expect(menuComponent.find('.c-menu__item')).toHaveLength(menuItems.length);
+		const menuComponent = documentOf(menu).getElementsByClassName('c-menu__item');
+
+		expect(menuComponent).toHaveLength(menuItems.length);
 	});
 
 	it('should render children when given', () => {
-		const menuComponent = mount(
-			<Menu>
-				<div className="c-custom-content">stuff</div>
-			</Menu>
-		);
+		const children = <div className="c-custom-content">stuff</div>;
+		const menu = renderMenu({ children });
 
-		expect(menuComponent.find('.c-custom-content')).toHaveLength(1);
+		const menuComponent = documentOf(menu).getElementsByClassName('c-custom-content');
+
+		expect(menuComponent).toHaveLength(1);
 	});
 
 	it('Should render icons if provided', () => {
-		const menuComponent = mount(<Menu menuItems={menuItemsWithIcons} />);
+		const menu = renderMenu({ menuItems: menuItemsWithIcons });
 
-		expect(menuComponent.find('.o-svg-icon')).toHaveLength(menuItemsWithIcons.length);
+		const menuComponent = documentOf(menu).getElementsByClassName('o-svg-icon');
+
+		expect(menuComponent).toHaveLength(menuItemsWithIcons.length);
 	});
 
 	it('Should render with search results', () => {
-		const menuSearchComponent = mount(
-			<Menu search>
-				<MenuSearchResultContent menuItems={menuItemsWithSearch} />
-			</Menu>
-		);
+		const children = <MenuSearchResultContent menuItems={menuItemsWithSearch} />;
+		const menu = renderMenu({ children, search: true });
 
-		expect(menuSearchComponent.find('.c-menu').hasClass('c-menu--search-result')).toBeTruthy();
-		expect(menuSearchComponent.find('.c-menu__item')).toHaveLength(menuItemsWithSearch.length);
+		const menuComponent = documentOf(menu).getElementsByClassName('c-menu')[0];
+		const menuSearchItems = documentOf(menu).getElementsByClassName('c-menu__item');
+
+		expect(menuComponent).toHaveClass('c-menu--search-result');
+		expect(menuSearchItems).toHaveLength(menuItemsWithSearch.length);
 	});
 
 	it('Should render no results label if provided', () => {
 		const noResultsLabel = 'No results';
-		const menuComponent = mount(<Menu menuItems={[]} noResultsLabel={noResultsLabel} />);
 
-		expect(menuComponent.find('.c-menu__label').text()).toEqual(noResultsLabel);
+		const menu = renderMenu({ menuItems: [], noResultsLabel });
+
+		const menuComponent = documentOf(menu).getElementsByClassName('c-menu__label')[0];
+
+		expect(menuComponent.textContent).toEqual(noResultsLabel);
 	});
 
 	it('Should render the correct number of dividers', () => {
-		const menuComponent = mount(<Menu menuItems={menuItemsWithDivider} />);
+		const menu = renderMenu({ menuItems: menuItemsWithDivider });
 
-		expect(menuComponent.find('.c-menu__item')).toHaveLength(menuItems.length);
-		expect(menuComponent.find('.c-menu__divider')).toHaveLength(
-			menuItemsWithDivider.length - 1
-		);
+		const menuItems = documentOf(menu).getElementsByClassName('c-menu__item');
+		const menuDividers = documentOf(menu).getElementsByClassName('c-menu__divider');
+
+		expect(menuItems).toHaveLength(menuItems.length);
+		expect(menuDividers).toHaveLength(menuItemsWithDivider.length - 1);
 	});
 
 	it('Should render using custom render function', () => {
-		const customRenderFunction = (menuItem: MenuItemInfoSchema) => {
+		const renderItem = (menuItem: MenuItemInfo) => {
 			return (
 				<div className="custom-item" key={`menu-search-item-${menuItem.id}`}>
 					{menuItem.label}
 				</div>
 			);
 		};
+		const menu = renderMenu({ menuItems: menuItemsWithDivider, renderItem });
 
-		const menuComponent = mount(
-			<Menu menuItems={menuItemsWithDivider} renderItem={customRenderFunction} />
-		);
+		const menuCustomItems = documentOf(menu).getElementsByClassName('custom-item');
 
-		expect(menuComponent.find('.custom-item')).toHaveLength(menuItems.length);
-		expect(menuComponent.find('.custom-item').at(1).text()).toEqual(menuItems[1].label);
+		expect(menuCustomItems).toHaveLength(menuItems.length);
+		expect(menuCustomItems[1].textContent).toEqual(menuItems[1].label);
 	});
 
 	it('Should call onClick when item is clicked', () => {
-		const onClickHandler = jest.fn();
+		const onClick = jest.fn();
 
-		const menuComponent = mount(<Menu menuItems={menuItems} onClick={onClickHandler} />);
+		const menu = renderMenu({ menuItems, onClick });
 
-		const secondItem = menuComponent.find('.c-menu__item').at(1);
-		secondItem.simulate('click');
+		const menuSeconditem = documentOf(menu).getElementsByClassName('c-menu__item')[1];
 
-		expect(onClickHandler).toHaveBeenCalled();
-		expect(onClickHandler).toHaveBeenCalledTimes(1);
-		expect(onClickHandler).toHaveBeenCalledWith(menuItems[1].id);
+		fireEvent.click(menuSeconditem);
+
+		expect(onClick).toHaveBeenCalledTimes(1);
+		expect(onClick).toHaveBeenCalledWith(menuItems[1].id);
 	});
 });
