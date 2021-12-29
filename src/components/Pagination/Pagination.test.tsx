@@ -1,287 +1,434 @@
-import { shallow } from 'enzyme';
-import React from 'react';
+import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
+import React, { ReactNode } from 'react';
+
+import { documentOf } from '../../helpers/document-of';
 
 import Pagination from './Pagination';
 
+const renderPagination = ({ pageCount = 10, ...rest }): RenderResult => {
+	return render(<Pagination pageCount={pageCount} {...rest} />);
+};
+
+const renderButton = (label: string): ReactNode => {
+	return <span>{label}</span>;
+};
+
 describe('<Pagination />', () => {
 	it('Should be able to render', () => {
-		shallow(<Pagination pageCount={100} />);
+		const rendered = renderPagination({});
+
+		const pagination = documentOf(rendered).getElementsByClassName('c-pagination');
+
+		expect(pagination).toBeDefined();
 	});
 
 	it('Should set the correct className', () => {
-		const customClass = 'c-column-custom';
+		const className = 'c-custom';
+		const variants = ['small', 'outline'];
 
-		const paginationComponent = shallow(<Pagination className={customClass} pageCount={100} />);
+		const rendered = renderPagination({ className, variants });
 
-		expect(paginationComponent.hasClass(customClass)).toEqual(true);
-		expect(paginationComponent.hasClass('c-pagination')).toEqual(true);
+		const pagination = documentOf(rendered).getElementsByClassName('c-pagination')[0];
+
+		expect(pagination).toHaveClass(className);
+		expect(pagination).toHaveClass(`c-pagination--${variants[0]}`);
+		expect(pagination).toHaveClass(`c-pagination--${variants[1]}`);
 	});
 
 	it('Should render pages equal to the `displayCount`', () => {
 		const displayCount = 8;
+		const pageCount = 20;
 
-		const paginationComponent = shallow(
-			<Pagination pageCount={100} displayCount={displayCount} />
-		);
+		const rendered = renderPagination({ displayCount, pageCount });
 
-		const paginationButtonElements = paginationComponent.find(
-			'.c-pagination__pages .c-pagination__btn'
-		);
+		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
 
-		expect(paginationButtonElements).toHaveLength(displayCount);
+		expect(pages.children).toHaveLength(displayCount);
 	});
 
 	it('Should render pages equal to the `pageCount` if it is less than the `displayCount`', () => {
 		const pageCount = 4;
 		const displayCount = 8;
 
-		const paginationComponent = shallow(
-			<Pagination pageCount={pageCount} displayCount={displayCount} />
-		);
+		const rendered = renderPagination({ displayCount, pageCount });
 
-		const paginationButtonElements = paginationComponent.find(
-			'.c-pagination__pages .c-pagination__btn'
-		);
+		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
 
-		expect(paginationButtonElements).toHaveLength(pageCount);
+		expect(pages.children).toHaveLength(pageCount);
 	});
 
 	it('Should render the current page in an active state', () => {
-		const paginationComponent = shallow(<Pagination pageCount={100} />);
+		const currentPage = 0;
+		const rendered = renderPagination({ currentPage });
 
-		const currentPageButtonElement = paginationComponent
-			.find('.c-pagination__pages .c-pagination__btn')
-			.at(0);
+		const activePage =
+			documentOf(rendered).getElementsByClassName('c-pagination__pages')[0].firstChild;
 
-		expect(currentPageButtonElement.hasClass('c-pagination__btn--active')).toEqual(true);
+		expect(activePage).toHaveClass('c-pagination__btn--active');
 	});
 
 	it('Should correctly set the `currentPage`', () => {
-		const currentPage = 40;
+		const currentPage = 4;
 
-		const paginationComponent = shallow(
-			<Pagination pageCount={100} currentPage={currentPage} />
-		);
+		const rendered = renderPagination({ currentPage });
 
-		const currentPageButtonElement = paginationComponent.find('.c-pagination__btn--active');
+		const activePage = documentOf(rendered).getElementsByClassName(
+			'c-pagination__btn--active'
+		)[0];
 
-		expect(parseInt(currentPageButtonElement.text(), 10)).toEqual(currentPage + 1);
+		expect(activePage.textContent).toEqual(String(currentPage + 1));
 	});
 
 	it('Should render pages padded around the current page based on the `displayCount`', () => {
-		const currentPage = 50;
-		const pagesToRender = [49, 50, 51, 52, 53];
+		const currentPage = 4; // index, number displayed is 5
+		const pagesToRender = [3, 4, 5, 6, 7];
 
-		const paginationComponent = shallow(
-			<Pagination
-				pageCount={100}
-				currentPage={currentPage}
-				displayCount={pagesToRender.length}
-			/>
-		);
+		const rendered = renderPagination({ currentPage });
 
-		const paginationPagesElement = paginationComponent.find('.c-pagination__pages');
+		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
 
-		expect(paginationPagesElement.text()).toEqual(pagesToRender.join(''));
+		expect(pages.textContent).toEqual(pagesToRender.join(''));
 	});
 
 	it('Should render the first x pages when the current page is lower than the (odd) `displayCount`', () => {
 		const currentPage = 2;
 		const pagesToRender = [1, 2, 3, 4, 5];
 
-		const paginationComponent = shallow(
-			<Pagination
-				pageCount={100}
-				currentPage={currentPage}
-				displayCount={pagesToRender.length}
-			/>
-		);
+		const rendered = renderPagination({ currentPage });
 
-		const paginationPagesElement = paginationComponent.find('.c-pagination__pages');
+		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
 
-		expect(paginationPagesElement.text()).toEqual(pagesToRender.join(''));
+		expect(pages.textContent).toEqual(pagesToRender.join(''));
 	});
 
 	it('Should render the first x pages when the current page is lower than the (even) `displayCount`', () => {
 		const currentPage = 1;
+		const displayCount = 4;
 		const pagesToRender = [1, 2, 3, 4];
 
-		const paginationComponent = shallow(
-			<Pagination
-				pageCount={100}
-				currentPage={currentPage}
-				displayCount={pagesToRender.length}
-			/>
-		);
+		const rendered = renderPagination({ currentPage, displayCount });
 
-		const paginationPagesElement = paginationComponent.find('.c-pagination__pages');
+		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
 
-		expect(paginationPagesElement.text()).toEqual(pagesToRender.join(''));
+		expect(pages.textContent).toEqual(pagesToRender.join(''));
 	});
 
 	it('Should render the last x pages when if the currentPage is equal less than the `pageCount` minus the (odd) `displayCount`', () => {
-		const currentPage = 97;
-		const pagesToRender = [96, 97, 98, 99, 100];
+		const currentPage = 9;
+		const pagesToRender = [6, 7, 8, 9, 10];
 
-		const paginationComponent = shallow(
-			<Pagination
-				pageCount={100}
-				currentPage={currentPage}
-				displayCount={pagesToRender.length}
-			/>
-		);
+		const rendered = renderPagination({ currentPage });
 
-		const paginationPagesElement = paginationComponent.find('.c-pagination__pages');
+		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
 
-		expect(paginationPagesElement.text()).toEqual(pagesToRender.join(''));
+		expect(pages.textContent).toEqual(pagesToRender.join(''));
 	});
 
 	it('Should render the last x pages when if the currentPage is equal less than the `pageCount` minus the (even) `displayCount`', () => {
-		const currentPage = 97;
-		const pagesToRender = [97, 98, 99, 100];
+		const currentPage = 9;
+		const displayCount = 4;
+		const pagesToRender = [7, 8, 9, 10];
 
-		const paginationComponent = shallow(
-			<Pagination
-				pageCount={100}
-				currentPage={currentPage}
-				displayCount={pagesToRender.length}
-			/>
-		);
+		const rendered = renderPagination({ currentPage, displayCount });
 
-		const paginationPagesElement = paginationComponent.find('.c-pagination__pages');
+		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
 
-		expect(paginationPagesElement.text()).toEqual(pagesToRender.join(''));
+		expect(pages.textContent).toEqual(pagesToRender.join(''));
 	});
 
 	it('Should call `onPageChange` when changing pages internally', () => {
-		const onPageChangeHandler = jest.fn();
-
-		const paginationComponent = shallow(
-			<Pagination pageCount={100} onPageChange={onPageChangeHandler} />
-		);
-
+		const onPageChange = jest.fn();
 		const buttonIndex = 2;
 
-		const pageButtonElement = paginationComponent
-			.find('.c-pagination__pages .c-pagination__btn')
-			.at(buttonIndex);
+		const rendered = renderPagination({ onPageChange });
 
-		pageButtonElement.simulate('click');
+		const button = documentOf(rendered)
+			.getElementsByClassName('c-pagination__pages')[0]
+			.getElementsByClassName('c-pagination__btn')[buttonIndex];
 
-		expect(onPageChangeHandler).toHaveBeenCalled();
-		expect(onPageChangeHandler).toHaveBeenCalledTimes(1);
-		expect(onPageChangeHandler).toHaveBeenCalledWith(buttonIndex);
+		fireEvent.click(button);
+
+		expect(onPageChange).toHaveBeenCalledTimes(1);
+		expect(onPageChange).toHaveBeenCalledWith(buttonIndex);
 	});
 
 	it('Should not call `onPageChange` when changing page to the current page', () => {
-		const onPageChangeHandler = jest.fn();
-
+		const onPageChange = jest.fn();
 		const activeIndex = 2;
 
-		const paginationComponent = shallow(
-			<Pagination
-				pageCount={100}
-				onPageChange={onPageChangeHandler}
-				currentPage={activeIndex}
-			/>
-		);
+		const rendered = renderPagination({ onPageChange, currentPage: activeIndex });
 
-		const pageButtonElement = paginationComponent
-			.find('.c-pagination__pages .c-pagination__btn')
-			.at(activeIndex);
+		const button = documentOf(rendered)
+			.getElementsByClassName('c-pagination__pages')[0]
+			.getElementsByClassName('c-pagination__btn')[activeIndex];
 
-		pageButtonElement.simulate('click');
+		fireEvent.click(button);
 
-		expect(onPageChangeHandler).toHaveBeenCalledTimes(0);
+		expect(onPageChange).toHaveBeenCalledTimes(0);
 	});
 
 	it('Should be able to jump to the previous page', () => {
-		const onPageChangeHandler = jest.fn();
-
+		const onPageChange = jest.fn();
 		const activeIndex = 2;
+		const buttonLabel = 'previous';
+		const buttons = {
+			previous: renderButton(buttonLabel),
+		};
 
-		const paginationComponent = shallow(
-			<Pagination
-				pageCount={100}
-				onPageChange={onPageChangeHandler}
-				currentPage={activeIndex}
-			/>
-		);
+		renderPagination({
+			onPageChange,
+			currentPage: activeIndex,
+			buttons,
+		});
 
-		const previousButtonElement = paginationComponent.find('.c-pagination__btn').at(1);
+		const button = screen.getByText(buttonLabel);
 
-		previousButtonElement.simulate('click');
+		fireEvent.click(button);
 
-		expect(onPageChangeHandler).toHaveBeenCalled();
-		expect(onPageChangeHandler).toHaveBeenCalledTimes(1);
-		expect(onPageChangeHandler).toHaveBeenCalledWith(activeIndex - 1);
+		expect(onPageChange).toHaveBeenCalledTimes(1);
+		expect(onPageChange).toHaveBeenCalledWith(activeIndex - 1);
 	});
 
 	it('Should be able to jump to the next page', () => {
-		const onPageChangeHandler = jest.fn();
-
+		const onPageChange = jest.fn();
 		const activeIndex = 2;
+		const buttonLabel = 'next';
+		const buttons = {
+			next: renderButton(buttonLabel),
+		};
 
-		const paginationComponent = shallow(
-			<Pagination
-				pageCount={100}
-				onPageChange={onPageChangeHandler}
-				currentPage={activeIndex}
-				displayCount={5}
-			/>
-		);
+		renderPagination({
+			onPageChange,
+			currentPage: activeIndex,
+			buttons,
+		});
 
-		const nextButtonElement = paginationComponent.find('.c-pagination__btn').at(7);
+		const button = screen.getByText(buttonLabel);
 
-		nextButtonElement.simulate('click');
+		fireEvent.click(button);
 
-		expect(onPageChangeHandler).toHaveBeenCalled();
-		expect(onPageChangeHandler).toHaveBeenCalledTimes(1);
-		expect(onPageChangeHandler).toHaveBeenCalledWith(activeIndex + 1);
+		expect(onPageChange).toHaveBeenCalledTimes(1);
+		expect(onPageChange).toHaveBeenCalledWith(activeIndex + 1);
 	});
 
 	it('Should be able to jump to the first page', () => {
-		const onPageChangeHandler = jest.fn();
-
+		const onPageChange = jest.fn();
 		const activeIndex = 2;
+		const showFirstLastButtons = true;
+		const buttonLabel = 'first';
+		const buttons = {
+			first: renderButton(buttonLabel),
+		};
 
-		const paginationComponent = shallow(
-			<Pagination
-				pageCount={100}
-				onPageChange={onPageChangeHandler}
-				currentPage={activeIndex}
-			/>
-		);
+		renderPagination({
+			onPageChange,
+			currentPage: activeIndex,
+			buttons,
+			showFirstLastButtons,
+		});
 
-		const firstButtonElement = paginationComponent.find('.c-pagination__btn').first();
+		const button = screen.getByText(buttonLabel);
 
-		firstButtonElement.simulate('click');
+		fireEvent.click(button);
 
-		expect(onPageChangeHandler).toHaveBeenCalled();
-		expect(onPageChangeHandler).toHaveBeenCalledTimes(1);
-		expect(onPageChangeHandler).toHaveBeenCalledWith(0);
+		expect(onPageChange).toHaveBeenCalledTimes(1);
+		expect(onPageChange).toHaveBeenCalledWith(0);
 	});
 
 	it('Should be able to jump to the last page', () => {
-		const pageCount = 100;
-		const onPageChangeHandler = jest.fn();
-
+		const onPageChange = jest.fn();
+		const pageCount = 20;
 		const activeIndex = 2;
+		const showFirstLastButtons = true;
+		const buttonLabel = 'last';
+		const buttons = {
+			last: renderButton(buttonLabel),
+		};
 
-		const paginationComponent = shallow(
-			<Pagination
-				pageCount={100}
-				onPageChange={onPageChangeHandler}
-				currentPage={activeIndex}
-			/>
-		);
+		renderPagination({
+			onPageChange,
+			currentPage: activeIndex,
+			buttons,
+			pageCount,
+			showFirstLastButtons,
+		});
 
-		const lastButtonElement = paginationComponent.find('.c-pagination__btn').last();
+		const button = screen.getByText(buttonLabel);
 
-		lastButtonElement.simulate('click');
+		fireEvent.click(button);
 
-		expect(onPageChangeHandler).toHaveBeenCalled();
-		expect(onPageChangeHandler).toHaveBeenCalledTimes(1);
-		expect(onPageChangeHandler).toHaveBeenCalledWith(pageCount - 1);
+		expect(onPageChange).toHaveBeenCalledTimes(1);
+		expect(onPageChange).toHaveBeenCalledWith(pageCount - 1);
+	});
+
+	it('Should render first and last page buttons', () => {
+		const showFirstLastButtons = true;
+		const buttonLabelLast = 'last';
+		const buttonLabelFirst = 'first';
+		const buttons = {
+			last: renderButton(buttonLabelLast),
+			first: renderButton(buttonLabelFirst),
+		};
+
+		renderPagination({
+			buttons,
+			showFirstLastButtons,
+		});
+
+		const buttonLast = screen.getByText(buttonLabelLast);
+		const buttonFirst = screen.getByText(buttonLabelFirst);
+
+		expect(buttonLast).toBeInTheDocument();
+		expect(buttonFirst).toBeInTheDocument();
+	});
+
+	it('Should not render first and last page buttons by default', () => {
+		const buttonLabelLast = 'last';
+		const buttonLabelFirst = 'first';
+		const buttons = {
+			last: renderButton(buttonLabelLast),
+			first: renderButton(buttonLabelFirst),
+		};
+
+		renderPagination({ buttons });
+
+		const buttonLast = screen.queryByText(buttonLabelLast);
+		const buttonFirst = screen.queryByText(buttonLabelFirst);
+
+		expect(buttonLast).toBeNull();
+		expect(buttonFirst).toBeNull();
+	});
+
+	it('Should render first and last page numbers with ellipsis when padded pages are rendered', () => {
+		const showFirstLastNumbers = true;
+		const activeIndex = 5;
+		const pageCount = 10;
+
+		renderPagination({
+			currentPage: activeIndex,
+			showFirstLastNumbers,
+			pageCount,
+		});
+
+		const buttonLast = screen.getByText(7);
+		const buttonFirst = screen.getByText(5);
+
+		expect(buttonLast.nextElementSibling?.textContent).toEqual('...');
+		expect(buttonLast.nextElementSibling?.nextSibling?.textContent).toEqual(String(pageCount));
+		expect(buttonFirst.previousSibling?.textContent).toEqual('...');
+		expect(buttonFirst.previousSibling?.previousSibling?.textContent).toEqual('1');
+	});
+
+	it('Should not render first and last page numbers with ellipsis when they are already rendered', () => {
+		const showFirstLastNumbers = true;
+		const activeIndex = 3;
+		const pageCount = 5;
+
+		renderPagination({
+			activeIndex,
+			showFirstLastNumbers,
+			pageCount,
+		});
+
+		const buttonLast = screen.getByText(4);
+		const buttonFirst = screen.getByText(2);
+
+		expect(buttonLast).toBeInTheDocument();
+		expect(buttonLast.nextSibling?.textContent).toEqual(String(pageCount));
+		expect(buttonFirst).toBeInTheDocument();
+		expect(buttonFirst.previousSibling?.textContent).toEqual('1');
+	});
+
+	it('Should render buttons', () => {
+		const showFirstLastButtons = true;
+		const buttonPreviousLabel = 'Previous';
+		const buttonNextLabel = 'Next';
+		const buttonFirstLabel = 'First';
+		const buttonLastLabel = 'Last';
+		const buttons = {
+			previous: renderButton(buttonPreviousLabel),
+			next: renderButton(buttonNextLabel),
+			first: renderButton(buttonFirstLabel),
+			last: renderButton(buttonLastLabel),
+		};
+
+		renderPagination({
+			showFirstLastButtons,
+			buttons,
+		});
+
+		const buttonPrevious = screen.getByText(buttonPreviousLabel);
+		const buttonNext = screen.getByText(buttonNextLabel);
+		const buttonLast = screen.getByText(buttonLastLabel);
+		const buttonFirst = screen.getByText(buttonFirstLabel);
+
+		expect(buttonPrevious).toBeInTheDocument();
+		expect(buttonNext).toBeInTheDocument();
+		expect(buttonLast).toBeInTheDocument();
+		expect(buttonFirst).toBeInTheDocument();
+	});
+
+	it('Should set disabled class on back buttons when first page is active', () => {
+		const currentPage = 0;
+		const showFirstLastButtons = true;
+		const buttonPreviousLabel = 'Previous';
+		const buttonNextLabel = 'Next';
+		const buttonFirstLabel = 'First';
+		const buttonLastLabel = 'Last';
+		const buttons = {
+			previous: renderButton(buttonPreviousLabel),
+			next: renderButton(buttonNextLabel),
+			first: renderButton(buttonFirstLabel),
+			last: renderButton(buttonLastLabel),
+		};
+
+		renderPagination({
+			currentPage,
+			showFirstLastButtons,
+			buttons,
+		});
+
+		const buttonPrevious = screen.getByText(buttonPreviousLabel);
+		const buttonNext = screen.getByText(buttonNextLabel);
+		const buttonLast = screen.getByText(buttonLastLabel);
+		const buttonFirst = screen.getByText(buttonFirstLabel);
+
+		expect(buttonPrevious.parentElement).toHaveClass('c-pagination__btn--disabled');
+		expect(buttonNext.parentElement).not.toHaveClass('c-pagination__btn--disabled');
+		expect(buttonLast.parentElement).not.toHaveClass('c-pagination__btn--disabled');
+		expect(buttonFirst.parentElement).toHaveClass('c-pagination__btn--disabled');
+	});
+
+	it('Should set disabled class on next buttons when last page is active', () => {
+		const pageCount = 10;
+		const currentPage = 9; // index
+		const showFirstLastButtons = true;
+		const buttonPreviousLabel = 'Previous';
+		const buttonNextLabel = 'Next';
+		const buttonFirstLabel = 'First';
+		const buttonLastLabel = 'Last';
+		const buttons = {
+			previous: renderButton(buttonPreviousLabel),
+			next: renderButton(buttonNextLabel),
+			first: renderButton(buttonFirstLabel),
+			last: renderButton(buttonLastLabel),
+		};
+
+		renderPagination({
+			currentPage,
+			pageCount,
+			showFirstLastButtons,
+			buttons,
+		});
+
+		const buttonPrevious = screen.getByText(buttonPreviousLabel);
+		const buttonNext = screen.getByText(buttonNextLabel);
+		const buttonLast = screen.getByText(buttonLastLabel);
+		const buttonFirst = screen.getByText(buttonFirstLabel);
+
+		expect(buttonPrevious.parentElement).not.toHaveClass('c-pagination__btn--disabled');
+		expect(buttonNext.parentElement).toHaveClass('c-pagination__btn--disabled');
+		expect(buttonLast.parentElement).toHaveClass('c-pagination__btn--disabled');
+		expect(buttonFirst.parentElement).not.toHaveClass('c-pagination__btn--disabled');
 	});
 });
