@@ -5,6 +5,8 @@ import { action } from '../../helpers/action';
 
 import Pagination from './Pagination';
 
+const button = (label: string) => <span>{label}</span>;
+
 const PaginationStoryComponent = ({
 	children,
 	initialPageIndex = 0,
@@ -27,11 +29,18 @@ storiesOf('v1/components/Pagination', module)
 	.addParameters({ jest: ['Pagination'] })
 	.add('Pagination', () => (
 		<PaginationStoryComponent initialPageIndex={0}>
-			<Pagination pageCount={20} />
+			<Pagination
+				pageCount={20}
+				buttons={{ previous: button('previous'), next: button('next') }}
+			/>
 		</PaginationStoryComponent>
 	))
 	.add('Pagination with options', () => (
 		<PaginationStoryComponent initialPageIndex={9}>
-			<Pagination pageCount={20} displayCount={7} />
+			<Pagination
+				pageCount={20}
+				displayCount={7}
+				buttons={{ previous: button('previous'), next: button('next') }}
+			/>
 		</PaginationStoryComponent>
 	));
