@@ -1,11 +1,12 @@
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { documentOf } from '../../helpers';
 
 import TagList from './TagList';
+import { TagOption } from './TagList.types';
 
-const tagsMock = [
+const tagsMock: TagOption[] = [
 	{ label: 'Aluminium', id: 'aluminium' },
 	{ label: 'Cadmium', id: 'cadmium' },
 	{ label: 'Dubnium', id: 'dubnium' },
@@ -17,6 +18,10 @@ const tagsMock = [
 	{ label: 'Yttrium', id: 'yttrium' },
 	{ label: 'Uranium', id: 'uranium' },
 ];
+
+const renderLabel = (label: string, className: string): ReactNode => {
+	return <span className={className}>{label}</span>;
+};
 
 const renderTagList = ({ tags = tagsMock, ...rest }): RenderResult => {
 	return render(<TagList tags={tags} {...rest} />);
@@ -56,7 +61,6 @@ describe('<TagList />', () => {
 		renderTagList({ clickable: true });
 
 		const tagList = documentOf(rendered).getElementsByClassName('c-tag-list')[0];
-
 		const tagListClosable = documentOf(rendered).getElementsByClassName('c-tag-list')[1];
 		const tagListSwatches = documentOf(rendered).getElementsByClassName('c-tag-list')[2];
 		const tagListClickable = documentOf(rendered).getElementsByClassName('c-tag-list')[3];
@@ -66,6 +70,22 @@ describe('<TagList />', () => {
 				tagsMock[0].label
 			);
 		});
+	});
+
+	it('Should correctly render labels of type ReactNode', () => {
+		const mockLabel = 'label';
+		const mockClass = 'custom-label';
+		const tagMock = [
+			{
+				label: renderLabel(mockLabel, mockClass),
+				id: 'id',
+			},
+		];
+		renderTagList({ tags: tagMock });
+
+		const tagList = screen.getByText(mockLabel);
+
+		expect(tagList).toHaveClass(mockClass);
 	});
 
 	it('Should be able to render with swatches', () => {
@@ -131,11 +151,15 @@ describe('<TagList />', () => {
 	it('Should be able to render close buttons', () => {
 		const mockLabel = 'close';
 
-		renderTagList({ closable: true, closeIcon: <span>{mockLabel}</span> });
+		renderTagList({
+			closable: true,
+			closeIcon: <span className="custom-close-button">{mockLabel}</span>,
+		});
 
 		const closeTagIcons = screen.getAllByText(mockLabel);
 
 		expect(closeTagIcons).toHaveLength(tagsMock.length);
+		expect(closeTagIcons[0]).toHaveClass('custom-close-button');
 	});
 
 	it('Should call `onTagClosed` when closing a tag', () => {
@@ -167,5 +191,43 @@ describe('<TagList />', () => {
 
 		expect(onTagClicked).toHaveBeenCalled();
 		expect(onTagClicked).toHaveBeenCalledTimes(1);
+	});
+
+	it('Should set disabled class variant when disabled = true', () => {
+		const mockClass = 'c-tag-list__tag';
+		const tagMock = [
+			{
+				label: 'tag',
+				id: 'tag',
+				disabled: true,
+			},
+		];
+		const rendered = renderTagList({ tags: tagMock });
+
+		const tagElement = documentOf(rendered).getElementsByClassName(mockClass)[0];
+
+		expect(tagElement).toHaveClass(`${mockClass}--disabled`);
+	});
+
+	it('Should not call `onTagClicked` when clicking a disabled tag', () => {
+		const indexToClick = 0;
+		const tagMock = [
+			{
+				label: 'tag',
+				id: 'tag',
+				disabled: true,
+			},
+		];
+		const onTagClicked = jest.fn();
+
+		const rendered = renderTagList({ tags: tagMock, onTagClicked });
+
+		const tagElement = documentOf(rendered)
+			.getElementsByClassName('c-tag')
+			[indexToClick].getElementsByTagName('span')[0];
+
+		fireEvent.click(tagElement);
+
+		expect(onTagClicked).toHaveBeenCalledTimes(0);
 	});
 });
