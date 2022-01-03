@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { DefaultComponentProps } from '../../types';
 
@@ -11,5 +11,4 @@ export interface MenuProps extends DefaultComponentProps {
 	onClick?: (menuItemId: string | number) => void;
 	isOpen?: boolean;
 	search?: boolean;
-	style?: CSSProperties;
 }
