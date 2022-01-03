@@ -1,8 +1,6 @@
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
 import React, { ReactNode } from 'react';
 
-import { documentOf } from '../../helpers/document-of';
-
 import Pagination from './Pagination';
 
 const renderPagination = ({ pageCount = 10, ...rest }): RenderResult => {
@@ -15,9 +13,9 @@ const renderButton = (label: string): ReactNode => {
 
 describe('<Pagination />', () => {
 	it('Should be able to render', () => {
-		const rendered = renderPagination({});
+		const { container } = renderPagination({});
 
-		const pagination = documentOf(rendered).getElementsByClassName('c-pagination');
+		const pagination = container.getElementsByClassName('c-pagination');
 
 		expect(pagination).toBeDefined();
 	});
@@ -26,9 +24,9 @@ describe('<Pagination />', () => {
 		const className = 'c-custom';
 		const variants = ['small', 'outline'];
 
-		const rendered = renderPagination({ className, variants });
+		const { container } = renderPagination({ className, variants });
 
-		const pagination = documentOf(rendered).getElementsByClassName('c-pagination')[0];
+		const pagination = container.getElementsByClassName('c-pagination')[0];
 
 		expect(pagination).toHaveClass(className);
 		expect(pagination).toHaveClass(`c-pagination--${variants[0]}`);
@@ -39,9 +37,9 @@ describe('<Pagination />', () => {
 		const displayCount = 8;
 		const pageCount = 20;
 
-		const rendered = renderPagination({ displayCount, pageCount });
+		const { container } = renderPagination({ displayCount, pageCount });
 
-		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.getElementsByClassName('c-pagination__pages')[0];
 
 		expect(pages.children).toHaveLength(displayCount);
 	});
@@ -50,19 +48,18 @@ describe('<Pagination />', () => {
 		const pageCount = 4;
 		const displayCount = 8;
 
-		const rendered = renderPagination({ displayCount, pageCount });
+		const { container } = renderPagination({ displayCount, pageCount });
 
-		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.getElementsByClassName('c-pagination__pages')[0];
 
 		expect(pages.children).toHaveLength(pageCount);
 	});
 
 	it('Should render the current page in an active state', () => {
 		const currentPage = 0;
-		const rendered = renderPagination({ currentPage });
+		const { container } = renderPagination({ currentPage });
 
-		const activePage =
-			documentOf(rendered).getElementsByClassName('c-pagination__pages')[0].firstChild;
+		const activePage = container.getElementsByClassName('c-pagination__pages')[0].firstChild;
 
 		expect(activePage).toHaveClass('c-pagination__btn--active');
 	});
@@ -70,11 +67,9 @@ describe('<Pagination />', () => {
 	it('Should correctly set the `currentPage`', () => {
 		const currentPage = 4;
 
-		const rendered = renderPagination({ currentPage });
+		const { container } = renderPagination({ currentPage });
 
-		const activePage = documentOf(rendered).getElementsByClassName(
-			'c-pagination__btn--active'
-		)[0];
+		const activePage = container.getElementsByClassName('c-pagination__btn--active')[0];
 
 		expect(activePage.textContent).toEqual(String(currentPage + 1));
 	});
@@ -83,9 +78,9 @@ describe('<Pagination />', () => {
 		const currentPage = 4; // index, number displayed is 5
 		const pagesToRender = [3, 4, 5, 6, 7];
 
-		const rendered = renderPagination({ currentPage });
+		const { container } = renderPagination({ currentPage });
 
-		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.getElementsByClassName('c-pagination__pages')[0];
 
 		expect(pages.textContent).toEqual(pagesToRender.join(''));
 	});
@@ -94,9 +89,9 @@ describe('<Pagination />', () => {
 		const currentPage = 2;
 		const pagesToRender = [1, 2, 3, 4, 5];
 
-		const rendered = renderPagination({ currentPage });
+		const { container } = renderPagination({ currentPage });
 
-		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.getElementsByClassName('c-pagination__pages')[0];
 
 		expect(pages.textContent).toEqual(pagesToRender.join(''));
 	});
@@ -106,9 +101,9 @@ describe('<Pagination />', () => {
 		const displayCount = 4;
 		const pagesToRender = [1, 2, 3, 4];
 
-		const rendered = renderPagination({ currentPage, displayCount });
+		const { container } = renderPagination({ currentPage, displayCount });
 
-		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.getElementsByClassName('c-pagination__pages')[0];
 
 		expect(pages.textContent).toEqual(pagesToRender.join(''));
 	});
@@ -117,9 +112,9 @@ describe('<Pagination />', () => {
 		const currentPage = 9;
 		const pagesToRender = [6, 7, 8, 9, 10];
 
-		const rendered = renderPagination({ currentPage });
+		const { container } = renderPagination({ currentPage });
 
-		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.getElementsByClassName('c-pagination__pages')[0];
 
 		expect(pages.textContent).toEqual(pagesToRender.join(''));
 	});
@@ -129,9 +124,9 @@ describe('<Pagination />', () => {
 		const displayCount = 4;
 		const pagesToRender = [7, 8, 9, 10];
 
-		const rendered = renderPagination({ currentPage, displayCount });
+		const { container } = renderPagination({ currentPage, displayCount });
 
-		const pages = documentOf(rendered).getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.getElementsByClassName('c-pagination__pages')[0];
 
 		expect(pages.textContent).toEqual(pagesToRender.join(''));
 	});
@@ -140,9 +135,9 @@ describe('<Pagination />', () => {
 		const onPageChange = jest.fn();
 		const buttonIndex = 2;
 
-		const rendered = renderPagination({ onPageChange });
+		const { container } = renderPagination({ onPageChange });
 
-		const button = documentOf(rendered)
+		const button = container
 			.getElementsByClassName('c-pagination__pages')[0]
 			.getElementsByClassName('c-pagination__btn')[buttonIndex];
 
@@ -156,9 +151,9 @@ describe('<Pagination />', () => {
 		const onPageChange = jest.fn();
 		const activeIndex = 2;
 
-		const rendered = renderPagination({ onPageChange, currentPage: activeIndex });
+		const { container } = renderPagination({ onPageChange, currentPage: activeIndex });
 
-		const button = documentOf(rendered)
+		const button = container
 			.getElementsByClassName('c-pagination__pages')[0]
 			.getElementsByClassName('c-pagination__btn')[activeIndex];
 
