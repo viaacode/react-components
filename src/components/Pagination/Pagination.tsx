@@ -3,7 +3,6 @@ import React, { Fragment, FunctionComponent, ReactNode } from 'react';
 
 import { bemCls } from '../../utils/bem-class';
 import { getVariantClasses } from '../../utils/variant-classes';
-// import { Icon } from '../../v1/components/Icon/Icon';
 
 import { PaginationProps } from './Pagination.types';
 
@@ -112,7 +111,6 @@ const Pagination: FunctionComponent<PaginationProps> = ({
 					tabIndex={0}
 				>
 					{buttons?.first}
-					{/* <Icon name="chevrons-left" type="arrows" /> */}
 				</div>
 			)}
 			{buttons?.previous && (
@@ -126,7 +124,6 @@ const Pagination: FunctionComponent<PaginationProps> = ({
 					tabIndex={0}
 				>
 					{buttons?.previous}
-					{/* <Icon name="chevron-left" type="arrows" /> */}
 				</div>
 			)}
 			<div className={bem('pages')}>{renderPages()}</div>
@@ -144,7 +141,6 @@ const Pagination: FunctionComponent<PaginationProps> = ({
 					tabIndex={0}
 				>
 					{buttons?.next}
-					{/* <Icon name="chevron-right" type="arrows" /> */}
 				</div>
 			)}
 			{showFirstLastButtons && buttons?.last && (
@@ -159,7 +155,6 @@ const Pagination: FunctionComponent<PaginationProps> = ({
 					tabIndex={0}
 				>
 					{buttons?.last}
-					{/* <Icon name="chevrons-right" type="arrows" /> */}
 				</div>
 			)}
 		</div>
