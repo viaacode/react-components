@@ -44,12 +44,12 @@ const MenuSearchResultContent: FunctionComponent<MenuSearchResultContentProps> =
 			>
 				<div className="c-menu__label">
 					<div className={`c-content-type c-content-type--${menuItemInfo.type}`}>
-						<Icon name={CATEGORY_TO_ICON[menuItemInfo.type]} />
+						{menuItemInfo.icon}
 						{menuItemInfo.label}
 					</div>
 				</div>
 				<div className="c-content-type">
-					<p>{CONTENT_TYPE_TO_LABEL[menuItemInfo.type]}</p>
+					<p>{menuItemInfo.type}</p>
 				</div>
 			</div>
 		);

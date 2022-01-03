@@ -1,10 +1,12 @@
+import { ReactNode } from 'react';
+
 import { DefaultComponentProps } from '../../../types';
-import { EnglishContentType } from '../../../types/avo.types';
 
 export interface MenuSearchResultItemInfo {
 	label: string;
 	id: string | number;
-	type: EnglishContentType;
+	type: string;
+	icon: ReactNode;
 }
 
 export interface MenuSearchResultContentProps extends DefaultComponentProps {
