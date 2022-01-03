@@ -2,8 +2,6 @@ import clsx from 'clsx';
 import React, { FunctionComponent } from 'react';
 
 import { getVariantClasses } from '../../../utils/variant-classes';
-import { Icon } from '../../../v1/components/Icon/Icon';
-import { CATEGORY_TO_ICON } from '../../../v1/components/Thumbnail/Thumbnail';
 import { EnglishContentType } from '../../../v1/types';
 import MenuContent from '../MenuContent/MenuContent';
 

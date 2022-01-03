@@ -163,7 +163,7 @@ describe('<Dropdown />', () => {
 			() => dropdownFullWidth.container.getElementsByClassName('c-dropdown')[0]
 		);
 		const dropdownFitContentRoot = await waitFor(
-			() => dropdownFitContent.container.getElementsByClassName('c-dropdown')[1]
+			() => dropdownFitContent.container.getElementsByClassName('c-dropdown')[0]
 		);
 
 		expect(dropdownFullWidthRoot).not.toHaveClass('c-dropdown__trigger');
