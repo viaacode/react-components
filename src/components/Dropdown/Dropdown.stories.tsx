@@ -1,7 +1,7 @@
+import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React, { cloneElement, ReactElement, useState } from 'react';
 
-import { action } from '../../helpers';
 import MenuContent from '../Menu/MenuContent/MenuContent';
 
 import Dropdown from './Dropdown';

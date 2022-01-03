@@ -1,7 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React, { PropsWithChildren } from 'react';
 
-import { documentOf } from '../../helpers/document-of';
 import { Button } from '../Button';
 
 import Dropdown from './Dropdown';
@@ -30,10 +29,10 @@ describe('<Dropdown />', () => {
 		const label = 'Show options';
 		const isOpen = false;
 		const children = <div>content item</div>;
-		const dropdown = renderDropdown({ children, label, isOpen });
+		const { container } = renderDropdown({ children, label, isOpen });
 
 		const dropdownContent = await waitFor(() =>
-			documentOf(dropdown).getElementsByClassName('c-menu--visible--default')
+			container.getElementsByClassName('c-menu--visible--default')
 		);
 		expect(dropdownContent).toHaveLength(0);
 	});
@@ -42,13 +41,13 @@ describe('<Dropdown />', () => {
 		const label = 'Show options';
 		const isOpen = true;
 		const children = <div>content item</div>;
-		const dropdown = renderDropdown({ children, label, isOpen });
+		const { container } = renderDropdown({ children, label, isOpen });
 
 		const dropdownContent = await waitFor(() =>
-			documentOf(dropdown).getElementsByClassName('c-menu--default')
+			container.getElementsByClassName('c-menu--default')
 		);
 		const dropdownContentvisible = await waitFor(() =>
-			documentOf(dropdown).getElementsByClassName('c-menu--visible--default')
+			container.getElementsByClassName('c-menu--visible--default')
 		);
 		expect(dropdownContent).toHaveLength(1);
 		expect(dropdownContentvisible).toHaveLength(1);
@@ -60,11 +59,9 @@ describe('<Dropdown />', () => {
 		const label = 'Show options';
 		const isOpen = false;
 		const children = <div>content item</div>;
-		const dropdown = renderDropdown({ children, label, isOpen, onOpen });
+		const { container } = renderDropdown({ children, label, isOpen, onOpen });
 
-		const button = await waitFor(
-			() => documentOf(dropdown).getElementsByClassName('c-dropdown')[0]
-		);
+		const button = await waitFor(() => container.getElementsByClassName('c-dropdown')[0]);
 		fireEvent.click(button);
 
 		expect(onOpen).toHaveBeenCalledTimes(1);
@@ -76,11 +73,9 @@ describe('<Dropdown />', () => {
 		const label = 'Show options';
 		const isOpen = true;
 		const children = <div>content item</div>;
-		const dropdown = renderDropdown({ children, label, isOpen, onClose });
+		const { container } = renderDropdown({ children, label, isOpen, onClose });
 
-		const button = await waitFor(
-			() => documentOf(dropdown).getElementsByClassName('c-dropdown')[0]
-		);
+		const button = await waitFor(() => container.getElementsByClassName('c-dropdown')[0]);
 		fireEvent.click(button);
 
 		expect(onClose).toHaveBeenCalledTimes(1);
@@ -92,7 +87,7 @@ describe('<Dropdown />', () => {
 		const children = <div>content item</div>;
 		const customClass = 'custom-class';
 		const customVariants = ['small', 'outline'];
-		const dropdown = renderDropdown({
+		const { container } = renderDropdown({
 			children,
 			isOpen,
 			label,
@@ -100,9 +95,7 @@ describe('<Dropdown />', () => {
 			variants: customVariants,
 		});
 
-		const dropdownRoot = await waitFor(
-			() => documentOf(dropdown).getElementsByClassName('c-dropdown')[0]
-		);
+		const dropdownRoot = await waitFor(() => container.getElementsByClassName('c-dropdown')[0]);
 		expect(dropdownRoot).toHaveClass('c-dropdown');
 		expect(dropdownRoot).toHaveClass(customClass);
 		expect(dropdownRoot).toHaveClass(`c-dropdown--${customVariants[0]}`);
@@ -113,11 +106,9 @@ describe('<Dropdown />', () => {
 		const label = 'Show options';
 		const isOpen = true;
 		const children = <div>content item</div>;
-		const dropdown = renderDropdown({ children, label, isOpen });
+		const { container } = renderDropdown({ children, label, isOpen });
 
-		const button = await waitFor(
-			() => documentOf(dropdown).getElementsByClassName('c-button')[0]
-		);
+		const button = await waitFor(() => container.getElementsByClassName('c-button')[0]);
 
 		expect(button.textContent).toEqual(label);
 	});
@@ -140,12 +131,10 @@ describe('<Dropdown />', () => {
 				;
 			</>
 		);
-		const dropdown = renderDropdown({ children, isOpen });
+		const { container } = renderDropdown({ children, isOpen });
 
 		const button = await waitFor(() => screen.getByText(label));
-		const content = await waitFor(
-			() => documentOf(dropdown).getElementsByClassName('firstItem')[0]
-		);
+		const content = await waitFor(() => container.getElementsByClassName('firstItem')[0]);
 
 		expect(button).toBeInTheDocument();
 		expect(content.textContent).toEqual('One');
@@ -171,10 +160,10 @@ describe('<Dropdown />', () => {
 		});
 
 		const dropdownFullWidthRoot = await waitFor(
-			() => documentOf(dropdownFullWidth).getElementsByClassName('c-dropdown')[0]
+			() => dropdownFullWidth.container.getElementsByClassName('c-dropdown')[0]
 		);
 		const dropdownFitContentRoot = await waitFor(
-			() => documentOf(dropdownFitContent).getElementsByClassName('c-dropdown')[1]
+			() => dropdownFitContent.container.getElementsByClassName('c-dropdown')[1]
 		);
 
 		expect(dropdownFullWidthRoot).not.toHaveClass('c-dropdown__trigger');
