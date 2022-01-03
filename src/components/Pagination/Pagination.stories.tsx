@@ -1,7 +1,6 @@
+import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React, { cloneElement, ReactElement, useState } from 'react';
-
-import { action } from '../../helpers/action';
 
 import Pagination from './Pagination';
 
