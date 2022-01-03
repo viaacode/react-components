@@ -1,53 +1,25 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import { action } from '../../helpers';
 
 import { Menu } from './Menu';
-import { MenuSearchResultContent } from './MenuSearchResultContent/MenuSearchResultContent';
 import {
 	menuItems,
 	menuItemsWithDivider,
 	menuItemsWithIcons,
 	menuItemsWithSearch,
-} from './__mocks__';
+} from './Menu.mocks';
+import { MenuSearchResultContent } from './MenuSearchResultContent/MenuSearchResultContent';
 
-export default {
-	title: 'Components/Dropdown',
-	component: Menu,
-} as ComponentMeta<typeof Menu>;
-
-const Template: ComponentStory<typeof Menu> = (args) => <Menu {...args} />;
-
-const TemplateSearch: ComponentStory<typeof Menu> = (args) => (
-	<Menu {...args}>
-		<MenuSearchResultContent menuItems={menuItemsWithSearch} />
-	</Menu>
-);
-
-export const Default = Template.bind({});
-Default.args = {
-	menuItems: menuItems,
-	onClick: action('clicked menu item'),
-};
-
-export const WithIcons = Template.bind({});
-WithIcons.args = {
-	menuItems: menuItemsWithIcons,
-};
-
-export const WithDividers = Template.bind({});
-WithDividers.args = {
-	menuItems: menuItemsWithDivider,
-};
-
-export const WithSearchResults = TemplateSearch.bind({});
-WithSearchResults.args = {
-	search: true,
-};
-
-export const NoResults = Template.bind({});
-NoResults.args = {
-	menuItems: [],
-	noResultsLabel: 'No results',
-};
+storiesOf('v1/components/Menu', module)
+	.addParameters({ jest: ['Menu'] })
+	.add('Menu', () => <Menu menuItems={menuItems} onClick={action('clicked menu item')} />)
+	.add('Menu with icons', () => <Menu menuItems={menuItemsWithIcons} />)
+	.add('Menu with dividers', () => <Menu menuItems={menuItemsWithDivider} />)
+	.add('Menu with search results', () => (
+		<Menu search>
+			<MenuSearchResultContent menuItems={menuItemsWithSearch} />
+		</Menu>
+	))
+	.add('Menu no results', () => <Menu menuItems={[]} noResultsLabel="No results" />);

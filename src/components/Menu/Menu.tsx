@@ -31,9 +31,7 @@ const Menu: FunctionComponent<MenuProps> = ({
 			className={clsx(rootCls, 'c-menu--default', { 'c-menu--visible--default': isOpen })}
 			style={style}
 		>
-			{children ? (
-				children
-			) : (
+			{children || (
 				<MenuContent
 					menuItems={menuItems}
 					onClick={onClick}

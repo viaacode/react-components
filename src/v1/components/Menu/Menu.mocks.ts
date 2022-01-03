@@ -1,5 +1,5 @@
-import { MenuItemInfoSchema } from '../MenuContent/MenuContent';
-import { MenuSearchResultItemInfoSchema } from '../MenuSearchResultContent/MenuSearchResultContent';
+import { MenuItemInfoSchema } from './MenuContent/MenuContent';
+import { MenuSearchResultItemInfoSchema } from './MenuSearchResultContent/MenuSearchResultContent';
 
 export const menuItems = [
 	{ label: 'Aluminium', id: 'aluminium' },

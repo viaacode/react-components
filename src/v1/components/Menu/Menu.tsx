@@ -34,7 +34,9 @@ export const Menu: FunctionComponent<MenuPropsSchema> = ({
 			})}
 			style={style}
 		>
-			{children || (
+			{children ? (
+				children
+			) : (
 				<MenuContent
 					menuItems={menuItems}
 					onClick={onClick}

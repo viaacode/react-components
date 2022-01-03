@@ -1,9 +1,5 @@
-import React from 'react';
-
-import { Icon } from '../../v1/components/Icon/Icon';
-
-import { MenuItemInfo } from './MenuContent/MenuContent.types';
-import { MenuSearchResultItemInfo } from './MenuSearchResultContent/MenuSearchResultContent.types';
+import { MenuItemInfo } from '../MenuContent/MenuContent.types';
+import { MenuSearchResultItemInfo } from '../MenuSearchResultContent/MenuSearchResultContent.types';
 
 export const menuItems = [
 	{ label: 'Aluminium', id: 'aluminium' },
@@ -13,10 +9,10 @@ export const menuItems = [
 ];
 
 export const menuItemsWithIcons: MenuItemInfo[] = [
-	{ ...menuItems[0], icon: <Icon name="circle" /> },
-	{ ...menuItems[1], icon: <Icon name="box" /> },
-	{ ...menuItems[2], icon: <Icon name="square" /> },
-	{ ...menuItems[3], icon: <Icon name="triangle" /> },
+	{ ...menuItems[0], icon: 'circle' },
+	{ ...menuItems[1], icon: 'box' },
+	{ ...menuItems[2], icon: 'square' },
+	{ ...menuItems[3], icon: 'triangle' },
 ];
 
 export const menuItemsWithDivider = [

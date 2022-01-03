@@ -4,15 +4,15 @@ import React, { PropsWithChildren } from 'react';
 import { documentOf } from '../../helpers/document-of';
 
 import Menu from './Menu';
+import { MenuProps } from './Menu.types';
+import { MenuItemInfo } from './MenuContent';
+import MenuSearchResultContent from './MenuSearchResultContent/MenuSearchResultContent';
 import {
 	menuItems,
 	menuItemsWithDivider,
 	menuItemsWithIcons,
 	menuItemsWithSearch,
-} from './Menu.mocks';
-import { MenuProps } from './Menu.types';
-import { MenuItemInfo } from './MenuContent';
-import MenuSearchResultContent from './MenuSearchResultContent/MenuSearchResultContent';
+} from './__mocks__';
 const renderMenu = ({ children = null, ...args }: PropsWithChildren<MenuProps>) => {
 	return render(<Menu {...args}>{children}</Menu>);
 };
