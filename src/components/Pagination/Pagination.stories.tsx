@@ -1,11 +1,9 @@
-import { storiesOf } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React, { cloneElement, ReactElement, useState } from 'react';
 
 import { action } from '../../helpers/action';
 
 import Pagination from './Pagination';
-
-const button = (label: string) => <span>{label}</span>;
 
 const PaginationStoryComponent = ({
 	children,
@@ -25,22 +23,56 @@ const PaginationStoryComponent = ({
 	});
 };
 
-storiesOf('v1/components/Pagination', module)
-	.addParameters({ jest: ['Pagination'] })
-	.add('Pagination', () => (
-		<PaginationStoryComponent initialPageIndex={0}>
-			<Pagination
-				pageCount={20}
-				buttons={{ previous: button('previous'), next: button('next') }}
-			/>
-		</PaginationStoryComponent>
-	))
-	.add('Pagination with options', () => (
-		<PaginationStoryComponent initialPageIndex={9}>
-			<Pagination
-				pageCount={20}
-				displayCount={7}
-				buttons={{ previous: button('previous'), next: button('next') }}
-			/>
-		</PaginationStoryComponent>
-	));
+const renderButton = (label: string) => <span>{label}</span>;
+
+export default {
+	title: 'Components/Pagination',
+	component: Pagination,
+} as ComponentMeta<typeof Pagination>;
+
+const Template: ComponentStory<typeof Pagination> = (args) => (
+	<PaginationStoryComponent>
+		<Pagination {...args} />
+	</PaginationStoryComponent>
+);
+
+export const Default = Template.bind({});
+Default.args = {
+	pageCount: 5,
+	displayCount: 5,
+	currentPage: 0,
+	onPageChange: (page: number) => console.log(`page index is ${page}`),
+	showFirstLastNumbers: true,
+	buttons: {
+		previous: renderButton('Vorige'),
+		next: renderButton('Volgende'),
+	},
+};
+
+export const WithFirstLastNumbers = Template.bind({});
+WithFirstLastNumbers.args = {
+	pageCount: 9,
+	displayCount: 5,
+	currentPage: 0,
+	onPageChange: (page: number) => console.log(`page index is ${page}`),
+	showFirstLastNumbers: true,
+	buttons: {
+		previous: renderButton('Vorige'),
+		next: renderButton('Volgende'),
+	},
+};
+
+export const WithFirstLastButtons = Template.bind({});
+WithFirstLastButtons.args = {
+	pageCount: 9,
+	displayCount: 5,
+	currentPage: 5,
+	onPageChange: (page: number) => console.log(`page index is ${page}`),
+	showFirstLastButtons: true,
+	buttons: {
+		previous: renderButton('Vorige'),
+		next: renderButton('Volgende'),
+		first: renderButton('Eerste'),
+		last: renderButton('laatste'),
+	},
+};
