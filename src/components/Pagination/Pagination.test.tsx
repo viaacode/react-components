@@ -15,9 +15,9 @@ describe('<Pagination />', () => {
 	it('Should be able to render', () => {
 		const { container } = renderPagination({});
 
-		const pagination = container.getElementsByClassName('c-pagination');
+		const pagination = container.querySelector('.c-pagination');
 
-		expect(pagination).toBeDefined();
+		expect(pagination).toBeInTheDocument();
 	});
 
 	it('Should set the correct className', () => {
@@ -26,7 +26,7 @@ describe('<Pagination />', () => {
 
 		const { container } = renderPagination({ className, variants });
 
-		const pagination = container.getElementsByClassName('c-pagination')[0];
+		const pagination = container.querySelector('.c-pagination');
 
 		expect(pagination).toHaveClass(className);
 		expect(pagination).toHaveClass(`c-pagination--${variants[0]}`);
@@ -39,9 +39,9 @@ describe('<Pagination />', () => {
 
 		const { container } = renderPagination({ displayCount, pageCount });
 
-		const pages = container.getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.querySelector('.c-pagination__pages');
 
-		expect(pages.children).toHaveLength(displayCount);
+		expect(pages?.children).toHaveLength(displayCount);
 	});
 
 	it('Should render pages equal to the `pageCount` if it is less than the `displayCount`', () => {
@@ -50,16 +50,16 @@ describe('<Pagination />', () => {
 
 		const { container } = renderPagination({ displayCount, pageCount });
 
-		const pages = container.getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.querySelector('.c-pagination__pages');
 
-		expect(pages.children).toHaveLength(pageCount);
+		expect(pages?.children).toHaveLength(pageCount);
 	});
 
 	it('Should render the current page in an active state', () => {
 		const currentPage = 0;
 		const { container } = renderPagination({ currentPage });
 
-		const activePage = container.getElementsByClassName('c-pagination__pages')[0].firstChild;
+		const activePage = container.querySelector('.c-pagination__pages')?.firstChild;
 
 		expect(activePage).toHaveClass('c-pagination__btn--active');
 	});
@@ -69,9 +69,9 @@ describe('<Pagination />', () => {
 
 		const { container } = renderPagination({ currentPage });
 
-		const activePage = container.getElementsByClassName('c-pagination__btn--active')[0];
+		const activePage = container.querySelector('.c-pagination__btn--active');
 
-		expect(activePage.textContent).toEqual(String(currentPage + 1));
+		expect(activePage?.textContent).toEqual(String(currentPage + 1));
 	});
 
 	it('Should render pages padded around the current page based on the `displayCount`', () => {
@@ -80,9 +80,9 @@ describe('<Pagination />', () => {
 
 		const { container } = renderPagination({ currentPage });
 
-		const pages = container.getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.querySelector('.c-pagination__pages');
 
-		expect(pages.textContent).toEqual(pagesToRender.join(''));
+		expect(pages?.textContent).toEqual(pagesToRender.join(''));
 	});
 
 	it('Should render the first x pages when the current page is lower than the (odd) `displayCount`', () => {
@@ -91,9 +91,9 @@ describe('<Pagination />', () => {
 
 		const { container } = renderPagination({ currentPage });
 
-		const pages = container.getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.querySelector('.c-pagination__pages');
 
-		expect(pages.textContent).toEqual(pagesToRender.join(''));
+		expect(pages?.textContent).toEqual(pagesToRender.join(''));
 	});
 
 	it('Should render the first x pages when the current page is lower than the (even) `displayCount`', () => {
@@ -103,9 +103,9 @@ describe('<Pagination />', () => {
 
 		const { container } = renderPagination({ currentPage, displayCount });
 
-		const pages = container.getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.querySelector('.c-pagination__pages');
 
-		expect(pages.textContent).toEqual(pagesToRender.join(''));
+		expect(pages?.textContent).toEqual(pagesToRender.join(''));
 	});
 
 	it('Should render the last x pages when if the currentPage is equal less than the `pageCount` minus the (odd) `displayCount`', () => {
@@ -114,9 +114,9 @@ describe('<Pagination />', () => {
 
 		const { container } = renderPagination({ currentPage });
 
-		const pages = container.getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.querySelector('.c-pagination__pages');
 
-		expect(pages.textContent).toEqual(pagesToRender.join(''));
+		expect(pages?.textContent).toEqual(pagesToRender.join(''));
 	});
 
 	it('Should render the last x pages when if the currentPage is equal less than the `pageCount` minus the (even) `displayCount`', () => {
@@ -126,9 +126,9 @@ describe('<Pagination />', () => {
 
 		const { container } = renderPagination({ currentPage, displayCount });
 
-		const pages = container.getElementsByClassName('c-pagination__pages')[0];
+		const pages = container.querySelector('.c-pagination__pages');
 
-		expect(pages.textContent).toEqual(pagesToRender.join(''));
+		expect(pages?.textContent).toEqual(pagesToRender.join(''));
 	});
 
 	it('Should call `onPageChange` when changing pages internally', () => {
