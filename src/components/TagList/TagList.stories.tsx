@@ -5,33 +5,7 @@ import React, { cloneElement, ReactElement, useState } from 'react';
 import { action } from '../../helpers';
 
 import TagList from './TagList';
-
-const tags = [
-	{ label: 'Aluminium', id: 'aluminium' },
-	{ label: 'Cadmium', id: 'cadmium' },
-	{ label: 'Dubnium', id: 'dubnium' },
-	{ label: 'Potassium', id: 'potassium' },
-	{ label: 'Vanadium', id: 'vanadium' },
-	{ label: 'Palladium', id: 'palladium' },
-	{ label: 'Polonium', id: 'polonium' },
-	{ label: 'Rhodium', id: 'rhodium' },
-	{ label: 'Yttrium', id: 'yttrium' },
-	{ label: 'Uranium', id: 'uranium' },
-];
-
-const colorTags = [
-	{ label: 'Aluminium', id: 'aluminium', color: '#FF0000' },
-	{ label: 'Cadmium', id: 'cadmium', color: '#FF7F00' },
-	{ label: 'Dubnium', id: 'dubnium', color: '#FFFF00' },
-	{ label: 'Potassium', id: 'potassium', color: '#00FF00' },
-	{ label: 'Vanadium', id: 'vanadium', color: '#0000FF' },
-	{ label: 'Palladium', id: 'palladium', color: '#4B0082' },
-	{ label: 'Polonium', id: 'polonium', color: '#8B00FF' },
-	// Tags without a color will get a default swatch color
-	{ label: 'Rhodium', id: 'rhodium' },
-	{ label: 'Yttrium', id: 'yttrium' },
-	{ label: 'Uranium', id: 'uranium' },
-];
+import { colorTags, tags } from './__mocks__';
 
 const TagListStoryComponent = ({
 	children,
@@ -42,7 +16,7 @@ const TagListStoryComponent = ({
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
 	return cloneElement(children, {
-		tags: tags.map((tag) => ({ ...tag, active: selectedTags.includes(tag.id) })),
+		tags: tags.map((tag) => ({ ...tag, active: selectedTags.includes(tag.id as string) })),
 		onTagClicked: (tagId: string) => {
 			action('tag toggled')(tagId);
 			const indexOf = selectedTags.indexOf(tagId);

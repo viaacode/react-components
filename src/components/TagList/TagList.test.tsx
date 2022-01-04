@@ -4,20 +4,7 @@ import React, { ReactNode } from 'react';
 import { documentOf } from '../../helpers';
 
 import TagList from './TagList';
-import { TagOption } from './TagList.types';
-
-const tagsMock: TagOption[] = [
-	{ label: 'Aluminium', id: 'aluminium' },
-	{ label: 'Cadmium', id: 'cadmium' },
-	{ label: 'Dubnium', id: 'dubnium' },
-	{ label: 'Potassium', id: 'potassium' },
-	{ label: 'Vanadium', id: 'vanadium' },
-	{ label: 'Palladium', id: 'palladium' },
-	{ label: 'Polonium', id: 'polonium' },
-	{ label: 'Rhodium', id: 'rhodium' },
-	{ label: 'Yttrium', id: 'yttrium' },
-	{ label: 'Uranium', id: 'uranium' },
-];
+import { tags as tagsMock } from './__mocks__';
 
 const renderLabel = (label: string, className: string): ReactNode => {
 	return <span className={className}>{label}</span>;
