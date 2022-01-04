@@ -3,7 +3,6 @@ import React, { CSSProperties, FunctionComponent, ReactNode } from 'react';
 
 import { DefaultProps } from '../../types';
 
-import './Menu.scss';
 import { MenuContent, MenuItemInfoSchema } from './MenuContent/MenuContent';
 
 export interface MenuPropsSchema extends DefaultProps {
