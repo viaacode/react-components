@@ -1,14 +1,11 @@
 import clsx from 'clsx';
-import React, { FunctionComponent, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { usePopper } from 'react-popper';
 
-import { useClickOutside } from '../../hooks/use-click-outside';
-import { useKeyPress } from '../../hooks/use-key-press';
-import { useSlot } from '../../hooks/use-slot';
-import { bemCls } from '../../utils/bem-class';
-import { getVariantClasses } from '../../utils/variant-classes';
-import Button from '../Button/Button';
-import Menu from '../Menu/Menu';
+import { useClickOutside, useKeyPress, useSlot } from '../../hooks';
+import { bemCls, getVariantClasses } from '../../utils';
+import { Button } from '../Button';
+import { Menu } from '../Menu';
 
 import './Dropdown.scss';
 import { DropdownButton, DropdownContent } from './Dropdown.slots';
@@ -23,7 +20,7 @@ import { DropdownProps } from './Dropdown.types';
  * - The flyout element that contains the children is called the "popper"
  */
 
-const Dropdown: FunctionComponent<DropdownProps> = ({
+const Dropdown: FC<DropdownProps> = ({
 	children,
 	className,
 	icon,
@@ -84,7 +81,6 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
 			>
 				{dropdownButtonSlot || (
 					<Button
-						type="button"
 						iconStart={icon}
 						label={label}
 						iconEnd={isOpen ? iconOpen : iconClosed}

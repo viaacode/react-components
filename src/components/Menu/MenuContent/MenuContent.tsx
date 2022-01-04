@@ -1,9 +1,9 @@
 import classnames from 'classnames';
-import React, { Fragment, FunctionComponent, ReactNode } from 'react';
+import React, { FC, Fragment, ReactNode } from 'react';
 
 import { MenuContentProps, MenuItemInfo } from './MenuContent.types';
 
-const MenuContent: FunctionComponent<MenuContentProps> = ({
+const MenuContent: FC<MenuContentProps> = ({
 	className,
 	menuItems,
 	renderItem,

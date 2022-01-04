@@ -4,7 +4,7 @@ import React, { PropsWithChildren } from 'react';
 import Menu from './Menu';
 import { MenuProps } from './Menu.types';
 import { MenuItemInfo } from './MenuContent';
-import MenuSearchResultContent from './MenuSearchResultContent/MenuSearchResultContent';
+import { MenuSearchResultContent } from './MenuSearchResultContent';
 import {
 	menuItems,
 	menuItemsWithDivider,

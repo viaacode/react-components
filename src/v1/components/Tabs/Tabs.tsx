@@ -4,7 +4,6 @@ import React, { FunctionComponent } from 'react';
 import { DefaultProps } from '../../types';
 
 import { Tab, TabPropsSchema } from './Tab/Tab';
-import './Tabs.scss';
 
 export interface TabsPropsSchema extends DefaultProps {
 	tabs: TabPropsSchema[];

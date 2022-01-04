@@ -1,8 +1,7 @@
 import clsx from 'clsx';
 import React, { Fragment, FunctionComponent, ReactNode } from 'react';
 
-import { bemCls } from '../../utils/bem-class';
-import { getVariantClasses } from '../../utils/variant-classes';
+import { bemCls, getVariantClasses } from '../../utils';
 
 import { PaginationProps } from './Pagination.types';
 

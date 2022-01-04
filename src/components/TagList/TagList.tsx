@@ -2,8 +2,7 @@
 import clsx from 'clsx';
 import React, { FC, KeyboardEvent, MouseEvent } from 'react';
 
-import { bemCls } from '../../utils/bem-class';
-import { getVariantClasses } from '../../utils/variant-classes';
+import { bemCls, getVariantClasses } from '../../utils';
 
 import { TagListProps, TagOption } from './TagList.types';
 

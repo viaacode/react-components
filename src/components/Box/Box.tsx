@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { getVariantClasses } from '../../utils/variant-classes';
+import { getVariantClasses } from '../../utils';
 
 import { BoxProps } from './Box.types';
 

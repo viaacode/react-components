@@ -74,6 +74,7 @@
     "@svgr/cli": "^5.4.0",
     "@testing-library/jest-dom": "5.16.1",
     "@testing-library/react": "12.1.2",
+    "@testing-library/react-hooks": "7.0.2",
     "@testing-library/user-event": "13.5.0",
     "@types/autosize": "^3.0.7",
     "@types/classnames": "^2.2.10",
