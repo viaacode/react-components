@@ -1,8 +1,6 @@
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
 import React, { ReactNode } from 'react';
 
-import { documentOf } from '../../helpers';
-
 import TagList from './TagList';
 import { tags as tagsMock } from './__mocks__';
 
@@ -16,9 +14,9 @@ const renderTagList = ({ tags = tagsMock, ...rest }): RenderResult => {
 
 describe('<TagList />', () => {
 	it('Should be able to render', () => {
-		const rendered = renderTagList({});
+		const { container } = renderTagList({});
 
-		const tagList = documentOf(rendered).getElementsByClassName('c-tag-list');
+		const tagList = container.getElementsByClassName('c-tag-list');
 
 		expect(tagList).toBeDefined();
 		expect(tagList).toHaveLength(1);
@@ -28,9 +26,9 @@ describe('<TagList />', () => {
 		const className = 'c-tag-list-custom';
 		const variants = ['small', 'outline'];
 
-		const rendered = renderTagList({ className, variants });
+		const { container } = renderTagList({ className, variants });
 
-		const tagList = documentOf(rendered).getElementsByClassName('c-tag-list')[0];
+		const tagList = container.getElementsByClassName('c-tag-list')[0];
 		const tagElement = tagList.getElementsByClassName('c-tag')[0];
 
 		expect(tagList).toHaveClass(className);
@@ -42,15 +40,15 @@ describe('<TagList />', () => {
 	});
 
 	it('Should correctly render the labels', () => {
-		const rendered = renderTagList({});
+		const { container } = renderTagList({});
 		renderTagList({ closable: true });
 		renderTagList({ swatches: true });
 		renderTagList({ clickable: true });
 
-		const tagList = documentOf(rendered).getElementsByClassName('c-tag-list')[0];
-		const tagListClosable = documentOf(rendered).getElementsByClassName('c-tag-list')[1];
-		const tagListSwatches = documentOf(rendered).getElementsByClassName('c-tag-list')[2];
-		const tagListClickable = documentOf(rendered).getElementsByClassName('c-tag-list')[3];
+		const tagList = container.getElementsByClassName('c-tag-list')[0];
+		const tagListClosable = container.getElementsByClassName('c-tag-list')[1];
+		const tagListSwatches = container.getElementsByClassName('c-tag-list')[2];
+		const tagListClickable = container.getElementsByClassName('c-tag-list')[3];
 
 		[tagList, tagListClosable, tagListSwatches, tagListClickable].forEach((component) => {
 			expect(component.getElementsByClassName('c-label-text')[0].textContent).toEqual(
@@ -76,43 +74,43 @@ describe('<TagList />', () => {
 	});
 
 	it('Should be able to render with swatches', () => {
-		const rendered = renderTagList({ swatches: true });
+		const { container } = renderTagList({ swatches: true });
 
-		const tagElements = documentOf(rendered).getElementsByClassName('c-label-swatch');
+		const tagElements = container.getElementsByClassName('c-label-swatch');
 
 		expect(tagElements).toHaveLength(tagsMock.length);
 	});
 
 	it('Should be able to render without swatches', () => {
-		const rendered = renderTagList({ swatches: false });
+		const { container } = renderTagList({ swatches: false });
 
-		const tagElements = documentOf(rendered).getElementsByClassName('c-label-swatch');
+		const tagElements = container.getElementsByClassName('c-label-swatch');
 
 		expect(tagElements).toHaveLength(0);
 	});
 
 	it('Should set the correct className for labels when rendering with swatches', () => {
-		const rendered = renderTagList({ swatches: true });
+		const { container } = renderTagList({ swatches: true });
 
-		const tagList = documentOf(rendered).getElementsByClassName('c-tag-list')[0];
+		const tagList = container.getElementsByClassName('c-tag-list')[0];
 
 		expect(tagList.getElementsByClassName('c-label-text')).toHaveLength(tagsMock.length);
 		expect(tagList.getElementsByClassName('c-tag__label')).toHaveLength(0);
 	});
 
 	it('Should set the correct className for labels when rendering without swatches', () => {
-		const rendered = renderTagList({ swatches: false, closable: true });
+		const { container } = renderTagList({ swatches: false, closable: true });
 
-		const tagList = documentOf(rendered).getElementsByClassName('c-tag-list')[0];
+		const tagList = container.getElementsByClassName('c-tag-list')[0];
 
 		expect(tagList.getElementsByClassName('c-label-text')).toHaveLength(0);
 		expect(tagList.getElementsByClassName('c-tag__label')).toHaveLength(tagsMock.length);
 	});
 
 	it('Should not render a <p class="c-label-text"> nor <p class="c-tag__label"> when tag has no swatches & is not closable', () => {
-		const rendered = renderTagList({ swatches: false, closable: false });
+		const { container } = renderTagList({ swatches: false, closable: false });
 
-		const tagList = documentOf(rendered).getElementsByClassName('c-tag-list')[0];
+		const tagList = container.getElementsByClassName('c-tag-list')[0];
 
 		expect(tagList.getElementsByTagName('p')).toHaveLength(0);
 		expect(tagList.getElementsByClassName('c-label-text')).toHaveLength(0);
@@ -120,17 +118,17 @@ describe('<TagList />', () => {
 	});
 
 	it('Should be able to render with borders', () => {
-		const rendered = renderTagList({});
+		const { container } = renderTagList({});
 
-		const tagElements = documentOf(rendered).getElementsByClassName('c-tag');
+		const tagElements = container.getElementsByClassName('c-tag');
 
 		expect(tagElements).toHaveLength(tagsMock.length);
 	});
 
 	it('Should be able to render without borders', () => {
-		const rendered = renderTagList({ bordered: false });
+		const { container } = renderTagList({ bordered: false });
 
-		const tagElements = documentOf(rendered).getElementsByClassName('c-label');
+		const tagElements = container.getElementsByClassName('c-label');
 
 		expect(tagElements).toHaveLength(tagsMock.length);
 	});
@@ -168,9 +166,9 @@ describe('<TagList />', () => {
 		const indexToClick = 5;
 		const onTagClicked = jest.fn();
 
-		const rendered = renderTagList({ onTagClicked });
+		const { container } = renderTagList({ onTagClicked });
 
-		const tagElement = documentOf(rendered)
+		const tagElement = container
 			.getElementsByClassName('c-tag')
 			[indexToClick].getElementsByTagName('span')[0];
 
@@ -189,9 +187,9 @@ describe('<TagList />', () => {
 				disabled: true,
 			},
 		];
-		const rendered = renderTagList({ tags: tagMock });
+		const { container } = renderTagList({ tags: tagMock });
 
-		const tagElement = documentOf(rendered).getElementsByClassName(mockClass)[0];
+		const tagElement = container.getElementsByClassName(mockClass)[0];
 
 		expect(tagElement).toHaveClass(`${mockClass}--disabled`);
 	});
@@ -207,9 +205,9 @@ describe('<TagList />', () => {
 		];
 		const onTagClicked = jest.fn();
 
-		const rendered = renderTagList({ tags: tagMock, onTagClicked });
+		const { container } = renderTagList({ tags: tagMock, onTagClicked });
 
-		const tagElement = documentOf(rendered)
+		const tagElement = container
 			.getElementsByClassName('c-tag')
 			[indexToClick].getElementsByTagName('span')[0];
 
