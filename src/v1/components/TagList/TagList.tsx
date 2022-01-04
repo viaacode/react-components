@@ -4,8 +4,6 @@ import React, { FunctionComponent, MouseEvent } from 'react';
 import { DefaultProps } from '../../types';
 import { Icon } from '../Icon/Icon';
 
-import './TagList.scss';
-
 export interface TagOptionSchema {
 	label: string;
 	id: string | number;

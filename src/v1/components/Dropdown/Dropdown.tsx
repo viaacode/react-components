@@ -11,7 +11,6 @@ import { Icon } from '../Icon/Icon';
 import { IconNameSchema } from '../Icon/Icon.types';
 import { Menu } from '../Menu/Menu';
 
-import './Dropdown.scss';
 import { DropdownButton, DropdownContent } from './Dropdown.slots';
 
 export interface DropdownPropsSchema {

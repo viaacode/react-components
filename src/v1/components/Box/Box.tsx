@@ -3,8 +3,6 @@ import React, { FunctionComponent, ReactNode } from 'react';
 
 import { DefaultProps } from '../../types';
 
-import './Box.scss';
-
 export interface BoxPropsSchema extends DefaultProps {
 	condensed?: boolean;
 	backgroundColor?: 'gray' | 'soft-white' | 'white' | 'dark';
