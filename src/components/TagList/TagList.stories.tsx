@@ -1,8 +1,7 @@
+import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { loremIpsum } from 'lorem-ipsum';
 import React, { cloneElement, ReactElement, useState } from 'react';
-
-import { action } from '../../helpers';
 
 import TagList from './TagList';
 import { colorTags, tags } from './__mocks__';
