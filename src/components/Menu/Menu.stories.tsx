@@ -12,7 +12,7 @@ import {
 } from './__mocks__';
 
 export default {
-	title: 'Components/Dropdown',
+	title: 'Components/Menu',
 	component: Menu,
 } as ComponentMeta<typeof Menu>;
 

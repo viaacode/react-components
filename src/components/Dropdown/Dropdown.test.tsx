@@ -32,9 +32,9 @@ describe('<Dropdown />', () => {
 		const { container } = renderDropdown({ children, label, isOpen });
 
 		const dropdownContent = await waitFor(() =>
-			container.getElementsByClassName('c-menu--visible--default')
+			container.querySelector('.c-menu--visible--default')
 		);
-		expect(dropdownContent).toHaveLength(0);
+		expect(dropdownContent).toBeInTheDocument;
 	});
 
 	it('Shouldrender correctly with `isOpen = true`', async () => {
@@ -43,14 +43,12 @@ describe('<Dropdown />', () => {
 		const children = <div>content item</div>;
 		const { container } = renderDropdown({ children, label, isOpen });
 
-		const dropdownContent = await waitFor(() =>
-			container.getElementsByClassName('c-menu--default')
-		);
+		const dropdownContent = await waitFor(() => container.querySelector('.c-menu--default'));
 		const dropdownContentvisible = await waitFor(() =>
-			container.getElementsByClassName('c-menu--visible--default')
+			container.querySelector('.c-menu--visible--default')
 		);
-		expect(dropdownContent).toHaveLength(1);
-		expect(dropdownContentvisible).toHaveLength(1);
+		expect(dropdownContent).toBeInTheDocument();
+		expect(dropdownContentvisible).toBeInTheDocument();
 	});
 
 	it('Should call `onOpen` when clicking the button (and `isOpen = false`)', async () => {
@@ -59,9 +57,9 @@ describe('<Dropdown />', () => {
 		const label = 'Show options';
 		const isOpen = false;
 		const children = <div>content item</div>;
-		const { container } = renderDropdown({ children, label, isOpen, onOpen });
+		const { getByText } = renderDropdown({ children, label, isOpen, onOpen });
 
-		const button = await waitFor(() => container.getElementsByClassName('c-dropdown')[0]);
+		const button = await waitFor(() => getByText(label));
 		fireEvent.click(button);
 
 		expect(onOpen).toHaveBeenCalledTimes(1);
@@ -73,9 +71,9 @@ describe('<Dropdown />', () => {
 		const label = 'Show options';
 		const isOpen = true;
 		const children = <div>content item</div>;
-		const { container } = renderDropdown({ children, label, isOpen, onClose });
+		const { getByText } = renderDropdown({ children, label, isOpen, onClose });
 
-		const button = await waitFor(() => container.getElementsByClassName('c-dropdown')[0]);
+		const button = await waitFor(() => getByText(label));
 		fireEvent.click(button);
 
 		expect(onClose).toHaveBeenCalledTimes(1);
@@ -95,7 +93,7 @@ describe('<Dropdown />', () => {
 			variants: customVariants,
 		});
 
-		const dropdownRoot = await waitFor(() => container.getElementsByClassName('c-dropdown')[0]);
+		const dropdownRoot = await waitFor(() => container.querySelector('.c-dropdown'));
 		expect(dropdownRoot).toHaveClass('c-dropdown');
 		expect(dropdownRoot).toHaveClass(customClass);
 		expect(dropdownRoot).toHaveClass(`c-dropdown--${customVariants[0]}`);
@@ -108,9 +106,9 @@ describe('<Dropdown />', () => {
 		const children = <div>content item</div>;
 		const { container } = renderDropdown({ children, label, isOpen });
 
-		const button = await waitFor(() => container.getElementsByClassName('c-button')[0]);
+		const button = await waitFor(() => container.querySelector('.c-button'));
 
-		expect(button.textContent).toEqual(label);
+		expect(button?.textContent).toEqual(label);
 	});
 
 	it('Should correctly render slots', async () => {
@@ -134,10 +132,10 @@ describe('<Dropdown />', () => {
 		const { container } = renderDropdown({ children, isOpen });
 
 		const button = await waitFor(() => screen.getByText(label));
-		const content = await waitFor(() => container.getElementsByClassName('firstItem')[0]);
+		const content = await waitFor(() => container.querySelector('.firstItem'));
 
 		expect(button).toBeInTheDocument();
-		expect(content.textContent).toEqual('One');
+		expect(content?.textContent).toEqual('One');
 	});
 
 	it('Should correctly pass triggerWidth', async () => {
@@ -159,26 +157,14 @@ describe('<Dropdown />', () => {
 			triggerWidth: triggerWidthFitContent,
 		});
 
-		const dropdownFullWidthRoot = await waitFor(
-			() => dropdownFullWidth.container.getElementsByClassName('c-dropdown')[0]
+		const dropdownFullWidthRoot = await waitFor(() =>
+			dropdownFullWidth.container.querySelector('.c-dropdown')
 		);
-		const dropdownFitContentRoot = await waitFor(
-			() => dropdownFitContent.container.getElementsByClassName('c-dropdown')[0]
+		const dropdownFitContentRoot = await waitFor(() =>
+			dropdownFitContent.container.querySelector('.c-dropdown')
 		);
 
 		expect(dropdownFullWidthRoot).not.toHaveClass('c-dropdown__trigger');
 		expect(dropdownFitContentRoot).toHaveClass('c-dropdown__trigger');
 	});
-
-	// it('Should correctly pass menuWidth', () => {
-	// 	const dropdownFitContentComponent = mount(
-	// 		<Dropdown label="Show options" isOpen={true} menuWidth="fit-content">
-	// 			<div>One</div>
-	// 			<div>Two</div>
-	// 		</Dropdown>
-	// 	);
-	// 	const fitContentMenu = dropdownFitContentComponent.find('.c-dropdown__menu').at(0);
-
-	// 	expect(fitContentMenu.prop('style')).not.toHaveProperty('width');
-	// });
 });

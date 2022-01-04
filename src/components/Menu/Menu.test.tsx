@@ -19,8 +19,8 @@ describe('<MenuItem />', () => {
 	it('Should be able to render', () => {
 		const { container } = renderMenu({ menuItems });
 
-		const menuComponent = container.getElementsByClassName('c-menu')[0];
-		expect(menuComponent).not.toBeUndefined();
+		const menuComponent = container.querySelector('.c-menu');
+		expect(menuComponent).toBeInTheDocument();
 	});
 
 	it('Should set the correct className', () => {
@@ -28,7 +28,7 @@ describe('<MenuItem />', () => {
 
 		const { container } = renderMenu({ menuItems, className });
 
-		const menuComponent = container.getElementsByClassName('c-menu')[0];
+		const menuComponent = container.querySelector('.c-menu');
 
 		expect(menuComponent).toHaveClass(className);
 		expect(menuComponent).toHaveClass('c-menu--visible--default');
@@ -37,7 +37,7 @@ describe('<MenuItem />', () => {
 	it('Should render the correct number of menu items', () => {
 		const { container } = renderMenu({ menuItems });
 
-		const menuComponent = container.getElementsByClassName('c-menu__item');
+		const menuComponent = container.querySelectorAll('.c-menu__item');
 
 		expect(menuComponent).toHaveLength(menuItems.length);
 	});
@@ -46,15 +46,15 @@ describe('<MenuItem />', () => {
 		const children = <div className="c-custom-content">stuff</div>;
 		const { container } = renderMenu({ children });
 
-		const menuComponent = container.getElementsByClassName('c-custom-content');
+		const menuComponent = container.querySelector('.c-custom-content');
 
-		expect(menuComponent).toHaveLength(1);
+		expect(menuComponent).toBeInTheDocument;
 	});
 
 	it('Should render icons if provided', () => {
 		const { container } = renderMenu({ menuItems: menuItemsWithIcons });
 
-		const menuComponent = container.getElementsByClassName('o-svg-icon');
+		const menuComponent = container.querySelectorAll('.o-svg-icon');
 
 		expect(menuComponent).toHaveLength(menuItemsWithIcons.length);
 	});
@@ -63,8 +63,8 @@ describe('<MenuItem />', () => {
 		const children = <MenuSearchResultContent menuItems={menuItemsWithSearch} />;
 		const { container } = renderMenu({ children, search: true });
 
-		const menuComponent = container.getElementsByClassName('c-menu')[0];
-		const menuSearchItems = container.getElementsByClassName('c-menu__item');
+		const menuComponent = container.querySelector('.c-menu');
+		const menuSearchItems = container.querySelectorAll('.c-menu__item');
 
 		expect(menuComponent).toHaveClass('c-menu--search-result');
 		expect(menuSearchItems).toHaveLength(menuItemsWithSearch.length);
@@ -75,16 +75,16 @@ describe('<MenuItem />', () => {
 
 		const { container } = renderMenu({ menuItems: [], noResultsLabel });
 
-		const menuComponent = container.getElementsByClassName('c-menu__label')[0];
+		const menuComponent = container.querySelector('.c-menu__label');
 
-		expect(menuComponent.textContent).toEqual(noResultsLabel);
+		expect(menuComponent?.textContent).toEqual(noResultsLabel);
 	});
 
 	it('Should render the correct number of dividers', () => {
 		const { container } = renderMenu({ menuItems: menuItemsWithDivider });
 
-		const menuItems = container.getElementsByClassName('c-menu__item');
-		const menuDividers = container.getElementsByClassName('c-menu__divider');
+		const menuItems = container.querySelectorAll('.c-menu__item');
+		const menuDividers = container.querySelectorAll('.c-menu__divider');
 
 		expect(menuItems).toHaveLength(menuItems.length);
 		expect(menuDividers).toHaveLength(menuItemsWithDivider.length - 1);
@@ -100,7 +100,7 @@ describe('<MenuItem />', () => {
 		};
 		const { container } = renderMenu({ menuItems: menuItemsWithDivider, renderItem });
 
-		const menuCustomItems = container.getElementsByClassName('custom-item');
+		const menuCustomItems = container.querySelectorAll('.custom-item');
 
 		expect(menuCustomItems).toHaveLength(menuItems.length);
 		expect(menuCustomItems[1].textContent).toEqual(menuItems[1].label);
@@ -111,7 +111,7 @@ describe('<MenuItem />', () => {
 
 		const { container } = renderMenu({ menuItems, onClick });
 
-		const menuSeconditem = container.getElementsByClassName('c-menu__item')[1];
+		const menuSeconditem = container.querySelectorAll('.c-menu__item')[1];
 
 		fireEvent.click(menuSeconditem);
 
