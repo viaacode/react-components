@@ -1,4 +1,4 @@
-import { IconNameSchema } from '../../../v1/components/Icon/Icon.types';
+import React from 'react';
 
 export const menuItems = [
 	{ label: 'Aluminium', id: 'aluminium' },
@@ -8,8 +8,24 @@ export const menuItems = [
 ];
 
 export const menuItemsWithIcons = [
-	{ ...menuItems[0], label: 'Aluminium with an icon', icon: 'circle' as IconNameSchema },
-	{ ...menuItems[1], label: 'Cadmium with an icon', icon: 'box' as IconNameSchema },
-	{ ...menuItems[2], label: 'Dubnium with an icon', icon: 'square' as IconNameSchema },
-	{ ...menuItems[3], label: 'Potassium with an icon', icon: 'triangle' as IconNameSchema },
+	{
+		...menuItems[0],
+		label: 'Aluminium with an icon',
+		icon: <span className="o-svg-icon">icon</span>,
+	},
+	{
+		...menuItems[1],
+		label: 'Cadmium with an icon',
+		icon: <span className="o-svg-icon">icon</span>,
+	},
+	{
+		...menuItems[2],
+		label: 'Dubnium with an icon',
+		icon: <span className="o-svg-icon">icon</span>,
+	},
+	{
+		...menuItems[3],
+		label: 'Potassium with an icon',
+		icon: <span className="o-svg-icon">icon</span>,
+	},
 ];

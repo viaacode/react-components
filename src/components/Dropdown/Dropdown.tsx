@@ -98,7 +98,6 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
 					...styles.popper,
 					minWidth: menuWidth === 'fit-trigger' ? referenceElement?.scrollWidth : 0,
 				}}
-				// style={styles.popper}
 				{...attributes.popper}
 				className={isOpen ? 'c-dropdown__content-open' : 'c-dropdown__content-closed'}
 			>

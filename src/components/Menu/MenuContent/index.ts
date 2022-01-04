@@ -1,2 +1,2 @@
-export { default as Menucontent } from './MenuContent';
+export { default as MenuContent } from './MenuContent';
 export * from './MenuContent.types';
