@@ -1,8 +1,7 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { bemCls } from '../../utils/bem-class';
-import { getVariantClasses } from '../../utils/variant-classes';
+import { bemCls, getVariantClasses } from '../../utils';
 
 import { CheckboxProps } from './Checkbox.types';
 
