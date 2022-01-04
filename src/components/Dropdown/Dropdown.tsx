@@ -33,9 +33,10 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
 	label = '',
 	menuClassName,
 	menuRootClassName,
-	// TODO re-enable this without causing an infinite render loop
+	// FIXED re-enable this without causing an infinite render loop
 	// https://github.com/popperjs/popper-core/issues/794#issuecomment-736727000
-	// menuWidth = 'fit-trigger',
+	// SOLUTION https://github.com/floating-ui/floating-ui/issues/794#issuecomment-822432452
+	menuWidth = 'fit-trigger',
 	onClose = () => null,
 	onOpen = () => null,
 	placement = 'bottom-start',
@@ -53,22 +54,6 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
 
 	const { styles, attributes } = usePopper(referenceElement, popperElement, {
 		placement,
-		// modifiers:
-		// 	menuWidth === 'fit-trigger'
-		// 		? [
-		// 				{
-		// 					name: 'matchReferenceSize',
-		// 					enabled: true,
-		// 					effect({ state }) {
-		// 						state.elements.popper.style.width = `${
-		// 							(state.elements.reference as HTMLElement).offsetWidth
-		// 						}px`;
-		// 					},
-		// 					phase: 'beforeWrite',
-		// 					requires: ['computeStyles'],
-		// 				},
-		// 		  ]
-		// 		: [],
 	});
 
 	const bem = bemCls.bind(root);
@@ -81,8 +66,6 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
 			openState ? onOpen() : onClose();
 		}
 	};
-
-	// const renderIcon = (iconNode: ReactNode | string) => <span>{iconNode}</span>;
 
 	const toggleClosed = () => toggle(false);
 
@@ -111,7 +94,11 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
 
 			<div
 				ref={setPopperElement}
-				style={styles.popper}
+				style={{
+					...styles.popper,
+					minWidth: menuWidth === 'fit-trigger' ? referenceElement?.scrollWidth : 0,
+				}}
+				// style={styles.popper}
 				{...attributes.popper}
 				className={isOpen ? 'c-dropdown__content-open' : 'c-dropdown__content-closed'}
 			>

@@ -70,6 +70,13 @@ FullWidth.args = {
 	triggerWidth: 'full-width',
 };
 
+export const FitTrigger = Template.bind({});
+FitTrigger.args = {
+	label: 'Show Options',
+	isOpen: false,
+	menuWidth: 'fit-trigger',
+};
+
 export const DropdownUp = TemplateWithIcons.bind({});
 DropdownUp.args = {
 	label: 'Show Options',
