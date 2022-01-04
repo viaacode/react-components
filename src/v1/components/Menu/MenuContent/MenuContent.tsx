@@ -5,8 +5,6 @@ import { DefaultProps } from '../../../types';
 import { Icon } from '../../Icon/Icon';
 import { IconNameSchema } from '../../Icon/Icon.types';
 
-import './MenuContent.scss';
-
 export interface MenuItemInfoSchema {
 	label: string;
 	id: string | number;

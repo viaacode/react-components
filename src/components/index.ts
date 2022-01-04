@@ -5,3 +5,4 @@ export * from './Dropdown';
 export * from './Menu';
 export * from './TextArea';
 export * from './TextInput';
+export * from './Pagination';
