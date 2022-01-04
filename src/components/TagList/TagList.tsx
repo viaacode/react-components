@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import clsx from 'clsx';
-import React, { FunctionComponent, KeyboardEvent, MouseEvent } from 'react';
+import React, { FC, KeyboardEvent, MouseEvent } from 'react';
 
 import { bemCls } from '../../utils/bem-class';
 import { getVariantClasses } from '../../utils/variant-classes';
 
 import { TagListProps, TagOption } from './TagList.types';
 
-const TagList: FunctionComponent<TagListProps> = ({
+const TagList: FC<TagListProps> = ({
 	className,
 	tags,
 	swatches = true,
