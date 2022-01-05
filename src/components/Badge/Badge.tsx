@@ -1,5 +1,7 @@
-import classnames from 'classnames';
+import clsx from 'clsx';
 import React, { FunctionComponent } from 'react';
+
+import { getVariantClasses } from '../../utils';
 
 import { BadgeProps } from './Badge.types';
 
@@ -9,6 +11,10 @@ export const Badge: FunctionComponent<BadgeProps> = ({
 	type = 'default',
 	rootClassName: root = 'c-badge',
 	variants,
-}) => (
-	<div className={classnames(className, 'c-badge', { [`c-badge--${type}`]: type })}>{text}</div>
-);
+}) => {
+	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
+		[`c-badge--${type}`]: type,
+	});
+
+	return <div className={rootCls}>{text}</div>;
+};
