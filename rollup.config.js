@@ -24,7 +24,7 @@ const getPlugins = ({ typescriptConfig }) => [
 	terser(),
 ];
 
-const commonExternal = ['react', 'react-dom'];
+const commonExternal = ['autosize', 'react', 'react-dom', 'react-popper'];
 
 const excludeV1 = {
 	exclude: ['node_modules', 'src/v1'],
@@ -38,7 +38,7 @@ export default [
 		input: ['src/index.ts'],
 		output: getOutput(),
 		plugins: getPlugins({ typescriptConfig: { tsconfigOverride: excludeV1 } }),
-		external: commonExternal,
+		external: [...commonExternal, 'clsx'],
 	},
 	{
 		input: ['src/v1/index.ts', 'src/v1/wysiwyg.ts'],
@@ -46,7 +46,6 @@ export default [
 		plugins: getPlugins({ typescriptConfig: { check: false, tsconfigOverride: includeV1 } }),
 		external: [
 			...commonExternal,
-			'autosize',
 			'braft-editor',
 			'braft-extensions/dist/table.css',
 			'braft-editor/dist/index.css',
@@ -67,7 +66,6 @@ export default [
 			'@storybook/addon-actions',
 			'react-perfect-scrollbar',
 			'react-perfect-scrollbar/dist/css/styles.css',
-			'react-popper',
 		],
 	},
 ];
