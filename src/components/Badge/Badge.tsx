@@ -5,7 +5,7 @@ import { getVariantClasses } from '../../utils';
 
 import { BadgeProps } from './Badge.types';
 
-export const Badge: FunctionComponent<BadgeProps> = ({
+const Badge: FunctionComponent<BadgeProps> = ({
 	className,
 	text,
 	type = 'default',
@@ -18,3 +18,5 @@ export const Badge: FunctionComponent<BadgeProps> = ({
 
 	return <div className={rootCls}>{text}</div>;
 };
+
+export default Badge;
