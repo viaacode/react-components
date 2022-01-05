@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import clsx from 'clsx';
 import React, { FC, Fragment, ReactNode } from 'react';
 
 import { MenuContentProps, MenuItemInfo } from './MenuContent.types';
@@ -18,7 +18,7 @@ const MenuContent: FC<MenuContentProps> = ({
 		}
 		return (
 			<div
-				className={classnames(className, 'c-menu__item')}
+				className={clsx(className, 'c-menu__item')}
 				onClick={() => onClick(menuItemInfo.id)}
 				onKeyPress={(e) => (e.key === 'Space' ? onClick(menuItemInfo.id) : () => null)}
 				role="menuitem"
