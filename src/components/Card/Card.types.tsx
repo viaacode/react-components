@@ -9,6 +9,7 @@ export interface CardProps extends DefaultComponentProps {
 	offset?: boolean;
 	orientation?: 'horizontal' | 'vertical';
 	padding?: 'both' | 'content' | 'vertical' | 'none';
+	shadow?: boolean;
 	subtitle?: ReactNode;
 	title?: ReactNode;
 	toolbar?: ReactNode;

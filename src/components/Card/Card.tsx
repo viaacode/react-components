@@ -22,6 +22,7 @@ const Card: FC<CardProps> = ({
 	orientation,
 	padding,
 	rootClassName: root = 'c-card',
+	shadow,
 	subtitle,
 	title,
 	toolbar,
@@ -34,6 +35,7 @@ const Card: FC<CardProps> = ({
 		[bem('', `orientation-${orientation}`)]: !!orientation,
 		[bem('', `padded-${padding}`)]: !!padding,
 		[bem('', 'offset')]: offset,
+		[bem('', 'shadow')]: shadow,
 	});
 
 	return (
@@ -51,11 +53,13 @@ const Card: FC<CardProps> = ({
 			</section>
 
 			<section className={clsx(bem('bottom-wrapper'))}>
-				<div className={clsx(bem('header-wrapper'))}>
-					{title && <div className={clsx(bem('title-wrapper'))}>{title}</div>}
+				{(title || toolbar) && (
+					<div className={clsx(bem('header-wrapper'))}>
+						{title && <div className={clsx(bem('title-wrapper'))}>{title}</div>}
 
-					{toolbar && <div className={clsx(bem('toolbar-wrapper'))}>{toolbar}</div>}
-				</div>
+						{toolbar && <div className={clsx(bem('toolbar-wrapper'))}>{toolbar}</div>}
+					</div>
+				)}
 
 				{subtitle && <div className={clsx(bem('subtitle-wrapper'))}>{subtitle}</div>}
 
