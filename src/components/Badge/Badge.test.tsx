@@ -2,8 +2,9 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 
 import Badge from './Badge';
+import { BadgeProps } from './Badge.types';
 
-const renderBadge = ({ text = 'text', ...rest }) => {
+const renderBadge = ({ text = 'text', ...rest }: BadgeProps) => {
 	return render(<Badge text={text} {...rest} />);
 };
 
@@ -24,6 +25,18 @@ describe('<Badge />', () => {
 		const badge = container.firstChild;
 
 		expect(badge?.textContent).toEqual(text);
+	});
+
+	it('Should render a react node correctly', () => {
+		const mockLabel = 'label';
+		const mockClass = 'class';
+		const text = <span className={mockClass}>{mockLabel}</span>;
+		const { getByText } = renderBadge({ text });
+
+		const component = getByText(mockLabel);
+
+		expect(component).toBeInTheDocument;
+		expect(component).toHaveClass(mockClass);
 	});
 
 	it('Should set the correct className', () => {
