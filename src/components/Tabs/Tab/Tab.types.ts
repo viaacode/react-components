@@ -6,7 +6,7 @@ export interface TabProps extends DefaultComponentProps {
 	active?: boolean;
 	icon?: ReactNode;
 	id: string | number;
-	label: string;
+	label: string | ReactNode;
 	onClick?: () => void;
 	onKeyPress?: () => void;
 }
