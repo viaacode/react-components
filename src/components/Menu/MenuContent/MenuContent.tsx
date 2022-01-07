@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import React, { FC, Fragment, ReactNode } from 'react';
 
+import { bemCls, getVariantClasses } from '../../../utils';
+
 import { MenuContentProps, MenuItemInfo } from './MenuContent.types';
 
 const MenuContent: FC<MenuContentProps> = ({
@@ -9,7 +11,14 @@ const MenuContent: FC<MenuContentProps> = ({
 	renderItem,
 	noResultsLabel,
 	onClick = () => null,
+	rootClassName: root = 'c-menu',
+	variants,
 }) => {
+	console.log('content', root);
+
+	const bem = bemCls.bind(root);
+	const rootCls = clsx(className, bem('item'), getVariantClasses(root, variants));
+
 	const renderIcon = (iconNode: ReactNode | string) => <span>{iconNode}</span>;
 
 	const renderMenuItem = (menuItemInfo: MenuItemInfo) => {
@@ -18,14 +27,14 @@ const MenuContent: FC<MenuContentProps> = ({
 		}
 		return (
 			<div
-				className={clsx(className, 'c-menu__item')}
+				className={rootCls}
 				onClick={() => onClick(menuItemInfo.id)}
 				onKeyPress={(e) => (e.key === 'Space' ? onClick(menuItemInfo.id) : () => null)}
 				role="menuitem"
 				tabIndex={0}
 				key={`menu-item-${menuItemInfo.id}`}
 			>
-				<div className="c-menu__label">
+				<div className={bem('label')}>
 					{menuItemInfo.icon && renderIcon(menuItemInfo.icon)}
 					{menuItemInfo.label}
 				</div>
@@ -52,7 +61,7 @@ const MenuContent: FC<MenuContentProps> = ({
 											.join('-')}`}
 									>
 										{renderMenuItems(menuItems)}
-										<div className="c-menu__divider" />
+										<div className={bem('divider')} />
 									</Fragment>
 								);
 							}
@@ -78,8 +87,8 @@ const MenuContent: FC<MenuContentProps> = ({
 		}
 		if (noResultsLabel) {
 			return (
-				<div className="c-menu__item" key={`menu-item-no-results`}>
-					<div className="c-menu__label">{noResultsLabel}</div>
+				<div className={bem('item')} key={`menu-item-no-results`}>
+					<div className={bem('label')}>{noResultsLabel}</div>
 				</div>
 			);
 		}
