@@ -14,8 +14,6 @@ const MenuContent: FC<MenuContentProps> = ({
 	rootClassName: root = 'c-menu',
 	variants,
 }) => {
-	console.log('content', root);
-
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, bem('item'), getVariantClasses(root, variants));
 
