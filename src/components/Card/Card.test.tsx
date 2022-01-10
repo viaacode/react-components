@@ -1,8 +1,6 @@
 import { render, RenderResult, screen } from '@testing-library/react'; //eslint-disable-line
 import React from 'react';
 
-import { documentOf } from '../../helpers';
-
 import Card from './Card';
 import { galaxy, title } from './Card.mock';
 
@@ -38,25 +36,25 @@ describe('Component: <Card />', () => {
 	});
 
 	it('Should render an image', () => {
-		const element = documentOf(rendered).getElementsByClassName('c-card__image-wrapper');
+		const element = rendered.container.getElementsByClassName('c-card__image-wrapper');
 
 		expect(element.length).toEqual(1);
 	});
 
 	it('Should apply the zinc edge by default', () => {
-		const element = documentOf(rendered).getElementsByClassName('c-card--edge-zinc');
+		const element = rendered.container.getElementsByClassName('c-card--edge-zinc');
 
 		expect(element.length).toEqual(1);
 	});
 
 	it('Should apply the vertical orientation by default', () => {
-		const element = documentOf(rendered).getElementsByClassName('c-card--orientation-vertical');
+		const element = rendered.container.getElementsByClassName('c-card--orientation-vertical');
 
 		expect(element.length).toEqual(1);
 	});
 
 	it('Should not apply padding by default', () => {
-		const element = documentOf(rendered).getElementsByClassName('c-card--padded-none');
+		const element = rendered.container.getElementsByClassName('c-card--padded-none');
 
 		expect(element.length).toEqual(1);
 	});
