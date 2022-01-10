@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 
 import { getVariantClasses } from '../../utils';
 
 import { BadgeProps } from './Badge.types';
 
-const Badge: FunctionComponent<BadgeProps> = ({
+const Badge: FC<BadgeProps> = ({
 	className,
 	text,
 	type = 'default',
