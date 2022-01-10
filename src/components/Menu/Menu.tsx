@@ -21,21 +21,20 @@ const Menu: FunctionComponent<MenuProps> = ({
 	variants,
 }) => {
 	const bem = bemCls.bind(root);
-	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
+	const rootCls = clsx(className, root, getVariantClasses(root, variants), 'c-menu--default', {
 		[bem('', 'search-result')]: search,
+		'c-menu--visible--default': isOpen,
 	});
 
 	return (
-		<div
-			className={clsx(rootCls, 'c-menu--default', { 'c-menu--visible--default': isOpen })}
-			style={style}
-		>
+		<div className={rootCls} style={style}>
 			{children || (
 				<MenuContent
 					menuItems={menuItems}
 					onClick={onClick}
 					renderItem={renderItem}
 					noResultsLabel={noResultsLabel}
+					rootClassName={root}
 				/>
 			)}
 		</div>

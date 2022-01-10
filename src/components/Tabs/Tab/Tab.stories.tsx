@@ -16,3 +16,15 @@ Default.args = {
 	label: 'Tab me!',
 	active: false,
 };
+
+export const WithCustomLabel = Template.bind({});
+WithCustomLabel.args = {
+	id: 'tab-id',
+	label: (
+		<>
+			<strong>Strong tag</strong>
+			<small>small tag</small>
+		</>
+	),
+	active: false,
+};
