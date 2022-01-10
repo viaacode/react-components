@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { getVariantClasses } from '../../../utils';
+import { bemCls, getVariantClasses } from '../../../utils';
 import { MenuContent } from '../MenuContent';
 
 import {
@@ -14,10 +14,11 @@ const MenuSearchResultContent: FC<MenuSearchResultContentProps> = ({
 	menuItems,
 	noResultsLabel,
 	onClick = () => null,
-	rootClassName: root = 'c-menu__item',
+	rootClassName: root = 'c-menu',
 	variants,
 }) => {
-	const rootCls = clsx(className, root, getVariantClasses(root, variants), {});
+	const bem = bemCls.bind(root);
+	const rootCls = clsx(className, bem('item'), getVariantClasses(root, variants), {});
 
 	const renderMenuItem = (menuItemInfo: MenuSearchResultItemInfo) => {
 		return (
@@ -29,7 +30,7 @@ const MenuSearchResultContent: FC<MenuSearchResultContentProps> = ({
 				tabIndex={0}
 				key={`menu-search-item-${menuItemInfo.id}`}
 			>
-				<div className="c-menu__label">
+				<div className={bem('label')}>
 					<div className={`c-content-type c-content-type--${menuItemInfo.type}`}>
 						{menuItemInfo.icon}
 						{menuItemInfo.label}
@@ -48,6 +49,7 @@ const MenuSearchResultContent: FC<MenuSearchResultContentProps> = ({
 			onClick={onClick}
 			renderItem={renderMenuItem as any}
 			noResultsLabel={noResultsLabel}
+			rootClassName={root}
 		/>
 	);
 };
