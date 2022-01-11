@@ -4,7 +4,14 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
-  "homepage": "./",
+  "repository": "github:viaacode/react-components",
+  "homepage": "https://github.com/viaacode/react-components#readme",
+  "author": "Andry Charlier <andry.charlier@studiohyperdrive.be>",
+  "contributors": [
+    "Andry Charlier <andry.charlier@studiohyperdrive.be>",
+    "Ian Emsens <ian.emsens@studiohyperdrive.be>",
+    "Bavo Vanderghote <bavo.vanderghote@studiohyperdrive.be>"
+  ],
   "files": [
     "dist"
   ],
@@ -136,10 +143,6 @@
   },
   "publishConfig": {
     "@viaa:registry": "http://do-prd-mvn-01.do.viaa.be:8081/repository/npm-viaa/"
-  },
-  "resolutions": {
-    "eslint-loader": "4.0.2",
-    "isomorphic-fetch": "3.0.0"
   },
   "snyk": true
 }
