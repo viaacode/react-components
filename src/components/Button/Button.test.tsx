@@ -6,17 +6,17 @@ import { ButtonProps } from './Button.types';
 
 const mockLabel = 'Click me!';
 
-const renderButton = ({ children = mockLabel, ...rest }: PropsWithChildren<ButtonProps>) => {
-	return render(<Button {...rest}>{children}</Button>);
+const renderButton = ({ label = mockLabel, ...rest }: PropsWithChildren<ButtonProps>) => {
+	return render(<Button {...rest} label={label} />);
 };
 
 describe('components/<Button />', () => {
 	it('Should render children before label', () => {
-		const label = 'Button label';
-		renderButton({ label });
+		const children = 'Button label';
+		renderButton({ children });
 
-		const buttonChild = screen.queryByText(mockLabel);
-		const buttonLabel = screen.queryByText(label);
+		const buttonChild = screen.queryByText(children);
+		const buttonLabel = screen.queryByText(mockLabel);
 		expect(buttonChild).toBeInTheDocument();
 		expect(buttonLabel).not.toBeInTheDocument();
 	});
@@ -34,7 +34,7 @@ describe('components/<Button />', () => {
 		const customVariants = ['small', 'outline'];
 		renderButton({ className: customClass, variants: customVariants });
 
-		const button = screen.queryByText(mockLabel);
+		const button = screen.queryByRole('button');
 		expect(button).toHaveClass('c-button');
 		expect(button).toHaveClass(customClass);
 		expect(button).toHaveClass(`c-button--${customVariants[0]}`);
@@ -48,7 +48,7 @@ describe('components/<Button />', () => {
 		const type = 'submit';
 		renderButton({ ariaLabel, id, title, type });
 
-		const button = screen.queryByText(mockLabel);
+		const button = screen.queryByRole('button');
 		expect(button).toHaveAttribute('aria-label', ariaLabel);
 		expect(button).toHaveAttribute('id', id);
 		expect(button).toHaveAttribute('title', title);
