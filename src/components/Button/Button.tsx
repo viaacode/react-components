@@ -52,19 +52,17 @@ const Button: FC<ButtonProps> = ({
 			type={type}
 			onClick={onButtonClick}
 		>
-			{children || (
-				<div className={bem('content')}>
-					{icon ? (
-						renderIcon(icon)
-					) : (
-						<>
-							{iconStart && renderIcon(iconStart, 'start')}
-							<span className={bem('label')}>{label}</span>
-							{iconEnd && renderIcon(iconEnd, 'end')}
-						</>
-					)}
-				</div>
-			)}
+			<div className={bem('content')}>
+				{icon ? (
+					renderIcon(icon)
+				) : (
+					<>
+						{iconStart && renderIcon(iconStart, 'start')}
+						{children ?? <span className={bem('label')}>{label}</span>}
+						{iconEnd && renderIcon(iconEnd, 'end')}
+					</>
+				)}
+			</div>
 		</button>
 	);
 };
