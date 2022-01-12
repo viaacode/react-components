@@ -24,7 +24,14 @@ const getPlugins = ({ typescriptConfig }) => [
 	terser(),
 ];
 
-const commonExternal = ['autosize', 'react', 'react-dom', 'react-popper'];
+const commonExternal = [
+	'autosize',
+	'react',
+	'react-dom',
+	'react-popper',
+	'react-select',
+	'react-select/creatable',
+];
 
 const excludeV1 = {
 	exclude: ['node_modules', 'src/v1'],
@@ -60,8 +67,6 @@ export default [
 			'moment/locale/nl-be',
 			'raf',
 			'react-range',
-			'react-select',
-			'react-select/creatable',
 			'lodash-es',
 			'@storybook/addon-actions',
 			'react-perfect-scrollbar',

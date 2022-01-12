@@ -4,5 +4,7 @@ export interface DefaultComponentProps {
 	className?: string;
 	style?: CSSProperties;
 	rootClassName?: string;
-	variants?: string | string[];
+	variants?: VariantsProp;
 }
+
+export type VariantsProp = string | string[];
