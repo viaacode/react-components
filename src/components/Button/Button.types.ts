@@ -12,7 +12,7 @@ export interface ButtonProps extends DefaultComponentProps {
 	iconStart?: ReactNode;
 	iconEnd?: ReactNode;
 	id?: HTMLButtonAttrs['id'];
-	label?: string;
+	label?: string | ReactNode;
 	title?: HTMLButtonAttrs['title'];
 	type?: HTMLButtonAttrs['type'];
 	onClick?(event: MouseEvent<HTMLButtonElement>): void;

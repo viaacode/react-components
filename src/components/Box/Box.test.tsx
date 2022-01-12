@@ -25,23 +25,6 @@ describe('<Box />', () => {
 		expect(boxComponent).toHaveClass(`c-box--${variants[1]}`);
 	});
 
-	it('Should set the correct className when passed the `condensed`-prop', () => {
-		const { getByText } = renderBox({ condensed: true });
-
-		const boxComponent = getByText(content);
-
-		expect(boxComponent).toHaveClass('c-box--padding-small');
-	});
-
-	it('Should set the correct className when passed the `backgroundColor`-prop', () => {
-		const backgroundColor = 'soft-white';
-		const { getByText } = renderBox({ backgroundColor });
-
-		const boxComponent = getByText(content);
-
-		expect(boxComponent).toHaveClass('c-box--soft-white');
-	});
-
 	it('Should correctly pass children', () => {
 		const { container } = renderBox({});
 
