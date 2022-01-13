@@ -30,7 +30,7 @@ const MenuContent: FC<MenuContentProps> = ({
 				onKeyPress={(e) => (e.key === 'Space' ? onClick(menuItemInfo.id) : () => null)}
 				role="menuitem"
 				tabIndex={0}
-				key={`menu-item-${menuItemInfo.id}`}
+				key={menuItemInfo.key ? menuItemInfo.key : `menu-item-${menuItemInfo.id}`}
 			>
 				<div className={bem('label')}>
 					{menuItemInfo.icon && renderIcon(menuItemInfo.icon)}

@@ -6,6 +6,7 @@ export interface MenuItemInfo {
 	label: string;
 	id: string | number;
 	icon?: ReactNode;
+	key?: string;
 }
 
 export interface MenuContentProps extends DefaultComponentProps {
