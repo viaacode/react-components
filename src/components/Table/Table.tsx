@@ -42,57 +42,63 @@ const Table: FC<TableProps<object>> = ({
 
 	return (
 		<>
-			<table {...getTableProps()} className={rootCls} style={style}>
-				<thead className={clsx(bem('wrapper'), bem('wrapper', 'header'))}>
-					{headerGroups.map((group, i) => (
-						<tr
-							{...group.getHeaderGroupProps()}
-							key={i}
-							className={clsx(bem('row'), bem('row', 'header'))}
-						>
-							{group.headers.map((column, j) => (
-								<th
-									{...column.getHeaderProps(column.getSortByToggleProps())}
-									className={clsx(bem('cell'), bem('cell', 'header'))}
-									key={`${i}-${j}`}
-								>
-									{column.render('Header')}
-									{renderSortingIndicator(column)}
-								</th>
-							))}
-						</tr>
-					))}
-				</thead>
-
-				<tbody
-					className={clsx(bem('wrapper'), bem('wrapper', 'body'))}
-					{...getTableBodyProps()}
-				>
-					{page.map((row, i) => {
-						prepareRow(row);
-
-						return (
+			<div className={clsx(bem('scroller'))}>
+				<table {...getTableProps()} className={rootCls} style={style}>
+					<thead className={clsx(bem('wrapper'), bem('wrapper', 'header'))}>
+						{headerGroups.map((group, i) => (
 							<tr
-								className={clsx(bem('row'), bem('row', 'body'))}
-								{...row.getRowProps()}
+								{...group.getHeaderGroupProps()}
 								key={i}
+								className={clsx(bem('row'), bem('row', 'header'))}
 							>
-								{row.cells.map((cell, j) => {
-									return (
-										<td
-											{...cell.getCellProps()}
-											className={clsx(bem('cell'), bem('cell', 'body'))}
-											key={`${i}-${j}`}
-										>
-											{cell.render('Cell')}
-										</td>
-									);
-								})}
+								{group.headers.map((column, j) => (
+									<th
+										{...column.getHeaderProps(column.getSortByToggleProps())}
+										className={clsx(
+											bem('cell'),
+											bem('cell', 'header'),
+											column.isSorted && bem('cell', 'active')
+										)}
+										key={`${i}-${j}`}
+									>
+										{column.render('Header')}
+										{renderSortingIndicator(column)}
+									</th>
+								))}
 							</tr>
-						);
-					})}
-				</tbody>
-			</table>
+						))}
+					</thead>
+
+					<tbody
+						className={clsx(bem('wrapper'), bem('wrapper', 'body'))}
+						{...getTableBodyProps()}
+					>
+						{page.map((row, i) => {
+							prepareRow(row);
+
+							return (
+								<tr
+									className={clsx(bem('row'), bem('row', 'body'))}
+									{...row.getRowProps()}
+									key={i}
+								>
+									{row.cells.map((cell, j) => {
+										return (
+											<td
+												{...cell.getCellProps()}
+												className={clsx(bem('cell'), bem('cell', 'body'))}
+												key={`${i}-${j}`}
+											>
+												{cell.render('Cell')}
+											</td>
+										);
+									})}
+								</tr>
+							);
+						})}
+					</tbody>
+				</table>
+			</div>
 
 			{pagination && pagination(instance)}
 		</>
