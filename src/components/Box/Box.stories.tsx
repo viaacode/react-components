@@ -15,13 +15,3 @@ const Template: ComponentStory<typeof Box> = (args) => <Box {...args}>{content}<
 
 export const Default = Template.bind({});
 Default.args = {};
-
-export const Condensed = Template.bind({});
-Condensed.args = {
-	condensed: true,
-};
-
-export const WithBackground = Template.bind({});
-WithBackground.args = {
-	backgroundColor: 'white',
-};
