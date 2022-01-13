@@ -28,6 +28,7 @@ const Dropdown: FC<DropdownProps> = ({
 	iconClosed,
 	isOpen,
 	label = '',
+	flyoutClassName,
 	menuClassName,
 	menuRootClassName,
 	// FIXED re-enable this without causing an infinite render loop
@@ -95,7 +96,10 @@ const Dropdown: FC<DropdownProps> = ({
 					minWidth: menuWidth === 'fit-trigger' ? referenceElement?.scrollWidth : 0,
 				}}
 				{...attributes.popper}
-				className={isOpen ? 'c-dropdown__content-open' : 'c-dropdown__content-closed'}
+				className={clsx(
+					flyoutClassName,
+					isOpen ? 'c-dropdown__content-open' : 'c-dropdown__content-closed'
+				)}
 			>
 				<Menu
 					className={menuClassName}
