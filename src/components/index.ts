@@ -6,6 +6,7 @@ export * from './Checkbox';
 export * from './Dropdown';
 export * from './Menu';
 export * from './Pagination';
+export * from './Table';
 export * from './Tabs';
 export * from './TagList';
 export * from './TagsInput';
