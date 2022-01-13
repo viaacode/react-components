@@ -100,7 +100,7 @@ const Table: FC<TableProps<object>> = ({
 				</table>
 			</div>
 
-			{pagination && pagination(instance)}
+			<div className={clsx(bem('footer'))}>{pagination && pagination(instance)}</div>
 		</>
 	);
 };
