@@ -1,14 +1,24 @@
+import clsx from 'clsx';
 import React, { FC, useMemo } from 'react';
 import { HeaderGroup, usePagination, useSortBy, useTable } from 'react-table';
+
+import { bemCls, getVariantClasses } from '../../utils';
 
 import { defaultSortingIcons } from './Table.const';
 import { TableProps } from './Table.types';
 
 const Table: FC<TableProps<object>> = ({
+	className,
 	options,
-	sortingIcons = defaultSortingIcons,
 	pagination,
+	rootClassName: root = 'c-table',
+	sortingIcons = defaultSortingIcons,
+	style,
+	variants,
 }) => {
+	const bem = bemCls.bind(root);
+	const rootCls = clsx(className, root, getVariantClasses(root, variants));
+
 	const data = useMemo(() => options.data, [options.data]);
 	const columns = useMemo(() => options.columns, [options.columns]);
 
@@ -32,13 +42,18 @@ const Table: FC<TableProps<object>> = ({
 
 	return (
 		<>
-			<table {...getTableProps()}>
-				<thead>
+			<table {...getTableProps()} className={rootCls} style={style}>
+				<thead className={clsx(bem('wrapper'), bem('wrapper', 'header'))}>
 					{headerGroups.map((group, i) => (
-						<tr {...group.getHeaderGroupProps()} key={i}>
+						<tr
+							{...group.getHeaderGroupProps()}
+							key={i}
+							className={clsx(bem('row'), bem('row', 'header'))}
+						>
 							{group.headers.map((column, j) => (
 								<th
 									{...column.getHeaderProps(column.getSortByToggleProps())}
+									className={clsx(bem('cell'), bem('cell', 'header'))}
 									key={`${i}-${j}`}
 								>
 									{column.render('Header')}
@@ -49,15 +64,26 @@ const Table: FC<TableProps<object>> = ({
 					))}
 				</thead>
 
-				<tbody {...getTableBodyProps()}>
+				<tbody
+					className={clsx(bem('wrapper'), bem('wrapper', 'body'))}
+					{...getTableBodyProps()}
+				>
 					{page.map((row, i) => {
 						prepareRow(row);
 
 						return (
-							<tr {...row.getRowProps()} key={i}>
+							<tr
+								className={clsx(bem('row'), bem('row', 'body'))}
+								{...row.getRowProps()}
+								key={i}
+							>
 								{row.cells.map((cell, j) => {
 									return (
-										<td {...cell.getCellProps()} key={`${i}-${j}`}>
+										<td
+											{...cell.getCellProps()}
+											className={clsx(bem('cell'), bem('cell', 'body'))}
+											key={`${i}-${j}`}
+										>
 											{cell.render('Cell')}
 										</td>
 									);

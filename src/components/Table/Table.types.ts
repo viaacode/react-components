@@ -1,10 +1,12 @@
 import { ReactNode } from 'react';
-import { TableInstance, TableOptions } from 'react-table';
+import { TableOptions, UsePaginationInstanceProps } from 'react-table';
 
-export interface TableProps<T extends object> {
+import { DefaultComponentProps } from '../../types';
+
+export interface TableProps<T extends object> extends DefaultComponentProps {
 	options: TableOptions<T>;
 	sortingIcons?: TableSortingIcons;
-	pagination?: (instance: TableInstance) => ReactNode;
+	pagination?: (instance: UsePaginationInstanceProps<T>) => ReactNode;
 }
 
 export interface TableSortingIcons {
