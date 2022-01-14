@@ -3,6 +3,12 @@ import autoprefixer from 'autoprefixer';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
+import { visualizer } from 'rollup-plugin-visualizer';
+
+const DEFAULT_PLUGINS_OVERRIDES = {
+	typescriptConfig: {},
+	visualizerConfig: {},
+};
 
 const getOutput = (path, root = 'dist') => {
 	const formats = ['esm', 'cjs'];
@@ -13,7 +19,7 @@ const getOutput = (path, root = 'dist') => {
 	}));
 };
 
-const getPlugins = ({ typescriptConfig = {} } = {}) => [
+const getPlugins = ({ typescriptConfig = {}, visualizerConfig } = DEFAULT_PLUGINS_OVERRIDES) => [
 	postcss({
 		extensions: ['.scss', '.css'],
 		plugins: [autoprefixer()],
@@ -22,6 +28,11 @@ const getPlugins = ({ typescriptConfig = {} } = {}) => [
 	typescript({ clean: true, check: true, ...typescriptConfig }),
 	commonjs(),
 	terser(),
+	visualizer({
+		...visualizerConfig,
+		filename: 'bundle-stats.html',
+		title: '@meemoo/react-components | Rollup Visualizer',
+	}),
 ];
 
 const external = [
@@ -34,11 +45,15 @@ const external = [
 	'react-select/creatable',
 ];
 
-export default [
-	{
-		input: ['src/index.ts'],
-		output: getOutput(),
-		plugins: getPlugins(),
-		external,
-	},
-];
+// It's possible to pass custom cli arguments through rollup
+// For more info: https://rollupjs.org/guide/en/#configuration-files
+export default (cliArgs) => {
+	return [
+		{
+			input: ['src/index.ts'],
+			output: getOutput(),
+			plugins: getPlugins({ visualizerConfig: { open: cliArgs['config-analyze'] } }),
+			external,
+		},
+	];
+};
