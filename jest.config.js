@@ -17,5 +17,4 @@ module.exports = {
 		'^lodash-es$': '<rootDir>/node_modules/lodash/index.js',
 	},
 	testEnvironment: 'jsdom',
-	testPathIgnorePatterns: ['/node_modules/', '<rootDir>/src/v1/*'],
 };

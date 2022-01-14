@@ -5,12 +5,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    image: avo2-components
-    container_name: avo2-components
+    image: meemoo-react-components
+    container_name: meemoo-react-components
     ports:
       - 3020:3020
     networks:
-    - avo2-components-network
+    - meemoo-react-components-network
     volumes:
       - .:/opt/react-app/app:delegated
       # bind-mounting these two files in will let you add packages during development without rebuilding
@@ -23,7 +23,7 @@ services:
       - notused:/opt/react-app/app/node_modules
 
 networks:
-  avo2-components-network:
+  meemoo-react-components-network:
 
 volumes:
   notused:
