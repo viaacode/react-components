@@ -2,7 +2,7 @@ import { render, RenderResult, screen } from '@testing-library/react'; //eslint-
 import React from 'react';
 
 import Card from './Card';
-import { galaxy, title } from './Card.mock';
+import { galaxy, title } from './__mocks__/card';
 
 const subtitle = '(1 Dec. 2021)';
 const toolbar = 'Toolbar content';

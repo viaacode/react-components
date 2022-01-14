@@ -31,6 +31,7 @@ const commonExternal = [
 	'react-popper',
 	'react-select',
 	'react-select/creatable',
+	'react-table',
 ];
 
 const excludeV1 = {

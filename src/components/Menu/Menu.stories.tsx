@@ -9,7 +9,7 @@ import {
 	menuItemsWithDivider,
 	menuItemsWithIcons,
 	menuItemsWithSearch,
-} from './__mocks__';
+} from './__mocks__/menu';
 
 export default {
 	title: 'Components/Menu',

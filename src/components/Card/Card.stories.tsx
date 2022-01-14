@@ -2,7 +2,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React, { CSSProperties } from 'react';
 
 import Card from './Card';
-import { galaxy, title } from './Card.mock';
+import { galaxy, title } from './__mocks__/card';
 
 export default {
 	title: 'Components/Card',
