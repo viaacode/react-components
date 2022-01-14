@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React, { PropsWithChildren } from 'react';
 
 import Table from './Table';
@@ -82,5 +82,68 @@ describe('<Table />', () => {
 		expect(
 			screen.getAllByText(new RegExp(defaultSortingIcons.default as string)).length
 		).toEqual(filterableCols.length);
+	});
+
+	it('Should communicate sorting actions through onSortChange', () => {
+		const onSortChange = jest.fn();
+
+		renderTable({
+			options: {
+				columns: mockColumns,
+				data: mockData,
+			},
+			onSortChange,
+		});
+
+		// Initial output
+		expect(onSortChange).toHaveBeenCalledTimes(1);
+
+		const filterableCol = mockColumns.find(
+			({ Header, disableSortBy }) => !disableSortBy && Header
+		);
+
+		if (filterableCol) {
+			const header = screen.getByText(new RegExp(filterableCol.Header as string));
+
+			fireEvent.click(header);
+
+			expect(onSortChange).toHaveBeenCalledTimes(2);
+		} else {
+			expect(false).toEqual(true);
+		}
+	});
+
+	it('Should keep track of and communicate sorting state', () => {
+		const onSortChange = jest.fn();
+
+		renderTable({
+			options: {
+				columns: mockColumns,
+				data: mockData,
+			},
+			onSortChange,
+		});
+
+		const filterableCol = mockColumns.find(
+			({ Header, disableSortBy }) => !disableSortBy && Header
+		);
+
+		if (filterableCol) {
+			const text = filterableCol.Header as string;
+			const header = screen.getByText(new RegExp(text));
+
+			fireEvent.click(header); // 1 ASC
+			fireEvent.click(header); // 2 DESC
+			fireEvent.click(header); // 3 NONE
+
+			console.info(JSON.stringify(onSortChange.mock.calls));
+
+			expect(onSortChange.mock.calls[0]).toEqual([[]]);
+			expect(onSortChange.mock.calls[1]).toEqual([[{ id: text.toLowerCase(), desc: false }]]);
+			expect(onSortChange.mock.calls[2]).toEqual([[{ id: text.toLowerCase(), desc: true }]]);
+			expect(onSortChange.mock.calls[3]).toEqual([[]]);
+		} else {
+			expect(false).toEqual(true);
+		}
 	});
 });
