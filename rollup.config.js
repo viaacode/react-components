@@ -13,7 +13,7 @@ const getOutput = (path, root = 'dist') => {
 	}));
 };
 
-const getPlugins = ({ typescriptConfig }) => [
+const getPlugins = ({ typescriptConfig = {} } = {}) => [
 	postcss({
 		extensions: ['.scss', '.css'],
 		plugins: [autoprefixer()],
@@ -24,8 +24,9 @@ const getPlugins = ({ typescriptConfig }) => [
 	terser(),
 ];
 
-const commonExternal = [
+const external = [
 	'autosize',
+	'clsx',
 	'react',
 	'react-dom',
 	'react-popper',
@@ -33,44 +34,11 @@ const commonExternal = [
 	'react-select/creatable',
 ];
 
-const excludeV1 = {
-	exclude: ['node_modules', 'src/v1'],
-};
-const includeV1 = {
-	include: ['src/v1'],
-};
-
 export default [
 	{
 		input: ['src/index.ts'],
 		output: getOutput(),
-		plugins: getPlugins({ typescriptConfig: { tsconfigOverride: excludeV1 } }),
-		external: [...commonExternal, 'clsx'],
-	},
-	{
-		input: ['src/v1/index.ts', 'src/v1/wysiwyg.ts'],
-		output: getOutput('v1'),
-		plugins: getPlugins({ typescriptConfig: { check: false, tsconfigOverride: includeV1 } }),
-		external: [
-			...commonExternal,
-			'braft-editor',
-			'braft-extensions/dist/table.css',
-			'braft-editor/dist/index.css',
-			'braft-extensions/dist/table',
-			'classnames',
-			'date-fns',
-			'date-fns/locale/nl',
-			'react-datepicker',
-			'react-datepicker/dist/react-datepicker.css',
-			'marked',
-			'moment',
-			'moment/locale/nl-be',
-			'raf',
-			'react-range',
-			'lodash-es',
-			'@storybook/addon-actions',
-			'react-perfect-scrollbar',
-			'react-perfect-scrollbar/dist/css/styles.css',
-		],
+		plugins: getPlugins(),
+		external,
 	},
 ];
