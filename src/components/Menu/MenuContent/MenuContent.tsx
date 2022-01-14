@@ -17,7 +17,7 @@ const MenuContent: FC<MenuContentProps> = ({
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, bem('item'), getVariantClasses(root, variants));
 
-	const renderIcon = (iconNode: ReactNode | string) => <span>{iconNode}</span>;
+	const renderIcon = (iconNode: ReactNode) => iconNode;
 
 	const renderMenuItem = (menuItemInfo: MenuItemInfo) => {
 		if (renderItem) {
@@ -33,8 +33,9 @@ const MenuContent: FC<MenuContentProps> = ({
 				key={menuItemInfo.key ? menuItemInfo.key : `menu-item-${menuItemInfo.id}`}
 			>
 				<div className={bem('label')}>
-					{menuItemInfo.icon && renderIcon(menuItemInfo.icon)}
+					{menuItemInfo.iconStart && renderIcon(menuItemInfo.iconStart)}
 					{menuItemInfo.label}
+					{menuItemInfo.iconEnd && renderIcon(menuItemInfo.iconEnd)}
 				</div>
 			</div>
 		);

@@ -5,7 +5,8 @@ import { DefaultComponentProps } from '../../../types';
 export interface MenuItemInfo {
 	label: string;
 	id: string | number;
-	icon?: ReactNode;
+	iconStart?: ReactNode;
+	iconEnd?: ReactNode;
 	key?: string;
 }
 
