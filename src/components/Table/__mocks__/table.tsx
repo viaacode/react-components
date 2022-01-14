@@ -4,7 +4,7 @@ import { Column } from 'react-table';
 export const mockData = [1, 2, 3, 4, 5, 6].map((data) => {
 	return {
 		id: data,
-		name: data.toString(),
+		name: ['John', 'Jim', 'Bob', 'Susan', 'Sally', 'Delilah'][data - 1],
 		created_at: new Date().setFullYear(new Date().getFullYear() - data),
 		child: {
 			id: 1000 + data,
