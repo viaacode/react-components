@@ -2,7 +2,8 @@
 
 ## General
 
-This repository contains the `Het Archief` Next.js app for the end user.
+This repository contains the general meemoo React components to be consumed by applications built
+for meemoo using the React framework.
 
 It is built with:
 - node: `v16.x.x` ( ~ `lts/gallium`)
