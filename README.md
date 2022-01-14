@@ -41,7 +41,7 @@ The available commands for testing the project are:
 | command      | runs                                                                                                 |
 |--------------|------------------------------------------------------------------------------------------------------|
 | test         | Run all the unit tests.                                                                              |
-| test:output  | Ouput test results to .                                                           |
+| test:output  | Ouput test results to json file                                                                      |
 | test:watch   | Run all the unit tests in watch mode.                                                                |
 <br>
 
