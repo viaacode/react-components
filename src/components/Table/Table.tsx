@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { HeaderGroup, usePagination, useSortBy, useTable } from 'react-table';
 
 import { bemCls, getVariantClasses } from '../../utils';
@@ -9,6 +9,7 @@ import { TableProps } from './Table.types';
 
 const Table: FC<TableProps<object>> = ({
 	className,
+	onSortChange,
 	options,
 	pagination,
 	rootClassName: root = 'c-table',
@@ -19,16 +20,35 @@ const Table: FC<TableProps<object>> = ({
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants));
 
+	// State
+
 	const data = useMemo(() => options.data, [options.data]);
 	const columns = useMemo(() => options.columns, [options.columns]);
 
 	const instance = useTable(
-		{ ...options, manualSortBy: true, columns, data },
+		{ ...options, manualSortBy: true, disableMultiSort: true, columns, data },
 		useSortBy,
 		usePagination
 	);
 
-	const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow } = instance;
+	// Destructuring
+
+	const {
+		getTableBodyProps,
+		getTableProps,
+		headerGroups,
+		page,
+		prepareRow,
+		state: { sortBy },
+	} = instance;
+
+	// Effects
+
+	useEffect(() => {
+		onSortChange && onSortChange(sortBy);
+	}, [sortBy, onSortChange]);
+
+	// Render
 
 	const renderSortingIndicator = (column: HeaderGroup) => {
 		if (!column.canSort || column.disableSortBy) return null;
@@ -62,6 +82,7 @@ const Table: FC<TableProps<object>> = ({
 										key={`${i}-${j}`}
 									>
 										{column.render('Header')}
+
 										{renderSortingIndicator(column)}
 									</th>
 								))}

@@ -22,4 +22,7 @@ Default.args = {
 		...defaultSortingIcons,
 		default: '🔀',
 	},
+	onSortChange: (rules) => {
+		console.info('onSortChange', rules);
+	},
 };
