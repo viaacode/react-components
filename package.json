@@ -22,7 +22,7 @@
     "build:analyze": "npm run build -- --config-analyze",
     "build-storybook": "build-storybook -o build",
     "build-storybook:with-sourcemaps": "cross-env GENERATE_SOURCEMAP=true build-storybook -o build",
-    "format": "npm run lint -- --fix",
+    "format": "npm run lint:ts -- --fix",
     "lint": "npm run lint:ts && npm run lint:scss",
     "lint:ts": "eslint src --ext .js,.jsx,.ts,.tsx",
     "lint:scss": "stylelint 'src/**/*.{css,scss}' --allow-empty-input",
