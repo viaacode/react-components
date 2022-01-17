@@ -72,23 +72,24 @@ const Dropdown: FC<DropdownProps> = ({
 
 	return (
 		<>
-			<div
-				className={rootCls}
-				onClick={() => toggle()}
-				onKeyPress={(e) => (e.key === 'Space' ? toggle() : () => null)}
-				role="button"
-				tabIndex={0}
-				ref={setReferenceElement}
-			>
-				{dropdownButtonSlot || (
-					<Button
-						iconStart={icon}
-						label={label}
-						iconEnd={isOpen ? iconOpen : iconClosed}
-					/>
-				)}
-			</div>
-
+			{
+				// Wrapper element should not be tabbable
+				// eslint-disable-next-line jsx-a11y/no-static-element-interactions
+				<div
+					className={rootCls}
+					onClick={() => toggle()}
+					onKeyPress={(e) => (e.key === 'Space' ? toggle() : () => null)}
+					ref={setReferenceElement}
+				>
+					{dropdownButtonSlot || (
+						<Button
+							iconStart={icon}
+							label={label}
+							iconEnd={isOpen ? iconOpen : iconClosed}
+						/>
+					)}
+				</div>
+			}
 			<div
 				ref={setPopperElement}
 				style={{
