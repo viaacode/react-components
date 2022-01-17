@@ -144,4 +144,21 @@ describe('<Table />', () => {
 			expect(false).toEqual(true);
 		}
 	});
+
+	it('Should communicate clicks on rows through onRowClick', () => {
+		const onRowClick = jest.fn();
+
+		renderTable({
+			options: {
+				columns: mockColumns,
+				data: mockData,
+			},
+			onRowClick,
+		});
+
+		const header = screen.getByText(new RegExp(mockData[0].name));
+		fireEvent.click(header);
+
+		expect(onRowClick).toHaveBeenCalledTimes(1);
+	});
 });

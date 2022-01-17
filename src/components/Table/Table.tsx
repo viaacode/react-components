@@ -9,6 +9,7 @@ import { TableProps } from './Table.types';
 
 const Table: FC<TableProps<object>> = ({
 	className,
+	onRowClick,
 	onSortChange,
 	options,
 	pagination,
@@ -99,6 +100,7 @@ const Table: FC<TableProps<object>> = ({
 
 							return (
 								<tr
+									onClick={(e) => onRowClick && onRowClick(e, row)}
 									className={clsx(bem('row'), bem('row', 'body'))}
 									{...row.getRowProps()}
 									key={i}

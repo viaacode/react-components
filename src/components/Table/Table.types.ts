@@ -1,17 +1,18 @@
-import { ReactNode } from 'react';
+import { MouseEvent, ReactNode } from 'react';
 import { SortingRule, TableOptions, UsePaginationInstanceProps } from 'react-table';
 
 import { DefaultComponentProps } from '../../types';
 
 export interface TableProps<T extends object> extends DefaultComponentProps {
-	options: TableOptions<T>;
-	sortingIcons?: TableSortingIcons;
-	pagination?: (instance: UsePaginationInstanceProps<T>) => ReactNode;
+	onRowClick?: (event: MouseEvent<HTMLTableRowElement>, row: T) => void;
 	onSortChange?: (rules: SortingRule<T>[]) => void;
+	options: TableOptions<T>;
+	pagination?: (instance: UsePaginationInstanceProps<T>) => ReactNode;
+	sortingIcons?: TableSortingIcons;
 }
 
 export interface TableSortingIcons {
-	default?: ReactNode;
 	asc?: ReactNode;
+	default?: ReactNode;
 	desc?: ReactNode;
 }
