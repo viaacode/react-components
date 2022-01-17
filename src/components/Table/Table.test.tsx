@@ -136,8 +136,6 @@ describe('<Table />', () => {
 			fireEvent.click(header); // 2 DESC
 			fireEvent.click(header); // 3 NONE
 
-			console.info(JSON.stringify(onSortChange.mock.calls));
-
 			expect(onSortChange.mock.calls[0]).toEqual([[]]);
 			expect(onSortChange.mock.calls[1]).toEqual([[{ id: text.toLowerCase(), desc: false }]]);
 			expect(onSortChange.mock.calls[2]).toEqual([[{ id: text.toLowerCase(), desc: true }]]);
