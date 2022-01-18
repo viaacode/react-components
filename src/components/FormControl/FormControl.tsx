@@ -19,7 +19,6 @@ const FormControl: FC<FormControlProps> = ({
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
 		[`${bem(undefined, 'disabled')}`]: disabled,
-		[`${bem(undefined, 'required')}`]: !suffix,
 	});
 
 	return (
