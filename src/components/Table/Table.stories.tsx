@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 
@@ -23,6 +24,6 @@ Default.args = {
 		default: '🔀',
 	},
 	onSortChange: (rules) => {
-		console.info('onSortChange', rules);
+		action('onOpen')(rules);
 	},
 };
