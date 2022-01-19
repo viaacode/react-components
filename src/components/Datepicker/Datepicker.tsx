@@ -12,11 +12,7 @@ const Datepicker: FC<DatepickerProps> = (props) => {
 	const { className, rootClassName: root = 'c-datepicker', variants } = props;
 	const rootCls = clsx(className, root, getVariantClasses(root, variants));
 
-	return (
-		<div className={rootCls}>
-			<DatePicker showPopperArrow={false} {...props} />
-		</div>
-	);
+	return <DatePicker wrapperClassName={rootCls} showPopperArrow={false} {...props} />;
 };
 
 export default Datepicker;
