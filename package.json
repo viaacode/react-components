@@ -47,7 +47,6 @@
   },
   "dependencies": {
     "@popperjs/core": "2.11.2",
-    "@types/react-table": "7.7.9",
     "autosize": "5.0.1",
     "clsx": "1.1.1",
     "date-fns": "^2.16.0",
@@ -79,6 +78,7 @@
     "@types/jest": "27.0.3",
     "@types/node": "14.6.1",
     "@types/react": "16.9.48",
+    "@types/react-datepicker": "4.3.4",
     "@types/react-dom": "16.9.8",
     "@types/react-table": "7.7.9",
     "@typescript-eslint/eslint-plugin": "5.8.0",
