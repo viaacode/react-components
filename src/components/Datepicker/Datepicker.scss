@@ -1,0 +1,20 @@
+@import "react-datepicker/dist/react-datepicker.min.css";
+
+$b: "react-datepicker";
+$c: "c-datepicker";
+
+.#{$c} {
+    .#{$b}__current-month {
+        &.#{$b}__current-month--hasYearDropdown.#{$b}__current-month--hasMonthDropdown,
+        &.#{$b}__current-month--hasMonthYearDropdown {
+            display: none;
+        }
+    }
+
+    .#{$b}__navigation {
+        &--previous,
+        &--next {
+            display: none;
+        }
+    }
+}
