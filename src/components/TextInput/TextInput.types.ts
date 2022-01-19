@@ -10,10 +10,10 @@ export interface TextInputProps extends DefaultComponentProps {
 	iconEnd?: ReactNode;
 	iconStart?: ReactNode;
 	id?: string;
+	onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
+	onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+	onKeyUp?: (event: KeyboardEvent<HTMLInputElement>) => void;
 	placeholder?: string;
 	type?: InputType;
 	value?: string;
-	onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-	onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
-	onKeyUp?: (event: KeyboardEvent<HTMLInputElement>) => void;
 }
