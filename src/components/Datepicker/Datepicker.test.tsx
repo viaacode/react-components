@@ -5,6 +5,6 @@ import Datepicker from './Datepicker';
 
 describe('<Datepicker />', () => {
 	it('Should be able to render', () => {
-		render(<Datepicker />);
+		render(<Datepicker onChange={console.info} />);
 	});
 });
