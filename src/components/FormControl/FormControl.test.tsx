@@ -8,14 +8,14 @@ describe('<FormControl />', () => {
 		const child = '123';
 		render(<FormControl>{child}</FormControl>);
 
-		expect(screen.getByText(child)).toBeDefined();
+		expect(screen.getByText(child)).toBeInTheDocument();
 	});
 
 	it('Should be able to render a label', () => {
 		const label = '456';
 		render(<FormControl label={label} />);
 
-		expect(screen.getByText(label)).toBeDefined();
+		expect(screen.getByText(label)).toBeInTheDocument();
 	});
 
 	it('Should be able to render a label with a suffix', () => {
@@ -23,8 +23,8 @@ describe('<FormControl />', () => {
 		const suffix = '(optional)';
 		render(<FormControl label={label} suffix={suffix} />);
 
-		expect(screen.getByText(new RegExp(label))).toBeDefined();
-		expect(screen.getByText(new RegExp(suffix))).toBeDefined();
+		expect(screen.getByText(new RegExp(label))).toBeInTheDocument();
+		expect(screen.getByText(new RegExp(suffix))).toBeInTheDocument();
 	});
 
 	it('Should be able to render errors', () => {
@@ -32,7 +32,7 @@ describe('<FormControl />', () => {
 		const errors = ['bar', <b key={2}>{foo}</b>];
 		render(<FormControl errors={errors} />);
 
-		expect(screen.getByText(errors[0] as string)).toBeDefined();
-		expect(screen.getByText(foo)).toBeDefined();
+		expect(screen.getByText(errors[0] as string)).toBeInTheDocument();
+		expect(screen.getByText(foo)).toBeInTheDocument();
 	});
 });
