@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEvent, KeyboardEvent, ReactNode } from 'react';
+import React, { ChangeEvent, FocusEvent, KeyboardEvent, ReactNode } from 'react';
 
 import { DefaultComponentProps } from '../../types';
 
@@ -16,4 +16,5 @@ export interface TextInputProps extends DefaultComponentProps {
 	onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 	onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
 	onKeyUp?: (event: KeyboardEvent<HTMLInputElement>) => void;
+	onClick?: (event: React.MouseEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement>) => void;
 }

@@ -20,6 +20,7 @@ const TextInput: FC<TextInputProps> = ({
 	onBlur = () => null,
 	onChange = () => null,
 	onKeyUp = () => null,
+	onClick,
 }) => {
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
@@ -39,7 +40,13 @@ const TextInput: FC<TextInputProps> = ({
 	);
 
 	return (
-		<div className={rootCls}>
+		<div
+			className={rootCls}
+			role={onClick ? 'button' : undefined}
+			tabIndex={onClick ? 0 : -1}
+			onClick={onClick}
+			onKeyUp={(e) => e.key === 'Enter' && onClick && onClick(e)}
+		>
 			{iconStart && renderIcon(iconStart, 'start')}
 			<input
 				{...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
