@@ -46,11 +46,12 @@
     ]
   },
   "dependencies": {
-    "@types/react-table": "7.7.9",
     "@popperjs/core": "2.11.2",
+    "@types/react-table": "7.7.9",
     "autosize": "5.0.1",
     "clsx": "1.1.1",
     "date-fns": "^2.16.0",
+    "react-datepicker": "4.6.0",
     "react-popper": "2.2.5",
     "react-select": "5.2.1",
     "react-table": "7.7.0"
