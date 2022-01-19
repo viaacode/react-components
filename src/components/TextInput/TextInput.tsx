@@ -16,6 +16,7 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 			id,
 			onBlur = () => null,
 			onChange = () => null,
+			onClick,
 			onKeyUp = () => null,
 			placeholder,
 			rootClassName: root = 'c-input',
@@ -43,7 +44,13 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 		);
 
 		return (
-			<div className={rootCls}>
+			<div
+				className={rootCls}
+				role={onClick ? 'button' : undefined}
+				tabIndex={onClick ? 0 : -1}
+				onClick={onClick}
+				onKeyUp={(e) => e.key === 'Enter' && onClick && onClick(e)}
+			>
 				{iconStart && renderIcon(iconStart, 'start')}
 				<input
 					{...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
