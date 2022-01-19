@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 
-import { TextInput } from '..';
+import { TextInput } from '../TextInput';
 
 import FormControl from './FormControl';
 
