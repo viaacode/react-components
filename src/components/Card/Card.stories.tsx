@@ -2,7 +2,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React, { CSSProperties } from 'react';
 
 import Card from './Card';
-import { galaxy, title } from './Card.mock';
+import { cardImageMock, cardTitleMock } from './__mocks__/card';
 
 export default {
 	title: 'Components/Card',
@@ -190,6 +190,6 @@ const Template: ComponentStory<typeof Card> = (args) => {
 
 export const Overview: ComponentStory<typeof Card> = Template.bind({});
 Overview.args = {
-	title: <span>{title}</span>,
-	image: <img className="u-image-responsive" src={galaxy} alt={title} />, //eslint-disable-line
+	title: <span>{cardTitleMock}</span>,
+	image: <img className="u-image-responsive" src={cardImageMock} alt={cardTitleMock} />, //eslint-disable-line
 };
