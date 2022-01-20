@@ -10,6 +10,7 @@ const base: Partial<ReactDatePickerProps> = {
 	showTimeSelect: true,
 	showTimeSelectOnly: true,
 	timeIntervals: 15,
+	autoComplete: 'off', // html prop
 };
 
 export const timepicker: Partial<ReactDatePickerProps> = {
