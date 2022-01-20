@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, Fragment, ReactNode } from 'react';
+import React, { FC, Fragment } from 'react';
 
 import { bemCls, getVariantClasses } from '../../../utils';
 
@@ -17,8 +17,6 @@ const MenuContent: FC<MenuContentProps> = ({
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, bem('item'), getVariantClasses(root, variants));
 
-	const renderIcon = (iconNode: ReactNode) => iconNode;
-
 	const renderMenuItem = (menuItemInfo: MenuItemInfo, index: number) => {
 		if (renderItem) {
 			return renderItem(menuItemInfo);
@@ -33,9 +31,9 @@ const MenuContent: FC<MenuContentProps> = ({
 				key={`menu-item-${menuItemInfo.id ?? index}`}
 			>
 				<div className={bem('label')}>
-					{menuItemInfo.iconStart && renderIcon(menuItemInfo.iconStart)}
+					{menuItemInfo.iconStart && menuItemInfo.iconStart}
 					{menuItemInfo.label}
-					{menuItemInfo.iconEnd && renderIcon(menuItemInfo.iconEnd)}
+					{menuItemInfo.iconEnd && menuItemInfo.iconEnd}
 				</div>
 			</div>
 		);

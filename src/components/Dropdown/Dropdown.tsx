@@ -78,7 +78,7 @@ const Dropdown: FC<DropdownProps> = ({
 				<div
 					className={rootCls}
 					onClick={() => toggle()}
-					onKeyPress={(e) => (e.key === 'Space' ? toggle() : () => null)}
+					onKeyUp={() => null}
 					ref={setReferenceElement}
 				>
 					{dropdownButtonSlot || (
