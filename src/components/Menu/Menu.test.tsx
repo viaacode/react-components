@@ -10,7 +10,7 @@ import {
 	menuItemsWithDivider,
 	menuItemsWithIcons,
 	menuItemsWithSearch,
-} from './__mocks__';
+} from './__mocks__/menu';
 const renderMenu = ({ children = null, ...args }: PropsWithChildren<MenuProps>) => {
 	return render(<Menu {...args}>{children}</Menu>);
 };
