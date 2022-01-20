@@ -12,13 +12,13 @@ const base: Partial<ReactDatePickerProps> = {
 	dropdownMode: 'select',
 };
 
-export const future: Partial<ReactDatePickerProps> = {
+export const futureDatepicker: Partial<ReactDatePickerProps> = {
 	...base,
 	minDate: now,
 	maxDate: endOfYear(addYears(now, 4)), // Next 5 years
 };
 
-export const historic: Partial<ReactDatePickerProps> = {
+export const historicDatepicker: Partial<ReactDatePickerProps> = {
 	...base,
 	maxDate: now,
 };
