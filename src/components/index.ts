@@ -7,6 +7,7 @@ export * from './Dropdown';
 export * from './FormControl';
 export * from './Menu';
 export * from './Pagination';
+export * from './RadioButton';
 export * from './Table';
 export * from './Tabs';
 export * from './TagList';
