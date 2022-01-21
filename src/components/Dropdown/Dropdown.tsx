@@ -28,6 +28,7 @@ const Dropdown: FC<DropdownProps> = ({
 	iconClosed,
 	isOpen,
 	label = '',
+	flyoutClassName,
 	menuClassName,
 	menuRootClassName,
 	// FIXED re-enable this without causing an infinite render loop
@@ -71,23 +72,24 @@ const Dropdown: FC<DropdownProps> = ({
 
 	return (
 		<>
-			<div
-				className={rootCls}
-				onClick={() => toggle()}
-				onKeyPress={(e) => (e.key === 'Space' ? toggle() : () => null)}
-				role="button"
-				tabIndex={0}
-				ref={setReferenceElement}
-			>
-				{dropdownButtonSlot || (
-					<Button
-						iconStart={icon}
-						label={label}
-						iconEnd={isOpen ? iconOpen : iconClosed}
-					/>
-				)}
-			</div>
-
+			{
+				// Wrapper element should not be tabbable
+				// eslint-disable-next-line jsx-a11y/no-static-element-interactions
+				<div
+					className={rootCls}
+					onClick={() => toggle()}
+					onKeyUp={() => null}
+					ref={setReferenceElement}
+				>
+					{dropdownButtonSlot || (
+						<Button
+							iconStart={icon}
+							label={label}
+							iconEnd={isOpen ? iconOpen : iconClosed}
+						/>
+					)}
+				</div>
+			}
 			<div
 				ref={setPopperElement}
 				style={{
@@ -95,7 +97,10 @@ const Dropdown: FC<DropdownProps> = ({
 					minWidth: menuWidth === 'fit-trigger' ? referenceElement?.scrollWidth : 0,
 				}}
 				{...attributes.popper}
-				className={isOpen ? 'c-dropdown__content-open' : 'c-dropdown__content-closed'}
+				className={clsx(
+					flyoutClassName,
+					isOpen ? 'c-dropdown__content-open' : 'c-dropdown__content-closed'
+				)}
 			>
 				<Menu
 					className={menuClassName}

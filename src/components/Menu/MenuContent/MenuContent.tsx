@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, Fragment, ReactNode } from 'react';
+import React, { FC, Fragment } from 'react';
 
 import { bemCls, getVariantClasses } from '../../../utils';
 
@@ -17,9 +17,7 @@ const MenuContent: FC<MenuContentProps> = ({
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, bem('item'), getVariantClasses(root, variants));
 
-	const renderIcon = (iconNode: ReactNode | string) => <span>{iconNode}</span>;
-
-	const renderMenuItem = (menuItemInfo: MenuItemInfo) => {
+	const renderMenuItem = (menuItemInfo: MenuItemInfo, index: number) => {
 		if (renderItem) {
 			return renderItem(menuItemInfo);
 		}
@@ -30,11 +28,12 @@ const MenuContent: FC<MenuContentProps> = ({
 				onKeyPress={(e) => (e.key === 'Space' ? onClick(menuItemInfo.id) : () => null)}
 				role="menuitem"
 				tabIndex={0}
-				key={`menu-item-${menuItemInfo.id}`}
+				key={`menu-item-${menuItemInfo.id ?? index}`}
 			>
 				<div className={bem('label')}>
-					{menuItemInfo.icon && renderIcon(menuItemInfo.icon)}
+					{menuItemInfo.iconStart && menuItemInfo.iconStart}
 					{menuItemInfo.label}
+					{menuItemInfo.iconEnd && menuItemInfo.iconEnd}
 				</div>
 			</div>
 		);
@@ -55,7 +54,7 @@ const MenuContent: FC<MenuContentProps> = ({
 								return (
 									<Fragment
 										key={`menu-item-group-${menuItems
-											.map((mi) => mi.id)
+											.map((mi) => mi.id ?? index)
 											.join('-')}`}
 									>
 										{renderMenuItems(menuItems)}
@@ -66,7 +65,7 @@ const MenuContent: FC<MenuContentProps> = ({
 							return (
 								<Fragment
 									key={`menu-item-group-${menuItems
-										.map((mi) => mi.id)
+										.map((mi) => mi.id ?? index)
 										.join('-')}`}
 								>
 									{renderMenuItems(menuItems)}
