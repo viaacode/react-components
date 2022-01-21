@@ -43,6 +43,9 @@ const external = [
 	'react-popper',
 	'react-select',
 	'react-select/creatable',
+	'react-table',
+	'react-datepicker',
+	'date-fns/locale',
 ];
 
 // It's possible to pass custom cli arguments through rollup
