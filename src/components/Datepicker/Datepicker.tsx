@@ -9,7 +9,8 @@ import { DatepickerProps } from './Datepicker.types';
 import './Datepicker.scss';
 
 const Datepicker: FC<DatepickerProps> = (props) => {
-	const { className, rootClassName: root = 'c-datepicker', variants } = props;
+	const { className, rootClassName, variants } = props;
+	const root = rootClassName || 'c-datepicker';
 	const rootCls = clsx(className, root, getVariantClasses(root, variants));
 
 	return (

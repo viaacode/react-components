@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { TextInput } from '../TextInput';
 
 import Datepicker from './Datepicker';
-import { future, historic } from './Datepicker.const';
+import { futureDatepicker, historicDatepicker } from './Datepicker.const';
 
 export default {
 	title: 'Components/Datepicker',
@@ -19,16 +19,16 @@ const Template: ComponentStory<typeof Datepicker> = (props) => {
 
 export const Future = Template.bind({});
 Future.args = {
-	...future,
+	...futureDatepicker,
 };
 
 export const Historic = Template.bind({});
 Historic.args = {
-	...historic,
+	...historicDatepicker,
 };
 
 export const WithInput = Template.bind({});
 WithInput.args = {
-	...future,
+	...futureDatepicker,
 	customInput: <TextInput iconStart="calendar" />,
 };
