@@ -1,12 +1,10 @@
-import { endOfDay } from 'date-fns/esm';
-import { nlBE } from 'date-fns/locale';
 import { ReactDatePickerProps } from 'react-datepicker';
 
 const now = new Date();
+const endOfDay = new Date(new Date().setHours(23, 59, 59, 999));
 
 const base: Partial<ReactDatePickerProps> = {
 	dateFormat: 'HH:mm',
-	locale: nlBE,
 	showTimeSelect: true,
 	showTimeSelectOnly: true,
 	timeIntervals: 15,
@@ -19,7 +17,7 @@ export const timepicker: Partial<ReactDatePickerProps> = {
 
 export const futureTimepicker: Partial<ReactDatePickerProps> = {
 	...base,
-	maxTime: endOfDay(now),
+	maxTime: endOfDay,
 	minDate: now,
 	minTime: now,
 };

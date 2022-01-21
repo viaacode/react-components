@@ -1,21 +1,19 @@
-import { addYears, endOfYear } from 'date-fns/esm';
-import { nlBE } from 'date-fns/locale';
 import { ReactDatePickerProps } from 'react-datepicker';
 
 const now = new Date();
+const inTwoWeeks = new Date(now.valueOf() + 86400000 * 14);
 
 const base: Partial<ReactDatePickerProps> = {
 	calendarStartDay: 1,
 	showYearDropdown: true,
 	showMonthDropdown: true,
-	locale: nlBE,
 	dropdownMode: 'select',
 };
 
 export const futureDatepicker: Partial<ReactDatePickerProps> = {
 	...base,
 	minDate: now,
-	maxDate: endOfYear(addYears(now, 4)), // Next 5 years
+	maxDate: inTwoWeeks,
 };
 
 export const historicDatepicker: Partial<ReactDatePickerProps> = {
