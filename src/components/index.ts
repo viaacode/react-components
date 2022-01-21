@@ -3,6 +3,7 @@ export * from './Box';
 export * from './Button';
 export * from './Card';
 export * from './Checkbox';
+export * from './Datepicker';
 export * from './Dropdown';
 export * from './FormControl';
 export * from './Menu';
