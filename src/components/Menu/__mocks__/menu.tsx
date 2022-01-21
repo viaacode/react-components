@@ -11,10 +11,10 @@ export const menuItems = [
 ];
 
 export const menuItemsWithIcons: MenuItemInfo[] = [
-	{ ...menuItems[0], icon: <span className="o-svg-icon">icon</span> },
-	{ ...menuItems[1], icon: <span className="o-svg-icon">icon</span> },
-	{ ...menuItems[2], icon: <span className="o-svg-icon">icon</span> },
-	{ ...menuItems[3], icon: <span className="o-svg-icon">icon</span> },
+	{ ...menuItems[0], iconStart: <span className="o-svg-icon">icon</span> },
+	{ ...menuItems[1], iconStart: <span className="o-svg-icon">icon</span> },
+	{ ...menuItems[2], iconStart: <span className="o-svg-icon">icon</span> },
+	{ ...menuItems[3], iconStart: <span className="o-svg-icon">icon</span> },
 ];
 
 export const menuItemsWithDivider = [
