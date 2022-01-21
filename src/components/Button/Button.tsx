@@ -6,7 +6,6 @@ import { bemCls, getVariantClasses } from '../../utils';
 import { ButtonProps } from './Button.types';
 
 const Button: FC<ButtonProps> = ({
-	ariaLabel,
 	children,
 	className,
 	disabled = false,
@@ -20,6 +19,7 @@ const Button: FC<ButtonProps> = ({
 	type = 'button',
 	variants,
 	onClick,
+	...htmlButtonProps
 }) => {
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
@@ -45,7 +45,7 @@ const Button: FC<ButtonProps> = ({
 
 	return (
 		<button
-			aria-label={ariaLabel}
+			{...htmlButtonProps}
 			className={rootCls}
 			id={id}
 			title={title}

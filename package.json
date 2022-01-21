@@ -45,6 +45,10 @@
       "last 1 safari version"
     ]
   },
+  "peerDependencies": {
+    "react": "^16.14.0 || ^17.0.2",
+    "react-dom": "^16.14.0 || ^17.0.2"
+  },
   "dependencies": {
     "@popperjs/core": "2.11.2",
     "autosize": "5.0.1",
@@ -54,10 +58,6 @@
     "react-popper": "2.2.5",
     "react-select": "5.2.1",
     "react-table": "7.7.0"
-  },
-  "peerDependencies": {
-    "react": "^16.14.0 || ^17.0.2",
-    "react-dom": "^16.14.0 || ^17.0.2"
   },
   "devDependencies": {
     "@commitlint/cli": "15.0.0",

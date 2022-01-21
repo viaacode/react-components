@@ -46,7 +46,7 @@ describe('components/<Button />', () => {
 		const id = 'button-id';
 		const title = 'title';
 		const type = 'submit';
-		renderButton({ ariaLabel, id, title, type });
+		renderButton({ 'aria-label': ariaLabel, id, title, type });
 
 		const button = screen.queryByRole('button');
 		expect(button).toHaveAttribute('aria-label', ariaLabel);
