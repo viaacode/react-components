@@ -3,6 +3,12 @@ import autoprefixer from 'autoprefixer';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
+import { visualizer } from 'rollup-plugin-visualizer';
+
+const DEFAULT_PLUGINS_OVERRIDES = {
+	typescriptConfig: {},
+	visualizerConfig: {},
+};
 
 const getOutput = (path, root = 'dist') => {
 	const formats = ['esm', 'cjs'];
@@ -13,7 +19,7 @@ const getOutput = (path, root = 'dist') => {
 	}));
 };
 
-const getPlugins = ({ typescriptConfig }) => [
+const getPlugins = ({ typescriptConfig = {}, visualizerConfig } = DEFAULT_PLUGINS_OVERRIDES) => [
 	postcss({
 		extensions: ['.scss', '.css'],
 		plugins: [autoprefixer()],
@@ -22,55 +28,33 @@ const getPlugins = ({ typescriptConfig }) => [
 	typescript({ clean: true, check: true, ...typescriptConfig }),
 	commonjs(),
 	terser(),
+	visualizer({
+		...visualizerConfig,
+		filename: 'bundle-stats.html',
+		title: '@meemoo/react-components | Rollup Visualizer',
+	}),
 ];
 
-const commonExternal = [
+const external = [
 	'autosize',
+	'clsx',
 	'react',
 	'react-dom',
 	'react-popper',
 	'react-select',
 	'react-select/creatable',
+	'react-table',
 ];
 
-const excludeV1 = {
-	exclude: ['node_modules', 'src/v1'],
+// It's possible to pass custom cli arguments through rollup
+// For more info: https://rollupjs.org/guide/en/#configuration-files
+export default (cliArgs) => {
+	return [
+		{
+			input: ['src/index.ts'],
+			output: getOutput(),
+			plugins: getPlugins({ visualizerConfig: { open: cliArgs['config-analyze'] } }),
+			external,
+		},
+	];
 };
-const includeV1 = {
-	include: ['src/v1'],
-};
-
-export default [
-	{
-		input: ['src/index.ts'],
-		output: getOutput(),
-		plugins: getPlugins({ typescriptConfig: { tsconfigOverride: excludeV1 } }),
-		external: [...commonExternal, 'clsx'],
-	},
-	{
-		input: ['src/v1/index.ts', 'src/v1/wysiwyg.ts'],
-		output: getOutput('v1'),
-		plugins: getPlugins({ typescriptConfig: { check: false, tsconfigOverride: includeV1 } }),
-		external: [
-			...commonExternal,
-			'braft-editor',
-			'braft-extensions/dist/table.css',
-			'braft-editor/dist/index.css',
-			'braft-extensions/dist/table',
-			'classnames',
-			'date-fns',
-			'date-fns/locale/nl',
-			'react-datepicker',
-			'react-datepicker/dist/react-datepicker.css',
-			'marked',
-			'moment',
-			'moment/locale/nl-be',
-			'raf',
-			'react-range',
-			'lodash-es',
-			'@storybook/addon-actions',
-			'react-perfect-scrollbar',
-			'react-perfect-scrollbar/dist/css/styles.css',
-		],
-	},
-];

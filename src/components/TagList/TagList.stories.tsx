@@ -4,7 +4,7 @@ import { loremIpsum } from 'lorem-ipsum';
 import React, { cloneElement, ReactElement, useState } from 'react';
 
 import TagList from './TagList';
-import { tags } from './__mocks__';
+import { tags } from './__mocks__/tag-list';
 
 const TagListStoryComponent = ({ children }: { children: ReactElement }) => {
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);

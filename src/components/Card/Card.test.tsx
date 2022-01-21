@@ -2,7 +2,7 @@ import { render, RenderResult, screen } from '@testing-library/react'; //eslint-
 import React from 'react';
 
 import Card from './Card';
-import { galaxy, title } from './Card.mock';
+import { cardImageMock, cardTitleMock } from './__mocks__/card';
 
 const subtitle = '(1 Dec. 2021)';
 const toolbar = 'Toolbar content';
@@ -13,14 +13,14 @@ describe('Component: <Card />', () => {
 
 	beforeEach(() => {
 		rendered = render(
-			<Card image={galaxy} title={title} subtitle={subtitle} toolbar={toolbar}>
+			<Card image={cardImageMock} title={cardTitleMock} subtitle={subtitle} toolbar={toolbar}>
 				{children}
 			</Card>
 		);
 	});
 
 	it('Should show a title', () => {
-		expect(screen.getByText(title)).toBeDefined();
+		expect(screen.getByText(cardTitleMock)).toBeDefined();
 	});
 
 	it('Should show a subtitle', () => {

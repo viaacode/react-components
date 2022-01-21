@@ -164,7 +164,6 @@ fabric.properties
 # Logs
 logs
 *.log
-npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
@@ -219,9 +218,6 @@ jspm_packages
 # Project-specific
 # --------------------------------------------------------------------------- /
 
-# Create React App
-# ---
-
 # dependencies
 /node_modules
 /.pnp
@@ -233,6 +229,7 @@ jspm_packages
 # production
 /build
 /dist
+storybook-static
 
 # rollup
 .rpt2_cache
@@ -244,10 +241,10 @@ jspm_packages
 .env.test.local
 .env.production.local
 
-npm-debug.log*
+# Log files
 yarn-debug.log*
 yarn-error.log*
 
-storybook-static
-
+# Generated outputs
 licenses.csv
+bundle-stats.html
