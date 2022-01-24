@@ -1,0 +1,15 @@
+$c: "c-avatar";
+
+.#{$c} {
+    display: flex;
+    align-items: center;
+
+    &__image {
+        line-height: 1;
+        min-width: 1em;
+        min-height: 1em;
+        border-radius: 50%;
+        text-align: center;
+        overflow: hidden;
+    }
+}
