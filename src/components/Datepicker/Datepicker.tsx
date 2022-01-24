@@ -6,6 +6,7 @@ import { getVariantClasses } from '../../utils';
 
 import { DatepickerProps } from './Datepicker.types';
 
+import 'react-datepicker/dist/react-datepicker.min.css';
 import './Datepicker.scss';
 
 const Datepicker: FC<DatepickerProps> = (props) => {
