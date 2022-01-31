@@ -1,15 +1,9 @@
-import { ChangeEvent, FocusEvent } from 'react';
+import { TextareaHTMLAttributes } from 'react';
 
 import { DefaultComponentProps } from '../../types';
 
-export interface TextAreaProps extends DefaultComponentProps {
+export type HTMLTextAreaAttrs = TextareaHTMLAttributes<HTMLTextAreaElement>;
+
+export interface TextAreaProps extends DefaultComponentProps, HTMLTextAreaAttrs {
 	autoHeight?: boolean;
-	disabled?: boolean;
-	id?: string;
-	name?: string;
-	placeholder?: string;
-	rows?: number;
-	value?: string;
-	onBlur?: (event: FocusEvent<HTMLTextAreaElement>) => void;
-	onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
 }

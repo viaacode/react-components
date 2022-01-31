@@ -48,6 +48,7 @@ module.exports = {
 				],
 			},
 		],
+		'import/no-cycle': 'error',
 
 		'react/display-name': 'off',
 		'react/self-closing-comp': 'warn',
