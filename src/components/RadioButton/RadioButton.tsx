@@ -1,40 +1,48 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { forwardRef } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 
 import { RadioButtonProps } from './RadioButton.types';
 
-const RadioButton: FC<RadioButtonProps> = ({
-	className,
-	label,
-	id,
-	disabled = false,
-	checked = false,
-	rootClassName: root = 'c-radio-button',
-	variants,
-	onChange = () => null,
-}) => {
-	const bem = bemCls.bind(root);
-	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
-		[bem('', 'checked')]: checked,
-		[bem('', 'disabled')]: disabled,
-	});
+const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
+	(
+		{
+			checked = false,
+			className,
+			disabled = false,
+			label,
+			rootClassName: root = 'c-radio-button',
+			value,
+			variants,
+			onChange = () => null,
+			...radioButtonProps
+		},
+		ref
+	) => {
+		const bem = bemCls.bind(root);
+		const rootCls = clsx(className, root, getVariantClasses(root, variants), {
+			[bem('', 'checked')]: checked,
+			[bem('', 'disabled')]: disabled,
+		});
 
-	return (
-		<label className={rootCls}>
-			<input
-				className={bem('input')}
-				type="radio"
-				id={id}
-				checked={checked}
-				disabled={disabled}
-				onChange={onChange}
-			/>
-			<span className={bem('check-icon')} />
-			<span className={bem('label')}>{label}</span>
-		</label>
-	);
-};
+		return (
+			<label className={rootCls}>
+				<input
+					{...radioButtonProps}
+					checked={checked}
+					className={bem('input')}
+					disabled={disabled}
+					ref={ref}
+					type="radio"
+					value={value}
+					onChange={onChange}
+				/>
+				<span className={bem('check-icon')} />
+				<span className={bem('label')}>{label}</span>
+			</label>
+		);
+	}
+);
 
 export default RadioButton;

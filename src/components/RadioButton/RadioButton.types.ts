@@ -1,11 +1,7 @@
-import { ChangeEvent, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
-import { DefaultComponentProps } from '../../types';
+import { DefaultComponentProps, HTMLInputAttrs } from '../../types';
 
-export interface RadioButtonProps extends DefaultComponentProps {
-	checked?: boolean;
-	disabled?: boolean;
-	id?: string;
+export interface RadioButtonProps extends DefaultComponentProps, HTMLInputAttrs {
 	label: string | ReactNode;
-	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }

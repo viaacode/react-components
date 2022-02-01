@@ -32,7 +32,7 @@ describe('components/<TextInput />', () => {
 		const id = 'input-id';
 		const placeholder = 'placeholder';
 		const type = 'tel';
-		renderTextInput({ ariaLabel, id, placeholder, type });
+		renderTextInput({ ['aria-label']: ariaLabel, id, placeholder, type });
 
 		const input = screen.queryByDisplayValue(mockValue);
 		expect(input).toHaveAttribute('aria-label', ariaLabel);
