@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "prepare": "husky install",
+    "preversion": "npm run lint && npm test && npm run type-check",
     "prebuild": "rimraf dist",
     "build": "rollup -c",
     "build:analyze": "npm run build -- --config-analyze",

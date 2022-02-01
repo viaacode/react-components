@@ -62,10 +62,11 @@ The current flow for publishing differs a bit from how it should be.
 For releasing a new version follow the next steps:
 * Make sure everything that needs to go in the next release is merged to the current release branch.
 * Switch to the release branch and make sure eveything is good to go.
-	* Run these commands to make sure: `npm run lint && npm test && npm run type-check`.
-* If no warnings or errors pops up we can proceed to mark the next version.
-	* Run `npm version patch|minor|major` to bump the version number in package.json.
-		* This version should be the same as the current release branch.
+* Run `npm version patch|minor|major` to bump the version number in package.json.
+	* This version should be the same as the current release branch.
+	* Running `npm version` will also run a pre lifecycle script executing the following commands:
+	`npm run lint && npm test && npm run type-check`.
+	* If warnings or errors pop up make sure to fix those first.
 	* When successful there will be a new commit and git tag marking the new version.
 * Push the new commit and git tag to the release branch.
 * Open a PR from the current release branch to master.
