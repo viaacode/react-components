@@ -16,5 +16,6 @@ module.exports = {
 		/* Handle deps */
 		'^lodash-es$': '<rootDir>/node_modules/lodash/index.js',
 	},
+	roots: ['<rootDir>/src'],
 	testEnvironment: 'jsdom',
 };
