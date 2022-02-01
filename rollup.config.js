@@ -25,7 +25,12 @@ const getPlugins = ({ typescriptConfig = {}, visualizerConfig } = DEFAULT_PLUGIN
 		plugins: [autoprefixer()],
 		minimize: true,
 	}),
-	typescript({ clean: true, check: true, ...typescriptConfig }),
+	typescript({
+		clean: true,
+		check: true,
+		tsconfig: './tsconfig.build.json',
+		...typescriptConfig,
+	}),
 	commonjs(),
 	terser(),
 	visualizer({
