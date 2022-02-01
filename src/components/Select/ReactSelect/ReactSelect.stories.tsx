@@ -3,7 +3,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React, { cloneElement, FC, ReactElement, useState } from 'react';
 import { ActionMeta, OnChangeValue } from 'react-select';
 
-import { SelectOption } from '..';
+import { SelectOption } from '../Select.types';
 import { selectOptionsMock } from '../__mocks__/select';
 
 import ReactSelect from './ReactSelect';
