@@ -56,24 +56,59 @@ Other available commands are:
 
 ## Deploy
 
-Steps to deploy:
-* update package.json version to match release branch version
-* merge release branch into master
-* add tag on master + push the tag (format: v1.1.1)
-* goto jenkins to start a build or wait up to 20 minutes for an automatic build
-    * only available on the meemoo vpn
-    * https://jenkins-ci-cd.apps.do-prd-okp-m0.do.viaa.be/securityRealm/commenceLogin?from=%2Fjob%2Fci-cd%2F
-    * password in 1password (VIAA jenkins login)
-    * go to ci-cd
-    * click on ci-cd/avo2-components-dev
-    * click build now
-    * click console output to follow the build
-* When the build succeeds you should see the version of the npm package in the viaa npm repository:
-    * http://do-prd-mvn-01.do.viaa.be:8081/#browse/browse:npm-viaa:%40viaa
-    * same login as jenkins
-* You can now update the package version in the client and run npm install
-    * Make sure you're conected with the viaa vpn for npm install to succeed
-    * The meemoo packages are under @meemoo namespace
+For our deployment flow take a look at the official [meemoo docs for CI/CD](https://github.com/viaacode/ci-cd-docs/tree/main).
+
+The current flow for publishing differs a bit from how it should be.  
+For releasing a new version follow the next steps:
+* Make sure everything that needs to go in the next release is merged to the current release branch.
+* Switch to the release branch and make sure eveything is good to go.
+	* Run these commands to make sure: `npm run lint && npm test && npm run type-check`.
+* If no warnings or errors pops up we can proceed to mark the next version.
+	* Run `npm version patch|minor|major` to bump the version number in package.json.
+		* This version should be the same as the current release branch.
+	* When successful there will be a new commit and git tag marking the new version.
+* Push the new commit and git tag to the release branch.
+* Open a PR from the current release branch to master.
+	* When approved and merged a build and publish will be automatically triggered in the CI/CD
+	pipeline
+
+### Branching model
+
+Important in the deployment flow is the branching model. Ours differs a bit from the official docs
+but it changes nothing to the deploy flow.  
+Below you can find an explanation and example of each branch:
+
+**Feature**:
+
+Used for creating new features or refactoring. Usually associated with a Task issue in Jira.  
+If this is the case don't forget to include the correct ticket number in the branch.
+
+*example*: `feature/ARC-1-button-component`, `feature/update-readme`
+
+**Bugfix**:
+
+Used for fixing bugs that arise during development or after testing. Usually associated with a bug
+issue in Jira.  
+If this is the case don't forget to include the correct ticket number in the branch.
+
+*example*: `bugfix/ARC-1-button-component`, `bugfix/typo-in-readme`
+
+**Release**:
+
+Used during development to mark the next release we will be publishing.  
+Once a new version is ready, the release branch can be merged into `master`.  
+This will automatically publish to meemooo's nexus.
+
+*example*: `release/v1.0.0`
+
+**Master**:
+
+Used for publishing to [meemoo's nexus](http://do-prd-mvn-01.do.viaa.be:8081/#browse/browse:npm-viaa:%40meemoo%2Freact-components).  
+Opening PR's to master will also perform several checks to make sure code is passing all tests and
+the build doesn't fail.  
+Pushing a tag to master will deploy to PRD.
+
+*branch name*: `master`
 
 ## Team
 
