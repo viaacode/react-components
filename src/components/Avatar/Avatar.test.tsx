@@ -49,7 +49,7 @@ describe('<Avatar />', () => {
 		const variants = ['black'];
 		const { getByText } = renderAvatar({ text, className, variants });
 
-		const avatar = getByText(text);
+		const avatar = getByText(text).parentElement;
 
 		expect(avatar).toHaveClass('c-avatar');
 		expect(avatar).toHaveClass(className);

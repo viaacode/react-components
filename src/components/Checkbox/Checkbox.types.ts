@@ -1,12 +1,8 @@
-import { ChangeEvent, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
-import { DefaultComponentProps } from '../../types';
+import { DefaultComponentProps, HTMLInputAttrs } from '../../types';
 
-export interface CheckboxProps extends DefaultComponentProps {
-	checked?: boolean;
+export interface CheckboxProps extends DefaultComponentProps, HTMLInputAttrs {
 	checkIcon?: ReactNode;
-	disabled?: boolean;
-	id?: string;
 	label: string | ReactNode;
-	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }

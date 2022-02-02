@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "prepare": "husky install",
+    "preversion": "npm run lint && npm test && npm run type-check",
     "prebuild": "rimraf dist",
     "build": "rollup -c",
     "build:analyze": "npm run build -- --config-analyze",
@@ -30,6 +31,7 @@
     "test": "jest --cache",
     "test:watch": "npm run test -- --watch",
     "test:output": "cross-env CI=true jest --json --outputFile=.storybook/test-results.json",
+    "type-check": "tsc --noEmit",
     "licenses": "license-checker --csv --out licenses.csv",
     "snyk-protect": "snyk protect"
   },

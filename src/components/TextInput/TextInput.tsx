@@ -8,21 +8,18 @@ import { TextInputProps } from './TextInput.types';
 const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProps>(
 	(
 		{
-			ariaLabel,
 			className,
 			disabled = false,
 			iconEnd = null,
 			iconStart = null,
-			id,
-			onBlur = () => null,
-			onChange = () => null,
-			onClick,
-			onKeyUp = () => null,
-			placeholder,
 			rootClassName: root = 'c-input',
 			type = 'text',
-			value = '',
 			variants,
+			value = '',
+			onChange = () => null,
+			onContainerClick,
+			onContainerKeyUp = () => null,
+			...inputProps
 		},
 		ref
 	) => {
@@ -32,6 +29,12 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 			[bem('', 'icon-start')]: iconStart,
 			[bem('', 'icon-end')]: iconEnd,
 		});
+
+		const hasContainerEvents = !!onContainerClick || !!onContainerKeyUp;
+
+		/**
+		 * Render
+		 */
 
 		const renderIcon = (iconNode: ReactNode, side?: 'start' | 'end') => (
 			<span
@@ -46,24 +49,20 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 		return (
 			<div
 				className={rootCls}
-				role={onClick ? 'button' : undefined}
-				tabIndex={onClick ? 0 : -1}
-				onClick={onClick}
-				onKeyUp={(e) => e.key === 'Enter' && onClick && onClick(e)}
+				role={hasContainerEvents ? 'button' : undefined}
+				tabIndex={hasContainerEvents ? 0 : undefined}
+				onClick={onContainerClick}
+				onKeyUp={onContainerKeyUp}
 			>
 				{iconStart && renderIcon(iconStart, 'start')}
 				<input
-					{...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
+					{...inputProps}
 					className={bem('field')}
-					type={type}
-					id={id}
-					value={value}
 					disabled={disabled}
-					placeholder={placeholder}
-					onBlur={onBlur}
-					onChange={onChange}
-					onKeyUp={onKeyUp}
 					ref={ref}
+					type={type}
+					value={value}
+					onChange={onChange}
 				/>
 				{iconEnd && renderIcon(iconEnd, 'end')}
 			</div>

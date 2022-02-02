@@ -4,10 +4,15 @@ import React from 'react';
 import Checkbox from './Checkbox';
 import { CheckboxProps } from './Checkbox.types';
 
-const mockLabel = ' Check me!';
+const mockLabel = 'Check me!';
+const mockValue = 'check-value';
 
-const renderCheckbox = ({ label = mockLabel, ...rest }: Partial<CheckboxProps>) => {
-	return render(<Checkbox {...rest} label={label} />);
+const renderCheckbox = ({
+	label = mockLabel,
+	value = mockValue,
+	...rest
+}: Partial<CheckboxProps>) => {
+	return render(<Checkbox {...rest} label={label} value={value} />);
 };
 
 describe('components/<Checkbox />', () => {
@@ -33,21 +38,52 @@ describe('components/<Checkbox />', () => {
 	});
 
 	it('Should be able to be disabled', () => {
-		const { container } = renderCheckbox({ disabled: true });
+		const { container, queryByDisplayValue } = renderCheckbox({ disabled: true });
 
 		const checkbox = container.querySelector('label');
-		const input = container.querySelector('input');
+		const input = queryByDisplayValue(mockValue);
 		expect(checkbox).toHaveClass('c-checkbox--disabled');
 		expect(input).toHaveAttribute('disabled');
 	});
 
 	it('Should be able to set as checked', () => {
-		const { container } = renderCheckbox({ checked: true });
+		const { container, queryByDisplayValue } = renderCheckbox({ checked: true });
 
 		const checkbox = container.querySelector('label');
-		const input = checkbox?.firstChild;
+		const input = queryByDisplayValue(mockValue);
 		expect(checkbox).toHaveClass('c-checkbox--checked');
 		expect(input).toHaveAttribute('checked');
+	});
+
+	it('Should be able to set id and name', () => {
+		const id = 'id-check';
+		const name = 'name-check';
+		const { queryByDisplayValue } = renderCheckbox({ id, name });
+		const input = queryByDisplayValue(mockValue);
+
+		expect(input).toHaveAttribute('id', id);
+		expect(input).toHaveAttribute('name', name);
+	});
+
+	it('Should be able to set a value', () => {
+		const value = 'check';
+		const { queryByDisplayValue } = renderCheckbox({ value });
+		const input = queryByDisplayValue(value);
+
+		expect(input).toHaveAttribute('value', value);
+	});
+
+	it('Should call the onBlur handler when clicked', () => {
+		const onBlur = jest.fn();
+		const { queryByDisplayValue } = renderCheckbox({ onBlur });
+
+		const input = queryByDisplayValue(mockValue) as HTMLInputElement;
+
+		fireEvent.focusIn(input);
+		expect(onBlur).toHaveBeenCalledTimes(0);
+
+		fireEvent.focusOut(input);
+		expect(onBlur).toHaveBeenCalledTimes(1);
 	});
 
 	it('Should call the onChange handler when clicked', () => {
