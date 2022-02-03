@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils';
+import { bemCls, getVariantClasses, getVariantsArray } from '../../utils';
 
 import { Tab } from './Tab';
 import { TabsProps } from './Tabs.types';
@@ -22,6 +22,7 @@ const Tabs: FC<TabsProps> = ({
 				<Tab
 					key={tab.id}
 					className={bem('item')}
+					variants={[...getVariantsArray(tab.variants), ...getVariantsArray(variants)]}
 					{...tab}
 					onClick={() => onClick(tab.id)}
 				/>
