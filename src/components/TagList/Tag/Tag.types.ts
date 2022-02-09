@@ -5,6 +5,10 @@ import { DefaultComponentProps } from '../../../types';
 export interface TagProps extends DefaultComponentProps {
 	active?: boolean;
 	closeIcon?: ReactNode;
+	/**
+	 * Define a custom closeButton replacing the internal <button> element
+	 * You will have to define your own custom logic for the event handlers
+	 */
 	closeButton?: ReactNode;
 	disabled?: boolean;
 	id: string | number;
