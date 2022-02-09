@@ -63,4 +63,12 @@ describe('components/<Tag />', () => {
 		const tagClose = container.querySelector('.c-tag__close') as HTMLElement;
 		expect(tagClose).not.toBeInTheDocument();
 	});
+
+	it('Should render a custom close button when given', () => {
+		const testId = 'close-btn-id';
+		const { queryByTestId } = renderTag({ closeButton: <span data-testid={testId} /> });
+
+		const closeBtn = queryByTestId(testId);
+		expect(closeBtn).toBeInTheDocument();
+	});
 });
