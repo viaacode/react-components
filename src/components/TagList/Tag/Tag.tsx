@@ -8,6 +8,7 @@ import { TagEvents, TagProps } from './Tag.types';
 const Tag: FC<TagProps> = ({
 	active,
 	className,
+	closeButton,
 	closeIcon = 'X',
 	disabled = false,
 	id,
@@ -32,7 +33,9 @@ const Tag: FC<TagProps> = ({
 	};
 
 	const onTagClose = (e: TagEvents<HTMLButtonElement>) => {
-		e.stopPropagation();
+		if (isClickable) {
+			e.stopPropagation();
+		}
 
 		if (!disabled && isClosable) {
 			onClose(id, e);
@@ -50,7 +53,7 @@ const Tag: FC<TagProps> = ({
 		>
 			<span className={bem('label')}>{label}</span>
 
-			{isClosable && (
+			{isClosable && !closeButton ? (
 				<button
 					className={bem('close')}
 					onClick={onTagClose}
@@ -58,6 +61,8 @@ const Tag: FC<TagProps> = ({
 				>
 					{closeIcon}
 				</button>
+			) : (
+				closeButton
 			)}
 		</div>
 	);
