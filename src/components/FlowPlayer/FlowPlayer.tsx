@@ -1,18 +1,14 @@
-/**
- * This component assumes these files are loaded in the index.html of your project
- *   <link rel="stylesheet" href="/flowplayer/style/flowplayer.css">
- *   <script src="/flowplayer/flowplayer.min.js"></script>
- *   <script src="/flowplayer/plugins/chromecast.min.js"></script>
- *   <script src="/flowplayer/plugins/airplay.min.js"></script>
- *   <script src="/flowplayer/plugins/subtitles.min.js"></script>
- *   <script src="/flowplayer/plugins/hls.min.js"></script>
- *   <script src="/flowplayer/plugins/cuepoints.min.js"></script>
- *   <script src="/flowplayer/plugins/google-analytics.min.js"></script>
- */
-
+import flowplayer, { Config, Player } from '@flowplayer/player';
+import airplayPlugin from '@flowplayer/player/plugins/airplay';
+import chromecastPlugin from '@flowplayer/player/plugins/chromecast';
+import googleAnalyticsPlugin from '@flowplayer/player/plugins/google-analytics';
+import hlsPlugin from '@flowplayer/player/plugins/hls';
+import speedPlugin from '@flowplayer/player/plugins/speed';
+import subtitlesPlugin from '@flowplayer/player/plugins/subtitles';
 import classnames from 'classnames';
 import React, { createRef } from 'react';
 
+import '@flowplayer/player/flowplayer.css';
 import './FlowPlayer.scss';
 import {
 	FlowplayerInstance,
@@ -21,7 +17,14 @@ import {
 	GoogleAnalyticsEvent,
 } from './FlowPlayer.types';
 
-declare const flowplayer: any;
+flowplayer(
+	airplayPlugin,
+	chromecastPlugin,
+	googleAnalyticsPlugin,
+	hlsPlugin,
+	speedPlugin,
+	subtitlesPlugin
+);
 
 export const convertGAEventsArrayToObject = (googleAnalyticsEvents: GoogleAnalyticsEvent[]) => {
 	return googleAnalyticsEvents.reduce((acc: any, curr: GoogleAnalyticsEvent) => {
@@ -67,19 +70,6 @@ export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlaye
 		if (flowPlayerInstance) {
 			if (nextProps.seekTime !== this.props.seekTime && nextProps.seekTime) {
 				flowPlayerInstance.currentTime = nextProps.seekTime;
-			}
-
-			if (nextProps.start !== this.props.start || nextProps.end !== this.props.end) {
-				if (this.videoContainerRef) {
-					flowPlayerInstance.emit(flowplayer.events.CUEPOINTS, {
-						cuepoints: [
-							{
-								start: nextProps.start,
-								end: nextProps.end,
-							},
-						],
-					});
-				}
 			}
 
 			// Pause video when modal opens in front
@@ -176,12 +166,6 @@ export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlaye
 		}
 	}
 
-	private static cuePointEndListener(flowplayerInstance: FlowplayerInstance | null | undefined) {
-		if (flowplayerInstance) {
-			flowplayerInstance.pause();
-		}
-	}
-
 	private static noop() {
 		// do nothing.
 	}
@@ -193,68 +177,52 @@ export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlaye
 			return;
 		}
 
-		const flowplayerInstance: FlowplayerInstance = flowplayer(this.videoContainerRef.current, {
-			// DATA
-			src: props.src,
-			token: props.token,
-			poster: props.poster,
+		const testPlayer = flowplayer;
+		console.log(testPlayer);
+		const flowplayerInstance: Player = flowplayer(
+			this.videoContainerRef.current as HTMLElement,
+			{
+				// DATA
+				src: props.src,
+				token: props.token,
+				poster: props.poster,
 
-			// CONFIGURATION
-			autoplay: props.autoplay,
-			ui: flowplayer.ui.LOGO_ON_RIGHT | flowplayer.ui.USE_DRAG_HANDLE,
-			plugins: ['speed', 'subtitles', 'chromecast', 'cuepoints', 'hls', 'ga'],
-			preload: props.preload || (!props.poster ? 'metadata' : 'none'),
+				// CONFIGURATION
+				autoplay: props.autoplay,
+				ui: (flowplayer as any).ui.LOGO_ON_RIGHT | (flowplayer as any).ui.USE_DRAG_HANDLE,
+				preload: props.preload || (!props.poster ? 'metadata' : 'none'),
 
-			speed: {
-				options: [0.2, 0.5, 1, 2, 10],
-				labels: ['0.2x', '0.5x', '1x', '2x', '10x'],
-			},
+				speed: {
+					options: [0.2, 0.5, 1, 2, 10],
+					labels: ['0.2x', '0.5x', '1x', '2x', '10x'],
+				},
 
-			// CUEPOINTS
-			...(props.end
-				? {
-						cuepoints: [
-							{
-								start: props.start,
-								end: props.end,
-							},
-						],
-				  }
-				: {}), // Only set cuepoints if end is passed
-			draw_cuepoints: true,
+				// SUBTITLES
+				subtitles: {
+					tracks: props.subtitles,
+				},
 
-			// SUBTITLES
-			subtitles: {
-				tracks: props.subtitles,
-			},
+				// CHROMECAST
+				chromecast: {
+					app: chromecastPlugin.apps.STABLE,
+				},
 
-			// CHROMECAST
-			chromecast: {
-				app: flowplayer.chromecast.apps.STABLE,
-			},
-
-			// GOOGLE ANALYTICS
-			ga: props.googleAnalyticsId
-				? {
-						ga_instances: [props.googleAnalyticsId],
-						event_actions: props.googleAnalyticsEvents
-							? convertGAEventsArrayToObject(props.googleAnalyticsEvents)
-							: {},
-						media_title: props.googleAnalyticsTitle || props.title,
-				  }
-				: {},
-		});
+				// GOOGLE ANALYTICS
+				ga: props.googleAnalyticsId
+					? {
+							ga_instances: [props.googleAnalyticsId],
+							event_actions: props.googleAnalyticsEvents
+								? convertGAEventsArrayToObject(props.googleAnalyticsEvents)
+								: {},
+							media_title: props.googleAnalyticsTitle || props.title,
+					  }
+					: {},
+			} as Config
+		);
 
 		if (!flowplayerInstance) {
 			console.error('Failed to init flow player');
 			return;
-		}
-
-		// Pause video at end cuepoint
-		if (props.end) {
-			flowplayerInstance.on(flowplayer.events.CUEPOINT_END, () =>
-				FlowPlayer.cuePointEndListener(flowplayerInstance)
-			);
 		}
 
 		flowplayerInstance.on('error', (err: unknown) => {
@@ -266,12 +234,6 @@ export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlaye
 		flowplayerInstance.on('playing', () => {
 			if (!this.state.startedPlaying) {
 				// First time playing the video
-				// Jump to first cue point if exists:
-				if (props.start) {
-					//  deepcode ignore React-propsUsedInStateUpdateMethod: Flowplayer is not aware of react
-					flowplayerInstance.currentTime = props.start;
-				}
-
 				if (this.props.onPlay) {
 					this.props.onPlay();
 				}
