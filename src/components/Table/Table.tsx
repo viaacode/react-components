@@ -47,7 +47,7 @@ const Table: FC<TableProps<object>> = ({
 
 	useEffect(() => {
 		onSortChange && onSortChange(sortBy);
-	}, [sortBy, onSortChange]);
+	}, [sortBy]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	// Render
 
