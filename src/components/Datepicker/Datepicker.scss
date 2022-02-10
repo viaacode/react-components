@@ -1,7 +1,7 @@
 $vendor-c: "react-datepicker";
-$c: "c-datepicker";
+$component: "c-datepicker";
 
-.#{$c} {
+.#{$component} {
     .#{$vendor-c}__current-month {
         &.#{$vendor-c}__current-month--hasYearDropdown.#{$vendor-c}__current-month--hasMonthDropdown,
         &.#{$vendor-c}__current-month--hasMonthYearDropdown {
