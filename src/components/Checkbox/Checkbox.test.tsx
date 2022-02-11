@@ -37,6 +37,13 @@ describe('components/<Checkbox />', () => {
 		expect(label).toHaveTextContent(customLabel);
 	});
 
+	it('Should not render a label element when no label is given', () => {
+		const { container } = renderCheckbox({ label: null });
+
+		const label = container.querySelector('.c-checkbox__label');
+		expect(label).not.toBeInTheDocument();
+	});
+
 	it('Should be able to be disabled', () => {
 		const { container, queryByDisplayValue } = renderCheckbox({ disabled: true });
 
