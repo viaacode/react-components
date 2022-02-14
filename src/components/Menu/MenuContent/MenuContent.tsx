@@ -25,7 +25,7 @@ const MenuContent: FC<MenuContentProps> = ({
 			<div
 				className={rootCls}
 				onClick={() => onClick(menuItemInfo.id)}
-				onKeyPress={(e) => (e.key === 'Space' ? onClick(menuItemInfo.id) : () => null)}
+				onKeyPress={(e) => (e.key === ' ' ? onClick(menuItemInfo.id) : () => null)}
 				role="menuitem"
 				tabIndex={0}
 				key={`menu-item-${menuItemInfo.id ?? index}`}
