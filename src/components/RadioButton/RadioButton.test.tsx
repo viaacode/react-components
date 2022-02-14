@@ -32,6 +32,13 @@ describe('components/<RadioButton />', () => {
 		expect(label).toHaveTextContent(customLabel);
 	});
 
+	it('Should not render a label element when no label is given', () => {
+		const { container } = renderRadioButton({ label: null });
+
+		const label = container.querySelector('.c-radio-button__label');
+		expect(label).not.toBeInTheDocument();
+	});
+
 	it('Should be able to be disabled', () => {
 		const { container } = renderRadioButton({ disabled: true });
 

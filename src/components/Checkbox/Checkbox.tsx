@@ -40,7 +40,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 					onChange={onChange}
 				/>
 				<span className={bem('check-icon')}>{checkIcon}</span>
-				<span className={bem('label')}>{label}</span>
+				{label && <span className={bem('label')}>{label}</span>}
 			</label>
 		);
 	}

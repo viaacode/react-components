@@ -39,7 +39,7 @@ const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
 					onChange={onChange}
 				/>
 				<span className={bem('check-icon')} />
-				<span className={bem('label')}>{label}</span>
+				{label && <span className={bem('label')}>{label}</span>}
 			</label>
 		);
 	}
