@@ -1,6 +1,7 @@
 import flowplayer, { Config, Player } from '@flowplayer/player';
 import airplayPlugin from '@flowplayer/player/plugins/airplay';
 import chromecastPlugin from '@flowplayer/player/plugins/chromecast';
+import cuepointsPlugin from '@flowplayer/player/plugins/cuepoints';
 import googleAnalyticsPlugin from '@flowplayer/player/plugins/google-analytics';
 import hlsPlugin from '@flowplayer/player/plugins/hls';
 import speedPlugin from '@flowplayer/player/plugins/speed';
@@ -23,7 +24,8 @@ flowplayer(
 	googleAnalyticsPlugin,
 	hlsPlugin,
 	speedPlugin,
-	subtitlesPlugin
+	subtitlesPlugin,
+	cuepointsPlugin
 );
 
 export const convertGAEventsArrayToObject = (googleAnalyticsEvents: GoogleAnalyticsEvent[]) => {
@@ -70,6 +72,19 @@ export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlaye
 		if (flowPlayerInstance) {
 			if (nextProps.seekTime !== this.props.seekTime && nextProps.seekTime) {
 				flowPlayerInstance.currentTime = nextProps.seekTime;
+			}
+
+			if (nextProps.start !== this.props.start || nextProps.end !== this.props.end) {
+				if (this.videoContainerRef) {
+					flowPlayerInstance.emit(flowplayer.events.CUEPOINTS, {
+						cuepoints: [
+							{
+								start: nextProps.start,
+								end: nextProps.end,
+							},
+						],
+					});
+				}
 			}
 
 			// Pause video when modal opens in front
@@ -177,8 +192,6 @@ export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlaye
 			return;
 		}
 
-		const testPlayer = flowplayer;
-		console.log(testPlayer);
 		const flowplayerInstance: Player = flowplayer(
 			this.videoContainerRef.current as HTMLElement,
 			{
@@ -196,6 +209,19 @@ export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlaye
 					options: [0.2, 0.5, 1, 2, 10],
 					labels: ['0.2x', '0.5x', '1x', '2x', '10x'],
 				},
+
+				// CUEPOINTS
+				...(props.end
+					? {
+							cuepoints: [
+								{
+									start: props.start,
+									end: props.end,
+								},
+							],
+					  }
+					: {}), // Only set cuepoints if end is passed
+				draw_cuepoints: true,
 
 				// SUBTITLES
 				subtitles: {
