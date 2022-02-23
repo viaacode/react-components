@@ -297,9 +297,9 @@ export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlaye
 
 	render() {
 		return (
-			<div className={classnames(this.props.className, 'c-video-player')}>
+			<div className={this.props.className + ' c-video-player'}>
 				<div
-					className={classnames('c-video-player-inner')}
+					className={'c-video-player-inner'}
 					data-player-id={this.props.dataPlayerId}
 					ref={this.videoContainerRef}
 				/>
