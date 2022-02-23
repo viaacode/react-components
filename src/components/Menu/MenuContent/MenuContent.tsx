@@ -5,6 +5,8 @@ import { bemCls, getVariantClasses } from '../../../utils';
 
 import { MenuContentProps, MenuItemInfo } from './MenuContent.types';
 
+import './MenuContent.scss';
+
 const MenuContent: FC<MenuContentProps> = ({
 	className,
 	menuItems,
@@ -15,17 +17,21 @@ const MenuContent: FC<MenuContentProps> = ({
 	variants,
 }) => {
 	const bem = bemCls.bind(root);
-	const rootCls = clsx(className, bem('item'), getVariantClasses(root, variants));
+	const rootCls = clsx(
+		className,
+		bem('item'),
+		getVariantClasses(root, variants),
+		'c-menu-content-item'
+	);
 
 	const renderMenuItem = (menuItemInfo: MenuItemInfo, index: number) => {
 		if (renderItem) {
 			return renderItem(menuItemInfo);
 		}
 		return (
-			<div
+			<button
 				className={rootCls}
 				onClick={() => onClick(menuItemInfo.id)}
-				onKeyPress={(e) => (e.key === 'Space' ? onClick(menuItemInfo.id) : () => null)}
 				role="menuitem"
 				tabIndex={0}
 				key={`menu-item-${menuItemInfo.id ?? index}`}
@@ -35,7 +41,7 @@ const MenuContent: FC<MenuContentProps> = ({
 					{menuItemInfo.label}
 					{menuItemInfo.iconEnd && menuItemInfo.iconEnd}
 				</div>
-			</div>
+			</button>
 		);
 	};
 
