@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 import ContentInput from './ContentInput';
 
@@ -8,11 +8,23 @@ export default {
 	component: ContentInput,
 } as ComponentMeta<typeof ContentInput>;
 
-const Template: ComponentStory<typeof ContentInput> = (args) => <ContentInput {...args} />;
+const Template: ComponentStory<typeof ContentInput> = (props) => {
+	const [value, setValue] = useState('');
+
+	return (
+		<ContentInput
+			{...props}
+			onChange={(e) => {
+				setValue(e.target.value);
+			}}
+			value={value}
+		/>
+	);
+};
 
 export const Default = Template.bind({});
 Default.args = {
 	iconStart: '+',
 	onCancel: () => console.info('cancel'),
-	onConfirm: () => console.info('confirm'),
+	onConfirm: (v) => console.info('confirm', v),
 };
