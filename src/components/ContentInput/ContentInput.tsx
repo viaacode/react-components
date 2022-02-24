@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { FC, forwardRef, ReactNode, useMemo, useState } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
+import { keyUpConfirm } from '../../utils/key-up-confirm';
 import { TextInputDefaults } from '../TextInput/TextInput';
 
 import { ContentInputProps } from './ContentInput.types';
@@ -68,6 +69,10 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 
 		const renderIcon = (iconNode: ReactNode, side?: 'start' | 'end') => (
 			<span
+				onClick={onOpenHandler}
+				onKeyUp={(e) => keyUpConfirm(e, () => onOpenHandler())}
+				role="button"
+				tabIndex={0}
 				className={clsx(bem('icon'), {
 					[bem('icon', side)]: side,
 				})}
@@ -79,21 +84,21 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		const renderButtons = () => (
 			<>
 				<div
-					role="button"
-					tabIndex={0}
 					className={bem('submit')}
 					onClick={onConfirmHandler}
-					onKeyUp={onConfirmHandler}
+					onKeyUp={(e) => keyUpConfirm(e, () => onConfirmHandler(e))}
+					role="button"
+					tabIndex={0}
 				>
 					{nodeSubmit}
 				</div>
 
 				<div
-					role="button"
-					tabIndex={0}
 					className={bem('cancel')}
 					onClick={onCancelHandler}
-					onKeyUp={onCancelHandler}
+					onKeyUp={(e) => keyUpConfirm(e, () => onCancelHandler(e))}
+					role="button"
+					tabIndex={0}
 				>
 					{nodeCancel}
 				</div>
@@ -101,13 +106,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		);
 
 		return (
-			<div
-				className={rootCls}
-				role="button"
-				tabIndex={0}
-				onClick={onOpenHandler}
-				onKeyUp={onOpenHandler}
-			>
+			<div className={rootCls}>
 				{iconStart && renderIcon(iconStart, 'start')}
 				{editable && align === 'left' && renderButtons()}
 
@@ -115,10 +114,11 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					{...inputProps}
 					className={bem('field')}
 					disabled={disabled}
+					onChange={onChange}
+					onClick={onOpenHandler}
 					ref={ref}
 					type={type}
 					value={value}
-					onChange={onChange}
 				/>
 
 				{editable && align === 'right' && renderButtons()}

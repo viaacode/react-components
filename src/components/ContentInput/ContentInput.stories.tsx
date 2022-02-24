@@ -11,4 +11,8 @@ export default {
 const Template: ComponentStory<typeof ContentInput> = (args) => <ContentInput {...args} />;
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+	iconStart: '+',
+	onCancel: () => console.info('cancel'),
+	onConfirm: () => console.info('confirm'),
+};
