@@ -108,8 +108,8 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 				onClick={onOpenHandler}
 				onKeyUp={onOpenHandler}
 			>
+				{iconStart && renderIcon(iconStart, 'start')}
 				{editable && align === 'left' && renderButtons()}
-				{!editable && iconStart && renderIcon(iconStart, 'start')}
 
 				<input
 					{...inputProps}
@@ -122,7 +122,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 				/>
 
 				{editable && align === 'right' && renderButtons()}
-				{!editable && iconEnd && renderIcon(iconEnd, 'end')}
+				{iconEnd && renderIcon(iconEnd, 'end')}
 			</div>
 		);
 	}
