@@ -43,16 +43,18 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		 */
 
 		const onOpenHandler = useCallback(() => {
-			if (!disabled) {
+			if (!disabled && !editable) {
 				setEditable(true);
 				onOpen();
 			}
-		}, [onOpen, disabled]);
+		}, [onOpen, disabled, editable]);
 
 		const onCloseHandler = useCallback(() => {
-			setEditable(false);
-			onClose();
-		}, [onClose]);
+			if (editable) {
+				setEditable(false);
+				onClose();
+			}
+		}, [onClose, editable]);
 
 		const onConfirmHandler = useMemo(
 			() => (e: { stopPropagation: () => void }) => {
