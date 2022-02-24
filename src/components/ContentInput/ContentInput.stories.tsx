@@ -11,3 +11,4 @@ export default {
 const Template: ComponentStory<typeof ContentInput> = (args) => <ContentInput {...args} />;
 
 export const Default = Template.bind({});
+Default.args = {};

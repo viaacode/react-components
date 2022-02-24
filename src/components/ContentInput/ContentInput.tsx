@@ -38,7 +38,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		 * Events
 		 */
 
-		const onOpenhandler = () => setEditable(true);
+		const onOpenHandler = () => !disabled && setEditable(true);
 		const onCloseHandler = () => setEditable(false);
 
 		const onConfirmHandler = useMemo(
@@ -80,8 +80,8 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 				className={rootCls}
 				role="button"
 				tabIndex={0}
-				onClick={onOpenhandler}
-				onKeyUp={onOpenhandler}
+				onClick={onOpenHandler}
+				onKeyUp={onOpenHandler}
 			>
 				{iconStart && renderIcon(iconStart, 'start')}
 
