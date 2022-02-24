@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, forwardRef, ReactNode, useMemo, useState } from 'react';
+import React, { FC, forwardRef, ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 import { keyUpConfirm } from '../../utils/key-up-confirm';
@@ -20,6 +20,8 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 			onCancel = () => null,
 			onChange = TextInputDefaults.onChange,
 			onConfirm = () => null,
+			onOpen = () => null,
+			onClose = () => null,
 			rootClassName: root = 'c-content-input',
 			type = TextInputDefaults.type,
 			value = TextInputDefaults.value,
@@ -40,8 +42,17 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		 * Events
 		 */
 
-		const onOpenHandler = () => !disabled && setEditable(true);
-		const onCloseHandler = () => setEditable(false);
+		const onOpenHandler = useCallback(() => {
+			if (!disabled) {
+				setEditable(true);
+				onOpen();
+			}
+		}, [onOpen, disabled]);
+
+		const onCloseHandler = useCallback(() => {
+			setEditable(false);
+			onClose();
+		}, [onClose]);
 
 		const onConfirmHandler = useMemo(
 			() => (e: { stopPropagation: () => void }) => {
@@ -50,7 +61,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 				onConfirm(value);
 				onCloseHandler();
 			},
-			[onConfirm, value]
+			[onConfirm, onCloseHandler, value]
 		);
 
 		const onCancelHandler = useMemo(
@@ -60,7 +71,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 				onCancel();
 				onCloseHandler();
 			},
-			[onCancel]
+			[onCancel, onCloseHandler]
 		);
 
 		/**
