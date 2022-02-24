@@ -129,6 +129,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					disabled={disabled}
 					onChange={onChange}
 					onClick={onOpenHandler}
+					onKeyUp={(e) => keyUpConfirm(e, () => onConfirmHandler(e))}
 					ref={ref}
 					type={type}
 					value={value}
