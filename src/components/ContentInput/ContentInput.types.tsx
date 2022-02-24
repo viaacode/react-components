@@ -7,4 +7,5 @@ export interface ContentInputProps extends TextInputProps {
 	nodeSubmit?: ReactNode;
 	onCancel?: () => void;
 	onConfirm?: (value: string | ReadonlyArray<string> | number) => void;
+	align?: 'left' | 'right';
 }

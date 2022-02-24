@@ -9,6 +9,7 @@ import { ContentInputProps } from './ContentInput.types';
 const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, ContentInputProps>(
 	(
 		{
+			align = 'right',
 			className,
 			disabled = TextInputDefaults.disabled,
 			iconEnd = TextInputDefaults.iconEnd,
@@ -75,6 +76,30 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 			</span>
 		);
 
+		const renderButtons = () => (
+			<>
+				<div
+					role="button"
+					tabIndex={0}
+					className={bem('submit')}
+					onClick={onConfirmHandler}
+					onKeyUp={onConfirmHandler}
+				>
+					{nodeSubmit}
+				</div>
+
+				<div
+					role="button"
+					tabIndex={0}
+					className={bem('cancel')}
+					onClick={onCancelHandler}
+					onKeyUp={onCancelHandler}
+				>
+					{nodeCancel}
+				</div>
+			</>
+		);
+
 		return (
 			<div
 				className={rootCls}
@@ -83,7 +108,8 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 				onClick={onOpenHandler}
 				onKeyUp={onOpenHandler}
 			>
-				{iconStart && renderIcon(iconStart, 'start')}
+				{editable && align === 'left' && renderButtons()}
+				{!editable && iconStart && renderIcon(iconStart, 'start')}
 
 				<input
 					{...inputProps}
@@ -95,31 +121,8 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					onChange={onChange}
 				/>
 
-				{iconEnd && renderIcon(iconEnd, 'end')}
-
-				{editable && (
-					<>
-						<div
-							role="button"
-							tabIndex={0}
-							className={bem('submit')}
-							onClick={onConfirmHandler}
-							onKeyUp={onConfirmHandler}
-						>
-							{nodeSubmit}
-						</div>
-
-						<div
-							role="button"
-							tabIndex={0}
-							className={bem('cancel')}
-							onClick={onCancelHandler}
-							onKeyUp={onCancelHandler}
-						>
-							{nodeCancel}
-						</div>
-					</>
-				)}
+				{editable && align === 'right' && renderButtons()}
+				{!editable && iconEnd && renderIcon(iconEnd, 'end')}
 			</div>
 		);
 	}
