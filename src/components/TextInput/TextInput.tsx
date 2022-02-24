@@ -5,20 +5,31 @@ import { bemCls, getVariantClasses } from '../../utils';
 
 import { TextInputProps } from './TextInput.types';
 
+export const TextInputDefaults = {
+	disabled: false,
+	iconEnd: null,
+	iconStart: null,
+	rootClassName: 'c-input',
+	type: 'text',
+	value: '',
+	onChange: () => null,
+	onContainerKeyUp: () => null,
+};
+
 const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProps>(
 	(
 		{
 			className,
-			disabled = false,
-			iconEnd = null,
-			iconStart = null,
-			rootClassName: root = 'c-input',
-			type = 'text',
+			disabled = TextInputDefaults.disabled,
+			iconEnd = TextInputDefaults.iconEnd,
+			iconStart = TextInputDefaults.iconStart,
+			rootClassName: root = TextInputDefaults.rootClassName,
+			type = TextInputDefaults.type,
 			variants,
-			value = '',
-			onChange = () => null,
+			value = TextInputDefaults.value,
+			onChange = TextInputDefaults.onChange,
 			onContainerClick,
-			onContainerKeyUp = () => null,
+			onContainerKeyUp = TextInputDefaults.onContainerKeyUp,
 			...inputProps
 		},
 		ref
