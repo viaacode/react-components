@@ -124,9 +124,26 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		);
 
 		return (
-			<div className={rootCls}>
+			<div
+				className={clsx(rootCls, {
+					[bem('', 'open')]: editable,
+					[bem('', 'closed')]: !editable,
+				})}
+			>
 				{iconStart && renderIcon(iconStart, 'start')}
 				{editable && align === 'left' && renderButtons()}
+
+				<span
+					role="button"
+					tabIndex={0}
+					onClick={onOpenHandler}
+					onKeyUp={(e) =>
+						onKeyUp(e, [...keyUpEnter, ...keyUpSpacebar], () => onConfirmHandler(e))
+					}
+					className={bem('value')}
+				>
+					{value}
+				</span>
 
 				<input
 					{...inputProps}
