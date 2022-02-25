@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, forwardRef, ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { FC, forwardRef, ReactNode, useCallback, useMemo, useRef, useState } from 'react';
 
 import { bemCls, getVariantClasses, keyUpEnter, keyUpSpacebar, onKeyUp } from '../../utils';
 import { TextInputDefaults } from '../TextInput/TextInput';
@@ -30,6 +30,8 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		ref
 	) => {
 		const [editable, setEditable] = useState(false);
+		const [instance, setInstance] = useState<HTMLInputElement | null>(null);
+
 		const bem = bemCls.bind(root);
 		const rootCls = clsx(className, root, getVariantClasses(root, variants), {
 			[bem('', 'disabled')]: disabled,
@@ -44,9 +46,10 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		const onOpenHandler = useCallback(() => {
 			if (!disabled && !editable) {
 				setEditable(true);
+				instance?.focus();
 				onOpen();
 			}
-		}, [onOpen, disabled, editable]);
+		}, [onOpen, disabled, editable, instance]);
 
 		const onCloseHandler = useCallback(() => {
 			if (editable) {
@@ -152,7 +155,10 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					onChange={onChange}
 					onClick={onOpenHandler}
 					onKeyUp={(e) => onKeyUp(e, keyUpEnter, () => onConfirmHandler(e))}
-					ref={ref}
+					ref={(element) => {
+						setInstance(element);
+						return ref;
+					}}
 					type={type}
 					value={value}
 				/>
