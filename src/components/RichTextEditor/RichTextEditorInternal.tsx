@@ -2,6 +2,7 @@ import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
 import Table from 'braft-extensions/dist/table';
 import 'braft-extensions/dist/table.css';
+import clsx from 'clsx';
 import React, { FunctionComponent } from 'react';
 
 import './RichTextEditor.scss';
@@ -21,6 +22,8 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorPropsSchema> = ({
 	onTab,
 	onDelete,
 	onSave,
+	rootClassName: root = 'c-rich-text-editor',
+	className,
 }) => {
 	const options = {
 		defaultColumns: 3, //  default number of columns
@@ -155,7 +158,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorPropsSchema> = ({
 	};
 
 	return (
-		<div className={'c-rich-text-editor c-content' + (disabled ? 'disabled' : '')} id={id}>
+		<div className={clsx(root, className, 'c-content', { disabled })} id={id}>
 			<BraftEditor
 				id={id}
 				value={state || BraftEditor.createEditorState(initialHtml || '')}

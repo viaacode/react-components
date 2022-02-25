@@ -70,6 +70,11 @@ const TemplateWithSelect: ComponentStory<typeof RichTextEditor> = (args) => (
 export const Default = Template.bind({});
 Default.args = MOCK_RICH_TEXT_EDITOR_PROPS;
 
+export const Placeholder = Template.bind({});
+Placeholder.args = {
+	placeholder: 'Start typing here...',
+};
+
 export const Disabled = Template.bind({});
 Disabled.args = {
 	...MOCK_RICH_TEXT_EDITOR_PROPS,

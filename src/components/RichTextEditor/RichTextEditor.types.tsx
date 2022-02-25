@@ -32,6 +32,8 @@ export type RichTextEditorControlSchema =
 	| 'separator'; // Split line, continuous multiple separators will only be displayed as 1
 
 export interface RichTextEditorPropsSchema {
+	className?: string;
+	rootClassName?: string;
 	id?: string;
 	initialHtml?: string;
 	state?: RichEditorStateSchema;
