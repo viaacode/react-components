@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, forwardRef, ReactNode, useCallback, useMemo, useRef, useState } from 'react';
+import React, { FC, forwardRef, ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { bemCls, getVariantClasses, keyUpEnter, keyUpSpacebar, onKeyUp } from '../../utils';
 import { TextInputDefaults } from '../TextInput/TextInput';
