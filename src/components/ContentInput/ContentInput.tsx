@@ -1,8 +1,7 @@
 import clsx from 'clsx';
 import React, { FC, forwardRef, ReactNode, useCallback, useMemo, useState } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils';
-import { keyUpConfirm } from '../../utils/key-up-confirm';
+import { bemCls, getVariantClasses, keyUpEnter, keyUpSpacebar, onKeyUp } from '../../utils';
 import { TextInputDefaults } from '../TextInput/TextInput';
 
 import { ContentInputProps } from './ContentInput.types';
@@ -83,7 +82,9 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		const renderIcon = (iconNode: ReactNode, side?: 'start' | 'end') => (
 			<span
 				onClick={onOpenHandler}
-				onKeyUp={(e) => keyUpConfirm(e, () => onOpenHandler())}
+				onKeyUp={(e) =>
+					onKeyUp(e, [...keyUpEnter, ...keyUpSpacebar], () => onOpenHandler())
+				}
 				role="button"
 				tabIndex={0}
 				className={clsx(bem('icon'), {
@@ -99,7 +100,9 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 				<div
 					className={bem('submit')}
 					onClick={onConfirmHandler}
-					onKeyUp={(e) => keyUpConfirm(e, () => onConfirmHandler(e))}
+					onKeyUp={(e) =>
+						onKeyUp(e, [...keyUpEnter, ...keyUpSpacebar], () => onConfirmHandler(e))
+					}
 					role="button"
 					tabIndex={0}
 				>
@@ -109,7 +112,9 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 				<div
 					className={bem('cancel')}
 					onClick={onCancelHandler}
-					onKeyUp={(e) => keyUpConfirm(e, () => onCancelHandler(e))}
+					onKeyUp={(e) =>
+						onKeyUp(e, [...keyUpEnter, ...keyUpSpacebar], () => onCancelHandler(e))
+					}
 					role="button"
 					tabIndex={0}
 				>
@@ -129,7 +134,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					disabled={disabled}
 					onChange={onChange}
 					onClick={onOpenHandler}
-					onKeyUp={(e) => keyUpConfirm(e, () => onConfirmHandler(e))}
+					onKeyUp={(e) => onKeyUp(e, keyUpEnter, () => onConfirmHandler(e))}
 					ref={ref}
 					type={type}
 					value={value}
