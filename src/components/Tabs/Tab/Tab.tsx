@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 
 import { bemCls, getVariantClasses } from '../../../utils';
 
+import './Tab.scss';
 import { TabProps } from './Tab.types';
 
 const Tab: FC<TabProps> = ({
