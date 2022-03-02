@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 
 import { bemCls, getVariantClasses } from '../../../utils';
 
+import './Tab.scss';
 import { TabProps } from './Tab.types';
 
 const Tab: FC<TabProps> = ({
@@ -22,16 +23,10 @@ const Tab: FC<TabProps> = ({
 	});
 
 	return (
-		<div
-			className={rootCls}
-			role="button"
-			tabIndex={0}
-			onClick={onClick}
-			onKeyPress={onKeyPress}
-		>
+		<button className={rootCls} tabIndex={0} onClick={onClick} onKeyPress={onKeyPress}>
 			{icon && <span className={bem('icon')}>{icon}</span>}
 			<span className={bem('label')}>{label}</span>
-		</div>
+		</button>
 	);
 };
 
