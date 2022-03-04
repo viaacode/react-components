@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils';
+import { bemCls, getVariantClasses, keyUpEnter, keyUpSpacebar, onKeyUp } from '../../utils';
 
 import { CardProps } from './Card.types';
 
@@ -27,6 +27,7 @@ const Card: FC<CardProps> = ({
 	title,
 	toolbar,
 	variants,
+	onTitleClick,
 }) => {
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
@@ -44,7 +45,11 @@ const Card: FC<CardProps> = ({
 				{image && (
 					<div className={clsx(bem('image-wrapper'))}>
 						{typeof image === 'string' ? (
-							<img className='u-image-responsive' src={image} alt={title?.toString() || "The card's image"} /> //eslint-disable-line
+							<img
+								className="u-image-responsive"
+								src={image}
+								alt={title?.toString() || "The card's image"}
+							/> //eslint-disable-line
 						) : (
 							image
 						)}
@@ -55,7 +60,24 @@ const Card: FC<CardProps> = ({
 			<section className={clsx(bem('bottom-wrapper'))}>
 				{(title || toolbar) && (
 					<div className={clsx(bem('header-wrapper'))}>
-						{title && <div className={clsx(bem('title-wrapper'))}>{title}</div>}
+						{title &&
+							(onTitleClick ? (
+								<div
+									role="button"
+									tabIndex={0}
+									onClick={onTitleClick}
+									onKeyUp={(e) =>
+										onKeyUp(e, [...keyUpSpacebar, ...keyUpEnter], () =>
+											onTitleClick()
+										)
+									}
+									className={clsx(bem('title-wrapper'))}
+								>
+									{title}
+								</div>
+							) : (
+								<div className={clsx(bem('title-wrapper'))}>{title}</div>
+							))}
 
 						{toolbar && <div className={clsx(bem('toolbar-wrapper'))}>{toolbar}</div>}
 					</div>
