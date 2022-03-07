@@ -2,11 +2,11 @@ import React, { FunctionComponent, Suspense } from 'react';
 
 import { Flex } from '../Flex/Flex';
 
-import { RichTextEditorPropsSchema } from './RichTextEditor.types';
+import { RichTextEditorProps } from './RichTextEditor.types';
 
 const RichTextEditorInternal = React.lazy(() => import('./RichTextEditorInternal'));
 
-export const RichTextEditor: FunctionComponent<RichTextEditorPropsSchema> = (props) => {
+export const RichTextEditor: FunctionComponent<RichTextEditorProps> = (props) => {
 	return (
 		<Suspense
 			fallback={

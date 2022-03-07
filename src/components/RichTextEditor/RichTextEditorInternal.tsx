@@ -6,9 +6,9 @@ import clsx from 'clsx';
 import React, { FunctionComponent } from 'react';
 
 import './RichTextEditor.scss';
-import { RichEditorStateSchema, RichTextEditorPropsSchema } from './RichTextEditor.types';
+import { RichEditorStateSchema, RichTextEditorProps } from './RichTextEditor.types';
 
-const RichTextEditorInternal: FunctionComponent<RichTextEditorPropsSchema> = ({
+const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	id,
 	initialHtml,
 	state,

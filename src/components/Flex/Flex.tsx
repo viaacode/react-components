@@ -6,7 +6,7 @@ import './Flex.scss';
 
 export type Orientation = 'horizontal' | 'vertical';
 
-export interface FlexPropsSchema extends DefaultComponentProps {
+export interface FlexProps extends DefaultComponentProps {
 	align?: 'start' | 'baseline';
 	center?: boolean;
 	children: ReactNode;
@@ -16,7 +16,7 @@ export interface FlexPropsSchema extends DefaultComponentProps {
 	wrap?: boolean;
 }
 
-export const Flex: FunctionComponent<FlexPropsSchema> = ({
+export const Flex: FunctionComponent<FlexProps> = ({
 	align,
 	center,
 	children,

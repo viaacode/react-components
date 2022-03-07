@@ -31,7 +31,7 @@ export type RichTextEditorControlSchema =
 	| 'fullscreen' // Make editor fullscreen
 	| 'separator'; // Split line, continuous multiple separators will only be displayed as 1
 
-export interface RichTextEditorPropsSchema {
+export interface RichTextEditorProps {
 	className?: string;
 	rootClassName?: string;
 	id?: string;

@@ -3,14 +3,11 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { RichTextEditor } from './RichTextEditor';
-import { RichEditorStateSchema, RichTextEditorPropsSchema } from './RichTextEditor.types';
+import { RichEditorStateSchema, RichTextEditorProps } from './RichTextEditor.types';
 
 const mockValue = 'Text value';
 
-const renderRichTextEditor = ({
-	initialHtml = mockValue,
-	...rest
-}: RichTextEditorPropsSchema = {}) => {
+const renderRichTextEditor = ({ initialHtml = mockValue, ...rest }: RichTextEditorProps = {}) => {
 	return render(<RichTextEditor {...rest} initialHtml={initialHtml} />);
 };
 
