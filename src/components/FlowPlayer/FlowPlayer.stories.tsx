@@ -4,7 +4,7 @@ import React, { cloneElement, ReactElement, useState } from 'react';
 
 import { Button } from '../Button';
 
-import { FlowPlayer } from './FlowPlayer';
+import FlowPlayer from './FlowPlayer';
 import { MOCK_FLOW_PLAYER_PROPS_FULL } from './FlowPlayer.mock';
 
 const FlowPlayerStoryComponent = ({ children }: { children: ReactElement }) => {
