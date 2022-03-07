@@ -59,6 +59,8 @@ export interface FlowPlayerPropsSchema extends DefaultComponentProps {
 	token?: string;
 	dataPlayerId?: string;
 	autoplay?: boolean;
+	pause: boolean;
+	fullscreen: boolean;
 	seekTime?: number;
 	onPlay?: () => void;
 	onPause?: () => void;
@@ -72,9 +74,6 @@ export interface FlowPlayerPropsSchema extends DefaultComponentProps {
 	googleAnalyticsId?: string;
 	googleAnalyticsEvents?: GoogleAnalyticsEvent[];
 	googleAnalyticsTitle?: string;
-	// test
-	pause: boolean;
-	fullscreen: boolean;
 }
 
 export interface FlowPlayerState {
