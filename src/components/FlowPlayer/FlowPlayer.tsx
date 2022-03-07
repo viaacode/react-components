@@ -264,9 +264,7 @@ class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlayerState>
 		this.drawCustomElements(flowplayerInstance);
 
 		flowplayerInstance.on('playing', () => {
-			if (this.props.onPlay) {
-				this.props.onPlay();
-			}
+			this.props.onPlay?.();
 
 			if (!this.state.startedPlaying) {
 				// First time playing the video
