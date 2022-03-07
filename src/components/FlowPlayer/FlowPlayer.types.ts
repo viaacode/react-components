@@ -59,11 +59,14 @@ export interface FlowPlayerPropsSchema extends DefaultComponentProps {
 	token?: string;
 	dataPlayerId?: string;
 	autoplay?: boolean;
+	pause: boolean;
+	fullscreen: boolean;
 	seekTime?: number;
 	onPlay?: () => void;
 	onPause?: () => void;
 	onEnded?: () => void;
 	onTimeUpdate?: (time: number) => void;
+	onToggleFullscreen: (fullscreen: boolean) => void;
 	preload?: 'none' | 'auto' | 'metadata';
 	subtitles?: FlowplayerTrackSchema[];
 	canPlay?: boolean; // Indicates if the video can play at this type. Eg: will be set to false if a modal is open in front of the video player
