@@ -7,6 +7,7 @@ export * from './Checkbox';
 export * from './ContentInput';
 export * from './Datepicker';
 export * from './Dropdown';
+export * from './FlowPlayer';
 export * from './FormControl';
 export * from './Menu';
 export * from './Pagination';

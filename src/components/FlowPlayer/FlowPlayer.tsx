@@ -14,24 +14,12 @@ import classnames from 'classnames';
 import React, { createRef } from 'react';
 
 import './FlowPlayer.scss';
-import {
-	FlowplayerInstance,
-	FlowPlayerPropsSchema,
-	FlowPlayerState,
-	GoogleAnalyticsEvent,
-} from './FlowPlayer.types';
+import { FlowplayerInstance, FlowPlayerPropsSchema, FlowPlayerState } from './FlowPlayer.types';
+import { convertGAEventsArrayToObject } from './FlowPlayer.utils';
 
 declare const flowplayer: any;
 
-export const convertGAEventsArrayToObject = (googleAnalyticsEvents: GoogleAnalyticsEvent[]) => {
-	return googleAnalyticsEvents.reduce((acc: any, curr: GoogleAnalyticsEvent) => {
-		acc[curr] = curr;
-
-		return acc;
-	}, {});
-};
-
-export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlayerState> {
+class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlayerState> {
 	private videoContainerRef = createRef<HTMLDivElement>();
 
 	constructor(props: FlowPlayerPropsSchema) {
@@ -307,3 +295,5 @@ export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlaye
 		);
 	}
 }
+
+export default FlowPlayer;
