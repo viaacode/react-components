@@ -64,6 +64,7 @@ export interface FlowPlayerPropsSchema extends DefaultComponentProps {
 	onPause?: () => void;
 	onEnded?: () => void;
 	onTimeUpdate?: (time: number) => void;
+	onToggleFullscreen: (fullscreen: boolean) => void;
 	preload?: 'none' | 'auto' | 'metadata';
 	subtitles?: FlowplayerTrackSchema[];
 	canPlay?: boolean; // Indicates if the video can play at this type. Eg: will be set to false if a modal is open in front of the video player
@@ -71,6 +72,9 @@ export interface FlowPlayerPropsSchema extends DefaultComponentProps {
 	googleAnalyticsId?: string;
 	googleAnalyticsEvents?: GoogleAnalyticsEvent[];
 	googleAnalyticsTitle?: string;
+	// test
+	pause: boolean;
+	fullscreen: boolean;
 }
 
 export interface FlowPlayerState {

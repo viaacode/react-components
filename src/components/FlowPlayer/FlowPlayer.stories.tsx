@@ -7,7 +7,7 @@ import { Button } from '../Button';
 import FlowPlayer from './FlowPlayer';
 import { MOCK_FLOW_PLAYER_PROPS_FULL } from './FlowPlayer.mock';
 
-const FlowPlayerStoryComponent = ({ children }: { children: ReactElement }) => {
+const FlowPlayerStoryComponentSetTimeButtons = ({ children }: { children: ReactElement }) => {
 	const [seekTime, setSeekTime] = useState(0);
 
 	return (
@@ -27,6 +27,31 @@ const FlowPlayerStoryComponent = ({ children }: { children: ReactElement }) => {
 	);
 };
 
+const FlowPlayerStoryComponentExternalControls = ({ children }: { children: ReactElement }) => {
+	const [fullscreen, setFullscreen] = useState(false);
+	const [pause, setPause] = useState(true);
+
+	return (
+		<>
+			{cloneElement(children, {
+				pause,
+				fullscreen,
+				// sync pause and fullscreen states
+				onPlay: () => {
+					setPause(false);
+				},
+				onPause: () => {
+					setPause(true);
+				},
+				onToggleFullscreen: (val: boolean) => setFullscreen(val),
+			})}
+			<br />
+			<Button label={`play/pause`} onClick={() => setPause(!pause)} />
+			<Button label={`toggle fullscreen`} onClick={() => setFullscreen(!fullscreen)} />
+		</>
+	);
+};
+
 export default {
 	title: 'Components/FlowPlayer',
 	component: FlowPlayer,
@@ -40,9 +65,17 @@ const Template: ComponentStory<typeof FlowPlayer> = (args) => (
 
 const TemplateSetTimeButtons: ComponentStory<typeof FlowPlayer> = (args) => (
 	<div style={{ width: '50%' }}>
-		<FlowPlayerStoryComponent>
+		<FlowPlayerStoryComponentSetTimeButtons>
 			<FlowPlayer {...args} />
-		</FlowPlayerStoryComponent>
+		</FlowPlayerStoryComponentSetTimeButtons>
+	</div>
+);
+
+const TemplateExternalControls: ComponentStory<typeof FlowPlayer> = (args) => (
+	<div style={{ width: '50%' }}>
+		<FlowPlayerStoryComponentExternalControls>
+			<FlowPlayer {...args} />
+		</FlowPlayerStoryComponentExternalControls>
 	</div>
 );
 
@@ -117,4 +150,13 @@ Subtitles.args = {
 			src: 'https://avo2-proxy-qas.hetarchief.be/subtitles/convert-srt-to-vtt/viaa/MOB/TESTBEELD/3b61046461be4b1e9f0fad19b42baa192487807cfefa4c289c0fa65d5c78195b/3b61046461be4b1e9f0fad19b42baa192487807cfefa4c289c0fa65d5c78195b.srt',
 		},
 	],
+};
+
+export const ExternalControls = TemplateExternalControls.bind({});
+ExternalControls.args = {
+	...MOCK_FLOW_PLAYER_PROPS_FULL,
+	onPlay: action('play'),
+	onPause: action('pause'),
+	onEnded: action('ended'),
+	onTimeUpdate: action('timeupdate'),
 };

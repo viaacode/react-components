@@ -57,6 +57,18 @@ class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlayerState>
 				flowPlayerInstance.currentTime = nextProps.seekTime;
 			}
 
+			if (nextProps.pause !== this.props.pause) {
+				if (nextProps.pause) {
+					flowPlayerInstance.pause();
+				} else {
+					flowPlayerInstance.play();
+				}
+			}
+
+			if (nextProps.fullscreen !== this.props.fullscreen) {
+				(flowPlayerInstance as any).toggleFullScreen(nextProps.fullscreen);
+			}
+
 			if (nextProps.start !== this.props.start || nextProps.end !== this.props.end) {
 				if (this.videoContainerRef) {
 					flowPlayerInstance.emit(flowplayer.events.CUEPOINTS, {
@@ -252,16 +264,16 @@ class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlayerState>
 		this.drawCustomElements(flowplayerInstance);
 
 		flowplayerInstance.on('playing', () => {
+			if (this.props.onPlay) {
+				this.props.onPlay();
+			}
+
 			if (!this.state.startedPlaying) {
 				// First time playing the video
 				// Jump to first cue point if exists:
 				if (props.start) {
 					//  deepcode ignore React-propsUsedInStateUpdateMethod: Flowplayer is not aware of react
 					flowplayerInstance.currentTime = props.start;
-				}
-
-				if (this.props.onPlay) {
-					this.props.onPlay();
 				}
 
 				this.setState({
@@ -276,6 +288,12 @@ class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlayerState>
 			(this.props.onTimeUpdate || FlowPlayer.noop)(
 				(this.videoContainerRef?.current as unknown as HTMLVideoElement)?.currentTime || 0
 			);
+		});
+		flowplayerInstance.on('fullscreenenter', () => {
+			(this.props.onToggleFullscreen || FlowPlayer.noop)(true);
+		});
+		flowplayerInstance.on('fullscreenexit', () => {
+			(this.props.onToggleFullscreen || FlowPlayer.noop)(false);
 		});
 
 		this.setState({
