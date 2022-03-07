@@ -14,24 +14,12 @@ import classnames from 'classnames';
 import React, { createRef } from 'react';
 
 import './FlowPlayer.scss';
-import {
-	FlowplayerInstance,
-	FlowPlayerPropsSchema,
-	FlowPlayerState,
-	GoogleAnalyticsEvent,
-} from './FlowPlayer.types';
+import { FlowplayerInstance, FlowPlayerPropsSchema, FlowPlayerState } from './FlowPlayer.types';
+import { convertGAEventsArrayToObject } from './FlowPlayer.utils';
 
 declare const flowplayer: any;
 
-export const convertGAEventsArrayToObject = (googleAnalyticsEvents: GoogleAnalyticsEvent[]) => {
-	return googleAnalyticsEvents.reduce((acc: any, curr: GoogleAnalyticsEvent) => {
-		acc[curr] = curr;
-
-		return acc;
-	}, {});
-};
-
-export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlayerState> {
+class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlayerState> {
 	private videoContainerRef = createRef<HTMLDivElement>();
 
 	constructor(props: FlowPlayerPropsSchema) {
@@ -67,6 +55,18 @@ export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlaye
 		if (flowPlayerInstance) {
 			if (nextProps.seekTime !== this.props.seekTime && nextProps.seekTime) {
 				flowPlayerInstance.currentTime = nextProps.seekTime;
+			}
+
+			if (nextProps.pause !== this.props.pause) {
+				if (nextProps.pause) {
+					flowPlayerInstance.pause();
+				} else {
+					flowPlayerInstance.play();
+				}
+			}
+
+			if (nextProps.fullscreen !== this.props.fullscreen) {
+				(flowPlayerInstance as any).toggleFullScreen(nextProps.fullscreen);
 			}
 
 			if (nextProps.start !== this.props.start || nextProps.end !== this.props.end) {
@@ -264,16 +264,14 @@ export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlaye
 		this.drawCustomElements(flowplayerInstance);
 
 		flowplayerInstance.on('playing', () => {
+			this.props.onPlay?.();
+
 			if (!this.state.startedPlaying) {
 				// First time playing the video
 				// Jump to first cue point if exists:
 				if (props.start) {
 					//  deepcode ignore React-propsUsedInStateUpdateMethod: Flowplayer is not aware of react
 					flowplayerInstance.currentTime = props.start;
-				}
-
-				if (this.props.onPlay) {
-					this.props.onPlay();
 				}
 
 				this.setState({
@@ -288,6 +286,12 @@ export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlaye
 			(this.props.onTimeUpdate || FlowPlayer.noop)(
 				(this.videoContainerRef?.current as unknown as HTMLVideoElement)?.currentTime || 0
 			);
+		});
+		flowplayerInstance.on('fullscreenenter', () => {
+			(this.props.onToggleFullscreen || FlowPlayer.noop)(true);
+		});
+		flowplayerInstance.on('fullscreenexit', () => {
+			(this.props.onToggleFullscreen || FlowPlayer.noop)(false);
 		});
 
 		this.setState({
@@ -307,3 +311,5 @@ export class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlaye
 		);
 	}
 }
+
+export default FlowPlayer;
