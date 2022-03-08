@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 import { DefaultComponentProps } from '../../types';
 
 export enum GoogleAnalyticsEvent {
@@ -71,6 +73,7 @@ export interface FlowPlayerPropsSchema extends DefaultComponentProps {
 	subtitles?: FlowplayerTrackSchema[];
 	canPlay?: boolean; // Indicates if the video can play at this type. Eg: will be set to false if a modal is open in front of the video player
 	className?: string;
+	customControls?: ReactElement;
 	googleAnalyticsId?: string;
 	googleAnalyticsEvents?: GoogleAnalyticsEvent[];
 	googleAnalyticsTitle?: string;

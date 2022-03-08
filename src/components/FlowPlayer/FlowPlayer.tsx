@@ -306,7 +306,9 @@ class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlayerState>
 					className={classnames('c-video-player-inner')}
 					data-player-id={this.props.dataPlayerId}
 					ref={this.videoContainerRef}
-				/>
+				>
+					{this.props.customControls}
+				</div>
 			</div>
 		);
 	}

@@ -160,3 +160,13 @@ ExternalControls.args = {
 	onEnded: action('ended'),
 	onTimeUpdate: action('timeupdate'),
 };
+
+export const CustomButton = Template.bind({});
+CustomButton.args = {
+	...MOCK_FLOW_PLAYER_PROPS_FULL,
+	customControls: (
+		<button style={{ zIndex: 1, backgroundColor: 'blue', position: 'fixed' }}>
+			custom button
+		</button>
+	),
+};
