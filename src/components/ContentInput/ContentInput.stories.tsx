@@ -29,8 +29,8 @@ Default.args = {
 	onConfirm: (v) => console.info('confirm', v),
 };
 
-export const customButtons = Template.bind({});
-customButtons.args = {
+export const CustomButtons = Template.bind({});
+CustomButtons.args = {
 	iconEnd: (onOpenHandler) => (
 		<>
 			<button>1</button>

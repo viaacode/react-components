@@ -85,7 +85,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					onCloseHandler(e);
 				}
 			},
-			[onConfirm, onCloseHandler, value]
+			[onConfirm, onCloseHandler, value, disabled, editable]
 		);
 
 		const onCancelHandler = useCallback(
