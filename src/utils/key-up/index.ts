@@ -1,8 +1,8 @@
-export const keyUpSpacebar = ['Spacebar', 'Space', ' '];
-export const keyUpEnter = ['Enter'];
-export const keyUpEscape = ['Esc', 'Escape'];
+export const keysSpacebar = ['Spacebar', 'Space', ' '];
+export const keysEnter = ['Enter'];
+export const keysEscape = ['Esc', 'Escape'];
 
-export const onKeyUp = (e: { key: string }, keys: string[], callback?: () => void) => {
+export const onKey = (e: { key: string }, keys: string[], callback?: () => void) => {
 	if (!keys.includes(e.key)) {
 		return;
 	}

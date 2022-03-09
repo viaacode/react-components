@@ -1,17 +1,18 @@
 import clsx from 'clsx';
-import React, { FC, forwardRef, ReactNode, useCallback, useMemo, useState } from 'react';
+import React, {
+	FC,
+	forwardRef,
+	KeyboardEvent,
+	MouseEvent,
+	ReactNode,
+	useCallback,
+	useState,
+} from 'react';
 
-import {
-	bemCls,
-	getVariantClasses,
-	keyUpEnter,
-	keyUpEscape,
-	keyUpSpacebar,
-	onKeyUp,
-} from '../../utils';
+import { bemCls, getVariantClasses, keysEnter, keysEscape, keysSpacebar, onKey } from '../../utils';
 import { TextInputDefaults } from '../TextInput/TextInput';
 
-import { ContentInputProps } from './ContentInput.types';
+import { ContentInputProps, StopPropagationObject } from './ContentInput.types';
 
 const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, ContentInputProps>(
 	(
@@ -19,8 +20,8 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 			align = 'right',
 			className,
 			disabled = TextInputDefaults.disabled,
-			iconEnd = TextInputDefaults.iconEnd,
-			iconStart = TextInputDefaults.iconStart,
+			iconEnd = () => TextInputDefaults.iconEnd,
+			iconStart = () => TextInputDefaults.iconStart,
 			nodeCancel = 'x',
 			nodeSubmit = '✓',
 			onCancel = () => null,
@@ -50,37 +51,49 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		 * Events
 		 */
 
-		const onOpenHandler = useCallback(() => {
-			if (!disabled && !editable) {
-				setEditable(true);
-				instance?.focus();
-				onOpen();
-			}
-		}, [onOpen, disabled, editable, instance]);
+		const onOpenHandler = useCallback(
+			(e: StopPropagationObject) => {
+				if (!disabled && !editable) {
+					e.stopPropagation();
 
-		const onCloseHandler = useCallback(() => {
-			if (editable) {
-				setEditable(false);
-				onClose();
-			}
-		}, [onClose, editable]);
+					setEditable(true);
+					onOpen();
+					setTimeout(() => instance?.focus());
+				}
+			},
+			[onOpen, disabled, editable, instance]
+		);
 
-		const onConfirmHandler = useMemo(
-			() => (e: { stopPropagation: () => void }) => {
-				e.stopPropagation();
+		const onCloseHandler = useCallback(
+			(e: StopPropagationObject) => {
+				if (editable) {
+					e.stopPropagation();
 
-				onConfirm(value);
-				onCloseHandler();
+					setEditable(false);
+					onClose();
+				}
+			},
+			[onClose, editable]
+		);
+
+		const onConfirmHandler = useCallback(
+			(e: StopPropagationObject) => {
+				if (!disabled && editable) {
+					e.stopPropagation();
+
+					onConfirm(value);
+					onCloseHandler(e);
+				}
 			},
 			[onConfirm, onCloseHandler, value]
 		);
 
-		const onCancelHandler = useMemo(
-			() => (e: { stopPropagation: () => void }) => {
+		const onCancelHandler = useCallback(
+			(e: StopPropagationObject) => {
 				e.stopPropagation();
 
 				onCancel();
-				onCloseHandler();
+				onCloseHandler(e);
 			},
 			[onCancel, onCloseHandler]
 		);
@@ -89,17 +102,27 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		 * Render
 		 */
 
+		const isSingleElement = (node: ReactNode) => {
+			const el = node as JSX.Element;
+			return !(el && el.props && el.props.children && el.props.children.length > 1);
+		};
+
+		const makeInteractionObject = (func: (e: MouseEvent | KeyboardEvent) => void) => {
+			return {
+				onClick: func,
+				onKeyDown: (e: KeyboardEvent) =>
+					onKey(e, [...keysEnter, ...keysSpacebar], () => func(e)),
+				role: 'button',
+				tabIndex: 0,
+			};
+		};
+
 		const renderIcon = (iconNode: ReactNode, side?: 'start' | 'end') => (
 			<span
-				onClick={onOpenHandler}
-				onKeyUp={(e) =>
-					onKeyUp(e, [...keyUpEnter, ...keyUpSpacebar], () => onOpenHandler())
-				}
-				role="button"
-				tabIndex={0}
 				className={clsx(bem('icon'), {
 					[bem('icon', side)]: side,
 				})}
+				{...(isSingleElement(iconNode) ? makeInteractionObject(onOpenHandler) : {})}
 			>
 				{iconNode}
 			</span>
@@ -109,24 +132,16 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 			<>
 				<div
 					className={bem('submit')}
-					onClick={onConfirmHandler}
-					onKeyUp={(e) =>
-						onKeyUp(e, [...keyUpEnter, ...keyUpSpacebar], () => onConfirmHandler(e))
-					}
-					role="button"
-					tabIndex={0}
+					{...(isSingleElement(nodeSubmit)
+						? makeInteractionObject(onConfirmHandler)
+						: {})}
 				>
 					{nodeSubmit}
 				</div>
 
 				<div
 					className={bem('cancel')}
-					onClick={onCancelHandler}
-					onKeyUp={(e) =>
-						onKeyUp(e, [...keyUpEnter, ...keyUpSpacebar], () => onCancelHandler(e))
-					}
-					role="button"
-					tabIndex={0}
+					{...(isSingleElement(nodeCancel) ? makeInteractionObject(onCancelHandler) : {})}
 				>
 					{nodeCancel}
 				</div>
@@ -140,15 +155,15 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					[bem('', 'closed')]: !editable,
 				})}
 			>
-				{iconStart && renderIcon(iconStart, 'start')}
+				{iconStart && renderIcon(iconStart(onOpenHandler), 'start')}
 				{editable && align === 'left' && renderButtons()}
 
 				<span
 					role="button"
 					tabIndex={0}
 					onClick={onOpenHandler}
-					onKeyUp={(e) =>
-						onKeyUp(e, [...keyUpEnter, ...keyUpSpacebar], () => onConfirmHandler(e))
+					onKeyDown={(e) =>
+						onKey(e, [...keysEnter, ...keysSpacebar], () => onConfirmHandler(e))
 					}
 					className={bem('value')}
 				>
@@ -161,9 +176,9 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					disabled={disabled}
 					onChange={onChange}
 					onClick={onOpenHandler}
-					onKeyUp={(e) => {
-						onKeyUp(e, keyUpEnter, () => onConfirmHandler(e));
-						onKeyUp(e, keyUpEscape, () => onCancelHandler(e));
+					onKeyDown={(e) => {
+						onKey(e, keysEnter, () => onConfirmHandler(e));
+						onKey(e, keysEscape, () => onCancelHandler(e));
 					}}
 					ref={(element) => {
 						setInstance(element);
@@ -174,7 +189,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 				/>
 
 				{editable && align === 'right' && renderButtons()}
-				{iconEnd && renderIcon(iconEnd, 'end')}
+				{iconEnd && renderIcon(iconEnd(onOpenHandler), 'end')}
 			</div>
 		);
 	}

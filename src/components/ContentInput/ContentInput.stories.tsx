@@ -9,7 +9,7 @@ export default {
 } as ComponentMeta<typeof ContentInput>;
 
 const Template: ComponentStory<typeof ContentInput> = (props) => {
-	const [value, setValue] = useState('');
+	const [value, setValue] = useState(props.value || '');
 
 	return (
 		<ContentInput
@@ -24,7 +24,21 @@ const Template: ComponentStory<typeof ContentInput> = (props) => {
 
 export const Default = Template.bind({});
 Default.args = {
-	iconStart: '+',
+	iconStart: () => '+',
 	onCancel: () => console.info('cancel'),
 	onConfirm: (v) => console.info('confirm', v),
+};
+
+export const customButtons = Template.bind({});
+customButtons.args = {
+	iconEnd: (onOpenHandler) => (
+		<>
+			<button>1</button>
+			<button onClick={onOpenHandler}>2</button>
+			<button>3</button>
+		</>
+	),
+	onCancel: () => console.info('cancel'),
+	onConfirm: (v) => console.info('confirm', v),
+	value: 'banaan',
 };

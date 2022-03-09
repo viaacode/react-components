@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { FC } from 'react';
 
-import { bemCls, getVariantClasses, keyUpEnter, keyUpSpacebar, onKeyUp } from '../../utils';
+import { bemCls, getVariantClasses, keysEnter, keysSpacebar, onKey } from '../../utils';
 
 import { CardProps } from './Card.types';
 
@@ -67,7 +67,7 @@ const Card: FC<CardProps> = ({
 									tabIndex={0}
 									onClick={onTitleClick}
 									onKeyUp={(e) =>
-										onKeyUp(e, [...keyUpSpacebar, ...keyUpEnter], () =>
+										onKey(e, [...keysSpacebar, ...keysEnter], () =>
 											onTitleClick()
 										)
 									}
