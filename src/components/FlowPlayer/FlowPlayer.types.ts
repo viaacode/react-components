@@ -34,7 +34,7 @@ export enum GoogleAnalyticsEvent {
 	AdSkippedPostroll = 'ad_skipped_postroll',
 }
 
-export interface FlowplayerTrackSchema {
+export interface FlowplayerTrack {
 	crossorigin?: 'use-credentials' | 'anonymous';
 	default: boolean;
 	id?: string;
@@ -50,7 +50,7 @@ export interface FlowplayerInstance extends HTMLVideoElement {
 	emit: (eventName: string, eventObj: unknown) => void;
 }
 
-export interface FlowPlayerPropsSchema extends DefaultComponentProps {
+export interface FlowPlayerProps extends DefaultComponentProps {
 	src: string;
 	poster?: string;
 	logo?: string;
@@ -70,7 +70,7 @@ export interface FlowPlayerPropsSchema extends DefaultComponentProps {
 	onTimeUpdate?: (time: number) => void;
 	onToggleFullscreen?: (fullscreen: boolean) => void;
 	preload?: 'none' | 'auto' | 'metadata';
-	subtitles?: FlowplayerTrackSchema[];
+	subtitles?: FlowplayerTrack[];
 	canPlay?: boolean; // Indicates if the video can play at this type. Eg: will be set to false if a modal is open in front of the video player
 	className?: string;
 	customControls?: ReactElement;

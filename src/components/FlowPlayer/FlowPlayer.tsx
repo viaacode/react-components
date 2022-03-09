@@ -9,20 +9,18 @@
  *   <script src="/flowplayer/plugins/cuepoints.min.js"></script>
  *   <script src="/flowplayer/plugins/google-analytics.min.js"></script>
  */
-
-import classnames from 'classnames';
 import React, { createRef } from 'react';
 
 import './FlowPlayer.scss';
-import { FlowplayerInstance, FlowPlayerPropsSchema, FlowPlayerState } from './FlowPlayer.types';
+import { FlowplayerInstance, FlowPlayerProps, FlowPlayerState } from './FlowPlayer.types';
 import { convertGAEventsArrayToObject } from './FlowPlayer.utils';
 
 declare const flowplayer: any;
 
-class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlayerState> {
+class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 	private videoContainerRef = createRef<HTMLDivElement>();
 
-	constructor(props: FlowPlayerPropsSchema) {
+	constructor(props: FlowPlayerProps) {
 		super(props);
 		this.state = {
 			flowPlayerInstance: null,
@@ -46,7 +44,7 @@ class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlayerState>
 		this.destroyPlayer();
 	}
 
-	shouldComponentUpdate(nextProps: FlowPlayerPropsSchema) {
+	shouldComponentUpdate(nextProps: FlowPlayerProps) {
 		if (!this.videoContainerRef.current) {
 			return true;
 		}
@@ -186,7 +184,7 @@ class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlayerState>
 		// do nothing.
 	}
 
-	private reInitFlowPlayer(props: FlowPlayerPropsSchema) {
+	private reInitFlowPlayer(props: FlowPlayerProps) {
 		this.destroyPlayer();
 
 		if (!this.videoContainerRef.current) {
@@ -301,9 +299,9 @@ class FlowPlayer extends React.Component<FlowPlayerPropsSchema, FlowPlayerState>
 
 	render() {
 		return (
-			<div className={classnames(this.props.className, 'c-video-player')}>
+			<div className={this.props.className + ' c-video-player'}>
 				<div
-					className={classnames('c-video-player-inner')}
+					className={'c-video-player-inner'}
 					data-player-id={this.props.dataPlayerId}
 					ref={this.videoContainerRef}
 				>
