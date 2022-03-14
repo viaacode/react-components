@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import React, { FunctionComponent } from 'react';
 
 import './RichTextEditor.scss';
-import { RichEditorStateSchema, RichTextEditorProps } from './RichTextEditor.types';
+import { RichEditorState, RichTextEditorProps } from './RichTextEditor.types';
 
 const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	id,
@@ -167,7 +167,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 				language={getLanguage}
 				controls={controls}
 				media={media}
-				onChange={(newState: RichEditorStateSchema) => {
+				onChange={(newState: RichEditorState) => {
 					if (onChange) {
 						onChange(newState);
 					}

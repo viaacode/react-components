@@ -2,8 +2,8 @@ import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
-import { RichTextEditor } from './RichTextEditor';
-import { RichEditorStateSchema, RichTextEditorProps } from './RichTextEditor.types';
+import RichTextEditor from './RichTextEditor';
+import { RichEditorState, RichTextEditorProps } from './RichTextEditor.types';
 
 const mockValue = 'Text value';
 
@@ -47,7 +47,7 @@ describe('components/<RichTextEditor />', () => {
 	it('Should call the onChange handler on every input', () => {
 		const initialHtml = '<b>test html</b>';
 		const onChange = jest.fn();
-		const onChangeWrapper = (newEditorState: RichEditorStateSchema) => {
+		const onChangeWrapper = (newEditorState: RichEditorState) => {
 			onChange(newEditorState.toHTML());
 		};
 		const { container } = renderRichTextEditor({ initialHtml, onChange: onChangeWrapper });

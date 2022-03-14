@@ -12,6 +12,7 @@ export * from './FormControl';
 export * from './Menu';
 export * from './Pagination';
 export * from './RadioButton';
+export * from './RichTextEditor';
 export * from './Select';
 export * from './Table';
 export * from './Tabs';

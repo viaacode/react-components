@@ -1,6 +1,6 @@
 import { ControlType, MediaType } from 'braft-editor';
 
-export type RichTextEditorControlSchema =
+export type RichTextEditorControl =
 	| 'font-size' // Text size selector
 	| 'font-family' // Text font selector
 	| 'line-height' // Text line height selector
@@ -36,24 +36,24 @@ export interface RichTextEditorProps {
 	rootClassName?: string;
 	id?: string;
 	initialHtml?: string;
-	state?: RichEditorStateSchema;
+	state?: RichEditorState;
 	placeholder?: string;
 	controls?: ControlType[];
 	disabled?: boolean;
 	media?: MediaType;
 	onFocus?: () => void;
 	onBlur?: () => void;
-	onChange?: (editorState: RichEditorStateSchema) => void;
+	onChange?: (editorState: RichEditorState) => void;
 	onTab?: () => void;
 	onDelete?: () => void;
 	onSave?: () => void;
 }
 
-export interface RichEditorStateSchema {
+export interface RichEditorState {
 	toHTML: () => string;
 }
 
-export interface RichTextEditorUploadInfoSchema {
+export interface RichTextEditorUploadInfo {
 	file: File;
 	progress: (progress: number) => void;
 	libraryId: string;
@@ -61,8 +61,8 @@ export interface RichTextEditorUploadInfoSchema {
 	error: (err: Error) => void;
 }
 
-export interface RichTextEditorMediaSchema {
-	uploadFn: (uploadInfo: RichTextEditorUploadInfoSchema) => void;
+export interface RichTextEditorMedia {
+	uploadFn: (uploadInfo: RichTextEditorUploadInfo) => void;
 	validateFn?: (file: File) => boolean | Promise<boolean>;
 	/**
 	 * defaults to:

@@ -5,10 +5,10 @@ import React, { cloneElement, ReactElement, useState } from 'react';
 import Select from '../Select/Select';
 import { selectOptionsMock } from '../Select/__mocks__/select';
 
-import { RichTextEditor } from './RichTextEditor';
-import { RichTextEditorControlSchema } from './RichTextEditor.types';
+import RichTextEditor from './RichTextEditor';
+import { RichTextEditorControl } from './RichTextEditor.types';
 
-const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControlSchema[] = [
+const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
 	'undo',
 	'redo',
 	'separator',

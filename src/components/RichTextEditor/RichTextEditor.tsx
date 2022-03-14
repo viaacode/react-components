@@ -6,7 +6,7 @@ import { RichTextEditorProps } from './RichTextEditor.types';
 
 const RichTextEditorInternal = React.lazy(() => import('./RichTextEditorInternal'));
 
-export const RichTextEditor: FunctionComponent<RichTextEditorProps> = (props) => {
+const RichTextEditor: FunctionComponent<RichTextEditorProps> = (props) => {
 	return (
 		<Suspense
 			fallback={
@@ -19,3 +19,5 @@ export const RichTextEditor: FunctionComponent<RichTextEditorProps> = (props) =>
 		</Suspense>
 	);
 };
+
+export default RichTextEditor;
