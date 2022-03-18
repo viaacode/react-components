@@ -30,14 +30,14 @@ const ColorPicker: FC<ColorPickerProps> = ({
 					className={bem('', 'trigger')}
 					style={{ backgroundColor: color }}
 					onClick={() => setShowColorPicker((show) => !show)}
-					{...(disabled ? { disabled } : {})}
+					disabled={disabled}
 				/>
 				<input
 					className={bem('', 'input')}
 					type="text"
 					value={color}
 					onChange={(evt) => onChange(evt.target.value)}
-					{...(disabled ? { disabled } : {})}
+					disabled={disabled}
 				/>
 				{showColorPicker && (
 					<div className={bem('', 'picker')}>
