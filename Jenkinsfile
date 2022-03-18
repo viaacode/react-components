@@ -39,7 +39,6 @@ pipeline {
                         openshift.withProject("shared-components") {
                             sh '''#!/bin/bash
 			   rm -f /.npmrc
-			   sudo chmod -R 775 /root/.node_modules/src
 			    npm --registry=https://registry.npmjs.org install && npm run build || exit 1'''
                             sh '''#!/bin/bash
 			   echo "##### BUILDING DOCKER IMAGE DISABLED#####"
