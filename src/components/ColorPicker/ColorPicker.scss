@@ -1,28 +1,29 @@
-.c-color-picker__controls {
+.c-color-picker--controls {
 	position: relative;
 }
 
-.c-color-picker__trigger {
+.c-color-picker--trigger {
 	width: 3rem;
 	height: 3rem;
 	background-color: transparent;
 	border: 0;
 	border-radius: 0;
+	padding: 0;
 }
 
-.c-color-picker__disabled {
+.c-color-picker--disabled {
 	pointer-events: none;
 	opacity: 0.5;
 }
 
-.c-color-picker__picker {
+.c-color-picker--picker {
 	z-index: 3;
 	position: absolute;
 	top: 5rem;
 	left: 0;
 }
 
-.c-color-picker__underlay {
+.c-color-picker--underlay {
 	position: absolute;
 	width: auto;
 	height: auto;
