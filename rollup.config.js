@@ -1,4 +1,5 @@
 import commonjs from '@rollup/plugin-commonjs';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import autoprefixer from 'autoprefixer';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
@@ -31,6 +32,7 @@ const getPlugins = ({ typescriptConfig = {}, visualizerConfig } = DEFAULT_PLUGIN
 		tsconfig: './tsconfig.build.json',
 		...typescriptConfig,
 	}),
+	nodeResolve(),
 	commonjs(),
 	terser(),
 	visualizer({

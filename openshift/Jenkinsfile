@@ -1,11 +1,3 @@
-def TEMPLATEPATH = 'https://raw.githubusercontent.com/viaacode/openshift_pipeline-jenkins-exmp/master/openshift/app_deployment-okd.yaml'
-def TEMPLATENAME = 'avo-components'
-def TARGET_NS = 'avo'
-def templatePath = 'https://raw.githubusercontent.comviaacode/avo2-components/master/openshift/app_deployment-okd.yaml'
-// NOTE, the "pipeline" directive/closure from the declarative pipeline syntax needs to include, or be nested outside,
-// and "openshift" directive/closure from the OpenShift Client Plugin for Jenkins.  Otherwise, the declarative pipeline engine
-// will not be fully engaged.
-
 pipeline {
     agent {
         kubernetes {
@@ -31,6 +23,9 @@ pipeline {
             command:
             - cat
             tty: true
+            securityContext:
+              runAsUser: 1000
+
             imagePullPolicy: Always
 
 
@@ -44,12 +39,12 @@ pipeline {
         disableConcurrentBuilds()
     }
     environment {
-        OC_PROJECT = 'avo'
+        OC_PROJECT = 'hetarchief'
         BASE_IMG = 'node:12-alpine'
         OC_URL = 'https://c113-e.private.eu-de.containers.cloud.ibm.com:30227'
         JIRA_URL = 'meemoo.atlassian.net'
-        APP_NAME = 'avo-components'
-        BRANCH_NAME= 'master'
+        APP_NAME = 'react-components'
+        BRANCH_NAME = 'master'
     }
 
     stages {
@@ -75,39 +70,37 @@ pipeline {
                 container('oc') {
                     script {
                         sh '''#!/bin/bash
-			echo no deployment for this build atm
-                        '''
+			                echo no deployment for this build atm
+                            '''
                     }
-                   }
-                  container('npm') {
+                }
+                container('npm') {
 
-					script {
-								sh'''#!/bin/bash
-								npm --registry=https://registry.npmjs.org install && npm run build || exit 1
-								'''
-					} // script
+                    script {
+                        sh '''#!/bin/bash
+			npm --registry=https://registry.npmjs.org install && npm run build || exit 1
+			'''
+                    } // script
                 }
             }
         }// end stage build
 
 
-
-	stage('Publish') {
+        stage('Publish') {
             steps {
-             container('npm') {
-
-                script {
-					echo "Publishing package to registry"
-					configFileProvider([configFile(fileId: "npmrc", variable: 'configFile')]) {
-						sh "cat $configFile > .npmrc"
-					}
-					sh '''#/bin/bash
-					npm publish
-					echo "removing .npmrc for installto nexus not seems @viaa:registry=.."
-					rm -f .npmrc
-					'''
-                } // script
-              }// end container
+                container('npm') {
+                    script {
+                        echo "Publishing package to registry"
+                        configFileProvider([configFile(fileId: "npmrc", variable: 'configFile')]) {
+                            sh "cat $configFile > .npmrc"
+                        }
+                        sh '''#/bin/bash
+			npm publish
+			echo "removing .npmrc for installto nexus not seems @viaa:registry=.."
+			rm -f .npmrc
+			'''
+                    } // script
+                }// end container
             } // steps
         } // stage
 
@@ -128,7 +121,6 @@ pipeline {
             }
         }
         always {
-            jiraSendBuildInfo site: "${JIRA_URL}"
             container('default') {
                 // Archive tets results
                 script {
@@ -149,11 +141,11 @@ void getImageFromDockerfile() {
 
 void setGitHubBuildStatus(String message, String state) {
     step([
-        $class: 'GitHubCommitStatusSetter',
-        reposSource: [$class: 'ManuallyEnteredRepositorySource', url: "${GIT_URL}"],
-        commitShaSource: [$class: 'ManuallyEnteredShaSource', sha: "${GIT_COMMIT}"],
-        errorHandlers: [[$class: 'ChangingBuildStatusErrorHandler', result: 'UNSTABLE']],
-        statusResultSource: [ $class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: message, state: state]] ]
+            $class            : 'GitHubCommitStatusSetter',
+            reposSource       : [$class: 'ManuallyEnteredRepositorySource', url: "${GIT_URL}"],
+            commitShaSource   : [$class: 'ManuallyEnteredShaSource', sha: "${GIT_COMMIT}"],
+            errorHandlers     : [[$class: 'ChangingBuildStatusErrorHandler', result: 'UNSTABLE']],
+            statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: message, state: state]]]
     ])
 }
 
@@ -163,15 +155,6 @@ void getAllCommitsBetweenTags(String from, String to) {
     return commit_messages
 }
 
-void tagNewImage(String environment) {
-    echo "Deploying to ${environment}"
-    sh """#!/bin/bash
-    oc project $OC_PROJECT
-    oc tag $APP_NAME:$GIT_SHORT_COMMIT $APP_NAME:${environment}
-    # Check the status of the rollout
-    #oc rollout status statefulset/es-cluster-${environment} --watch=true
-    """
-}
 
 
 
