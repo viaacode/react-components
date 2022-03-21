@@ -7,10 +7,10 @@ def templatePath = 'https://raw.githubusercontent.comviaacode/avo2-components/ma
 // will not be fully engaged.
 pipeline {
     agent {
-      node {
-        // spin up a pod to run this build on
-        label 'docker'
-      }
+        node {
+            // spin up a pod to run this build on
+            label 'docker'
+        }
     }
     options {
         // set a timeout of 45 minutes for this pipeline builds are way to slow need to figure out why
@@ -23,7 +23,7 @@ pipeline {
                     openshift.withCluster() {
                         openshift.withProject("shared-components") {
                             echo "Using project: ${openshift.project()}"
-				sh'''#!/bin/bash
+                            sh '''#!/bin/bash
 				oc project shared-components || exit 1'''
                         }
                     }
@@ -32,16 +32,15 @@ pipeline {
         }
 
 
-
         stage('Build') {
             steps {
                 script {
                     openshift.withCluster() {
                         openshift.withProject("shared-components") {
-			   sh'''#!/bin/bash
+                            sh '''#!/bin/bash
 			   rm -f /.npmrc
 			    npm --registry=https://registry.npmjs.org install && npm run build || exit 1'''
-			   sh'''#!/bin/bash
+                            sh '''#!/bin/bash
 			   echo "##### BUILDING DOCKER IMAGE DISABLED#####"
 			    #  docker build -t docker-registry-default.apps.do-prd-okp-m0.do.viaa.be/shared-components/avo2-components:latest .
 			    '''
@@ -52,21 +51,21 @@ pipeline {
         } // stage
 
 
-  	stage('Publish') {
+        stage('Publish') {
             steps {
 
                 script {
                     openshift.withCluster() {
                         openshift.withProject("shared-components") {
 
-                             	echo "Publishing package to registry"
-			     	sh '''#/bin/bash
+                            echo "Publishing package to registry"
+                            sh '''#/bin/bash
 			         cp /root/npm-config .npmrc
 			   	 npm publish
 				 echo "removing .npmrc for install if node is the same we need to set registry for push nexus not seems to like @viaa:registry=.."
 				rm -f .npmrc
 		                '''
-			     	sh '''#/bin/bash
+                            sh '''#/bin/bash
 				echo "######PUSHING IMAGE######"
 				#docker push docker-registry-default.apps.do-prd-okp-m0.do.viaa.be/shared-components/avo2-components:latest 
 				'''
@@ -75,15 +74,15 @@ pipeline {
                 } // script
             } // steps
         } // stage
-  	stage('Deploy') {
+        stage('Deploy') {
             steps {
 
                 script {
                     openshift.withCluster() {
                         openshift.withProject("shared-components") {
 
-                             	echo "Apply template changes"
-				sh '''#!/bin/bash
+                            echo "Apply template changes"
+                            sh '''#!/bin/bash
 				oc project shared-components
 				oc apply -f openshift/app_deployment-okd.yaml 
 				echo "rolling out app"
@@ -91,25 +90,23 @@ pipeline {
 				'''
 
 
-				
-
                         }
                     }
                 } // script
             } // steps
-        } // stage	    
+        } // stage
     } // stages
-	post {
+    post {
         always {
             // following disabled , we dont record test data for now
             //junit 'ci-results/*.xml'
-            
+
             //archiveArtifacts artifacts: 'cypress/videos/**/*.mp4', fingerprint: true
             //archiveArtifacts artifacts: 'cypress/screenshots/**/*.png', fingerprint: true
             //archiveArtifacts artifacts: 'ci-results/*.xml', fingerprint: true
 
             script {
-               slackNotifier(currentBuild.currentResult)
+                slackNotifier(currentBuild.currentResult)
             }
             cleanWs()
         }

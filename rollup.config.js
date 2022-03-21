@@ -1,4 +1,5 @@
 import commonjs from '@rollup/plugin-commonjs';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import autoprefixer from 'autoprefixer';
 import copy from 'rollup-plugin-copy';
 import postcss from 'rollup-plugin-postcss';
@@ -36,11 +37,12 @@ export default (cliArgs) => {
 					check: true,
 					tsconfig: './tsconfig.build.json',
 				}),
+				nodeResolve(),
+				commonjs(),
+				terser(),
 				copy({
 					targets: [{ src: 'src/types/*.d.ts', dest: getCopyDest('types') }], // Copy inernal .d.ts files for all formats
 				}),
-				commonjs(),
-				terser(),
 				visualizer({
 					filename: 'bundle-stats.html',
 					open: cliArgs['config-analyze'],
@@ -54,7 +56,6 @@ export default (cliArgs) => {
 				'braft-extensions/dist/table.css',
 				'braft-extensions/dist/table',
 				'clsx',
-				'date-fns/locale',
 				'react-datepicker',
 				'react-dom',
 				'react-popper',

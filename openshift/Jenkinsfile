@@ -49,7 +49,7 @@ pipeline {
         OC_URL = 'https://c113-e.private.eu-de.containers.cloud.ibm.com:30227'
         JIRA_URL = 'meemoo.atlassian.net'
         APP_NAME = 'avo-components'
-        BRANCH_NAME= 'master'
+        BRANCH_NAME = 'master'
     }
 
     stages {
@@ -75,39 +75,39 @@ pipeline {
                 container('oc') {
                     script {
                         sh '''#!/bin/bash
-			echo no deployment for this build atm
-                        '''
+			                echo no deployment for this build atm
+                            '''
                     }
-                   }
-                  container('npm') {
+                }
+                container('npm') {
 
-					script {
-								sh'''#!/bin/bash
-								npm --registry=https://registry.npmjs.org install && npm run build || exit 1
-								'''
-					} // script
+                    script {
+                        sh '''#!/bin/bash			  
+                            sudo chmod -R 775 /root/.node_modules/src
+							npm --registry=https://registry.npmjs.org install && npm run build || exit 1
+							'''
+                    } // script
                 }
             }
         }// end stage build
 
 
-
-	stage('Publish') {
+        stage('Publish') {
             steps {
-             container('npm') {
+                container('npm') {
 
-                script {
-					echo "Publishing package to registry"
-					configFileProvider([configFile(fileId: "npmrc", variable: 'configFile')]) {
-						sh "cat $configFile > .npmrc"
-					}
-					sh '''#/bin/bash
+                    script {
+                        echo "Publishing package to registry"
+                        configFileProvider([configFile(fileId: "npmrc", variable: 'configFile')]) {
+                            sh "cat $configFile > .npmrc"
+                        }
+                        sh '''#/bin/bash
 					npm publish
 					echo "removing .npmrc for installto nexus not seems @viaa:registry=.."
 					rm -f .npmrc
 					'''
-                } // script
-              }// end container
+                    } // script
+                }// end container
             } // steps
         } // stage
 
@@ -149,11 +149,11 @@ void getImageFromDockerfile() {
 
 void setGitHubBuildStatus(String message, String state) {
     step([
-        $class: 'GitHubCommitStatusSetter',
-        reposSource: [$class: 'ManuallyEnteredRepositorySource', url: "${GIT_URL}"],
-        commitShaSource: [$class: 'ManuallyEnteredShaSource', sha: "${GIT_COMMIT}"],
-        errorHandlers: [[$class: 'ChangingBuildStatusErrorHandler', result: 'UNSTABLE']],
-        statusResultSource: [ $class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: message, state: state]] ]
+            $class            : 'GitHubCommitStatusSetter',
+            reposSource       : [$class: 'ManuallyEnteredRepositorySource', url: "${GIT_URL}"],
+            commitShaSource   : [$class: 'ManuallyEnteredShaSource', sha: "${GIT_COMMIT}"],
+            errorHandlers     : [[$class: 'ChangingBuildStatusErrorHandler', result: 'UNSTABLE']],
+            statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: message, state: state]]]
     ])
 }
 
