@@ -82,8 +82,7 @@ pipeline {
                 container('npm') {
 
                     script {
-                        sh '''#!/bin/bash			  
-                            sudo chmod -R 775 /root/.node_modules/src
+                        sh '''#!/bin/bash
 							npm --registry=https://registry.npmjs.org install && npm run build || exit 1
 							'''
                     } // script
