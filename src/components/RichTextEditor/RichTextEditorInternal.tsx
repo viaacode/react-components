@@ -42,7 +42,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 		if (context === 'braft-finder') {
 			return {
 				remove: 'Verwijder',
-				cancel: 'Annueer',
+				cancel: 'Annuleer',
 				confirm: 'Bevestig',
 				insert: 'Voeg selectie in',
 				width: 'Breedte',
@@ -58,7 +58,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 				deselect: 'Deselecteren',
 				removeSelected: 'Verwijder selectie',
 				externalInputPlaceHolder: 'Bron naam|Bron URL',
-				externalInputTip: 'Splits bron naam en brond URL met "|", bevestig met enter.',
+				externalInputTip: 'Splits bron naam en bron URL met "|", bevestig met enter.',
 				addLocalFile: 'Voeg lokale bestanden toe',
 				addExternalSource: 'Voeg bestanden toe van internet',
 				unnamedItem: 'Naamloos item',
