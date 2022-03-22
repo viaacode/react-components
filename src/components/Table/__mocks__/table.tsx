@@ -1,7 +1,14 @@
 import React from 'react';
-import { Column } from 'react-table';
+import { CellProps, Column } from 'react-table';
 
-export const mockData = [1, 2, 3, 4, 5, 6].map((data) => {
+export interface MockTableData {
+	id: number;
+	name: string;
+	created_at: number;
+	child: { id: number };
+}
+
+export const mockData: MockTableData[] = [1, 2, 3, 4, 5, 6].map((data) => {
 	return {
 		id: data,
 		name: ['John', 'Jim', 'Bob', 'Susan', 'Sally', 'Delilah'][data - 1],
@@ -12,7 +19,7 @@ export const mockData = [1, 2, 3, 4, 5, 6].map((data) => {
 	};
 });
 
-export const mockColumns: Column<object>[] = [
+export const mockColumns: Column<MockTableData>[] = [
 	{
 		Header: 'Id',
 		accessor: 'id', // accessor is the "key" in the data
@@ -25,8 +32,8 @@ export const mockColumns: Column<object>[] = [
 	{
 		Header: 'Created at',
 		accessor: 'created_at',
-		Cell: ({ cell }) => {
-			return new Date(cell.value as number).toLocaleDateString();
+		Cell: ({ cell }: CellProps<MockTableData, MockTableData['created_at']>) => {
+			return new Date(cell.value).toLocaleDateString();
 		},
 	},
 	{

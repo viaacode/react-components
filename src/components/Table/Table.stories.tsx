@@ -1,9 +1,11 @@
 import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
+import { Column } from 'react-table';
 
 import Table from './Table';
 import { defaultSortingIcons } from './Table.const';
+import { TableData } from './Table.types';
 import { mockColumns, mockData } from './__mocks__/table';
 
 export default {
@@ -16,7 +18,8 @@ const Template: ComponentStory<typeof Table> = (args) => <Table {...args} />;
 export const Default = Template.bind({});
 Default.args = {
 	options: {
-		columns: mockColumns,
+		// .bind() doesn't play well with generics so we have to cast our value
+		columns: mockColumns as Column<TableData>[],
 		data: mockData,
 	},
 	sortingIcons: {
