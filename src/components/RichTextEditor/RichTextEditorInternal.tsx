@@ -1,7 +1,5 @@
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
-import Table from 'braft-extensions/dist/table';
-import 'braft-extensions/dist/table.css';
 import clsx from 'clsx';
 import React, { FunctionComponent } from 'react';
 
@@ -25,16 +23,6 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	rootClassName: root = 'c-rich-text-editor',
 	className,
 }) => {
-	const options = {
-		defaultColumns: 3, //  default number of columns
-		defaultRows: 3, //  default number of rows
-		withDropdown: true, //  Whether a drop-down menu pops up before inserting a table
-		columnResizable: false, //  Whether to allow drag to adjust the column width, default false
-		exportAttrString: 'class="c-editor-table"', //  Specify the attribute string attached to the table tag when outputting HTML
-	};
-
-	BraftEditor.use(Table(options));
-
 	const getLanguage = (languages: any, context: string): any => {
 		if (context === 'braft-table') {
 			return {
