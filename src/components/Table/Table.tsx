@@ -1,13 +1,13 @@
 import clsx from 'clsx';
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { HeaderGroup, usePagination, useSortBy, useTable } from 'react-table';
 
 import { bemCls, getVariantClasses } from '../../utils';
 
 import { defaultSortingIcons } from './Table.const';
-import { TableProps } from './Table.types';
+import { TableData, TableProps } from './Table.types';
 
-const Table: FC<TableProps<object>> = ({
+const Table = <D extends TableData>({
 	className,
 	onRowClick,
 	onSortChange,
@@ -17,7 +17,7 @@ const Table: FC<TableProps<object>> = ({
 	sortingIcons = defaultSortingIcons,
 	style,
 	variants,
-}) => {
+}: TableProps<D>) => {
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants));
 
@@ -51,7 +51,7 @@ const Table: FC<TableProps<object>> = ({
 
 	// Render
 
-	const renderSortingIndicator = (column: HeaderGroup) => {
+	const renderSortingIndicator = (column: HeaderGroup<D>) => {
 		if (!column.canSort || column.disableSortBy) return null;
 
 		if (column.isSorted) {

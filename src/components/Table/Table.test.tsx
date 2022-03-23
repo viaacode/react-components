@@ -1,13 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 
 import Table from './Table';
 import { defaultSortingIcons } from './Table.const';
-import { TableProps } from './Table.types';
+import { TableData, TableProps } from './Table.types';
 import { mockColumns, mockData } from './__mocks__/table';
 
-const renderTable = ({ ...rest }: PropsWithChildren<TableProps<object>>) => {
-	return render(<Table {...rest} />);
+const renderTable = <T extends TableData>(props: TableProps<T>) => {
+	return render(<Table {...props} />);
 };
 
 describe('<Table />', () => {
