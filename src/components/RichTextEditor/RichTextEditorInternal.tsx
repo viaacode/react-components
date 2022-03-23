@@ -1,7 +1,5 @@
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
-import Table from 'braft-extensions/dist/table';
-import 'braft-extensions/dist/table.css';
 import clsx from 'clsx';
 import React, { FunctionComponent } from 'react';
 
@@ -25,16 +23,6 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	rootClassName: root = 'c-rich-text-editor',
 	className,
 }) => {
-	const options = {
-		defaultColumns: 3, //  default number of columns
-		defaultRows: 3, //  default number of rows
-		withDropdown: true, //  Whether a drop-down menu pops up before inserting a table
-		columnResizable: false, //  Whether to allow drag to adjust the column width, default false
-		exportAttrString: 'class="c-editor-table"', //  Specify the attribute string attached to the table tag when outputting HTML
-	};
-
-	BraftEditor.use(Table(options));
-
 	const getLanguage = (languages: any, context: string): any => {
 		if (context === 'braft-table') {
 			return {
@@ -54,7 +42,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 		if (context === 'braft-finder') {
 			return {
 				remove: 'Verwijder',
-				cancel: 'Annueer',
+				cancel: 'Annuleer',
 				confirm: 'Bevestig',
 				insert: 'Voeg selectie in',
 				width: 'Breedte',
@@ -70,7 +58,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 				deselect: 'Deselecteren',
 				removeSelected: 'Verwijder selectie',
 				externalInputPlaceHolder: 'Bron naam|Bron URL',
-				externalInputTip: 'Splits bron naam en brond URL met "|", bevestig met enter.',
+				externalInputTip: 'Splits bron naam en bron URL met "|", bevestig met enter.',
 				addLocalFile: 'Voeg lokale bestanden toe',
 				addExternalSource: 'Voeg bestanden toe van internet',
 				unnamedItem: 'Naamloos item',

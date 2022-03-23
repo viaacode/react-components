@@ -15,8 +15,6 @@ describe('components/<RichTextEditor />', () => {
 	it('Should set the correct className', async () => {
 		const rootClassName = 'root-class';
 		const className = 'custom-class';
-		renderRichTextEditor({ className, rootClassName });
-
 		const { container } = renderRichTextEditor({
 			rootClassName,
 			className,
