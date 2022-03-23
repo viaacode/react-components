@@ -32,16 +32,16 @@ export default (cliArgs) => {
 					plugins: [autoprefixer()],
 					minimize: true,
 				}),
+				nodeResolve(),
 				typescript({
 					clean: true,
 					check: true,
 					tsconfig: './tsconfig.build.json',
 				}),
-				nodeResolve(),
 				commonjs(),
 				terser(),
 				copy({
-					targets: [{ src: 'src/types/*.d.ts', dest: getCopyDest('types') }], // Copy inernal .d.ts files for all formats
+					targets: [{ src: 'src/types/*.d.ts', dest: getCopyDest('types') }], // Copy internal .d.ts files for all formats
 				}),
 				visualizer({
 					filename: 'bundle-stats.html',
@@ -51,10 +51,6 @@ export default (cliArgs) => {
 			],
 			external: [
 				'autosize',
-				'braft-editor',
-				'braft-editor/dist/index.css',
-				'braft-extensions/dist/table.css',
-				'braft-extensions/dist/table',
 				'clsx',
 				'react-datepicker',
 				'react-dom',
