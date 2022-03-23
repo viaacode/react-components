@@ -8,7 +8,7 @@ export interface DropdownProps extends DefaultComponentProps {
 	icon?: ReactNode;
 	iconOpen?: ReactNode;
 	iconClosed?: ReactNode;
-	isOpen: boolean;
+	isOpen?: boolean;
 	label?: string;
 	flyoutClassName?: string;
 	menuClassName?: string;

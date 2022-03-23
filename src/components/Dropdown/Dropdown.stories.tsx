@@ -40,6 +40,12 @@ const Template: ComponentStory<typeof Dropdown> = (args) => (
 	</DropdownStoryComponent>
 );
 
+const TemplateUncontrolled: ComponentStory<typeof Dropdown> = (args) => (
+	<Dropdown {...args}>
+		<MenuContent menuItems={menuItems} />
+	</Dropdown>
+);
+
 const TemplateWithIcons: ComponentStory<typeof Dropdown> = (args) => (
 	<div style={{ paddingTop: '200px' }}>
 		<DropdownStoryComponent>
@@ -54,6 +60,11 @@ export const Default = Template.bind({});
 Default.args = {
 	label: 'Show Options',
 	isOpen: false,
+};
+
+export const Uncontrolled = TemplateUncontrolled.bind({});
+Uncontrolled.args = {
+	label: 'Show Options',
 };
 
 export const FitMenuContent = Template.bind({});

@@ -26,6 +26,7 @@ const Dropdown: FC<DropdownProps> = ({
 	icon,
 	iconOpen,
 	iconClosed,
+	// Do not pass the isOpen attribute to let the component handle its own open/closed state
 	isOpen,
 	label = '',
 	flyoutClassName,
@@ -46,6 +47,7 @@ const Dropdown: FC<DropdownProps> = ({
 }) => {
 	const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 	const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
+	const [isOpenInternal, setIsOpenInternal] = useState<boolean>(false);
 
 	const dropdownButtonSlot = useSlot(DropdownButton, children);
 	const dropdownContentSlot = useSlot(DropdownContent, children);
@@ -54,14 +56,22 @@ const Dropdown: FC<DropdownProps> = ({
 		placement,
 	});
 
+	const isOpenCombined = typeof isOpen === 'undefined' ? isOpenInternal : isOpen;
+
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, triggerClassName, root, getVariantClasses(root, variants), {
 		[bem('trigger')]: triggerWidth === 'fit-content',
 	});
 
-	const toggle = (openState = !isOpen) => {
-		if (openState !== isOpen) {
-			openState ? onOpen() : onClose();
+	const toggle = (openState: boolean) => {
+		if (typeof isOpen === 'undefined') {
+			// Handle is open state internally
+			setIsOpenInternal(openState);
+		} else {
+			// Open state is handled by the parent component
+			if (openState !== isOpen) {
+				openState ? onOpen() : onClose();
+			}
 		}
 	};
 
@@ -77,7 +87,7 @@ const Dropdown: FC<DropdownProps> = ({
 				// eslint-disable-next-line jsx-a11y/no-static-element-interactions
 				<div
 					className={rootCls}
-					onClick={() => toggle()}
+					onClick={() => toggle(!isOpenCombined)}
 					onKeyUp={() => null}
 					ref={setReferenceElement}
 				>
@@ -85,7 +95,7 @@ const Dropdown: FC<DropdownProps> = ({
 						<Button
 							iconStart={icon}
 							label={label}
-							iconEnd={isOpen ? iconOpen : iconClosed}
+							iconEnd={isOpenCombined ? iconOpen : iconClosed}
 						/>
 					)}
 				</div>
@@ -99,13 +109,13 @@ const Dropdown: FC<DropdownProps> = ({
 				{...attributes.popper}
 				className={clsx(
 					flyoutClassName,
-					isOpen ? 'c-dropdown__content-open' : 'c-dropdown__content-closed'
+					isOpenCombined ? 'c-dropdown__content-open' : 'c-dropdown__content-closed'
 				)}
 			>
 				<Menu
 					className={menuClassName}
 					rootClassName={menuRootClassName}
-					isOpen={isOpen}
+					isOpen={isOpenCombined}
 					search={searchMenu}
 				>
 					{dropdownContentSlot || children}
