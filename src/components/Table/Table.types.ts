@@ -1,9 +1,7 @@
 import { MouseEvent, ReactNode } from 'react';
 import {
-	CellPropGetter,
 	ColumnInstance,
 	HeaderGroup,
-	HeaderProps,
 	Row,
 	SortingRule,
 	TableCellProps,
@@ -26,7 +24,9 @@ export type {
 
 export interface TableProps<T extends TableData> extends DefaultComponentProps {
 	getCellProps?: (column: ColumnInstance<T>) => Partial<TableCellProps>;
-	getColumnProps?: (column: HeaderGroup<T>) => Partial<TableHeaderProps>;
+	getColumnProps?: (
+		column: HeaderGroup<T> | ColumnInstance<T>
+	) => Partial<TableHeaderProps> | Partial<TableCellProps>;
 	getHeaderProps?: (column: HeaderGroup<T>) => Partial<TableHeaderProps>;
 	getRowProps?: (row: Row<T>) => Partial<TableRowProps>;
 	onRowClick?: (event: MouseEvent<HTMLTableRowElement>, row: Row<T>) => void;

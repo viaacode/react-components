@@ -161,4 +161,31 @@ describe('<Table />', () => {
 
 		expect(onRowClick).toHaveBeenCalledTimes(1);
 	});
+
+	it('Should be able to set props on table elements', () => {
+		const headerClass = 'header-class';
+		const colClass = 'col-class';
+		const rowClass = 'row-class';
+		const cellClass = 'cell-class';
+		const headerStyle = { padding: 0 };
+		renderTable({
+			options: {
+				columns: mockColumns,
+				data: mockData,
+			},
+			getHeaderProps: () => ({ className: headerClass, style: headerStyle }),
+			getColumnProps: () => ({ className: colClass }),
+			getRowProps: () => ({ className: rowClass }),
+			getCellProps: () => ({ className: cellClass }),
+		});
+
+		const header = screen.getByText(mockColumns[0].Header as string);
+		const cell = screen.getByText(mockData[0].name);
+		const row = cell.parentElement;
+
+		expect(header).toHaveClass(headerClass, colClass);
+		expect(header).toHaveStyle(headerStyle);
+		expect(cell).toHaveClass(cellClass, colClass);
+		expect(row).toHaveClass(rowClass);
+	});
 });

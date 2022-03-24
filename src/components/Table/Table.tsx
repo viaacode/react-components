@@ -24,6 +24,10 @@ const Table = <D extends TableData>({
 }: TableProps<D>) => {
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants));
+	const trBodyClass = clsx(bem('row'), bem('row', 'body'));
+	const tdClass = clsx(bem('cell'), bem('cell', 'body'));
+	const thClass = (isSorted: boolean) =>
+		clsx(bem('cell'), bem('cell', 'header'), isSorted && bem('cell', 'active'));
 
 	// State
 
@@ -79,15 +83,11 @@ const Table = <D extends TableData>({
 								{group.headers.map((column, j) => (
 									<th
 										{...column.getHeaderProps([
+											{ className: thClass(column.isSorted) },
 											column.getSortByToggleProps(),
 											getColumnProps(column),
 											getHeaderProps(column),
 										])}
-										className={clsx(
-											bem('cell'),
-											bem('cell', 'header'),
-											column.isSorted && bem('cell', 'active')
-										)}
 										key={`${i}-${j}`}
 									>
 										{column.render('Header')}
@@ -109,15 +109,20 @@ const Table = <D extends TableData>({
 							return (
 								<tr
 									onClick={(e) => onRowClick && onRowClick(e, row)}
-									className={clsx(bem('row'), bem('row', 'body'))}
-									{...row.getRowProps(getRowProps(row))}
+									{...row.getRowProps([
+										{ className: trBodyClass },
+										getRowProps(row),
+									])}
 									key={i}
 								>
 									{row.cells.map((cell, j) => {
 										return (
 											<td
-												{...cell.getCellProps([getCellProps(cell.column)])}
-												className={clsx(bem('cell'), bem('cell', 'body'))}
+												{...cell.getCellProps([
+													{ className: tdClass },
+													getColumnProps(cell.column),
+													getCellProps(cell.column),
+												])}
 												key={`${i}-${j}`}
 											>
 												{cell.render('Cell')}
