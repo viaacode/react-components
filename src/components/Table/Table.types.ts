@@ -1,5 +1,17 @@
 import { MouseEvent, ReactNode } from 'react';
-import { Row, SortingRule, TableOptions, UsePaginationInstanceProps } from 'react-table';
+import {
+	CellPropGetter,
+	ColumnInstance,
+	HeaderGroup,
+	HeaderProps,
+	Row,
+	SortingRule,
+	TableCellProps,
+	TableHeaderProps,
+	TableOptions,
+	TableRowProps,
+	UsePaginationInstanceProps,
+} from 'react-table';
 
 import { DefaultComponentProps } from '../../types';
 
@@ -13,6 +25,10 @@ export type {
 } from 'react-table';
 
 export interface TableProps<T extends TableData> extends DefaultComponentProps {
+	getCellProps?: (column: ColumnInstance<T>) => Partial<TableCellProps>;
+	getColumnProps?: (column: HeaderGroup<T>) => Partial<TableHeaderProps>;
+	getHeaderProps?: (column: HeaderGroup<T>) => Partial<TableHeaderProps>;
+	getRowProps?: (row: Row<T>) => Partial<TableRowProps>;
 	onRowClick?: (event: MouseEvent<HTMLTableRowElement>, row: Row<T>) => void;
 	onSortChange?: (rules: SortingRule<T>[]) => void;
 	options: TableOptions<T>;

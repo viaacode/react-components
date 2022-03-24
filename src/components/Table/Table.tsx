@@ -4,11 +4,15 @@ import { HeaderGroup, usePagination, useSortBy, useTable } from 'react-table';
 
 import { bemCls, getVariantClasses } from '../../utils';
 
-import { defaultSortingIcons } from './Table.const';
+import { defaultPropGetter, defaultSortingIcons } from './Table.const';
 import { TableData, TableProps } from './Table.types';
 
 const Table = <D extends TableData>({
 	className,
+	getCellProps = defaultPropGetter,
+	getColumnProps = defaultPropGetter,
+	getHeaderProps = defaultPropGetter,
+	getRowProps = defaultPropGetter,
 	onRowClick,
 	onSortChange,
 	options,
@@ -46,7 +50,7 @@ const Table = <D extends TableData>({
 	// Effects
 
 	useEffect(() => {
-		onSortChange && onSortChange(sortBy);
+		onSortChange?.(sortBy);
 	}, [sortBy]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	// Render
@@ -74,7 +78,11 @@ const Table = <D extends TableData>({
 							>
 								{group.headers.map((column, j) => (
 									<th
-										{...column.getHeaderProps(column.getSortByToggleProps())}
+										{...column.getHeaderProps([
+											column.getSortByToggleProps(),
+											getColumnProps(column),
+											getHeaderProps(column),
+										])}
 										className={clsx(
 											bem('cell'),
 											bem('cell', 'header'),
@@ -102,13 +110,13 @@ const Table = <D extends TableData>({
 								<tr
 									onClick={(e) => onRowClick && onRowClick(e, row)}
 									className={clsx(bem('row'), bem('row', 'body'))}
-									{...row.getRowProps()}
+									{...row.getRowProps(getRowProps(row))}
 									key={i}
 								>
 									{row.cells.map((cell, j) => {
 										return (
 											<td
-												{...cell.getCellProps()}
+												{...cell.getCellProps([getCellProps(cell.column)])}
 												className={clsx(bem('cell'), bem('cell', 'body'))}
 												key={`${i}-${j}`}
 											>
