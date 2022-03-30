@@ -11,6 +11,7 @@ export * from './Dropdown';
 export * from './FlowPlayer';
 export * from './FormControl';
 export * from './Menu';
+export * from './Modal';
 export * from './Pagination';
 export * from './RadioButton';
 export * from './RichTextEditor';
