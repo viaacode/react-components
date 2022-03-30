@@ -10,9 +10,18 @@ const noMargin = { margin: '' };
 const closeIcon = 'times';
 
 const renderModal = (
-	{ isOpen = true, title = text, ...rest }: PropsWithChildren<ModalProps> = {},
+	{
+		isOpen = true,
+		title = text,
+		closeButtonProps = { icon: closeIcon },
+		...rest
+	}: PropsWithChildren<ModalProps> = {},
 	renderOptions?: RenderOptions
-) => render(<Modal {...rest} isOpen={isOpen} title={title} />, renderOptions);
+) =>
+	render(
+		<Modal {...rest} closeButtonProps={closeButtonProps} isOpen={isOpen} title={title} />,
+		renderOptions
+	);
 
 describe('Component: <Modal />', () => {
 	it('Should render no content initially', () => {
@@ -67,11 +76,9 @@ describe('Component: <Modal />', () => {
 		renderModal({ title });
 
 		const modalTitle = screen.getByText(title).parentElement;
-		const modalClose = screen
-			.getByText(closeIcon)
-			.closest('.c-hetarchief-modal__close-wrapper');
+		const modalClose = screen.getByText(closeIcon).closest('.c-modal__close-wrapper');
 
-		expect(modalTitle).toHaveClass('c-hetarchief-modal__title-wrapper');
+		expect(modalTitle).toHaveClass('c-modal__title-wrapper');
 		expect(modalClose).toBeInTheDocument();
 	});
 
@@ -125,7 +132,7 @@ describe('Component: <Modal />', () => {
 	it('Should never obscure the entire screen', () => {
 		renderModal();
 
-		const overlay = screen.getByText(text).closest('.c-hetarchief-modal__overlay');
+		const overlay = screen.getByText(text).closest('.c-modal__overlay');
 
 		expect(overlay).toBeInTheDocument();
 	});
