@@ -57,6 +57,7 @@
     "@popperjs/core": "2.11.2",
     "autosize": "5.0.1",
     "braft-editor": "^2.3.9",
+    "braft-extensions": "0.1.1",
     "clsx": "1.1.1",
     "date-fns": "^2.16.0",
     "draft-js": "0.10.5",
