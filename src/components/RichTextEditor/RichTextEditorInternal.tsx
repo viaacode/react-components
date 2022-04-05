@@ -1,4 +1,4 @@
-import BraftEditor from 'braft-editor';
+import BraftEditor, { MediaType } from 'braft-editor';
 import 'braft-editor/dist/index.css';
 import Table from 'braft-extensions/dist/table';
 import 'braft-extensions/dist/table.css';
@@ -166,7 +166,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 				readOnly={disabled}
 				language={getLanguage}
 				controls={controls}
-				media={media}
+				media={media as unknown as MediaType}
 				onChange={(newState: RichEditorState) => {
 					if (onChange) {
 						onChange(newState);
