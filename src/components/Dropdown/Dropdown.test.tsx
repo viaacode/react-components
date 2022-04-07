@@ -62,7 +62,7 @@ describe('<Dropdown />', () => {
 		const button = await waitFor(() => getByText(label));
 		fireEvent.click(button);
 
-		expect(onOpen).toHaveBeenCalledTimes(1);
+		waitFor(() => expect(onOpen).toHaveBeenCalledTimes(1));
 	});
 
 	it('Should call `onClose` when clicking the button (and `isOpen = true`)', async () => {
