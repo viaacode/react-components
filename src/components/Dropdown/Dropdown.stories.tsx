@@ -5,6 +5,7 @@ import React, { cloneElement, ReactElement, useState } from 'react';
 import { MenuContent } from '../Menu/MenuContent';
 
 import Dropdown from './Dropdown';
+import { DropdownContent } from './Dropdown.slots';
 import { menuItems, menuItemsWithIcons } from './__mocks__/dropdown';
 
 const DropdownStoryComponent = ({ children }: { children: ReactElement }) => {
@@ -40,15 +41,32 @@ const Template: ComponentStory<typeof Dropdown> = (args) => (
 	</DropdownStoryComponent>
 );
 
-const TemplateWithIcons: ComponentStory<typeof Dropdown> = (args) => (
-	<div style={{ paddingTop: '200px' }}>
-		<DropdownStoryComponent>
-			<Dropdown {...args}>
-				<MenuContent menuItems={menuItemsWithIcons} />
-			</Dropdown>
-		</DropdownStoryComponent>
-	</div>
-);
+const TemplateWithIcons: ComponentStory<typeof Dropdown> = (args) => {
+	const [multiChildren, setMulti] = useState(args.children);
+
+	// Demonstrate what https://github.com/viaacode/react-components/commit/6ae18ae6ed1c055c32bf9d1f55f88fabd48d67f9 fixes
+	// i.e. incorrect positioning when content grows after init
+	const t = setTimeout(() => {
+		setMulti(
+			<>
+				{args.children}
+				{args.children}
+			</>
+		);
+
+		clearTimeout(t);
+	}, 1000);
+
+	return (
+		<div style={{ paddingTop: '200px' }}>
+			<DropdownStoryComponent>
+				<Dropdown {...args}>
+					{multiChildren || <MenuContent menuItems={menuItemsWithIcons} />}
+				</Dropdown>
+			</DropdownStoryComponent>
+		</div>
+	);
+};
 
 export const Default = Template.bind({});
 Default.args = {
@@ -114,4 +132,19 @@ DropdownTopEnd.args = {
 	menuWidth: 'fit-content',
 	isOpen: false,
 	placement: 'top-end',
+};
+
+export const DropdownWithLazyContent = TemplateWithIcons.bind({});
+DropdownWithLazyContent.args = {
+	label: 'Show Options',
+	menuWidth: 'fit-content',
+	isOpen: false,
+	placement: 'right',
+	children: (
+		<DropdownContent>
+			<div style={{ backgroundColor: 'hotpink', maxHeight: '100vh', overflow: 'auto' }}>
+				<h1>One</h1>
+			</div>
+		</DropdownContent>
+	),
 };

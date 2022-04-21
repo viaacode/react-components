@@ -4,11 +4,15 @@ import { HeaderGroup, usePagination, useSortBy, useTable } from 'react-table';
 
 import { bemCls, getVariantClasses } from '../../utils';
 
-import { defaultSortingIcons } from './Table.const';
+import { defaultPropGetter, defaultSortingIcons } from './Table.const';
 import { TableData, TableProps } from './Table.types';
 
 const Table = <D extends TableData>({
 	className,
+	getCellProps = defaultPropGetter,
+	getColumnProps = defaultPropGetter,
+	getHeaderProps = defaultPropGetter,
+	getRowProps = defaultPropGetter,
 	onRowClick,
 	onSortChange,
 	options,
@@ -20,6 +24,10 @@ const Table = <D extends TableData>({
 }: TableProps<D>) => {
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants));
+	const trBodyClass = clsx(bem('row'), bem('row', 'body'));
+	const tdClass = clsx(bem('cell'), bem('cell', 'body'));
+	const thClass = (isSorted: boolean) =>
+		clsx(bem('cell'), bem('cell', 'header'), isSorted && bem('cell', 'active'));
 
 	// State
 
@@ -46,7 +54,7 @@ const Table = <D extends TableData>({
 	// Effects
 
 	useEffect(() => {
-		onSortChange && onSortChange(sortBy);
+		onSortChange?.(sortBy);
 	}, [sortBy]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	// Render
@@ -74,12 +82,12 @@ const Table = <D extends TableData>({
 							>
 								{group.headers.map((column, j) => (
 									<th
-										{...column.getHeaderProps(column.getSortByToggleProps())}
-										className={clsx(
-											bem('cell'),
-											bem('cell', 'header'),
-											column.isSorted && bem('cell', 'active')
-										)}
+										{...column.getHeaderProps([
+											{ className: thClass(column.isSorted) },
+											column.getSortByToggleProps(),
+											getColumnProps(column),
+											getHeaderProps(column),
+										])}
 										key={`${i}-${j}`}
 									>
 										{column.render('Header')}
@@ -101,15 +109,20 @@ const Table = <D extends TableData>({
 							return (
 								<tr
 									onClick={(e) => onRowClick && onRowClick(e, row)}
-									className={clsx(bem('row'), bem('row', 'body'))}
-									{...row.getRowProps()}
+									{...row.getRowProps([
+										{ className: trBodyClass },
+										getRowProps(row),
+									])}
 									key={i}
 								>
 									{row.cells.map((cell, j) => {
 										return (
 											<td
-												{...cell.getCellProps()}
-												className={clsx(bem('cell'), bem('cell', 'body'))}
+												{...cell.getCellProps([
+													{ className: tdClass },
+													getColumnProps(cell.column),
+													getCellProps(cell.column),
+												])}
 												key={`${i}-${j}`}
 											>
 												{cell.render('Cell')}

@@ -2,6 +2,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import autoprefixer from 'autoprefixer';
 import copy from 'rollup-plugin-copy';
+import builtins from 'rollup-plugin-node-builtins';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
@@ -27,6 +28,7 @@ export default (cliArgs) => {
 			input: ['src/index.ts'],
 			output: getOutput(),
 			plugins: [
+				builtins(),
 				postcss({
 					extensions: ['.scss', '.css'],
 					plugins: [autoprefixer()],
