@@ -13,7 +13,6 @@ export const TextInputDefaults = {
 	type: 'text',
 	value: '',
 	onChange: () => null,
-	onContainerKeyUp: () => null,
 };
 
 const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProps>(
@@ -29,7 +28,7 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 			value = TextInputDefaults.value,
 			onChange = TextInputDefaults.onChange,
 			onContainerClick,
-			onContainerKeyUp = TextInputDefaults.onContainerKeyUp,
+			onContainerKeyUp,
 			...inputProps
 		},
 		ref
@@ -58,13 +57,7 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 		);
 
 		return (
-			<div
-				className={rootCls}
-				role={hasContainerEvents ? 'button' : undefined}
-				tabIndex={hasContainerEvents ? 0 : undefined}
-				onClick={onContainerClick}
-				onKeyUp={onContainerKeyUp}
-			>
+			<div className={rootCls}>
 				{iconStart && renderIcon(iconStart, 'start')}
 				<input
 					{...inputProps}
@@ -74,6 +67,10 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 					type={type}
 					value={value}
 					onChange={onChange}
+					role={hasContainerEvents ? 'button' : undefined}
+					tabIndex={hasContainerEvents ? 0 : undefined}
+					onClick={onContainerClick}
+					onKeyUp={onContainerKeyUp}
 				/>
 				{iconEnd && renderIcon(iconEnd, 'end')}
 			</div>
