@@ -13,6 +13,7 @@ const Table = <D extends TableData>({
 	getColumnProps = defaultPropGetter,
 	getHeaderProps = defaultPropGetter,
 	getRowProps = defaultPropGetter,
+	getRowId,
 	onRowClick,
 	onSortChange,
 	options,
@@ -34,8 +35,15 @@ const Table = <D extends TableData>({
 	const data = useMemo(() => options.data, [options.data]);
 	const columns = useMemo(() => options.columns, [options.columns]);
 
-	const instance = useTable(
-		{ ...options, manualSortBy: true, disableMultiSort: true, columns, data },
+	const instance = useTable<D>(
+		{
+			...options,
+			manualSortBy: true,
+			disableMultiSort: true,
+			columns,
+			data,
+			getRowId: getRowId as any,
+		},
 		useSortBy,
 		usePagination
 	);
@@ -60,7 +68,9 @@ const Table = <D extends TableData>({
 	// Render
 
 	const renderSortingIndicator = (column: HeaderGroup<D>) => {
-		if (!column.canSort || column.disableSortBy) return null;
+		if (!column.canSort || column.disableSortBy) {
+			return null;
+		}
 
 		if (column.isSorted) {
 			return column.isSortedDesc ? sortingIcons.desc : sortingIcons.asc;

@@ -21,6 +21,7 @@ Default.args = {
 		// .bind() doesn't play well with generics so we have to cast our value
 		columns: mockColumns as Column<TableData>[],
 		data: mockData,
+		getRowId: (row) => row.id,
 	},
 	sortingIcons: {
 		...defaultSortingIcons,

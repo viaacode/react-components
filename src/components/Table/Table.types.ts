@@ -29,6 +29,7 @@ export interface TableProps<T extends TableData> extends DefaultComponentProps {
 	) => Partial<TableHeaderProps> | Partial<TableCellProps>;
 	getHeaderProps?: (column: HeaderGroup<T>) => Partial<TableHeaderProps>;
 	getRowProps?: (row: Row<T>) => Partial<TableRowProps>;
+	getRowId?: (originalRow: Row<T>, relativeIndex: number, parent?: Row<T>) => string;
 	onRowClick?: (event: MouseEvent<HTMLTableRowElement>, row: Row<T>) => void;
 	onSortChange?: (rules: SortingRule<T>[]) => void;
 	options: TableOptions<T>;
