@@ -20,7 +20,9 @@ describe('components/<RichTextEditor />', () => {
 			className,
 		});
 
-		await waitFor(() => expect(container.querySelector('.c-content')).toBeInTheDocument());
+		await waitFor(() => {
+			expect(container.querySelector('.c-content')).toBeInTheDocument();
+		});
 
 		const richTextEditor = container.querySelector('.c-content');
 
@@ -34,7 +36,9 @@ describe('components/<RichTextEditor />', () => {
 			disabled: true,
 		});
 
-		await waitFor(() => expect(container.querySelector('.c-content')).toBeInTheDocument());
+		await waitFor(() => {
+			expect(container.querySelector('.c-content')).toBeInTheDocument();
+		});
 		const richTextEditor = container.querySelector('.c-rich-text-editor');
 		expect(richTextEditor).toBeDefined();
 
