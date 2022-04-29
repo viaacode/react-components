@@ -176,7 +176,7 @@ $c-video-player-progress-inner-bg: #25a4cf;
 	}
 
 	.fp-controls {
-		width: calc(100% - 60px);
+		width: calc(100% - 75px);
 		color: rgb(255 255 255 / 67%);
 		background-color: rgb(15 23 29 / 80%);
 		z-index: 0;
@@ -212,6 +212,15 @@ $c-video-player-progress-inner-bg: #25a4cf;
 
 	.fp-progress {
 		background-color: #25a4cf87;
+	}
+
+	.fp-dragger {
+		top: -0.32em;
+		transform: translateX(2px);
+	}
+
+	.fp-controls:hover .fp-dragger {
+		transform: scale(1.2);
 	}
 
 	.fp-cuepoint {
@@ -337,4 +346,14 @@ $c-video-player-progress-inner-bg: #25a4cf;
 			border-radius: 50%;
 		}
 	}
+}
+
+/* Peak file */
+.c-peak {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	pointer-events: none;
 }

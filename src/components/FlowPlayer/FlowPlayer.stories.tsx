@@ -6,6 +6,7 @@ import { Button } from '../Button';
 
 import FlowPlayer from './FlowPlayer';
 import { MOCK_FLOW_PLAYER_PROPS_FULL } from './FlowPlayer.mock';
+import peakJson from './Peak/__mock__/peak.json';
 
 const FlowPlayerStoryComponentSetTimeButtons = ({ children }: { children: ReactElement }) => {
 	const [seekTime, setSeekTime] = useState(0);
@@ -81,6 +82,19 @@ const TemplateExternalControls: ComponentStory<typeof FlowPlayer> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = MOCK_FLOW_PLAYER_PROPS_FULL;
+
+export const Audio = Template.bind({});
+Audio.args = {
+	...MOCK_FLOW_PLAYER_PROPS_FULL,
+	src: [
+		{
+			src: 'https://file-examples.com/storage/fef12739526267ac9a2b543/2017/11/file_example_MP3_1MG.mp3',
+			type: 'audio/mp3',
+		},
+	],
+	poster: undefined,
+	peakJson: peakJson,
+};
 
 export const Playlist = Template.bind({});
 Playlist.args = {

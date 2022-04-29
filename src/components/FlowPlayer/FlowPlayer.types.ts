@@ -1,4 +1,5 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
+import { JsonWaveformData, WaveformData } from 'waveform-data';
 
 import { DefaultComponentProps } from '../../types';
 
@@ -51,8 +52,9 @@ export interface FlowplayerInstance extends HTMLVideoElement {
 }
 
 export interface FlowPlayerProps extends DefaultComponentProps {
-	src: string;
+	src: string | { type: string; src: string }[];
 	poster?: string;
+	canvas?: ReactNode; // Dynamic poster (eg: peak file)
 	logo?: string;
 	title?: string;
 	metadata?: string[];
@@ -67,13 +69,15 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	onPlay?: () => void;
 	onPause?: () => void;
 	onEnded?: () => void;
-	onTimeUpdate?: (time: number) => void;
+	onTimeUpdate?: (time: number, percentage: number) => void;
 	onToggleFullscreen?: (fullscreen: boolean) => void;
 	preload?: 'none' | 'auto' | 'metadata';
+	plugins?: ('speed' | 'subtitles' | 'chromecast' | 'cuepoints' | 'hls' | 'ga' | 'audio')[];
 	subtitles?: FlowplayerTrack[];
 	canPlay?: boolean; // Indicates if the video can play at this type. Eg: will be set to false if a modal is open in front of the video player
 	className?: string;
 	customControls?: ReactElement;
+	peakJson?: JsonWaveformData;
 	googleAnalyticsId?: string;
 	googleAnalyticsEvents?: GoogleAnalyticsEvent[];
 	googleAnalyticsTitle?: string;
@@ -82,4 +86,5 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 export interface FlowPlayerState {
 	flowPlayerInstance: FlowplayerInstance | null;
 	startedPlaying: boolean;
+	waveformData: WaveformData | null;
 }
