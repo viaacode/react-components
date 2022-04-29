@@ -287,7 +287,6 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 				  }
 				: {}),
 		};
-		console.log('Initializing flow player with config: ', flowplayerConfig);
 
 		const flowplayerInstance: FlowplayerInstance = flowplayer(
 			this.videoContainerRef.current,

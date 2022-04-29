@@ -14,6 +14,7 @@ export function drawPeak(
 	const numOfBars = 100;
 	const barWidth = canvas.width / 100 / 2;
 
+	// Convert the waveform amplitude to bar height
 	const scaleY = (amplitude: number, height: number) => {
 		const range = 128;
 		const offset = 64;
@@ -21,6 +22,7 @@ export function drawPeak(
 		return height - ((amplitude + offset) * height) / range;
 	};
 
+	// Reset the canvas
 	ctx.fillStyle = '#FFFFFF';
 	ctx.fillRect(0, 0, canvas.width || 0, canvas.height || 0);
 
@@ -29,13 +31,13 @@ export function drawPeak(
 
 	const waveFormLength = waveformData.length;
 
-	// Draw the upper half of the peakJson
+	// Draw the peak bars
 	for (let barIndex = 0; barIndex < numOfBars; barIndex++) {
 		const val = channel.max_sample((waveFormLength / numOfBars) * barIndex);
 		const h = scaleY(val, half);
 
+		// Change color for already played audio
 		const percentageDrawn = barIndex / numOfBars;
-		console.log(barIndex, percentagePlayed, percentageDrawn);
 		if (percentageDrawn > percentagePlayed) {
 			ctx.fillStyle = '#ADADAD';
 		} else {
