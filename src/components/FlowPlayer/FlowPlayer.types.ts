@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement } from 'react';
 import { JsonWaveformData, WaveformData } from 'waveform-data';
 
 import { DefaultComponentProps } from '../../types';
@@ -54,7 +54,6 @@ export interface FlowplayerInstance extends HTMLVideoElement {
 export interface FlowPlayerProps extends DefaultComponentProps {
 	src: string | { type: string; src: string }[];
 	poster?: string;
-	canvas?: ReactNode; // Dynamic poster (eg: peak file)
 	logo?: string;
 	title?: string;
 	metadata?: string[];
