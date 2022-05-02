@@ -9,6 +9,7 @@ module.exports = {
 		'<rootDir>/static/flowplayer/plugins/subtitles.min.js',
 		'<rootDir>/static/flowplayer/plugins/hls.min.js',
 		'<rootDir>/static/flowplayer/plugins/cuepoints.min.js',
+		'<rootDir>/static/flowplayer/plugins/keyboard.min.js',
 		'<rootDir>/static/flowplayer/plugins/google-analytics.min.js',
 	],
 	moduleNameMapper: {

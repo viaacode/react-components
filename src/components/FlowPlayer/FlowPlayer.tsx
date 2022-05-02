@@ -8,6 +8,7 @@
  *   <script src="/flowplayer/plugins/hls.min.js"></script>
  *   <script src="/flowplayer/plugins/cuepoints.min.js"></script>
  *   <script src="/flowplayer/plugins/google-analytics.min.js"></script>
+ *   <script src="/flowplayer/plugins/keyboard.min.js"></script>
  */
 import React, { createRef } from 'react';
 
@@ -200,7 +201,7 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 			// CONFIGURATION
 			autoplay: props.autoplay,
 			ui: flowplayer.ui.LOGO_ON_RIGHT | flowplayer.ui.USE_DRAG_HANDLE,
-			plugins: ['speed', 'subtitles', 'chromecast', 'cuepoints', 'hls', 'ga'],
+			plugins: ['speed', 'subtitles', 'chromecast', 'cuepoints', 'hls', 'ga', 'keyboard'],
 			preload: props.preload || (!props.poster ? 'metadata' : 'none'),
 
 			speed: {
