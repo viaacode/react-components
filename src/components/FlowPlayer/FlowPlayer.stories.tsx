@@ -88,7 +88,7 @@ Audio.args = {
 	...MOCK_FLOW_PLAYER_PROPS_FULL,
 	src: [
 		{
-			src: 'https://file-examples.com/storage/fef12739526267ac9a2b543/2017/11/file_example_MP3_1MG.mp3',
+			src: 'https://bertyhell.s3.eu-central-1.amazonaws.com/projects/test-files/road-to-joy.mp3',
 			type: 'audio/mp3',
 		},
 	],

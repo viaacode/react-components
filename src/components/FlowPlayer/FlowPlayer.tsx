@@ -98,6 +98,13 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 			return true;
 		}
 
+		if (
+			(!!nextProps.peakJson && !this.props.peakJson) ||
+			(!nextProps.peakJson && !!this.props.peakJson)
+		) {
+			return true;
+		}
+
 		// string | { src: string, type: string }[]
 		const nextUrl: string | undefined =
 			nextProps.src &&
@@ -196,8 +203,16 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 	}
 
 	private redrawPeaks(currentTime: number, duration: number) {
-		if (this.props.peakJson && this.peakCanvas.current && this.state.waveformData && duration) {
-			drawPeak(this.peakCanvas.current, this.state.waveformData, currentTime / duration);
+		let waveformData = this.state.waveformData;
+		if (!waveformData) {
+			waveformData = this.props.peakJson ? WaveformData.create(this.props.peakJson) : null;
+			this.setState((state) => ({
+				...state,
+				waveformData,
+			}));
+		}
+		if (this.props.peakJson && this.peakCanvas.current && waveformData && duration) {
+			drawPeak(this.peakCanvas.current, waveformData, currentTime / duration);
 		}
 	}
 
@@ -358,25 +373,24 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 		this.setState({
 			flowPlayerInstance: flowplayerInstance,
 		});
+
+		if (this.props.peakJson) {
+			this.redrawPeaks(0, 0);
+		}
 	}
 
 	render() {
 		return (
 			<div className={this.props.className + ' c-video-player'}>
+				{this.props.peakJson && (
+					<canvas ref={this.peakCanvas} className="c-peak" width="1212" height="779" />
+				)}
 				<div
 					className={'c-video-player-inner'}
 					data-player-id={this.props.dataPlayerId}
 					ref={this.videoContainerRef}
 				>
 					{this.props.customControls}
-					{this.props.peakJson && (
-						<canvas
-							ref={this.peakCanvas}
-							className="c-peak"
-							width="1212"
-							height="779"
-						/>
-					)}
 				</div>
 			</div>
 		);

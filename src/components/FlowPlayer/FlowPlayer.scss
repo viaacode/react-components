@@ -41,6 +41,10 @@ $c-video-player-progress-inner-bg: #25a4cf;
 	}
 }
 
+.c-video-player {
+	position: relative;
+}
+
 .c-video-player-inner {
 	overflow: hidden;
 	vertical-align: bottom;
