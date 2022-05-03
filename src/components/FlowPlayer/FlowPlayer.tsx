@@ -204,6 +204,7 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 			plugins: ['speed', 'subtitles', 'chromecast', 'cuepoints', 'hls', 'ga', 'keyboard'],
 			preload: props.preload || (!props.poster ? 'metadata' : 'none'),
 
+			// KEYBOARD
 			keyboard: { seek_step: '15' },
 
 			speed: {
