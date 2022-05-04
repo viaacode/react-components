@@ -12,7 +12,6 @@
  *   <script src="/flowplayer/plugins/audio.min.js"></script>
  */
 import React, { createRef } from 'react';
-import WaveformData from 'waveform-data';
 
 import { FlowplayerInstance, FlowPlayerProps, FlowPlayerState } from './FlowPlayer.types';
 import { convertGAEventsArrayToObject } from './FlowPlayer.utils';
@@ -31,7 +30,6 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 		this.state = {
 			flowPlayerInstance: null,
 			startedPlaying: false,
-			waveformData: this.props.peakJson ? WaveformData.create(this.props.peakJson) : null,
 		};
 	}
 
@@ -204,16 +202,8 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 	}
 
 	private redrawPeaks(currentTime: number, duration: number) {
-		let waveformData = this.state.waveformData;
-		if (!waveformData) {
-			waveformData = this.props.peakJson ? WaveformData.create(this.props.peakJson) : null;
-			this.setState((state) => ({
-				...state,
-				waveformData,
-			}));
-		}
-		if (this.props.peakJson && this.peakCanvas.current && waveformData && duration) {
-			drawPeak(this.peakCanvas.current, waveformData, currentTime / duration);
+		if (this.props.peakJson && this.peakCanvas.current && duration) {
+			drawPeak(this.peakCanvas.current, this.props.peakJson.data, currentTime / duration);
 		}
 	}
 

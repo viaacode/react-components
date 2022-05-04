@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { JsonWaveformData, WaveformData } from 'waveform-data';
+import { JsonWaveformData } from 'waveform-data';
 
 import { DefaultComponentProps } from '../../types';
 
@@ -85,5 +85,4 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 export interface FlowPlayerState {
 	flowPlayerInstance: FlowplayerInstance | null;
 	startedPlaying: boolean;
-	waveformData: WaveformData | null;
 }
