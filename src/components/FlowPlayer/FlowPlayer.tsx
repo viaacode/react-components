@@ -9,23 +9,29 @@
  *   <script src="/flowplayer/plugins/cuepoints.min.js"></script>
  *   <script src="/flowplayer/plugins/google-analytics.min.js"></script>
  *   <script src="/flowplayer/plugins/keyboard.min.js"></script>
+ *   <script src="/flowplayer/plugins/audio.min.js"></script>
  */
 import React, { createRef } from 'react';
+import WaveformData from 'waveform-data';
 
-import './FlowPlayer.scss';
 import { FlowplayerInstance, FlowPlayerProps, FlowPlayerState } from './FlowPlayer.types';
 import { convertGAEventsArrayToObject } from './FlowPlayer.utils';
+import { drawPeak } from './Peak/draw-peak';
+
+import './FlowPlayer.scss';
 
 declare const flowplayer: any;
 
 class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 	private videoContainerRef = createRef<HTMLDivElement>();
+	private peakCanvas = createRef<HTMLCanvasElement>();
 
 	constructor(props: FlowPlayerProps) {
 		super(props);
 		this.state = {
 			flowPlayerInstance: null,
 			startedPlaying: false,
+			waveformData: this.props.peakJson ? WaveformData.create(this.props.peakJson) : null,
 		};
 	}
 
@@ -93,8 +99,24 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 			return true;
 		}
 
-		const nextUrl: string | undefined = nextProps.src && nextProps.src.split('?')[0];
-		const currentUrl: string | undefined = this.props.src && this.props.src.split('?')[0];
+		if (
+			(!!nextProps.peakJson && !this.props.peakJson) ||
+			(!nextProps.peakJson && !!this.props.peakJson)
+		) {
+			return true;
+		}
+
+		// string | { src: string, type: string }[]
+		const nextUrl: string | undefined =
+			nextProps.src &&
+			(((nextProps.src?.[0] as { src: string })?.src || nextProps?.src) as string)?.split(
+				'?'
+			)?.[0];
+		const currentUrl: string | undefined =
+			this.props.src &&
+			(((this.props.src?.[0] as { src: string })?.src || this.props?.src) as string)?.split(
+				'?'
+			)?.[0];
 		if (nextUrl !== currentUrl) {
 			if (nextUrl) {
 				// User clicked the post to play the video
@@ -134,10 +156,10 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 
 		if (this.props.metadata && this.props.metadata.length) {
 			this.props.metadata.forEach((metadata: string) => {
-				const substitleDiv = document.createElement('div');
-				substitleDiv.innerText = metadata;
-				substitleDiv.classList.add('c-title-overlay__meta');
-				publishDiv.appendChild(substitleDiv);
+				const substituteDiv = document.createElement('div');
+				substituteDiv.innerText = metadata;
+				substituteDiv.classList.add('c-title-overlay__meta');
+				publishDiv.appendChild(substituteDiv);
 			});
 		}
 
@@ -181,6 +203,20 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 		}
 	}
 
+	private redrawPeaks(currentTime: number, duration: number) {
+		let waveformData = this.state.waveformData;
+		if (!waveformData) {
+			waveformData = this.props.peakJson ? WaveformData.create(this.props.peakJson) : null;
+			this.setState((state) => ({
+				...state,
+				waveformData,
+			}));
+		}
+		if (this.props.peakJson && this.peakCanvas.current && waveformData && duration) {
+			drawPeak(this.peakCanvas.current, waveformData, currentTime / duration);
+		}
+	}
+
 	private static noop() {
 		// do nothing.
 	}
@@ -192,7 +228,17 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 			return;
 		}
 
-		const flowplayerInstance: FlowplayerInstance = flowplayer(this.videoContainerRef.current, {
+		const plugins = props.plugins || [
+			'speed',
+			'subtitles',
+			'chromecast',
+			'cuepoints',
+			'hls',
+			'ga',
+			'keyboard',
+			'audio',
+		];
+		const flowplayerConfig = {
 			// DATA
 			src: props.src,
 			token: props.token,
@@ -201,51 +247,75 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 			// CONFIGURATION
 			autoplay: props.autoplay,
 			ui: flowplayer.ui.LOGO_ON_RIGHT | flowplayer.ui.USE_DRAG_HANDLE,
-			plugins: ['speed', 'subtitles', 'chromecast', 'cuepoints', 'hls', 'ga', 'keyboard'],
+			plugins,
 			preload: props.preload || (!props.poster ? 'metadata' : 'none'),
 
 			// KEYBOARD
-			keyboard: { seek_step: '15' },
+			...(plugins.includes('keyboard')
+				? {
+						keyboard: { seek_step: '15' },
+				  }
+				: {}),
 
-			speed: {
-				options: [0.2, 0.5, 1, 2, 10],
-				labels: ['0.2x', '0.5x', '1x', '2x', '10x'],
-			},
+			// SPEED
+			...(plugins.includes('speed')
+				? {
+						speed: {
+							options: [0.2, 0.5, 1, 2, 10],
+							labels: ['0.2x', '0.5x', '1x', '2x', '10x'],
+						},
+				  }
+				: {}),
 
 			// CUEPOINTS
-			...(props.end
+			...(plugins.includes('subtitles') && props.end
 				? {
 						cuepoints: [
 							{
 								start: props.start,
-								end: props.end,
+								end: props.end, // Only set cuepoints if end is provided in the props
 							},
 						],
+						draw_cuepoints: true,
 				  }
-				: {}), // Only set cuepoints if end is passed
-			draw_cuepoints: true,
+				: {}),
 
 			// SUBTITLES
-			subtitles: {
-				tracks: props.subtitles,
-			},
+			...(plugins.includes('subtitles')
+				? {
+						subtitles: {
+							tracks: props.subtitles,
+						},
+				  }
+				: {}),
 
 			// CHROMECAST
-			chromecast: {
-				app: flowplayer.chromecast.apps.STABLE,
-			},
+			...(plugins.includes('chromecast')
+				? {
+						chromecast: {
+							app: flowplayer.chromecast.apps.STABLE,
+						},
+				  }
+				: {}),
 
 			// GOOGLE ANALYTICS
-			ga: props.googleAnalyticsId
+			...(plugins.includes('ga') && props.googleAnalyticsId
 				? {
-						ga_instances: [props.googleAnalyticsId],
-						event_actions: props.googleAnalyticsEvents
-							? convertGAEventsArrayToObject(props.googleAnalyticsEvents)
-							: {},
-						media_title: props.googleAnalyticsTitle || props.title,
+						ga: {
+							ga_instances: [props.googleAnalyticsId],
+							event_actions: props.googleAnalyticsEvents
+								? convertGAEventsArrayToObject(props.googleAnalyticsEvents)
+								: {},
+							media_title: props.googleAnalyticsTitle || props.title,
+						},
 				  }
-				: {},
-		});
+				: {}),
+		};
+
+		const flowplayerInstance: FlowplayerInstance = flowplayer(
+			this.videoContainerRef.current,
+			flowplayerConfig
+		);
 
 		if (!flowplayerInstance) {
 			console.error('Failed to init flow player');
@@ -284,10 +354,23 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 		});
 		flowplayerInstance.on('pause', this.props.onPause || FlowPlayer.noop);
 		flowplayerInstance.on('ended', this.props.onEnded || FlowPlayer.noop);
-		flowplayerInstance.on('timeupdate', () => {
+		flowplayerInstance.on('loadedmetadata', (evt: any) => {
+			const videoElement = evt.currentTarget as unknown as HTMLVideoElement;
+			const currentTime: number = videoElement?.currentTime || 0;
+			const duration: number = videoElement?.duration || 0;
+			this.redrawPeaks(currentTime, duration);
+		});
+		flowplayerInstance.on('timeupdate', (evt: any) => {
+			const videoElement = evt.currentTarget as unknown as HTMLVideoElement;
+			const currentTime: number = videoElement?.currentTime || 0;
+			const duration: number = videoElement?.duration || 0;
+
 			(this.props.onTimeUpdate || FlowPlayer.noop)(
-				(this.videoContainerRef?.current as unknown as HTMLVideoElement)?.currentTime || 0
+				currentTime,
+				duration ? currentTime / duration : 0
 			);
+
+			this.redrawPeaks(currentTime, duration);
 		});
 		flowplayerInstance.on('fullscreenenter', () => {
 			(this.props.onToggleFullscreen || FlowPlayer.noop)(true);
@@ -299,11 +382,18 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 		this.setState({
 			flowPlayerInstance: flowplayerInstance,
 		});
+
+		if (this.props.peakJson) {
+			this.redrawPeaks(0, 0);
+		}
 	}
 
 	render() {
 		return (
 			<div className={this.props.className + ' c-video-player'}>
+				{this.props.peakJson && (
+					<canvas ref={this.peakCanvas} className="c-peak" width="1212" height="779" />
+				)}
 				<div
 					className={'c-video-player-inner'}
 					data-player-id={this.props.dataPlayerId}

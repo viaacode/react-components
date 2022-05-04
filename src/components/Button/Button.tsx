@@ -51,6 +51,7 @@ const Button: FC<ButtonProps> = ({
 			title={title}
 			type={type}
 			onClick={onButtonClick}
+			disabled={disabled}
 		>
 			<div className={bem('content')}>
 				{icon ? (

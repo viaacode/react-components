@@ -11,6 +11,7 @@ module.exports = {
 		'<rootDir>/static/flowplayer/plugins/cuepoints.min.js',
 		'<rootDir>/static/flowplayer/plugins/keyboard.min.js',
 		'<rootDir>/static/flowplayer/plugins/google-analytics.min.js',
+		'<rootDir>/static/flowplayer/plugins/audio.min.js',
 	],
 	moduleNameMapper: {
 		/* Handle CSS imports (with CSS modules)
