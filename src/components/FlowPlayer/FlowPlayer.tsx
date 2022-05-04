@@ -8,6 +8,7 @@
  *   <script src="/flowplayer/plugins/hls.min.js"></script>
  *   <script src="/flowplayer/plugins/cuepoints.min.js"></script>
  *   <script src="/flowplayer/plugins/google-analytics.min.js"></script>
+ *   <script src="/flowplayer/plugins/keyboard.min.js"></script>
  *   <script src="/flowplayer/plugins/audio.min.js"></script>
  */
 import React, { createRef } from 'react';
@@ -234,6 +235,7 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 			'cuepoints',
 			'hls',
 			'ga',
+			'keyboard',
 			'audio',
 		];
 		const flowplayerConfig = {
@@ -247,6 +249,13 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 			ui: flowplayer.ui.LOGO_ON_RIGHT | flowplayer.ui.USE_DRAG_HANDLE,
 			plugins,
 			preload: props.preload || (!props.poster ? 'metadata' : 'none'),
+
+			// KEYBOARD
+			...(plugins.includes('keyboard')
+				? {
+						keyboard: { seek_step: '15' },
+				  }
+				: {}),
 
 			// SPEED
 			...(plugins.includes('speed')
