@@ -1,4 +1,4 @@
-import { ControlType, MediaType } from 'braft-editor';
+import { ControlType } from 'braft-editor';
 
 export type RichTextEditorControl =
 	| 'font-size' // Text size selector
@@ -40,7 +40,7 @@ export interface RichTextEditorProps {
 	placeholder?: string;
 	controls?: ControlType[];
 	disabled?: boolean;
-	media?: MediaType;
+	media?: RichTextEditorMedia;
 	onFocus?: () => void;
 	onBlur?: () => void;
 	onChange?: (editorState: RichEditorState) => void;
