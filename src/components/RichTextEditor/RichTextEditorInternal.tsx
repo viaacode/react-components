@@ -25,7 +25,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	rootClassName: root = 'c-rich-text-editor',
 	className,
 }) => {
-	const options = {
+	const tableOptions = {
 		defaultColumns: 3, //  default number of columns
 		defaultRows: 3, //  default number of rows
 		withDropdown: true, //  Whether a drop-down menu pops up before inserting a table
@@ -33,7 +33,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 		exportAttrString: 'class="c-editor-table"', //  Specify the attribute string attached to the table tag when outputting HTML
 	};
 
-	BraftEditor.use(Table(options));
+	BraftEditor.use(Table(tableOptions));
 
 	const getLanguage = (languages: any, context: string): any => {
 		if (context === 'braft-table') {
