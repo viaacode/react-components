@@ -13,7 +13,6 @@ export const TextInputDefaults = {
 	type: 'text',
 	value: '',
 	onChange: () => null,
-	onContainerKeyUp: () => null,
 };
 
 const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProps>(
@@ -29,7 +28,7 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 			value = TextInputDefaults.value,
 			onChange = TextInputDefaults.onChange,
 			onContainerClick,
-			onContainerKeyUp = TextInputDefaults.onContainerKeyUp,
+			onContainerKeyUp,
 			...inputProps
 		},
 		ref

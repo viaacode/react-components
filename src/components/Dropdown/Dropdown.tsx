@@ -50,7 +50,7 @@ const Dropdown: FC<DropdownProps> = ({
 	const dropdownButtonSlot = useSlot(DropdownButton, children);
 	const dropdownContentSlot = useSlot(DropdownContent, children);
 
-	const { styles, attributes } = usePopper(referenceElement, popperElement, {
+	const { styles, attributes, update } = usePopper(referenceElement, popperElement, {
 		placement,
 	});
 
@@ -61,7 +61,7 @@ const Dropdown: FC<DropdownProps> = ({
 
 	const toggle = (openState = !isOpen) => {
 		if (openState !== isOpen) {
-			openState ? onOpen() : onClose();
+			openState ? update?.().then(onOpen) : onClose();
 		}
 	};
 

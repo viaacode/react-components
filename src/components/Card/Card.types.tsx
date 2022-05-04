@@ -13,5 +13,5 @@ export interface CardProps extends DefaultComponentProps {
 	subtitle?: ReactNode;
 	title?: ReactNode;
 	toolbar?: ReactNode;
-	onTitleClick?: () => void;
+	onClick?: () => void;
 }

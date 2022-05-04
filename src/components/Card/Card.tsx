@@ -27,7 +27,7 @@ const Card: FC<CardProps> = ({
 	title,
 	toolbar,
 	variants,
-	onTitleClick,
+	onClick,
 }) => {
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
@@ -40,7 +40,17 @@ const Card: FC<CardProps> = ({
 	});
 
 	return (
-		<article className={rootCls}>
+		<article
+			className={rootCls}
+			{...(onClick
+				? {
+						onClick,
+						role: 'button',
+						tabIndex: 0,
+						onKeyUp: (e) => onKey(e, [...keysSpacebar, ...keysEnter], () => onClick()),
+				  }
+				: {})}
+		>
 			<section className={clsx(bem('top-wrapper'))}>
 				{image && (
 					<div className={clsx(bem('image-wrapper'))}>
@@ -60,24 +70,7 @@ const Card: FC<CardProps> = ({
 			<section className={clsx(bem('bottom-wrapper'))}>
 				{(title || toolbar) && (
 					<div className={clsx(bem('header-wrapper'))}>
-						{title &&
-							(onTitleClick ? (
-								<div
-									role="button"
-									tabIndex={0}
-									onClick={onTitleClick}
-									onKeyUp={(e) =>
-										onKey(e, [...keysSpacebar, ...keysEnter], () =>
-											onTitleClick()
-										)
-									}
-									className={clsx(bem('title-wrapper'))}
-								>
-									{title}
-								</div>
-							) : (
-								<div className={clsx(bem('title-wrapper'))}>{title}</div>
-							))}
+						{title && <div className={clsx(bem('title-wrapper'))}>{title}</div>}
 
 						{toolbar && <div className={clsx(bem('toolbar-wrapper'))}>{toolbar}</div>}
 					</div>
