@@ -93,7 +93,7 @@ Audio.args = {
 		},
 	],
 	poster: undefined,
-	peakJson: peakJson,
+	waveformData: peakJson.data,
 };
 
 export const Playlist = Template.bind({});
