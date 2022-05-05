@@ -98,8 +98,8 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 		}
 
 		if (
-			(!!nextProps.peakJson && !this.props.peakJson) ||
-			(!nextProps.peakJson && !!this.props.peakJson)
+			(!!nextProps.waveformData && !this.props.waveformData) ||
+			(!nextProps.waveformData && !!this.props.waveformData)
 		) {
 			return true;
 		}
@@ -202,8 +202,12 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 	}
 
 	private redrawPeaks(currentTime: number, duration: number) {
-		if (this.props.peakJson && this.peakCanvas.current && duration) {
-			drawPeak(this.peakCanvas.current, this.props.peakJson.data, currentTime / duration);
+		if (this.props.waveformData && this.peakCanvas.current && duration) {
+			drawPeak(
+				this.peakCanvas.current,
+				this.props.waveformData || [],
+				currentTime / duration
+			);
 		}
 	}
 
@@ -373,7 +377,7 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 			flowPlayerInstance: flowplayerInstance,
 		});
 
-		if (this.props.peakJson) {
+		if (this.props.waveformData) {
 			this.redrawPeaks(0, 0);
 		}
 	}
@@ -381,7 +385,7 @@ class FlowPlayer extends React.Component<FlowPlayerProps, FlowPlayerState> {
 	render() {
 		return (
 			<div className={this.props.className + ' c-video-player'}>
-				{this.props.peakJson && (
+				{this.props.waveformData && (
 					<canvas ref={this.peakCanvas} className="c-peak" width="1212" height="779" />
 				)}
 				<div

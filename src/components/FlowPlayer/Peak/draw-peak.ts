@@ -1,13 +1,3 @@
-export interface JsonWaveformData {
-	version: number;
-	channels: number;
-	sample_rate: number;
-	samples_per_pixel: number;
-	bits: number;
-	length: number;
-	data: Array<number>;
-}
-
 function add(accumulator: number, a: number) {
 	return accumulator + a;
 }

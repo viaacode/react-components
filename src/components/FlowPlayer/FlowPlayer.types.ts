@@ -1,5 +1,4 @@
 import { ReactElement } from 'react';
-import { JsonWaveformData } from 'waveform-data';
 
 import { DefaultComponentProps } from '../../types';
 
@@ -76,7 +75,7 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	canPlay?: boolean; // Indicates if the video can play at this type. Eg: will be set to false if a modal is open in front of the video player
 	className?: string;
 	customControls?: ReactElement;
-	peakJson?: JsonWaveformData;
+	waveformData?: number[];
 	googleAnalyticsId?: string;
 	googleAnalyticsEvents?: GoogleAnalyticsEvent[];
 	googleAnalyticsTitle?: string;
