@@ -9,23 +9,21 @@ import RichTextEditor from './RichTextEditor';
 import { RichTextEditorControl } from './RichTextEditor.types';
 
 const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
+	'fullscreen',
+	'separator',
 	'undo',
 	'redo',
 	'separator',
 	'headings',
+	'separator',
 	'bold',
-	'italic',
 	'underline',
-	'strike-through',
+	'italic',
+	'separator',
+	'link',
 	'separator',
 	'list-ul',
 	'list-ol',
-	'separator',
-	'subscript',
-	'superscript',
-	'separator',
-	'link',
-	'remove-styles',
 ];
 
 const MOCK_RICH_TEXT_EDITOR_PROPS = {
@@ -94,7 +92,7 @@ WithTableButton.args = {
 };
 
 export const WithInitialTable = Template.bind({});
-WithTableButton.args = {
+WithInitialTable.args = {
 	...MOCK_RICH_TEXT_EDITOR_PROPS,
 	controls: [...RICH_TEXT_EDITOR_OPTIONS, 'separator', 'table'],
 	initialHtml:
