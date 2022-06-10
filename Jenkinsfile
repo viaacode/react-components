@@ -39,7 +39,7 @@ pipeline {
                         openshift.withProject("shared-components") {
                             sh '''#!/bin/bash
 			   rm -f /.npmrc
-			    npm --registry=https://registry.npmjs.org install && npm run build || exit 1'''
+			    npm --registry=https://registry.npmjs.org install --force && npm run build || exit 1'''
                             sh '''#!/bin/bash
 			   echo "##### BUILDING DOCKER IMAGE DISABLED#####"
 			    #  docker build -t docker-registry-default.apps.do-prd-okp-m0.do.viaa.be/shared-components/avo2-components:latest .
@@ -67,7 +67,7 @@ pipeline {
 		                '''
                             sh '''#/bin/bash
 				echo "######PUSHING IMAGE######"
-				#docker push docker-registry-default.apps.do-prd-okp-m0.do.viaa.be/shared-components/avo2-components:latest 
+				#docker push docker-registry-default.apps.do-prd-okp-m0.do.viaa.be/shared-components/avo2-components:latest
 				'''
                         }
                     }
@@ -84,9 +84,9 @@ pipeline {
                             echo "Apply template changes"
                             sh '''#!/bin/bash
 				oc project shared-components
-				oc apply -f openshift/app_deployment-okd.yaml 
+				oc apply -f openshift/app_deployment-okd.yaml
 				echo "rolling out app"
-				oc process -l app=avo2-components -p ENV=dev -f openshift/app_deployment-okd.yaml | oc apply -f - 
+				oc process -l app=avo2-components -p ENV=dev -f openshift/app_deployment-okd.yaml | oc apply -f -
 				'''
 
 

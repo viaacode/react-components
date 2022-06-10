@@ -78,7 +78,7 @@ pipeline {
 
                     script {
                         sh '''#!/bin/bash
-			npm --registry=https://registry.npmjs.org install && npm run build || exit 1
+			npm --registry=https://registry.npmjs.org install --force && npm run build || exit 1
 			'''
                     } // script
                 }
