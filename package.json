@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "2.16.1",
+  "version": "2.17.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -49,18 +49,17 @@
     ]
   },
   "peerDependencies": {
-    "react": "^16.14.0 || ^17.0.2",
+    "react": "^17.0.2",
     "react-datepicker": "4.6.0",
-    "react-dom": "^16.14.0 || ^17.0.2"
+    "react-dom": "^17.0.2"
   },
   "dependencies": {
     "@popperjs/core": "2.11.2",
     "autosize": "5.0.1",
-    "braft-editor": "^2.3.9",
-    "braft-extensions": "0.1.1",
+    "braft-editor-2": "2.4.1",
     "clsx": "1.1.1",
     "date-fns": "^2.16.0",
-    "draft-js": "0.10.5",
+    "draft-js": "0.11.7",
     "react-colorful": "5.5.1",
     "react-modal": "3.14.4",
     "react-popper": "2.2.5",
@@ -138,9 +137,5 @@
   "publishConfig": {
     "@viaa:registry": "http://do-prd-mvn-01.do.viaa.be:8081/repository/npm-viaa/"
   },
-  "snyk": true,
-  "resolutions": {
-    "**/react": "17.0.2",
-    "**/react-dom": "17.0.2"
-  }
+  "snyk": true
 }

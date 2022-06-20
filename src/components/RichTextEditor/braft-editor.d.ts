@@ -1,1 +1,1 @@
-declare module 'braft-extensions/dist/table';
+declare module 'braft-editor-2/dist/extensions/table';

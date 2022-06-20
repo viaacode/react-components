@@ -1,4 +1,4 @@
-import { ControlType } from 'braft-editor';
+import { ControlType } from 'braft-editor-2';
 
 export type RichTextEditorControl =
 	| 'font-size' // Text size selector
