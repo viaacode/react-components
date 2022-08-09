@@ -21,6 +21,7 @@
     "preversion": "npm run lint && npm test && npm run type-check",
     "prebuild": "rimraf dist",
     "build": "rollup -c",
+    "build-and-copy-to-client": "rimraf ../hetarchief-client/node_modules/@meemoo/react-components/dist && npm run build && cp -r dist package.json ../hetarchief-client/node_modules/@meemoo/react-components",
     "build:analyze": "npm run build -- --config-analyze",
     "build-storybook": "build-storybook -o build",
     "build-storybook:with-sourcemaps": "cross-env GENERATE_SOURCEMAP=true build-storybook -o build",
