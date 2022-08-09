@@ -21,7 +21,8 @@ $o-flex-gutter-width: 0.8rem !default;
 }
 
 .o-flex--vertical-center {
-	align-items: center;
+	flex-direction: column;
+	justify-content: center;
 }
 
 .o-flex--horizontal-center {
