@@ -22,6 +22,9 @@ const Template: ComponentStory<typeof ColorPicker> = (args) => {
 	return (
 		<ColorPicker
 			{...args}
+			input={{
+				id: 'ColorPicker',
+			}}
 			color={color}
 			onChange={(newColor) => {
 				action('color changed')(newColor);

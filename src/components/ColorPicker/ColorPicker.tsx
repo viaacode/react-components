@@ -15,6 +15,7 @@ const ColorPicker: FC<ColorPickerProps> = ({
 	rootClassName: root = 'c-color-picker',
 	variants,
 	style,
+	input,
 }) => {
 	const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
 
@@ -33,6 +34,7 @@ const ColorPicker: FC<ColorPickerProps> = ({
 					disabled={disabled}
 				/>
 				<input
+					{...input}
 					className={bem('', 'input')}
 					type="text"
 					value={color}
