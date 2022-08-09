@@ -29,8 +29,8 @@ export const Required = Template.bind({});
 Required.args = {
 	...Basic.args,
 	id: name,
-	suffix: ' (optioneel)',
-	label: 'Email',
+	suffix: <i>(Optioneel)</i>,
+	label: <b>Email</b>,
 };
 
 export const Errors = Template.bind({});

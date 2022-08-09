@@ -27,7 +27,7 @@ const FormControl: FC<FormControlProps> = ({
 				{label && (
 					<label htmlFor={id} className={bem('label')}>
 						{label}
-						{suffix ? ` ${suffix}` : null}
+						{suffix ? <> {suffix}</> : null}
 					</label>
 				)}
 
