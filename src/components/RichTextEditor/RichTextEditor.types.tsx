@@ -1,4 +1,4 @@
-import { ControlType } from 'braft-editor';
+import { BraftEditorProps, ControlType } from 'braft-editor';
 
 export type RichTextEditorControl =
 	| 'font-size' // Text size selector
@@ -47,6 +47,7 @@ export interface RichTextEditorProps {
 	onTab?: () => void;
 	onDelete?: () => void;
 	onSave?: () => void;
+	braft?: Partial<BraftEditorProps>; // TODO: remove 1:1 mapped properties above
 }
 
 export interface RichEditorState {

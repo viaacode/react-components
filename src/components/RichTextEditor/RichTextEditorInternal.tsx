@@ -9,28 +9,29 @@ import './RichTextEditor.scss';
 import { RichEditorState, RichTextEditorProps } from './RichTextEditor.types';
 
 const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
-	id,
-	initialHtml,
-	state,
-	placeholder,
+	braft,
+	className,
 	controls,
 	disabled,
+	id,
+	initialHtml,
 	media,
-	onFocus,
 	onBlur,
 	onChange,
-	onTab,
 	onDelete,
+	onFocus,
 	onSave,
+	onTab,
+	placeholder,
 	rootClassName: root = 'c-rich-text-editor',
-	className,
+	state,
 }) => {
 	const tableOptions = {
+		columnResizable: false, //  Whether to allow drag to adjust the column width, default false
 		defaultColumns: 3, //  default number of columns
 		defaultRows: 3, //  default number of rows
-		withDropdown: true, //  Whether a drop-down menu pops up before inserting a table
-		columnResizable: false, //  Whether to allow drag to adjust the column width, default false
 		exportAttrString: 'class="c-editor-table"', //  Specify the attribute string attached to the table tag when outputting HTML
+		withDropdown: true, //  Whether a drop-down menu pops up before inserting a table
 	};
 
 	BraftEditor.use(Table(tableOptions));
@@ -160,34 +161,20 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	return (
 		<div className={clsx(root, className, 'c-content', { disabled })} id={id}>
 			<BraftEditor
+				{...braft}
+				controls={controls}
 				id={id}
-				value={state || BraftEditor.createEditorState(initialHtml || '')}
+				language={getLanguage}
+				media={media as unknown as MediaType}
+				onBlur={() => onBlur?.()}
+				onChange={(newState: RichEditorState) => onChange?.(newState)}
+				onDelete={onDelete}
+				onFocus={onFocus}
+				onSave={() => state && onSave?.()}
+				onTab={onTab}
 				placeholder={placeholder}
 				readOnly={disabled}
-				language={getLanguage}
-				controls={controls}
-				media={media as unknown as MediaType}
-				onChange={(newState: RichEditorState) => {
-					if (onChange) {
-						onChange(newState);
-					}
-				}}
-				onBlur={() => {
-					if (onBlur) {
-						onBlur();
-					}
-				}}
-				onFocus={onFocus}
-				onTab={onTab}
-				onDelete={onDelete}
-				onSave={() => {
-					if (!state) {
-						return;
-					}
-					if (onSave) {
-						onSave();
-					}
-				}}
+				value={state || BraftEditor.createEditorState(initialHtml || '')}
 			/>
 		</div>
 	);
