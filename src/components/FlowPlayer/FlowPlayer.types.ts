@@ -70,7 +70,16 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	onTimeUpdate?: (time: number, percentage: number) => void;
 	onToggleFullscreen?: (fullscreen: boolean) => void;
 	preload?: 'none' | 'auto' | 'metadata';
-	plugins?: ('speed' | 'subtitles' | 'chromecast' | 'cuepoints' | 'hls' | 'ga' | 'audio')[];
+	plugins?: (
+		| 'speed'
+		| 'subtitles'
+		| 'chromecast'
+		| 'cuepoints'
+		| 'hls'
+		| 'ga'
+		| 'audio'
+		| 'keyboard'
+	)[];
 	subtitles?: FlowplayerTrack[];
 	canPlay?: boolean; // Indicates if the video can play at this type. Eg: will be set to false if a modal is open in front of the video player
 	className?: string;
