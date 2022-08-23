@@ -20,9 +20,14 @@ describe('components/<RichTextEditor />', () => {
 			className,
 		});
 
-		await waitFor(() => {
-			expect(container.querySelector('.c-content')).toBeInTheDocument();
-		});
+		await waitFor(
+			() => {
+				expect(container.querySelector('.c-content')).toBeInTheDocument();
+			},
+			{
+				timeout: 1000,
+			}
+		);
 
 		const richTextEditor = container.querySelector('.c-content');
 
