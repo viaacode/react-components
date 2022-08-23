@@ -179,9 +179,10 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 
 				<span
 					role="button"
-					tabIndex={0}
+					tabIndex={editable ? -1 : 0}
 					onClick={onOpenHandler}
 					onKeyDown={(e) =>
+						!editable &&
 						onKey(e, [...keysEnter, ...keysSpacebar], () => onOpenHandler(e))
 					}
 					className={bem('value')}
