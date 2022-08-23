@@ -121,7 +121,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 			<span
 				className={clsx(bem('icon'), {
 					[bem('icon', side)]: side,
-					[bem('icon', 'interactable')]: isSingleElement(iconNode),
+					[bem('', 'interactable')]: isSingleElement(iconNode),
 				})}
 				{...(isSingleElement(iconNode) ? makeInteractionObject(onOpenHandler) : {})}
 			>
@@ -132,7 +132,9 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		const renderButtons = () => (
 			<>
 				<div
-					className={bem('submit')}
+					className={clsx(bem('submit'), {
+						[bem('', 'interactable')]: isSingleElement(nodeSubmit),
+					})}
 					{...(isSingleElement(nodeSubmit)
 						? makeInteractionObject(onConfirmHandler)
 						: {})}
@@ -141,7 +143,9 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 				</div>
 
 				<div
-					className={bem('cancel')}
+					className={clsx(bem('cancel'), {
+						[bem('', 'interactable')]: isSingleElement(nodeCancel),
+					})}
 					{...(isSingleElement(nodeCancel) ? makeInteractionObject(onCancelHandler) : {})}
 				>
 					{nodeCancel}
