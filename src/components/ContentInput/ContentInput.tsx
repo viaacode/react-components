@@ -117,39 +117,53 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 			};
 		};
 
-		const renderIcon = (iconNode: ReactNode, side?: 'start' | 'end') => (
-			<span
-				className={clsx(bem('icon'), {
-					[bem('icon', side)]: side,
-					[bem('', 'interactable')]: isSingleElement(iconNode),
-				})}
-				{...(isSingleElement(iconNode) ? makeInteractionObject(onOpenHandler) : {})}
-			>
-				{iconNode}
-			</span>
-		);
+		const renderIcon = (iconNode: ReactNode, side?: 'start' | 'end') =>
+			iconNode && (
+				<span
+					className={clsx(bem('icon'), {
+						[bem('icon', side)]: side,
+						[bem('', 'interactable')]: isSingleElement(iconNode),
+					})}
+					{...(isSingleElement(iconNode)
+						? {
+								...makeInteractionObject(onOpenHandler),
+								tabIndex: disabled || editable ? -1 : 0, // Disable start & end when editable or disabled
+						  }
+						: {})}
+				>
+					{iconNode}
+				</span>
+			);
 
 		const renderButtons = () => (
 			<>
-				<div
-					className={clsx(bem('submit'), {
-						[bem('', 'interactable')]: isSingleElement(nodeSubmit),
-					})}
-					{...(isSingleElement(nodeSubmit)
-						? makeInteractionObject(onConfirmHandler)
-						: {})}
-				>
-					{nodeSubmit}
-				</div>
+				{nodeSubmit && (
+					<div
+						className={clsx(bem('submit'), {
+							[bem('', 'interactable')]: isSingleElement(nodeSubmit),
+						})}
+						{...(isSingleElement(nodeSubmit)
+							? makeInteractionObject(onConfirmHandler)
+							: {})}
+						tabIndex={disabled || !editable ? -1 : 0} // Disable submit & cancel when not editable or disabled
+					>
+						{nodeSubmit}
+					</div>
+				)}
 
-				<div
-					className={clsx(bem('cancel'), {
-						[bem('', 'interactable')]: isSingleElement(nodeCancel),
-					})}
-					{...(isSingleElement(nodeCancel) ? makeInteractionObject(onCancelHandler) : {})}
-				>
-					{nodeCancel}
-				</div>
+				{nodeCancel && (
+					<div
+						className={clsx(bem('cancel'), {
+							[bem('', 'interactable')]: isSingleElement(nodeCancel),
+						})}
+						{...(isSingleElement(nodeCancel)
+							? makeInteractionObject(onCancelHandler)
+							: {})}
+						tabIndex={disabled || !editable ? -1 : 0} // Disable submit & cancel when not editable or disabled
+					>
+						{nodeCancel}
+					</div>
+				)}
 			</>
 		);
 
@@ -160,7 +174,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					[bem('', 'closed')]: !editable,
 				})}
 			>
-				{iconStart && renderIcon(iconStart(onOpenHandler), 'start')}
+				{renderIcon(iconStart(onOpenHandler), 'start')}
 				{editable && align === 'left' && renderButtons()}
 
 				<span
@@ -168,7 +182,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					tabIndex={0}
 					onClick={onOpenHandler}
 					onKeyDown={(e) =>
-						onKey(e, [...keysEnter, ...keysSpacebar], () => onConfirmHandler(e))
+						onKey(e, [...keysEnter, ...keysSpacebar], () => onOpenHandler(e))
 					}
 					className={bem('value')}
 				>
@@ -191,10 +205,11 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					}}
 					type={type}
 					value={value}
+					tabIndex={disabled || !editable ? -1 : 0}
 				/>
 
 				{editable && align === 'right' && renderButtons()}
-				{iconEnd && renderIcon(iconEnd(onOpenHandler), 'end')}
+				{renderIcon(iconEnd(onOpenHandler), 'end')}
 			</div>
 		);
 	}
