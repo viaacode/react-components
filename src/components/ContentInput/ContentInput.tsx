@@ -121,6 +121,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 			<span
 				className={clsx(bem('icon'), {
 					[bem('icon', side)]: side,
+					[bem('icon', 'interactable')]: isSingleElement(iconNode),
 				})}
 				{...(isSingleElement(iconNode) ? makeInteractionObject(onOpenHandler) : {})}
 			>
