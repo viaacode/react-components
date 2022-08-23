@@ -32,7 +32,6 @@ const MenuContent: FC<MenuContentProps> = ({
 			<button
 				className={rootCls}
 				onClick={() => onClick(menuItemInfo.id)}
-				role="menuitem"
 				tabIndex={0}
 				key={`menu-item-${menuItemInfo.id ?? index}`}
 			>

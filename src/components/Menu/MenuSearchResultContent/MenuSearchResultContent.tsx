@@ -26,7 +26,7 @@ const MenuSearchResultContent: FC<MenuSearchResultContentProps> = ({
 				className={rootCls}
 				onClick={() => onClick(menuItemInfo.id)}
 				onKeyPress={(e) => (e.key === 'Space' ? onClick(menuItemInfo.id) : () => null)}
-				role="menuitem"
+				role="button"
 				tabIndex={0}
 				key={`menu-search-item-${menuItemInfo.id}`}
 			>
