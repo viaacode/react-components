@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { ButtonHTMLAttributes, ReactNode, RefObject } from 'react';
 
 import { DefaultComponentProps } from '../../types';
 
@@ -10,4 +10,5 @@ export interface ButtonProps extends DefaultComponentProps, HTMLButtonAttrs {
 	iconStart?: ReactNode;
 	iconEnd?: ReactNode;
 	label?: string | ReactNode;
+	buttonRef?: RefObject<HTMLButtonElement>;
 }

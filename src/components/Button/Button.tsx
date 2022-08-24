@@ -19,6 +19,7 @@ const Button: FC<ButtonProps> = ({
 	type = 'button',
 	variants,
 	onClick,
+	buttonRef,
 	...htmlButtonProps
 }) => {
 	const bem = bemCls.bind(root);
@@ -52,6 +53,7 @@ const Button: FC<ButtonProps> = ({
 			type={type}
 			onClick={onButtonClick}
 			disabled={disabled}
+			ref={buttonRef}
 		>
 			<div className={bem('content')}>
 				{icon ? (
