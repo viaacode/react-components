@@ -66,8 +66,7 @@
     "react-modal": "3.14.4",
     "react-popper": "2.2.5",
     "react-select": "5.2.1",
-    "react-table": "7.7.0",
-    "uuid": "8.3.2"
+    "react-table": "7.7.0"
   },
   "devDependencies": {
     "@commitlint/cli": "15.0.0",

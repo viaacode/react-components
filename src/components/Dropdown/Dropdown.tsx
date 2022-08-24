@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import React, { FC, useState } from 'react';
 import { usePopper } from 'react-popper';
-import { v4 as uuidv4 } from 'uuid';
 
 import { useClickOutside, useKeyPress, useSlot } from '../../hooks';
 import { bemCls, getVariantClasses, keysEnter, keysSpacebar, onKey } from '../../utils';
@@ -45,7 +44,7 @@ const Dropdown: FC<DropdownProps> = ({
 	rootClassName: root = 'c-dropdown',
 	variants,
 }) => {
-	const [id] = useState(uuidv4());
+	const [id] = useState(`dropdown--${(Math.random() * 100).toFixed(0)}--${Date.now()}`);
 	const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 	const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
