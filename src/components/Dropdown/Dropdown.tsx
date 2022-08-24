@@ -1,9 +1,10 @@
 import clsx from 'clsx';
 import React, { FC, useState } from 'react';
 import { usePopper } from 'react-popper';
+import { v4 as uuidv4 } from 'uuid';
 
 import { useClickOutside, useKeyPress, useSlot } from '../../hooks';
-import { bemCls, getVariantClasses } from '../../utils';
+import { bemCls, getVariantClasses, keysEnter, keysSpacebar, onKey } from '../../utils';
 import { Button } from '../Button';
 import { Menu } from '../Menu';
 
@@ -44,6 +45,7 @@ const Dropdown: FC<DropdownProps> = ({
 	rootClassName: root = 'c-dropdown',
 	variants,
 }) => {
+	const [id] = useState(uuidv4());
 	const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 	const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
@@ -74,12 +76,15 @@ const Dropdown: FC<DropdownProps> = ({
 		<>
 			{
 				// Wrapper element should not be tabbable
+				// but it should handle onKeyUp events bubbling up
 				// eslint-disable-next-line jsx-a11y/no-static-element-interactions
 				<div
 					className={rootCls}
 					onClick={() => toggle()}
-					onKeyUp={() => null}
+					onKeyUp={(e) => onKey(e, [...keysEnter, ...keysSpacebar], toggle)}
 					ref={setReferenceElement}
+					aria-expanded={isOpen}
+					aria-controls={id}
 				>
 					{dropdownButtonSlot || (
 						<Button
@@ -101,6 +106,8 @@ const Dropdown: FC<DropdownProps> = ({
 					flyoutClassName,
 					isOpen ? 'c-dropdown__content-open' : 'c-dropdown__content-closed'
 				)}
+				aria-expanded={isOpen}
+				id={id}
 			>
 				<Menu
 					className={menuClassName}
