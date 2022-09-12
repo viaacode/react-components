@@ -19,24 +19,25 @@ const Card: FC<CardProps> = ({
 	image,
 	mode,
 	offset,
+	onClick,
 	orientation,
 	padding,
 	rootClassName: root = 'c-card',
 	shadow,
 	subtitle,
+	tags,
 	title,
 	toolbar,
 	variants,
-	onClick,
 }) => {
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
+		[bem('', 'offset')]: offset,
+		[bem('', 'shadow')]: shadow,
 		[bem('', `edge-${edge}`)]: !!edge,
 		[bem('', `mode-${mode}`)]: !!mode,
 		[bem('', `orientation-${orientation}`)]: !!orientation,
 		[bem('', `padded-${padding}`)]: !!padding,
-		[bem('', 'offset')]: offset,
-		[bem('', 'shadow')]: shadow,
 	});
 
 	return (
@@ -52,6 +53,8 @@ const Card: FC<CardProps> = ({
 				: {})}
 		>
 			<section className={clsx(bem('top-wrapper'))}>
+				{tags && <div className={clsx(bem('tags-wrapper'))}>{tags}</div>}
+
 				{image && (
 					<div className={clsx(bem('image-wrapper'))}>
 						{typeof image === 'string' ? (

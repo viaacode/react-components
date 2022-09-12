@@ -183,6 +183,36 @@ const Template: ComponentStory<typeof Card> = (args) => {
 						</span>
 					</Card>
 				</div>
+				<div style={column}>
+					<h4>Tags</h4>
+
+					<br />
+
+					<Card
+						{...args}
+						mode="dark"
+						edge="none"
+						padding="content"
+						orientation="horizontal"
+						tags={
+							<>
+								This is a <b>tag.</b>
+							</>
+						}
+						title={
+							<h2 style={h2}>
+								An offset card with a very long title that spans multiple lines
+							</h2>
+						}
+						offset
+					>
+						<span>
+							Het Museum voor Schone Kunsten Gent (MSK) is het oudste museum in
+							België. De kern van de collectie gaat terug tot 1798. Het museum is
+							gehuisvest in een verlaten deel van de binnenstad.
+						</span>
+					</Card>
+				</div>
 			</section>
 		</>
 	);
