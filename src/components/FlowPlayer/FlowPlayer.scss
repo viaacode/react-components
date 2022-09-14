@@ -1,66 +1,76 @@
 @use "sass:math";
 
+$color-gray-900: #0f171d;
+$color-teal-bright: #25a4cf;
+$color-gray-shadow: #222;
+$color-teal: #1d637a;
+$color-teal-bright: #25a4cf;
+$color-gray-500: #45647b;
+$g-bp2: 700px;
 $player-play-button-dimensions: 7rem;
 $player-play-button-icon-dimensions: 3rem;
 $player-easing-soft: cubic-bezier(0.62, 0.28, 0.23, 0.99);
 $c-video-player-progress-height: 6px !default;
 $c-video-player-progress-handle-size: $c-video-player-progress-height * 2.5 !default;
-$c-play-overlay-inner-bg: #0f171d;
+$c-play-overlay-inner-bg: $color-gray-900;
 $c-spinner-fullscreen-holder-bg: rgba(#000, 0.5);
-$c-video-player-progress-inner-bg: #25a4cf;
-
-.c-button--borderless {
-	background-color: transparent;
-	color: #fff;
-	border-color: transparent;
-
-	svg * {
-		fill: #fff;
-	}
-
-	&:hover {
-		background: rgba(#fff, 0.1);
-	}
-
-	&:focus {
-		box-shadow: 0 0 0 2px #25a4cf;
-		outline: 0;
-		transition: 0.14s box-shadow $player-easing-soft;
-	}
-
-	&:active,
-	&.c-button--active {
-		background-color: #45647b;
-		border-color: transparent;
-	}
-
-	&:active:focus,
-	&.c-button--active:focus {
-		box-shadow: 0 0 0 2px #25a4cf;
-	}
-}
+$c-video-player-progress-inner-bg: $color-teal-bright;
+$fp-controls-header-width-desktop: 60px;
+$fp-controls-header-width-mobile: 50px;
 
 .c-video-player {
+	display: flex;
+	flex-direction: column;
 	position: relative;
+
+	@media (min-width: $g-bp2) {
+		flex-direction: row;
+	}
+
+	.c-video-player__playlist__wrapper {
+		position: relative;
+		min-width: 30%;
+
+		.c-video-player__playlist__scrollable {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			overflow-y: auto;
+		}
+	}
+
+	.c-video-player__playlist {
+		margin-top: 3rem;
+		padding-right: 1rem;
+
+		@media (min-width: $g-bp2) {
+			margin-left: 1rem;
+			margin-top: 0;
+		}
+
+		> li {
+			margin-right: 0;
+			margin-bottom: 2rem;
+			width: 100%;
+		}
+
+		.c-media-card {
+			max-width: none;
+		}
+	}
 }
 
 .c-video-player-inner {
 	overflow: hidden;
 	vertical-align: bottom;
 	position: relative;
+	background-color: black;
 	width: 100%;
 	height: 100%;
 	color: rgba(#fff, 0.67);
-	background-color: transparent;
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-
-	.fp-pause {
-		background-image: url("data:image/svg+xml,%3Csvg fill='none' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 21H6C5.448 21 5 20.553 5 20V4C5 3.448 5.448 3 6 3H10C10.552 3 11 3.448 11 4V20C11 20.553 10.552 21 10 21ZM7 19H9V5H7V19Z' fill='white' fill-opacity='0.67'/%3E%3Cpath d='M18 21H14C13.447 21 13 20.553 13 20V4C13 3.448 13.447 3 14 3H18C18.553 3 19 3.448 19 4V20C19 20.553 18.553 21 18 21ZM15 19H17V5H15V19Z' fill='white' fill-opacity='0.67'/%3E%3C/svg%3E");
-		background-position: center;
-		display: none;
-	}
 
 	.fp-play,
 	.fp-pause {
@@ -79,17 +89,23 @@ $c-video-player-progress-inner-bg: #25a4cf;
 		height: $player-play-button-dimensions;
 		background-color: rgba($c-play-overlay-inner-bg, 0.5);
 		border-radius: 50%;
-		box-shadow: 0 0 5px 0 rgba(#222, 0.5);
+		box-shadow: 0 0 5px 0 rgba($color-gray-shadow, 0.5);
 
 		&:hover {
 			background-color: rgba($c-play-overlay-inner-bg, 0.7);
-			box-shadow: 0 0 10px 0 rgba(#222, 0.7);
+			box-shadow: 0 0 10px 0 rgba($color-gray-shadow, 0.7);
 			transition: 0.14s background $player-easing-soft;
 		}
 
 		> * {
 			display: none;
 		}
+	}
+
+	.fp-pause {
+		background-image: url("data:image/svg+xml,%3Csvg fill='none' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 21H6C5.448 21 5 20.553 5 20V4C5 3.448 5.448 3 6 3H10C10.552 3 11 3.448 11 4V20C11 20.553 10.552 21 10 21ZM7 19H9V5H7V19Z' fill='white' fill-opacity='0.67'/%3E%3Cpath d='M18 21H14C13.447 21 13 20.553 13 20V4C13 3.448 13.447 3 14 3H18C18.553 3 19 3.448 19 4V20C19 20.553 18.553 21 18 21ZM15 19H17V5H15V19Z' fill='white' fill-opacity='0.67'/%3E%3C/svg%3E");
+		background-position: center;
+		display: none;
 	}
 
 	.fp-switch {
@@ -171,33 +187,28 @@ $c-video-player-progress-inner-bg: #25a4cf;
 		right: 0;
 		bottom: 0;
 		left: auto;
-		width: 60px;
+		width: $fp-controls-header-width-mobile;
+
+		@media (min-width: $g-bp2) {
+			width: $fp-controls-header-width-desktop;
+		}
+
 		padding: 0;
 		color: rgb(255 255 255 / 67%);
 		background-color: rgb(15 23 29 / 80%);
 		z-index: 1;
 	}
 
-	&.is-touched .fp-header,
-	&.is-hovered .fp-header {
-		display: flex;
-	}
-
 	.fp-controls {
-		width: calc(100% - 60px);
+		width: calc(100% - #{$fp-controls-header-width-mobile});
+
+		@media (min-width: $g-bp2) {
+			width: calc(100% - #{$fp-controls-header-width-desktop});
+		}
+
 		color: rgb(255 255 255 / 67%);
 		background-color: rgb(15 23 29 / 80%);
 		z-index: 0;
-	}
-
-	&.is-cast-available {
-		.fp-header {
-			width: 110px;
-		}
-
-		.fp-controls {
-			width: calc(100% - 110px);
-		}
 	}
 
 	&.use-drag-handle .fp-controls:hover {
@@ -231,14 +242,19 @@ $c-video-player-progress-inner-bg: #25a4cf;
 	}
 
 	.fp-cuepoint {
-		background-color: #25a4cf !important;
-		height: 100%;
+		background-color: $color-teal !important;
+		margin-top: -4px;
+		height: calc(100% + 7px);
 		cursor: pointer;
 		width: 5px;
 	}
 
 	.fp-color {
-		background-color: #25a4cf;
+		background-color: $color-teal-bright;
+	}
+
+	.fp-color-text {
+		color: $color-teal-bright;
 	}
 
 	.fp-secondary {
@@ -279,10 +295,52 @@ $c-video-player-progress-inner-bg: #25a4cf;
 		display: none;
 	}
 
+	&.is-playing.is-touched {
+		.fp-header {
+			display: block;
+
+			.fp-fullscreen {
+				display: block;
+			}
+
+			.fp-fullscreen-exit {
+				display: none;
+			}
+		}
+
+		&.is-fullscreen {
+			.fp-fullscreen {
+				display: none;
+			}
+
+			.fp-fullscreen-exit {
+				display: block;
+			}
+		}
+	}
+
+	&.flowplayer.is-audio-player.is-playing {
+		.fp-header {
+			display: block;
+		}
+
+		.fp-fullscreen {
+			display: block;
+		}
+
+		.fp-fullscreen-exit {
+			display: none;
+		}
+	}
+
 	&.is-fullscreen {
 		&.is-hovered,
 		&.is-paused {
 			.c-title-overlay {
+				display: block;
+			}
+
+			.fp-fullscreen-exit {
 				display: block;
 			}
 		}
@@ -293,6 +351,22 @@ $c-video-player-progress-inner-bg: #25a4cf;
 			top: 0;
 			width: 100vw;
 			height: 100vh;
+		}
+
+		&.flowplayer.is-audio-player {
+			.fp-fullscreen {
+				display: none;
+			}
+
+			.fp-fullscreen-exit {
+				display: block;
+			}
+		}
+	}
+
+	&.is-error {
+		.fp-header {
+			display: none !important;
 		}
 	}
 
@@ -345,6 +419,8 @@ $c-video-player-progress-inner-bg: #25a4cf;
 
 		&__handle {
 			position: absolute;
+
+			// prettier-ignore
 			top: math.div($c-video-player-progress-height, 2) - math.div($c-video-player-progress-handle-size, 2);
 			right: -(math.div($c-video-player-progress-handle-size, 2));
 			width: $c-video-player-progress-handle-size;
@@ -352,6 +428,111 @@ $c-video-player-progress-inner-bg: #25a4cf;
 			background-color: $c-video-player-progress-inner-bg;
 			border-radius: 50%;
 		}
+	}
+
+	// Playlist plugin
+	.up-next {
+		.poster .fp-play {
+			left: 50%;
+			top: 50%;
+			margin-left: 0;
+			margin-top: 0;
+		}
+
+		.pane {
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			padding: 0;
+			margin: 0;
+
+			.poster {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				padding: 0;
+				margin: 0;
+			}
+
+			&.right {
+				pointer-events: none;
+
+				.title {
+					position: absolute;
+					top: calc(50% - 14rem);
+					text-shadow: 0 0 4px #000;
+					width: 100%;
+					text-align: center;
+					font-size: 2.4rem;
+					z-index: 1;
+
+					&::before {
+						content: "Volgende in de afspeellijst...";
+						display: block;
+						font-size: 1.6rem;
+						margin-bottom: 1rem;
+					}
+				}
+
+				.cancel {
+					position: absolute;
+					top: calc(50% + 6rem);
+					width: 100%;
+					text-align: center;
+					margin: 0;
+					text-shadow: 0 0 4px #000;
+					font-size: 1.6rem;
+					z-index: 1;
+					pointer-events: auto;
+				}
+
+				.countdown {
+					position: absolute;
+					bottom: 0;
+					height: 2rem;
+					width: 1.005%;
+					border: 0;
+					background-color: $color-teal-bright;
+					margin: 0;
+					z-index: 0;
+				}
+			}
+		}
+	}
+}
+
+.c-button--borderless {
+	background-color: transparent;
+	color: #fff;
+	border-color: transparent;
+
+	svg * {
+		fill: #fff;
+	}
+
+	&:hover {
+		background-color: rgba(#fff, 0.1);
+	}
+
+	&:focus {
+		box-shadow: 0 0 0 2px $color-teal-bright;
+		outline: 0;
+		transition: 0.14s box-shadow $player-easing-soft;
+	}
+
+	&:active,
+	&.c-button--active {
+		background-color: $color-gray-500;
+		border-color: transparent;
+	}
+
+	&:active:focus,
+	&.c-button--active:focus {
+		box-shadow: 0 0 0 2px $color-teal-bright;
 	}
 }
 

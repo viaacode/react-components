@@ -4,5 +4,6 @@ module.exports = {
 	rules: {
 		'selector-class-pattern': null,
 		'string-quotes': 'double',
+		'no-descending-specificity': null,
 	},
 };

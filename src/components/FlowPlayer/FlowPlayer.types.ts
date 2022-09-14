@@ -1,40 +1,65 @@
-import { ReactElement } from 'react';
+import { Config } from '@flowplayer/player';
+import { ReactElement, ReactNode } from 'react';
 
 import { DefaultComponentProps } from '../../types';
 
-export enum GoogleAnalyticsEvent {
-	FullscreenEnter = 'fullscreen_enter',
-	FullscreenExit = 'fullscreen_exit',
-	VideoPlayerLoad = 'video_player_load',
-	VideoStart = 'video_start',
-	videoClickPlay = 'video_click_play',
-	VideoPause = 'video_pause',
-	VideoResume = 'video_resume',
-	VideoMute = 'video_mute',
-	VideoUnmute = 'video_unmute',
-	Video25Percent = 'video_25_percent',
-	Video50Percent = 'video_50_percent',
-	Video75Percent = 'video_75_percent',
-	VideoComplete = 'video_complete',
-	LiveStart = 'live_start',
-	LiveClickPlay = 'live_click_play',
-	LivePause = 'live_pause',
-	LiveResume = 'live_resume',
-	LiveMute = 'live_mute',
-	LiveUnmute = 'live_unmute',
-	LiveComplete = 'live_complete',
-	AdStartPreroll = 'ad_start_preroll',
-	AdStartMidroll = 'ad_start_midroll',
-	AdStartPostroll = 'ad_start_postroll',
-	AdCompletedPreroll = 'ad_completed_preroll',
-	AdCompletedMidroll = 'ad_completed_midroll',
-	AdCompletedPostroll = 'ad_completed_postroll',
-	AdSkippedPreroll = 'ad_skipped_preroll',
-	AdSkippedMidroll = 'ad_skipped_midroll',
-	AdSkippedPostroll = 'ad_skipped_postroll',
-}
+export type FlowplayerPlugin =
+	| 'subtitles'
+	| 'hls'
+	| 'cuepoints'
+	| 'keyboard'
+	| 'playlist'
+	| 'speed'
+	| 'ga'
+	| 'chromecast'
+	| 'airplay';
 
-export interface FlowplayerTrack {
+export type GoogleAnalyticsEvent =
+	| 'fullscreen_enter'
+	| 'fullscreen_exit'
+	| 'video_player_load'
+	| 'video_start'
+	| 'video_click_play'
+	| 'video_pause'
+	| 'video_resume'
+	| 'video_mute'
+	| 'video_unmute'
+	| 'video_25_percent'
+	| 'video_50_percent'
+	| 'video_75_percent'
+	| 'video_complete'
+	| 'live_start'
+	| 'live_click_play'
+	| 'live_pause'
+	| 'live_resume'
+	| 'live_mute'
+	| 'live_unmute'
+	| 'live_complete'
+	| 'ad_start_preroll'
+	| 'ad_start_midroll'
+	| 'ad_start_postroll'
+	| 'ad_completed_preroll'
+	| 'ad_completed_midroll'
+	| 'ad_completed_postroll'
+	| 'ad_skipped_preroll'
+	| 'ad_skipped_midroll'
+	| 'ad_skipped_postroll';
+
+export type Cuepoints = {
+	startTime: number | null | undefined;
+	endTime: number | null | undefined;
+}[];
+
+export type FlowplayerConfigWithPlugins = Config & {
+	cuepoints?: Cuepoints;
+	subtitles?: { tracks: FlowplayerTrackSchema[] };
+	chromecast?: any;
+	keyboard?: any;
+	speed?: any;
+	plugins: FlowplayerPlugin[];
+};
+
+export interface FlowplayerTrackSchema {
 	crossorigin?: 'use-credentials' | 'anonymous';
 	default: boolean;
 	id?: string;
@@ -44,53 +69,61 @@ export interface FlowplayerTrack {
 	src: string;
 }
 
-export interface FlowplayerInstance extends HTMLVideoElement {
-	destroy: () => void;
-	on: (eventName: string, handlerFunction: (...args: unknown[]) => void) => void;
-	emit: (eventName: string, eventObj: unknown) => void;
+export type EnglishContentType =
+	| 'collection'
+	| 'item'
+	| 'bundle'
+	| 'video'
+	| 'audio'
+	| 'search'
+	| 'searchquery';
+
+export interface FlowplayerSourceItem {
+	src: string;
+	title: string;
+	category: EnglishContentType;
+	provider: string;
+	poster: string;
+	cuepoints?: Cuepoints;
 }
 
+export type FlowplayerSourceListSchema = {
+	type: 'flowplayer/playlist';
+	items: FlowplayerSourceItem[];
+};
+export type FlowplayerSourceList = FlowplayerSourceListSchema;
+
 export interface FlowPlayerProps extends DefaultComponentProps {
-	src: string | { type: string; src: string }[];
+	src: string | { type: string; src: string }[] | FlowplayerSourceListSchema;
 	poster?: string;
 	logo?: string;
 	title?: string;
 	metadata?: string[];
 	start?: number | null;
 	end?: number | null;
+	speed?: {
+		options: number[];
+		labels: string[];
+	};
 	token?: string;
 	dataPlayerId?: string;
 	autoplay?: boolean;
 	pause?: boolean;
 	fullscreen?: boolean;
-	seekTime?: number;
-	onPlay?: () => void;
+	onPlay?: (src: string) => void;
 	onPause?: () => void;
 	onEnded?: () => void;
-	onTimeUpdate?: (time: number, percentage: number) => void;
-	onToggleFullscreen?: (fullscreen: boolean) => void;
+	onTimeUpdate?: (time: number) => void;
 	preload?: 'none' | 'auto' | 'metadata';
-	plugins?: (
-		| 'speed'
-		| 'subtitles'
-		| 'chromecast'
-		| 'cuepoints'
-		| 'hls'
-		| 'ga'
-		| 'audio'
-		| 'keyboard'
-	)[];
-	subtitles?: FlowplayerTrack[];
-	canPlay?: boolean; // Indicates if the video can play at this type. Eg: will be set to false if a modal is open in front of the video player
+	plugins?: FlowplayerPlugin[];
+	subtitles?: FlowplayerTrackSchema[];
+	playlistScrollable?: boolean;
+	renderPlaylistTile?: (item: FlowplayerSourceItem) => ReactNode;
+	canPlay?: boolean; // Indicates if the video can play at this time. Eg: will be set to false if a modal is open in front of the video player
 	className?: string;
 	customControls?: ReactElement;
 	waveformData?: number[];
 	googleAnalyticsId?: string;
 	googleAnalyticsEvents?: GoogleAnalyticsEvent[];
 	googleAnalyticsTitle?: string;
-}
-
-export interface FlowPlayerState {
-	flowPlayerInstance: FlowplayerInstance | null;
-	startedPlaying: boolean;
 }
