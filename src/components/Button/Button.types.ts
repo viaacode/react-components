@@ -1,10 +1,13 @@
-import { ButtonHTMLAttributes, ReactNode, RefObject } from 'react';
+import { ButtonHTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
 
 import { DefaultComponentProps } from '../../types';
 
 type HTMLButtonAttrs = ButtonHTMLAttributes<HTMLButtonElement>;
 
-export interface ButtonProps extends DefaultComponentProps, HTMLButtonAttrs {
+export interface ButtonProps
+	extends DefaultComponentProps,
+		HTMLButtonAttrs,
+		RefAttributes<HTMLButtonElement> {
 	disabled?: boolean;
 	icon?: ReactNode;
 	iconStart?: ReactNode;
