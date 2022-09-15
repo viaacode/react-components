@@ -10,6 +10,7 @@ export type FlowplayerPlugin =
 	| 'keyboard'
 	| 'playlist'
 	| 'speed'
+	| 'audio'
 	| 'ga'
 	| 'chromecast'
 	| 'airplay';
