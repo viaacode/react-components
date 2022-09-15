@@ -1,29 +1,46 @@
 import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { cloneDeep } from 'lodash-es';
 import React, { cloneElement, ReactElement, useState } from 'react';
 
 import { Button } from '../Button';
+import { Modal } from '../Modal';
 
-import FlowPlayer from './FlowPlayer';
-import { MOCK_FLOW_PLAYER_PROPS_FULL } from './FlowPlayer.mock';
+import { FlowPlayer } from './FlowPlayer';
+import { setPlayingVideoSeekTime } from './FlowPlayer.helpers';
+import { MOCK_FLOW_PLAYER_PROPS_FULL, MOCK_PLAYLIST_SOURCE } from './FlowPlayer.mock';
 import peakJson from './Peak/__mock__/peak.json';
 
 const FlowPlayerStoryComponentSetTimeButtons = ({ children }: { children: ReactElement }) => {
-	const [seekTime, setSeekTime] = useState(0);
-
 	return (
 		<>
-			{cloneElement(children, {
-				seekTime,
-			})}
+			{cloneElement(children)}
 			<br />
 			{[0, 0.001, 10, 20, 30].map((s) => (
 				<Button
 					label={`${s} seconds`}
-					onClick={() => setSeekTime(s)}
+					onClick={() => setPlayingVideoSeekTime(s)}
 					key={`button-jump-${s}`}
 				/>
 			))}
+		</>
+	);
+};
+
+const FlowPlayerStoryComponentOpenInModal = ({ children }: { children: ReactElement }) => {
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+
+	return (
+		<>
+			<Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+				{cloneElement(children, { canPlay: isOpen })}
+			</Modal>
+			<Button
+				label="Open playlist flowplayer in modal"
+				onClick={() => {
+					setIsOpen(true);
+				}}
+			/>
 		</>
 	);
 };
@@ -72,6 +89,14 @@ const TemplateSetTimeButtons: ComponentStory<typeof FlowPlayer> = (args) => (
 	</div>
 );
 
+const TemplatePlaylistInModal: ComponentStory<typeof FlowPlayer> = (args) => (
+	<div style={{ width: '50%' }}>
+		<FlowPlayerStoryComponentOpenInModal>
+			<FlowPlayer {...args} />
+		</FlowPlayerStoryComponentOpenInModal>
+	</div>
+);
+
 const TemplateExternalControls: ComponentStory<typeof FlowPlayer> = (args) => (
 	<div style={{ width: '50%' }}>
 		<FlowPlayerStoryComponentExternalControls>
@@ -96,8 +121,8 @@ Audio.args = {
 	waveformData: peakJson.data,
 };
 
-export const Playlist = Template.bind({});
-Playlist.args = {
+export const HlsSourceUrl = Template.bind({});
+HlsSourceUrl.args = {
 	...MOCK_FLOW_PLAYER_PROPS_FULL,
 	src: 'https://cdn.flowplayer.com/demo_videos/jumping_waves/hls/playlist.m3u8',
 };
@@ -130,6 +155,15 @@ Logo.args = {
 	logo: 'images/100x100.svg',
 };
 
+export const SetSpeed = Template.bind({});
+SetSpeed.args = {
+	...MOCK_FLOW_PLAYER_PROPS_FULL,
+	speed: {
+		options: [0.5, 0.75, 1, 1.25, 1.5],
+		labels: ['0.5', '0.75', 'normaal', '1.25', '1.5'],
+	},
+};
+
 export const SetTime = TemplateSetTimeButtons.bind({});
 SetTime.args = MOCK_FLOW_PLAYER_PROPS_FULL;
 
@@ -138,6 +172,40 @@ Cuepoints.args = {
 	...MOCK_FLOW_PLAYER_PROPS_FULL,
 	start: 60,
 	end: 70,
+};
+
+export const Playlist = Template.bind({});
+const srcWithoutCuepoints = cloneDeep(MOCK_PLAYLIST_SOURCE);
+srcWithoutCuepoints.items = srcWithoutCuepoints.items.map((item: any) => {
+	delete item.cuepoints;
+	return item;
+});
+Playlist.args = {
+	...MOCK_FLOW_PLAYER_PROPS_FULL,
+	plugins: ['cuepoints', 'hls', 'keyboard', 'playlist'],
+	src: srcWithoutCuepoints,
+};
+
+export const PlaylistScrollable = Template.bind({});
+PlaylistScrollable.args = {
+	...MOCK_FLOW_PLAYER_PROPS_FULL,
+	plugins: ['cuepoints', 'hls', 'keyboard', 'playlist'],
+	src: srcWithoutCuepoints,
+	playlistScrollable: true,
+};
+
+export const PlaylistWithCuepoints = Template.bind({});
+PlaylistWithCuepoints.args = {
+	...MOCK_FLOW_PLAYER_PROPS_FULL,
+	plugins: ['cuepoints', 'hls', 'keyboard', 'playlist'],
+	src: MOCK_PLAYLIST_SOURCE,
+};
+
+export const PlaylistWithCuepointsInModal = TemplatePlaylistInModal.bind({});
+PlaylistWithCuepointsInModal.args = {
+	...MOCK_FLOW_PLAYER_PROPS_FULL,
+	plugins: ['cuepoints', 'hls', 'keyboard', 'playlist'],
+	src: MOCK_PLAYLIST_SOURCE,
 };
 
 export const Events = Template.bind({});
