@@ -7,11 +7,12 @@ export interface CardProps extends DefaultComponentProps {
 	image?: ReactNode;
 	mode?: 'light' | 'dark';
 	offset?: boolean;
+	onClick?: () => void;
 	orientation?: 'horizontal' | 'vertical' | 'vertical--at-md' | 'horizontal--at-md';
 	padding?: 'both' | 'content' | 'vertical' | 'none';
 	shadow?: boolean;
 	subtitle?: ReactNode;
+	tags?: ReactNode;
 	title?: ReactNode;
 	toolbar?: ReactNode;
-	onClick?: () => void;
 }

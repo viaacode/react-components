@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { usePopper } from 'react-popper';
 
 import { useClickOutside, useKeyPress, useSlot } from '../../hooks';
-import { bemCls, getVariantClasses } from '../../utils';
+import { bemCls, getVariantClasses, hash, keysEnter, keysSpacebar, onKey } from '../../utils';
 import { Button } from '../Button';
 import { Menu } from '../Menu';
 
@@ -20,30 +20,32 @@ import { DropdownProps } from './Dropdown.types';
  * - The flyout element that contains the children is called the "popper"
  */
 
-const Dropdown: FC<DropdownProps> = ({
-	children,
-	className,
-	icon,
-	iconOpen,
-	iconClosed,
-	isOpen,
-	label = '',
-	flyoutClassName,
-	menuClassName,
-	menuRootClassName,
-	// FIXED re-enable this without causing an infinite render loop
-	// https://github.com/popperjs/popper-core/issues/794#issuecomment-736727000
-	// SOLUTION https://github.com/floating-ui/floating-ui/issues/794#issuecomment-822432452
-	menuWidth = 'fit-trigger',
-	onClose = () => null,
-	onOpen = () => null,
-	placement = 'bottom-start',
-	searchMenu = false,
-	triggerClassName,
-	triggerWidth = 'fit-content',
-	rootClassName: root = 'c-dropdown',
-	variants,
-}) => {
+const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
+	const {
+		className,
+		icon,
+		iconOpen,
+		iconClosed,
+		isOpen,
+		label = '',
+		flyoutClassName,
+		menuClassName,
+		menuRootClassName,
+		// FIXED re-enable this without causing an infinite render loop
+		// https://github.com/popperjs/popper-core/issues/794#issuecomment-736727000
+		// SOLUTION https://github.com/floating-ui/floating-ui/issues/794#issuecomment-822432452
+		menuWidth = 'fit-trigger',
+		onClose = () => null,
+		onOpen = () => null,
+		placement = 'bottom-start',
+		searchMenu = false,
+		triggerClassName,
+		triggerWidth = 'fit-content',
+		rootClassName: root = 'c-dropdown',
+		variants,
+	} = props;
+
+	const id = useMemo(() => `dropdown--${hash(JSON.stringify(props))}`, [props]);
 	const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 	const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
@@ -74,12 +76,15 @@ const Dropdown: FC<DropdownProps> = ({
 		<>
 			{
 				// Wrapper element should not be tabbable
+				// but it should handle onKeyUp events bubbling up
 				// eslint-disable-next-line jsx-a11y/no-static-element-interactions
 				<div
 					className={rootCls}
 					onClick={() => toggle()}
-					onKeyUp={() => null}
+					onKeyUp={(e) => onKey(e, [...keysEnter, ...keysSpacebar], toggle)}
 					ref={setReferenceElement}
+					aria-expanded={isOpen}
+					aria-controls={id}
 				>
 					{dropdownButtonSlot || (
 						<Button
@@ -101,6 +106,8 @@ const Dropdown: FC<DropdownProps> = ({
 					flyoutClassName,
 					isOpen ? 'c-dropdown__content-open' : 'c-dropdown__content-closed'
 				)}
+				aria-expanded={isOpen}
+				id={id}
 			>
 				<Menu
 					className={menuClassName}
