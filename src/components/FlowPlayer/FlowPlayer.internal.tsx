@@ -482,7 +482,6 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	}, [player.current, fullscreen]);
 
 	const redrawPeaks = useCallback(() => {
-		console.log({ waveformData, peakCanvas: peakCanvas.current });
 		if (waveformData && peakCanvas.current) {
 			drawPeak(
 				peakCanvas.current,
