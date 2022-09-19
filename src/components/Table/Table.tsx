@@ -5,7 +5,7 @@ import { HeaderGroup, usePagination, useSortBy, useTable } from 'react-table';
 import { bemCls, getVariantClasses } from '../../utils';
 
 import { defaultPropGetter, defaultSortingIcons } from './Table.const';
-import { TableData, TableProps } from './Table.types';
+import { OrderDirection, TableData, TableProps } from './Table.types';
 
 const Table = <D extends TableData>({
 	className,
@@ -54,8 +54,14 @@ const Table = <D extends TableData>({
 	// Effects
 
 	useEffect(() => {
-		onSortChange?.(sortBy);
-	}, [sortBy]); // eslint-disable-line react-hooks/exhaustive-deps
+		const orderProp = sortBy[0]?.id || undefined;
+		const orderDirection = sortBy[0]
+			? sortBy[0].desc
+				? OrderDirection.desc
+				: OrderDirection.asc
+			: undefined;
+		onSortChange?.(orderProp, orderDirection);
+	}, [sortBy, onSortChange]);
 
 	// Render
 
