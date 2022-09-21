@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "2.18.1",
+  "version": "2.18.2",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -53,21 +53,21 @@
   "peerDependencies": {
     "react": "^16.14.0 || ^17.0.2",
     "react-datepicker": "4.8.0",
-    "react-dom": "^16.14.0 || ^17.0.2"
+    "react-dom": "^16.14.0 || ^17.0.2",
+    "@popperjs/core": "2.11.6",
+    "date-fns": "^2.16.0",
+    "lodash-es": "4.17.21",
+    "react-popper": "2.3.0"
   },
   "dependencies": {
     "@flowplayer/player": "3.3.0",
-    "@popperjs/core": "2.11.2",
     "autosize": "5.0.1",
     "braft-editor": "^2.3.9",
     "braft-extensions": "0.1.1",
     "clsx": "1.1.1",
-    "date-fns": "^2.16.0",
     "draft-js": "0.10.5",
-    "lodash-es": "4.17.21",
     "react-colorful": "5.5.1",
     "react-modal": "3.14.4",
-    "react-popper": "2.2.5",
     "react-scrollbars-custom": "4.1.1",
     "react-select": "5.2.1",
     "react-table": "7.7.0"

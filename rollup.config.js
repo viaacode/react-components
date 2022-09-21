@@ -54,6 +54,9 @@ export default (cliArgs) => {
 			external: [
 				'autosize',
 				'clsx',
+				'@popperjs/core',
+				'date-fns',
+				'lodash-es',
 				'react-datepicker',
 				'react-dom',
 				'react-popper',
