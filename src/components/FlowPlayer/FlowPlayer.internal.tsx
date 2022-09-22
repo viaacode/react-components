@@ -84,6 +84,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	};
 
 	const [startedPlaying, setStartedPlaying] = useState<boolean>(false);
+	const [drawPeaksTimerId, setDrawPeaksTimerId] = useState<number | null>(null);
 
 	const isPlaylist = (src as FlowplayerSourceList)?.type === 'flowplayer/playlist';
 	const isAudio = (src as any)?.[0]?.type === 'audio/mp3';
@@ -176,7 +177,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				setPlayingVideoSeekTime(startTime);
 			}
 		},
-		[player.current]
+		[player]
 	);
 
 	/**
@@ -214,7 +215,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				cuePointIndicator.style.display = 'block';
 			}
 		},
-		[player.current]
+		[player]
 	);
 
 	/**
@@ -242,12 +243,11 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				player.current.opts.poster = playlistItem.poster;
 			}
 		},
-		[player.current, src, updateCuepointPosition]
+		[player, src, updateCuepointPosition]
 	);
 
 	const handleLoadedMetadata = () => {
 		updateCuepointPosition(player.current);
-		redrawPeaks();
 	};
 
 	const handlePlaylistNext = (evt: Event & { detail: { next_index: number } }) => {
@@ -291,7 +291,6 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 	const handleTimeUpdate = () => {
 		(onTimeUpdate || noop)(get(videoContainerRef, 'current.currentTime', 0));
-		redrawPeaks();
 	};
 
 	const reInitFlowPlayer = useCallback(() => {
@@ -448,7 +447,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 	useEffect(() => {
 		videoContainerRef.current && !player.current && reInitFlowPlayer();
-	}, [videoContainerRef.current]); // Only redo effect when ref changes
+	}, [videoContainerRef]); // Only redo effect when ref changes
 
 	useEffect(() => {
 		if (!canPlay) {
@@ -472,16 +471,16 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		} else {
 			player.current.play();
 		}
-	}, [player.current, pause]);
+	}, [player, pause]);
 
 	useEffect(() => {
 		if (isNil(fullscreen) || !player.current) {
 			return;
 		}
 		player.current.toggleFullScreen(fullscreen);
-	}, [player.current, fullscreen]);
+	}, [player, fullscreen]);
 
-	const redrawPeaks = useCallback(() => {
+	const drawPeaksHandler = useCallback(() => {
 		if (waveformData && peakCanvas.current) {
 			drawPeak(
 				peakCanvas.current,
@@ -489,21 +488,22 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				player.current?.duration ? player.current.currentTime / player.current.duration : 0
 			);
 		}
-	}, [waveformData, peakCanvas, player.current?.currentTime, player.current?.duration]);
+	}, [peakCanvas, waveformData]);
 
 	useEffect(() => {
-		redrawPeaks();
-	}, [redrawPeaks]);
+		if (waveformData && peakCanvas.current) {
+			if (drawPeaksTimerId) {
+				clearInterval(drawPeaksTimerId);
+			}
+			setDrawPeaksTimerId(window.setInterval(drawPeaksHandler, 1000));
+		}
 
-	// const redrawPeaks = (
-	// 	canvas: HTMLCanvasElement | null,
-	// 	currentTime: number,
-	// 	duration: number
-	// ) => {
-	// 	if (waveformData && canvas && duration) {
-	// 		drawPeak(canvas, waveformData || [], currentTime / duration);
-	// 	}
-	// };
+		return () => {
+			if (drawPeaksTimerId) {
+				clearInterval(drawPeaksTimerId);
+			}
+		};
+	}, [waveformData, peakCanvas, setDrawPeaksTimerId]);
 
 	const handleMediaCardClicked = useCallback(
 		(itemIndex: number): void => {
@@ -514,7 +514,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 			updateCuepointPosition(player.current);
 		},
-		[player.current, updateCuepointPosition]
+		[player, updateCuepointPosition]
 	);
 
 	const renderPlaylistItems = useCallback(
