@@ -11,7 +11,7 @@ export interface ContentInputProps extends TextInputProps {
 	nodeSubmit?: ReactNode;
 	onCancel?: () => void;
 	onClose?: () => void;
-	onConfirm?: (value: string | ReadonlyArray<string> | number) => void;
+	onConfirm?: (value: string | ReadonlyArray<string> | number) => Promise<void>;
 	onOpen?: () => void;
 	iconStart?: (onOpenHandler: StopPropagationFunction) => ReactNode;
 	iconEnd?: (onOpenHandler: StopPropagationFunction) => ReactNode;

@@ -77,11 +77,11 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		);
 
 		const onConfirmHandler = useCallback(
-			(e: StopPropagationObject) => {
+			async (e: StopPropagationObject) => {
 				if (!disabled && editable) {
 					e.stopPropagation();
 
-					onConfirm(value);
+					await onConfirm(value);
 					onCloseHandler(e);
 				}
 			},
