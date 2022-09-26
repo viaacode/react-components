@@ -43,6 +43,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		triggerWidth = 'fit-content',
 		rootClassName: root = 'c-dropdown',
 		variants,
+		popper,
 	} = props;
 
 	const id = useMemo(() => `dropdown--${hash(JSON.stringify(props))}`, [props]);
@@ -53,6 +54,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 	const dropdownContentSlot = useSlot(DropdownContent, children);
 
 	const { styles, attributes, update } = usePopper(referenceElement, popperElement, {
+		...popper,
 		placement,
 	});
 
