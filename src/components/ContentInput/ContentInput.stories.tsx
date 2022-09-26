@@ -26,7 +26,7 @@ export const Default = Template.bind({});
 Default.args = {
 	iconStart: () => '+',
 	onCancel: () => console.info('cancel'),
-	onConfirm: (v) => console.info('confirm', v),
+	onConfirm: (v) => Promise.resolve(console.info('confirm', v)),
 };
 
 export const CustomButtons = Template.bind({});
@@ -39,6 +39,6 @@ CustomButtons.args = {
 		</>
 	),
 	onCancel: () => console.info('cancel'),
-	onConfirm: (v) => console.info('confirm', v),
+	onConfirm: (v) => Promise.resolve(console.info('confirm', v)),
 	value: 'banaan',
 };
