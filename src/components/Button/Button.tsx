@@ -6,23 +6,25 @@ import { bemCls, getVariantClasses } from '../../utils';
 import { ButtonProps } from './Button.types';
 
 const Button: FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>(
-	({
-		children,
-		className,
-		disabled = false,
-		icon,
-		iconStart = null,
-		iconEnd = null,
-		id,
-		label,
-		rootClassName: root = 'c-button',
-		title,
-		type = 'button',
-		variants,
-		onClick,
-		ref,
-		...htmlButtonProps
-	}) => {
+	(
+		{
+			children,
+			className,
+			disabled = false,
+			icon,
+			iconStart = null,
+			iconEnd = null,
+			id,
+			label,
+			rootClassName: root = 'c-button',
+			title,
+			type = 'button',
+			variants,
+			onClick,
+			...htmlButtonProps
+		},
+		ref
+	) => {
 		const bem = bemCls.bind(root);
 		const rootCls = clsx(className, root, getVariantClasses(root, variants), {
 			[bem('', 'disabled')]: disabled,
