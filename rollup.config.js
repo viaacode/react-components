@@ -27,7 +27,7 @@ export default (cliArgs) => {
 		{
 			input: [
 				// Global
-				// 'src/index.ts',
+				'src/index.ts',
 
 				// Groups
 				// 'src/components/index.ts',
