@@ -52,3 +52,5 @@ export const Flex: FunctionComponent<FlexProps> = ({
 		</div>
 	);
 };
+
+export default Flex;
