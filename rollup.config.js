@@ -25,7 +25,57 @@ const getCopyDest = (pattern) => FORMATS.map((format) => `${OUTPUT_FOLDER}/${for
 export default (cliArgs) => {
 	return [
 		{
-			input: ['src/index.ts'],
+			input: [
+				// Global
+				// 'src/index.ts',
+
+				// Groups
+				// 'src/components/index.ts',
+				// 'src/hooks/index.ts',
+				// 'src/utils/index.ts',
+				// 'src/types/index.ts',
+
+				// Components
+				'src/components/Avatar/index.ts',
+				'src/components/Badge/index.ts',
+				'src/components/Box/index.ts',
+				'src/components/Button/index.ts',
+				'src/components/Card/index.ts',
+				'src/components/Checkbox/index.ts',
+				'src/components/ColorPicker/index.ts',
+				'src/components/ContentInput/index.ts',
+				'src/components/Datepicker/index.ts',
+				'src/components/Dropdown/index.ts',
+				'src/components/Flex/index.ts',
+				'src/components/FlowPlayer/index.ts',
+				'src/components/FormControl/index.ts',
+				'src/components/Menu/index.ts',
+				'src/components/Modal/index.ts',
+				'src/components/Pagination/index.ts',
+				'src/components/RadioButton/index.ts',
+				'src/components/RichTextEditor/index.ts',
+				'src/components/Select/index.ts',
+				'src/components/Table/index.ts',
+				'src/components/Tabs/index.ts',
+				'src/components/TagList/index.ts',
+				'src/components/TagsInput/index.ts',
+				'src/components/TextArea/index.ts',
+				'src/components/TextInput/index.ts',
+				'src/components/Timepicker/index.ts',
+
+				// Hooks
+				'src/hooks/use-callback-ref/index.ts',
+				'src/hooks/use-click-outside/index.ts',
+				'src/hooks/use-key-press/index.ts',
+				'src/hooks/use-slot/index.ts',
+
+				// Utils
+				'src/utils/bem-class/index.ts',
+				'src/utils/hash-string/index.ts',
+				'src/utils/key-up/index.ts',
+				'src/utils/merge-refs/index.ts',
+				'src/utils/variant-classes/index.ts',
+			],
 			output: getOutput(),
 			plugins: [
 				builtins(),
