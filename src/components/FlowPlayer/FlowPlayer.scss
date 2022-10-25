@@ -1,4 +1,4 @@
-@use "sass:math";
+@use 'sass:math';
 
 $color-gray-900: #0f171d;
 $color-teal-bright: #25a4cf;
@@ -197,6 +197,22 @@ $fp-controls-header-width-mobile: 50px;
 		color: rgb(255 255 255 / 67%);
 		background-color: rgb(15 23 29 / 80%);
 		z-index: 1;
+	}
+
+	.fp-small-play,
+	.fp-small-pause,
+	.fp-timeline,
+	.fp-ui,
+	.fp-volume,
+	.fp-menu-container summary,
+	li[tabindex='0'],
+	.fp-volumebtn,
+	.fp-icon {
+		&:focus {
+			border: 1px solid $color-teal-bright;
+			border-radius: 1px;
+			padding: 1px;
+		}
 	}
 
 	.fp-controls {
@@ -471,7 +487,7 @@ $fp-controls-header-width-mobile: 50px;
 					z-index: 1;
 
 					&::before {
-						content: "Volgende in de afspeellijst...";
+						content: 'Volgende in de afspeellijst...';
 						display: block;
 						font-size: 1.6rem;
 						margin-bottom: 1rem;
