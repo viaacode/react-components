@@ -16,15 +16,14 @@ import { default as Scrollbar } from 'react-scrollbars-custom';
 import {
 	ALL_FLOWPLAYER_PLUGINS,
 	DELAY_BETWEEN_PLAYLIST_VIDEOS,
-	dutchFlowplayerTranslations,
+	dutchFlowPlayerTranslations,
 } from './FlowPlayer.consts';
-import { convertGAEventsArrayToObject, setPlayingVideoSeekTime } from './FlowPlayer.helpers';
+import { convertGAEventsArrayToObject } from './FlowPlayer.helpers';
 import {
-	FlowplayerConfigWithPlugins,
+	FlowPlayerConfigWithPlugins,
 	FlowPlayerProps,
-	FlowplayerSourceItem,
-	FlowplayerSourceList,
-	FlowplayerSourceListSchema,
+	FlowPlayerSourceItem,
+	FlowPlayerSourceList,
 } from './FlowPlayer.types';
 import { drawPeak } from './Peak/draw-peak';
 
@@ -85,8 +84,9 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 	const [startedPlaying, setStartedPlaying] = useState<boolean>(false);
 	const [drawPeaksTimerId, setDrawPeaksTimerId] = useState<number | null>(null);
+	const [activeItemIndex, setActiveItemIndex] = useState<number>(0);
 
-	const isPlaylist = (src as FlowplayerSourceList)?.type === 'flowplayer/playlist';
+	const isPlaylist = (src as FlowPlayerSourceList)?.type === 'flowplayer/playlist';
 	const isAudio = (src as any)?.[0]?.type === 'audio/mp3';
 
 	const createTitleOverlay = useCallback(() => {
@@ -170,11 +170,11 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			}
 			const flowplayerInstance = player.current || tempPlayer;
 			const startTime =
-				(flowplayerInstance.opts as FlowplayerConfigWithPlugins).cuepoints?.[0].startTime ||
+				(flowplayerInstance.opts as FlowPlayerConfigWithPlugins).cuepoints?.[0].startTime ||
 				0;
 
 			if (startTime) {
-				setPlayingVideoSeekTime(startTime);
+				flowplayerInstance.currentTime = startTime;
 			}
 		},
 		[player]
@@ -183,21 +183,23 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	/**
 	 * Updates the styles of the timeline cuepoint indicator according to the active cuepoint
 	 */
-	const updateCuepointPosition = useCallback(
-		(tempPlayer: any) => {
-			const flowplayerInstance = tempPlayer || player.current;
-			if (!flowplayerInstance || isNaN(flowplayerInstance.duration)) {
+	const updateCuepointPosition = useCallback(() => {
+		try {
+			const flowplayerInstance = player.current;
+			const duration = flowplayerInstance.duration;
+			if (!flowplayerInstance || !duration) {
 				return;
 			}
 
-			const cuePointIndicator: HTMLDivElement | null = flowplayerInstance.root.querySelector(
-				'.fp-cuepoint'
-			) as HTMLDivElement | null;
+			const cuePointIndicator: HTMLDivElement | null =
+				flowplayerInstance.parentElement.querySelector(
+					'.fp-cuepoint'
+				) as HTMLDivElement | null;
 
 			if (cuePointIndicator) {
-				let start = (flowplayerInstance.opts as FlowplayerConfigWithPlugins).cuepoints?.[0]
+				let start = (flowplayerInstance.opts as FlowPlayerConfigWithPlugins).cuepoints?.[0]
 					?.startTime;
-				let end = (flowplayerInstance.opts as FlowplayerConfigWithPlugins).cuepoints?.[0]
+				let end = (flowplayerInstance.opts as FlowPlayerConfigWithPlugins).cuepoints?.[0]
 					?.endTime;
 
 				if (isNil(start) && isNil(end)) {
@@ -206,17 +208,19 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				}
 
 				start = start || 0;
-				end = (end || flowplayerInstance.duration || 0) as number;
+				end = (end || duration || 0) as number;
 
-				cuePointIndicator.style.left =
-					Math.round((start / flowplayerInstance.duration) * 100) + '%';
-				cuePointIndicator.style.width =
-					((end - start) / flowplayerInstance.duration) * 100 + '%';
+				cuePointIndicator.style.left = Math.round((start / duration) * 100) + '%';
+				cuePointIndicator.style.width = ((end - start) / duration) * 100 + '%';
 				cuePointIndicator.style.display = 'block';
 			}
-		},
-		[player]
-	);
+		} catch (err) {
+			console.error(
+				'Failed to update cuepoint location on the flowplayer progress bar: ' +
+					JSON.stringify(err)
+			);
+		}
+	}, [player]);
 
 	/**
 	 * Sets the cuepoint config from the active item in the playlist as the cuepoint on the flowplayer
@@ -225,30 +229,27 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	 */
 	const updateActivePlaylistItem = useCallback(
 		(itemIndex: number): void => {
-			if (!player.current || isNaN(player.current.duration)) {
+			setActiveItemIndex(itemIndex);
+
+			if (!player.current) {
 				return;
 			}
 
-			const playlistItem = (src as FlowplayerSourceListSchema)?.items?.[itemIndex];
+			const playlistItem = (src as FlowPlayerSourceList)?.items?.[itemIndex];
 
 			if (playlistItem) {
 				// Update cuepoint
 				player.current.emit(flowplayer.events.CUEPOINTS, {
 					cuepoints: playlistItem.cuepoints,
 				});
-				updateCuepointPosition(player.current);
 
 				// Update poster
 				player.current.poster = playlistItem.poster;
 				player.current.opts.poster = playlistItem.poster;
 			}
 		},
-		[player, src, updateCuepointPosition]
+		[player, src]
 	);
-
-	const handleLoadedMetadata = () => {
-		updateCuepointPosition(player.current);
-	};
 
 	const handlePlaylistNext = (evt: Event & { detail: { next_index: number } }) => {
 		updateActivePlaylistItem(evt.detail.next_index);
@@ -260,7 +261,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		// Update cover images on the playlist
 		document.querySelectorAll('.fp-playlist li .video-info').forEach((elem, elemIndex) => {
 			const image = document.createElement('img');
-			image.src = (src as FlowplayerSourceListSchema).items[elemIndex].poster as string;
+			image.src = (src as FlowPlayerSourceList).items[elemIndex].poster as string;
 			const div = document.createElement('div');
 			div.classList.add('image');
 			div.appendChild(image);
@@ -285,7 +286,11 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 	const handleCuepointEnd = () => {
 		if (player.current) {
-			player.current.currentTime = player.current.duration;
+			player.current.pause();
+			if (!isPlaylist) {
+				player.current.currentTime = player.current.opts.cuepoints[0].startTime;
+			}
+			player.current.emit(flowplayer.events.ENDED);
 		}
 	};
 
@@ -303,16 +308,16 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			setStartedPlaying(false);
 		}
 
-		(flowplayer as any).i18n.nl = dutchFlowplayerTranslations;
+		(flowplayer as any).i18n.nl = dutchFlowPlayerTranslations;
 
-		let resolvedPoster = (src as FlowplayerSourceListSchema)?.items?.[0]?.poster || poster;
+		let resolvedPoster = (src as FlowPlayerSourceList)?.items?.[0]?.poster || poster;
 		if (!resolvedPoster && isAudio) {
 			// Transparent 1920 x 1080 poster
 			resolvedPoster =
 				'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAB4AAAAQ4AQMAAADSHVMAAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAANQTFRFAAAAp3o92gAAAAF0Uk5TAEDm2GYAAAETSURBVHic7cEBDQAAAMKg909tDwcUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADApwH45QABmSWJDwAAAABJRU5ErkJggg==';
 		}
 
-		const flowPlayerConfig: FlowplayerConfigWithPlugins = {
+		const flowPlayerConfig: FlowPlayerConfigWithPlugins = {
 			// DATA
 			src: src,
 			token: token,
@@ -335,7 +340,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			// CUEPOINTS
 			// Only set cuepoints if an end point was passed in the props or one of the playlist items has cuepoints configured
 			...(plugins.includes('cuepoints') &&
-			(end || (src as FlowplayerSourceListSchema)?.items?.some((item) => !!item.cuepoints))
+			(end || !!(src as FlowPlayerSourceList)?.items?.[0].cuepoints?.[0]?.endTime)
 				? {
 						cuepoints: [
 							{
@@ -415,7 +420,6 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		tempPlayer.on('pause', onPause || noop);
 		tempPlayer.on('ended', onEnded || noop);
 		tempPlayer.on(playlistPlugin.events.PLAYLIST_NEXT, handlePlaylistNext);
-		tempPlayer.on('loadeddata', handleLoadedMetadata);
 		tempPlayer.on('timeupdate', handleTimeUpdate);
 
 		setPlayer(tempPlayer);
@@ -505,36 +509,55 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		};
 	}, [waveformData, peakCanvas, setDrawPeaksTimerId]);
 
+	useEffect(() => {
+		const timerId = setInterval(() => {
+			updateCuepointPosition();
+		}, 1000);
+
+		return () => {
+			clearInterval(timerId);
+		};
+	}, []);
+
 	const handleMediaCardClicked = useCallback(
 		(itemIndex: number): void => {
+			setActiveItemIndex(itemIndex);
 			player.current.playlist?.play(itemIndex);
 			player.current.emit(flowplayer.events.CUEPOINTS, {
-				cuepoints: (src as FlowplayerSourceListSchema).items[itemIndex].cuepoints,
+				cuepoints: (src as FlowPlayerSourceList).items[itemIndex].cuepoints,
 			});
-
-			updateCuepointPosition(player.current);
 		},
-		[player, updateCuepointPosition]
+		[player]
 	);
 
 	const renderPlaylistItems = useCallback(
-		(playlistItems: FlowplayerSourceList['items']) => {
+		(playlistItems: FlowPlayerSourceList['items']) => {
 			return (
 				<ul className="c-video-player__playlist">
-					{playlistItems.map((item: FlowplayerSourceItem, itemIndex) => {
+					{playlistItems.map((item: FlowPlayerSourceItem, itemIndex) => {
 						return (
-							<li key={item.src + '--' + itemIndex}>
-								{renderPlaylistTile?.(item) || item.title}
+							<li
+								key={item.src + '--' + itemIndex}
+								className={
+									'c-video-player__playlist__item' +
+									(activeItemIndex === itemIndex
+										? ' c-video-player__playlist__item--active'
+										: '')
+								}
+							>
+								<button onClick={() => handleMediaCardClicked(itemIndex)}>
+									{renderPlaylistTile?.(item) || item.title}
+								</button>
 							</li>
 						);
 					})}
 				</ul>
 			);
 		},
-		[handleMediaCardClicked]
+		[handleMediaCardClicked, activeItemIndex]
 	);
 
-	const playlistItems = useMemo(() => (src as FlowplayerSourceListSchema)?.items, [src]);
+	const playlistItems = useMemo(() => (src as FlowPlayerSourceList)?.items, [src]);
 
 	const playerHtml = useMemo(
 		() => (

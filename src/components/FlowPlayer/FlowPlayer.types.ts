@@ -3,7 +3,7 @@ import { ReactElement, ReactNode } from 'react';
 
 import { DefaultComponentProps } from '../../types';
 
-export type FlowplayerPlugin =
+export type FlowPlayerPlugin =
 	| 'subtitles'
 	| 'hls'
 	| 'cuepoints'
@@ -51,16 +51,16 @@ export type Cuepoints = {
 	endTime: number | null | undefined;
 }[];
 
-export type FlowplayerConfigWithPlugins = Config & {
+export type FlowPlayerConfigWithPlugins = Config & {
 	cuepoints?: Cuepoints;
-	subtitles?: { tracks: FlowplayerTrackSchema[] };
+	subtitles?: { tracks: FlowPlayerTrack[] };
 	chromecast?: any;
 	keyboard?: any;
 	speed?: any;
-	plugins: FlowplayerPlugin[];
+	plugins: FlowPlayerPlugin[];
 };
 
-export interface FlowplayerTrackSchema {
+export interface FlowPlayerTrack {
 	crossorigin?: 'use-credentials' | 'anonymous';
 	default: boolean;
 	id?: string;
@@ -79,7 +79,7 @@ export type EnglishContentType =
 	| 'search'
 	| 'searchquery';
 
-export interface FlowplayerSourceItem {
+export interface FlowPlayerSourceItem {
 	src: string;
 	title: string;
 	category: EnglishContentType;
@@ -88,14 +88,13 @@ export interface FlowplayerSourceItem {
 	cuepoints?: Cuepoints;
 }
 
-export type FlowplayerSourceListSchema = {
+export type FlowPlayerSourceList = {
 	type: 'flowplayer/playlist';
-	items: FlowplayerSourceItem[];
+	items: FlowPlayerSourceItem[];
 };
-export type FlowplayerSourceList = FlowplayerSourceListSchema;
 
 export interface FlowPlayerProps extends DefaultComponentProps {
-	src: string | { type: string; src: string }[] | FlowplayerSourceListSchema;
+	src: string | { type: string; src: string }[] | FlowPlayerSourceList;
 	poster?: string;
 	logo?: string;
 	title?: string;
@@ -116,10 +115,10 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	onEnded?: () => void;
 	onTimeUpdate?: (time: number) => void;
 	preload?: 'none' | 'auto' | 'metadata';
-	plugins?: FlowplayerPlugin[];
-	subtitles?: FlowplayerTrackSchema[];
+	plugins?: FlowPlayerPlugin[];
+	subtitles?: FlowPlayerTrack[];
 	playlistScrollable?: boolean;
-	renderPlaylistTile?: (item: FlowplayerSourceItem) => ReactNode;
+	renderPlaylistTile?: (item: FlowPlayerSourceItem) => ReactNode;
 	canPlay?: boolean; // Indicates if the video can play at this time. Eg: will be set to false if a modal is open in front of the video player
 	className?: string;
 	customControls?: ReactElement;

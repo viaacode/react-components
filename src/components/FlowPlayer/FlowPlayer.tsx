@@ -4,7 +4,7 @@ import { Flex } from '../Flex/Flex';
 
 import { FlowPlayerProps } from './FlowPlayer.types';
 
-const FlowplayerInternal = React.lazy(() => import('./FlowPlayer.internal'));
+const FlowPlayerInternal = React.lazy(() => import('./FlowPlayer.internal'));
 
 export const FlowPlayer: FunctionComponent<FlowPlayerProps> = (props) => {
 	return (
@@ -15,7 +15,7 @@ export const FlowPlayer: FunctionComponent<FlowPlayerProps> = (props) => {
 				</Flex>
 			}
 		>
-			<FlowplayerInternal {...props} />
+			<FlowPlayerInternal {...props} />
 		</Suspense>
 	);
 };

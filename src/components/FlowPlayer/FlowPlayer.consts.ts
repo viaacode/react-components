@@ -1,8 +1,8 @@
-import { FlowplayerPlugin } from './FlowPlayer.types';
+import { FlowPlayerPlugin } from './FlowPlayer.types';
 
 export const DELAY_BETWEEN_PLAYLIST_VIDEOS = 7;
 
-export const dutchFlowplayerTranslations = {
+export const dutchFlowPlayerTranslations = {
 	ads: { ad: 'Ad', ads: 'Ads', advertisement: 'Advertentie', indicator: 'Ads' },
 	audio: { button_txt: 'Audio', menu_title: 'Audio' },
 	core: {
@@ -37,4 +37,4 @@ export const ALL_FLOWPLAYER_PLUGINS = [
 	'keyboard',
 	'playlist',
 	// 'chromecast', 'airplay', // Disabled for now for video security: https://meemoo.atlassian.net/browse/AVO-1859
-] as FlowplayerPlugin[];
+] as FlowPlayerPlugin[];

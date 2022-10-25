@@ -1,4 +1,4 @@
-import { FlowPlayerProps, FlowplayerSourceList } from './FlowPlayer.types';
+import { FlowPlayerProps, FlowPlayerSourceList } from './FlowPlayer.types';
 
 export const MOCK_FLOW_PLAYER_PROPS: FlowPlayerProps = {
 	src: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
@@ -13,7 +13,7 @@ export const MOCK_FLOW_PLAYER_PROPS_FULL: FlowPlayerProps = {
 	metadata: ['30-12-2011', 'VRT'],
 };
 
-export const MOCK_PLAYLIST_SOURCE: FlowplayerSourceList = {
+export const MOCK_PLAYLIST_SOURCE: FlowPlayerSourceList = {
 	type: 'flowplayer/playlist',
 	items: [
 		{
