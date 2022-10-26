@@ -143,6 +143,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		const flowPlayerUi = videoContainerRef.current.parentElement.querySelector('.fp-ui');
 		const titleElem = createTitleOverlay();
 		const logoElem = createLogoOverlay();
+
 		if (flowPlayerUi) {
 			flowPlayerUi.prepend(titleElem);
 			if (logoElem) {
@@ -192,7 +193,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			}
 
 			const cuePointIndicator: HTMLDivElement | null =
-				flowplayerInstance.parentElement.querySelector(
+				flowplayerInstance?.parentElement?.querySelector(
 					'.fp-cuepoint'
 				) as HTMLDivElement | null;
 
