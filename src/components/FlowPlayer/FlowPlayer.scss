@@ -209,9 +209,7 @@ $fp-controls-header-width-mobile: 50px;
 	.fp-volumebtn,
 	.fp-icon {
 		&:focus {
-			border: 1px solid $color-teal-bright;
-			border-radius: 1px;
-			padding: 1px;
+			outline: $color-teal-bright solid 1px;
 		}
 	}
 
