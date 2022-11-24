@@ -25,7 +25,7 @@ describe('components/<RichTextEditor />', () => {
 				expect(container.querySelector('.c-content')).toBeInTheDocument();
 			},
 			{
-				timeout: 1000,
+				timeout: 2000,
 			}
 		);
 
