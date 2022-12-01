@@ -28,7 +28,12 @@ module.exports = {
 			},
 		],
 		'@typescript-eslint/no-explicit-any': 'off',
-
+		'import/no-unresolved': [
+			2,
+			{
+				ignore: ['@viaa', '@meemoo'],
+			},
+		],
 		'import/first': 'error',
 		'import/no-duplicates': 'error',
 		'import/no-named-as-default-member': 'off',

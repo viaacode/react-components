@@ -1,5 +1,4 @@
 import { Config } from '@flowplayer/player';
-// eslint-disable-next-line import/no-unresolved
 import { Avo } from '@viaa/avo2-types';
 import { ReactElement, ReactNode } from 'react';
 
