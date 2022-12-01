@@ -1,4 +1,6 @@
 import { Config } from '@flowplayer/player';
+// eslint-disable-next-line import/no-unresolved
+import { Avo } from '@viaa/avo2-types';
 import { ReactElement, ReactNode } from 'react';
 
 import { DefaultComponentProps } from '../../types';
@@ -70,19 +72,10 @@ export interface FlowplayerTrackSchema {
 	src: string;
 }
 
-export type EnglishContentType =
-	| 'collection'
-	| 'item'
-	| 'bundle'
-	| 'video'
-	| 'audio'
-	| 'search'
-	| 'searchquery';
-
 export interface FlowplayerSourceItem {
 	src: string;
 	title: string;
-	category: EnglishContentType;
+	category: Avo.ContentType.English;
 	provider: string;
 	poster: string;
 	cuepoints?: Cuepoints;
