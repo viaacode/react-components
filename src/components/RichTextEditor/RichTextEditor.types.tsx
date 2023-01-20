@@ -1,4 +1,4 @@
-import { BraftEditorProps, ControlType } from 'braft-editor';
+import { BraftEditorProps } from 'braft-editor';
 
 export type RichTextEditorControl =
 	| 'font-size' // Text size selector
@@ -31,6 +31,10 @@ export type RichTextEditorControl =
 	| 'fullscreen' // Make editor fullscreen
 	| 'separator'; // Split line, continuous multiple separators will only be displayed as 1
 
+export type Heading = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
+
+export const ALL_RICH_TEXT_HEADINGS: Heading[] = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'normal'];
+
 export interface RichTextEditorProps {
 	className?: string;
 	rootClassName?: string;
@@ -38,7 +42,7 @@ export interface RichTextEditorProps {
 	initialHtml?: string;
 	state?: RichEditorState;
 	placeholder?: string;
-	controls?: ControlType[];
+	controls?: RichTextEditorControl[];
 	disabled?: boolean;
 	media?: RichTextEditorMedia;
 	onFocus?: () => void;
@@ -47,6 +51,7 @@ export interface RichTextEditorProps {
 	onTab?: () => void;
 	onDelete?: () => void;
 	onSave?: () => void;
+	enabledHeadings?: Heading[];
 	braft?: Partial<BraftEditorProps>; // TODO: remove 1:1 mapped properties above
 }
 
