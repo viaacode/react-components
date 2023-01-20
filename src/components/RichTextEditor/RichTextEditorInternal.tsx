@@ -3,10 +3,16 @@ import 'braft-editor/dist/index.css';
 import Table from 'braft-extensions/dist/table';
 import 'braft-extensions/dist/table.css';
 import clsx from 'clsx';
+import { without } from 'lodash-es';
 import React, { FunctionComponent } from 'react';
 
+import {
+	ALL_RICH_TEXT_HEADINGS,
+	RichEditorState,
+	RichTextEditorProps,
+} from './RichTextEditor.types';
+
 import './RichTextEditor.scss';
-import { RichEditorState, RichTextEditorProps } from './RichTextEditor.types';
 
 const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	braft,
@@ -23,6 +29,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	onSave,
 	onTab,
 	placeholder,
+	enabledHeadings = ALL_RICH_TEXT_HEADINGS,
 	rootClassName: root = 'c-rich-text-editor',
 	state,
 }) => {
@@ -158,8 +165,16 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 		return languages['nl'] || languages['en'];
 	};
 
+	const getHiddenHeadingClasses = (): string => {
+		const hiddenHeadings = without(ALL_RICH_TEXT_HEADINGS, ...enabledHeadings);
+		return hiddenHeadings.map((heading) => `c-rich-text-editor--hide-${heading}`).join(' ');
+	};
+
 	return (
-		<div className={clsx(root, className, 'c-content', { disabled })} id={id}>
+		<div
+			className={clsx(root, className, getHiddenHeadingClasses(), 'c-content', { disabled })}
+			id={id}
+		>
 			<BraftEditor
 				{...braft}
 				controls={controls}
