@@ -20,7 +20,7 @@ const Alert: FC<AlertProps> = ({
 		<div className={rootCls}>
 			{icon && <div className={bem('icon')}>{icon}</div>}
 			<div className={bem('message')}>
-				<p className={bem('title')}>{title}</p>
+				{title && <p className={bem('title')}>{title}</p>}
 				<div className={bem('content')}>{content}</div>
 			</div>
 		</div>
