@@ -23,7 +23,7 @@
     "build": "rollup -c",
     "copy-to-avo-client": "rimraf ../avo2-client/node_modules/@meemoo/react-components/dist && cp -r dist package.json ../avo2-client/node_modules/@meemoo/react-components",
     "copy-to-hetarchief-client": "rimraf ../hetarchief-client/node_modules/@meemoo/react-components/dist ../hetarchief-client/.next && cp -r dist package.json ../hetarchief-client/node_modules/@meemoo/react-components",
-    "copy-to-admin-core": "rimraf ../react-admin-core-module/node_modules/@meemoo/react-components/dist && cp -r dist package.json ../react-admin-core-module/node_modules/@meemoo/react-components",
+    "copy-to-admin-core": "rimraf ../react-admin-core-module/ui/node_modules/@meemoo/react-components/dist && cp -r dist package.json ../react-admin-core-module/ui/node_modules/@meemoo/react-components",
     "copy": "npm run build && npm run copy-to-avo-client && npm run copy-to-hetarchief-client && npm run copy-to-admin-core",
     "build:analyze": "npm run build -- --config-analyze",
     "build-storybook": "build-storybook -o build",
@@ -38,7 +38,8 @@
     "test:output": "cross-env CI=true jest --json --outputFile=.storybook/test-results.json",
     "type-check": "tsc --noEmit",
     "licenses": "license-checker --csv --out licenses.csv",
-    "snyk-protect": "snyk protect"
+    "snyk-protect": "snyk protect",
+    "bump": "bump-package-versions ./package.json"
   },
   "browserslist": {
     "production": [
