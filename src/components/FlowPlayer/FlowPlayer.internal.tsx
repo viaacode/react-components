@@ -292,9 +292,6 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	const handleCuepointEnd = () => {
 		if (player.current) {
 			player.current.pause();
-			if (!isPlaylist) {
-				player.current.currentTime = player.current.opts.cuepoints[0].startTime;
-			}
 			player.current.emit(flowplayer.events.ENDED);
 		}
 	};
