@@ -24,3 +24,4 @@ export * from './TagsInput';
 export * from './TextArea';
 export * from './TextInput';
 export * from './Timepicker';
+export * from './Tooltip';
