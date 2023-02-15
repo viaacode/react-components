@@ -46,7 +46,21 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		popper,
 	} = props;
 
-	const id = useMemo(() => `dropdown--${hash(JSON.stringify(props))}`, [props]);
+	const id = useMemo(
+		() =>
+			`dropdown--${hash(
+				JSON.stringify({
+					className,
+					label,
+					placement,
+					flyoutClassName,
+					menuClassName,
+					menuRootClassName,
+					root,
+				})
+			)}`,
+		[className, flyoutClassName, label, menuClassName, menuRootClassName, placement, root]
+	);
 	const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 	const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
