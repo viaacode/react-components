@@ -74,6 +74,13 @@ Default.args = {
 	isOpen: false,
 };
 
+export const Disabled = Template.bind({});
+Disabled.args = {
+	label: 'Show Options',
+	isOpen: false,
+	isDisabled: true,
+};
+
 export const FitMenuContent = Template.bind({});
 FitMenuContent.args = {
 	label: 'Show Options',
