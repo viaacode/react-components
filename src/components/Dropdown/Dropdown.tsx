@@ -79,6 +79,10 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 	});
 
 	const toggle = (openState = !isOpen) => {
+		if (isDisabled) {
+			return;
+		}
+
 		if (openState !== isOpen) {
 			openState ? update?.().then(onOpen) : onClose();
 		}
