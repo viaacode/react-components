@@ -33,9 +33,9 @@ describe('Tooltip', () => {
 	});
 
 	it('should set the correct placement className', () => {
-		const tooltipElement = mount(tooltip).find('.c-tooltip');
+		const tooltipElement = mount(tooltip).find('.c-tooltip-component');
 
-		expect(tooltipElement.hasClass(`c-tooltip--${tooltipPlacement}`)).toBeTruthy();
+		expect(tooltipElement.hasClass(`c-tooltip-component--${tooltipPlacement}`)).toBeTruthy();
 	});
 
 	it('should show the tooltip when hovered', () => {
@@ -49,6 +49,8 @@ describe('Tooltip', () => {
 
 		triggerComponent.simulate('mouseover');
 
-		expect(wrapper.find('.c-tooltip').hasClass('c-tooltip--show')).toBeTruthy();
+		expect(
+			wrapper.find('.c-tooltip-component').hasClass('c-tooltip-component--show')
+		).toBeTruthy();
 	});
 });
