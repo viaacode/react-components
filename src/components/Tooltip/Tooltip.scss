@@ -4,52 +4,52 @@
    Tooltips
    ========================================================================== */
 
-.c-tooltip-trigger {
+.c-tooltip-component-trigger {
 	display: inline-block;
 }
 
-.c-tooltip {
+.c-tooltip-component {
 	position: absolute;
 	max-width: 48rem;
 	user-select: none;
 	visibility: hidden;
 	z-index: 75;
 
-	.c-tooltip__arrow,
-	.c-tooltip__arrow::before {
+	.c-tooltip-component__arrow,
+	.c-tooltip-component__arrow::before {
 		position: absolute;
 		width: 8px;
 		height: 8px;
 		z-index: -1;
 	}
 
-	.c-tooltip__arrow::before {
+	.c-tooltip-component__arrow::before {
 		content: '';
 		transform: rotate(45deg);
 	}
 
-	&[data-popper-placement^='top'] > .c-tooltip__arrow {
+	&[data-popper-placement^='top'] > .c-tooltip-component__arrow {
 		bottom: -4px;
 		left: 50%;
 		transform: translate(-8px, 0);
 		clip: rect(7px, 20px, 20px, 0px);
 	}
 
-	&[data-popper-placement^='bottom'] > .c-tooltip__arrow {
+	&[data-popper-placement^='bottom'] > .c-tooltip-component__arrow {
 		top: -6px;
 		left: 50%;
 		transform: translate(-8px, 0);
 		clip: rect(-4px, 20px, 3px, 0px);
 	}
 
-	&[data-popper-placement^='left'] > .c-tooltip__arrow {
+	&[data-popper-placement^='left'] > .c-tooltip-component__arrow {
 		right: -4px;
 		top: 50%;
 		transform: translate(0, -4px);
 		clip: rect(-4px, 12px, 12px, 7px);
 	}
 
-	&[data-popper-placement^='right'] > .c-tooltip__arrow {
+	&[data-popper-placement^='right'] > .c-tooltip-component__arrow {
 		left: -6px;
 		top: 50%;
 		transform: translate(0, -4px);
@@ -57,6 +57,6 @@
 	}
 }
 
-.c-tooltip--show {
+.c-tooltip-component--show {
 	visibility: visible;
 }

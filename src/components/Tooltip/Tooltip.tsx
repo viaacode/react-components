@@ -46,10 +46,10 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 		(evt: Event) => {
 			const elem = evt.target as HTMLElement;
 			let tooltipElem: HTMLElement | null = null;
-			if (elem.classList.contains('c-tooltip-trigger')) {
+			if (elem.classList.contains('c-tooltip-component-trigger')) {
 				tooltipElem = elem;
-			} else if (elem.closest('.c-tooltip-trigger')) {
-				tooltipElem = elem.closest('.c-tooltip-trigger');
+			} else if (elem.closest('.c-tooltip-component-trigger')) {
+				tooltipElem = elem.closest('.c-tooltip-component-trigger');
 			}
 			setShow(!!tooltipElem && tooltipElem.getAttribute('data-id') === id);
 		},
@@ -68,20 +68,25 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 
 	return tooltipSlot && triggerSlot ? (
 		<>
-			<div className="c-tooltip-trigger" data-id={id} ref={setReferenceElement}>
+			<div className="c-tooltip-component-trigger" data-id={id} ref={setReferenceElement}>
 				{triggerSlot}
 			</div>
 
 			<div
-				className={classnames(contentClassName, 'c-tooltip', `c-tooltip--${position}`, {
-					'c-tooltip--show': show,
-				})}
+				className={classnames(
+					contentClassName,
+					'c-tooltip-component',
+					`c-tooltip-component--${position}`,
+					{
+						'c-tooltip-component--show': show,
+					}
+				)}
 				ref={setPopperElement}
 				style={styles.popper}
 				{...attributes.popper}
 			>
 				{tooltipSlot}
-				<div className="c-tooltip__arrow" data-popper-arrow />
+				<div className="c-tooltip-component__arrow" data-popper-arrow />
 			</div>
 		</>
 	) : null;
