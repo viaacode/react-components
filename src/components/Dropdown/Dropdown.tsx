@@ -44,6 +44,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		rootClassName: root = 'c-dropdown',
 		variants,
 		popper,
+		isDisabled,
 	} = props;
 
 	const id = useMemo(
@@ -78,6 +79,10 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 	});
 
 	const toggle = (openState = !isOpen) => {
+		if (isDisabled) {
+			return;
+		}
+
 		if (openState !== isOpen) {
 			openState ? update?.().then(onOpen) : onClose();
 		}
@@ -104,6 +109,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 				>
 					{dropdownButtonSlot || (
 						<Button
+							disabled={isDisabled}
 							iconStart={icon}
 							label={label}
 							iconEnd={isOpen ? iconOpen : iconClosed}
