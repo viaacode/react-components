@@ -14,6 +14,8 @@ export * from './FormControl';
 export * from './Menu';
 export * from './Modal';
 export * from './Pagination';
+export * from './PaginationBar';
+export * from './PaginationProgress';
 export * from './RadioButton';
 export * from './RichTextEditor';
 export * from './Select';
