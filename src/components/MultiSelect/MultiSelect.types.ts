@@ -5,7 +5,7 @@ import { DefaultComponentProps } from '../../types';
 export interface MultiSelectProps extends DefaultComponentProps {
 	label: string;
 	options: MultiSelectOption[];
-	onChange: (selected: string[]) => void;
+	onChange: (checked: boolean, id: string) => void;
 	variant?: string;
 	iconOpen: ReactNode;
 	iconClosed: ReactNode;
@@ -15,4 +15,5 @@ export interface MultiSelectProps extends DefaultComponentProps {
 export interface MultiSelectOption {
 	id: string;
 	label: string;
+	checked: boolean;
 }

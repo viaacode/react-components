@@ -1,6 +1,5 @@
 import clsx from 'clsx';
-import { without } from 'lodash';
-import React, { FC, ReactElement, useEffect, useState } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 
 import { CheckboxList } from '../CheckboxList';
 import { Dropdown } from '../Dropdown';
@@ -18,25 +17,12 @@ const MultiSelect: FC<MultiSelectProps> = ({
 	iconCheck,
 }): ReactElement => {
 	const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-
-	useEffect(() => {
-		onChange(selectedOptions);
-	}, [onChange, selectedOptions]);
-
-	const onCheckboxClick = (checked: boolean, value: unknown): void => {
-		// If not checked yet, we need to add the value to the list of selected items, otherwise remove it
-		// This list will be used to check whether an option should have the checked property or not, that's why the check is "reversed" here.
-		const selected = !checked
-			? [...selectedOptions, `${value}`]
-			: without(selectedOptions, `${value}`);
-
-		setSelectedOptions(selected);
-	};
 
 	const getLabel = () => {
-		if (selectedOptions.length) {
-			return `${label} (${selectedOptions.length})`;
+		const checkedOptions = options.filter((option) => option.checked).length;
+
+		if (checkedOptions > 0) {
+			return `${label} (${checkedOptions})`;
 		}
 		return label;
 	};
@@ -57,12 +43,12 @@ const MultiSelect: FC<MultiSelectProps> = ({
 					checkIcon={iconCheck}
 					className={'c-multi-select__checkbox-list'}
 					itemClassName={'c-multi-select__checkbox-list-item'}
-					items={options.map(({ id, label }: MultiSelectOption) => ({
+					items={options.map(({ id, label, checked }: MultiSelectOption) => ({
 						value: id,
 						label,
-						checked: selectedOptions.includes(id),
+						checked,
 					}))}
-					onItemClick={onCheckboxClick}
+					onItemClick={(checked, value) => onChange(checked, value as string)}
 				/>
 			</Dropdown>
 		</div>
