@@ -26,10 +26,16 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({
 				key={`breadcrumb-link-${i}`}
 				aria-current={isLast ? 'page' : undefined}
 			>
-				<a className={bem('link')} key={label} href={to}>
-					{label}
-				</a>
-				{!isLast && <div className={bem('icon')}>{icon}</div>}
+				{isLast ? (
+					<p className={clsx(bem('link'), bem('link--active'))}>{label}</p>
+				) : (
+					<>
+						<a className={bem('link')} key={label} href={to}>
+							{label}
+						</a>
+						<div className={bem('icon')}>{icon}</div>
+					</>
+				)}
 			</li>
 		);
 	};
