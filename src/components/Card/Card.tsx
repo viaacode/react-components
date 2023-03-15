@@ -25,6 +25,7 @@ const Card: FC<CardProps> = ({
 	rootClassName: root = 'c-card',
 	shadow,
 	subtitle,
+	caption,
 	tags,
 	title,
 	toolbar,
@@ -80,6 +81,8 @@ const Card: FC<CardProps> = ({
 				)}
 
 				{subtitle && <div className={clsx(bem('subtitle-wrapper'))}>{subtitle}</div>}
+
+				{caption && <div className={clsx(bem('subtitle-wrapper'))}>{caption}</div>}
 
 				{children && <div className={clsx(bem('children-wrapper'))}>{children}</div>}
 			</section>

@@ -12,6 +12,7 @@ export interface CardProps extends DefaultComponentProps {
 	padding?: 'both' | 'content' | 'vertical' | 'none';
 	shadow?: boolean;
 	subtitle?: ReactNode;
+	caption?: ReactNode;
 	tags?: ReactNode;
 	title?: ReactNode;
 	toolbar?: ReactNode;
