@@ -111,7 +111,7 @@ _example_: `release/v1.0.0`
 **Master**:
 
 1. Make sure all PR's are merged into `master`
-2. Update `package.json` by running `npm run version patch`
+2. Update `package.json` by running `npm version patch`
 3. Run `npm run install` (by doing this, `package-lock.json` will also be updated)
 4. Create a `tag` by running `git tag vx.x.x` (use the same number as used in the `package.json` `version` field)
 5. Push to the remote (`git push origin`)
