@@ -2,13 +2,17 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
+import { Button } from '../Button';
 
 import { AlertProps } from './Alert.types';
 
 const Alert: FC<AlertProps> = ({
+	id,
 	title,
 	icon,
 	content,
+	closeIcon,
+	onClose,
 	className,
 	rootClassName: root = 'c-Alert',
 	variants,
@@ -23,6 +27,11 @@ const Alert: FC<AlertProps> = ({
 				{title && <p className={bem('title')}>{title}</p>}
 				<div className={bem('content')}>{content}</div>
 			</div>
+			{closeIcon && (
+				<Button variants="text" className={bem('close-icon')} onClick={() => onClose?.(id)}>
+					{closeIcon}
+				</Button>
+			)}
 		</div>
 	);
 };
