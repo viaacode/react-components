@@ -1,16 +1,15 @@
-import { mount, shallow } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 
-import { Tooltip } from './Tooltip';
+import Tooltip from './Tooltip';
 import { TooltipContent, TooltipTrigger } from './Tooltip.slots';
 
-describe('Tooltip', () => {
-	const contentText = 'This is a tooltip';
-	const triggerText = 'Hover me!';
-	const tooltipPlacement = 'bottom';
+const contentText = 'This is a tooltip';
+const triggerText = 'Hover me!';
+const tooltipPlacement = 'bottom';
 
-	const tooltip = (
+const renderTooltip = () =>
+	render(
 		<Tooltip position={tooltipPlacement}>
 			<TooltipTrigger>
 				<span className="trigger">{triggerText}</span>
@@ -21,36 +20,37 @@ describe('Tooltip', () => {
 		</Tooltip>
 	);
 
+describe('Tooltip', () => {
 	it('should render', () => {
-		shallow(tooltip);
+		const { container } = renderTooltip();
+
+		const tooltip = container.querySelector('.c-tooltip-component');
+		expect(tooltip).toBeInTheDocument();
 	});
 
-	it('should display the tooltip trigger', () => {
-		const triggerElement = mount(tooltip).find('.trigger');
+	it('should display the tooltip trigger with the correct text', () => {
+		const { container, getByText } = renderTooltip();
 
-		expect(triggerElement).toHaveLength(1);
-		expect(triggerElement.text()).toEqual(triggerText);
+		const triggerElement = container.querySelector('.trigger');
+		const triggerElementContent = getByText(triggerText);
+
+		expect(triggerElement).toBeInTheDocument();
+		expect(triggerElementContent).toBeInTheDocument();
 	});
 
 	it('should set the correct placement className', () => {
-		const tooltipElement = mount(tooltip).find('.c-tooltip-component');
+		const { container } = renderTooltip();
 
-		expect(tooltipElement.hasClass(`c-tooltip-component--${tooltipPlacement}`)).toBeTruthy();
+		const tooltipElement = container.querySelector(`.c-tooltip-component--${tooltipPlacement}`);
+		expect(tooltipElement).toBeInTheDocument();
 	});
 
 	it('should show the tooltip when hovered', () => {
-		const wrapper = mount(tooltip);
-		const triggerComponent = wrapper.find('span').first();
-		const triggerNode = triggerComponent.getDOMNode();
+		const { container } = renderTooltip();
+		const triggerComponent = container.getElementsByTagName('span')[0];
 
-		act(() => {
-			triggerNode.dispatchEvent(new Event('mouseover'));
-		});
+		fireEvent.mouseOver(triggerComponent);
 
-		triggerComponent.simulate('mouseover');
-
-		expect(
-			wrapper.find('.c-tooltip-component').hasClass('c-tooltip-component--show')
-		).toBeTruthy();
+		expect(screen.getByText(contentText)).toBeInTheDocument();
 	});
 });
