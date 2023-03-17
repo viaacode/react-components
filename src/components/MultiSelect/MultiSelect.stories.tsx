@@ -13,14 +13,17 @@ const MOCK_OPTIONS = [
 	{
 		id: 'type-1-id',
 		label: 'type 1',
+		checked: true,
 	},
 	{
 		id: 'type-2-id',
 		label: 'type 2',
+		checked: false,
 	},
 	{
 		id: 'type-3-id',
 		label: 'type 3',
+		checked: false,
 	},
 ];
 
