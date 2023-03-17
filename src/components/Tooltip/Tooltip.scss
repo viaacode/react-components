@@ -24,32 +24,32 @@
 	}
 
 	.c-tooltip-component__arrow::before {
-		content: '';
+		content: "";
 		transform: rotate(45deg);
 	}
 
-	&[data-popper-placement^='top'] > .c-tooltip-component__arrow {
+	&[data-popper-placement^="top"] > .c-tooltip-component__arrow {
 		bottom: -4px;
 		left: 50%;
 		transform: translate(-8px, 0);
-		clip: rect(7px, 20px, 20px, 0px);
+		clip: rect(7px, 20px, 20px, 0);
 	}
 
-	&[data-popper-placement^='bottom'] > .c-tooltip-component__arrow {
+	&[data-popper-placement^="bottom"] > .c-tooltip-component__arrow {
 		top: -6px;
 		left: 50%;
 		transform: translate(-8px, 0);
-		clip: rect(-4px, 20px, 3px, 0px);
+		clip: rect(-4px, 20px, 3px, 0);
 	}
 
-	&[data-popper-placement^='left'] > .c-tooltip-component__arrow {
+	&[data-popper-placement^="left"] > .c-tooltip-component__arrow {
 		right: -4px;
 		top: 50%;
 		transform: translate(0, -4px);
 		clip: rect(-4px, 12px, 12px, 7px);
 	}
 
-	&[data-popper-placement^='right'] > .c-tooltip-component__arrow {
+	&[data-popper-placement^="right"] > .c-tooltip-component__arrow {
 		left: -6px;
 		top: 50%;
 		transform: translate(0, -4px);
