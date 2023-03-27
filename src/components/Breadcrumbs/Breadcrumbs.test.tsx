@@ -17,6 +17,11 @@ describe('<Breadcrumbs />', () => {
 			className,
 			items: MOCK_BREADCRUMBS,
 			icon: <span>icon</span>,
+			linkComponent: (props) => (
+				<a href={props.href} className={props.className}>
+					{props.children}
+				</a>
+			),
 		});
 
 		const breadcrumbsComponent = container.querySelector('.c-breadcrumbs');
@@ -29,6 +34,11 @@ describe('<Breadcrumbs />', () => {
 		const { container } = renderBreadcrumbs({
 			items: MOCK_BREADCRUMBS,
 			icon: <span>icon</span>,
+			linkComponent: (props) => (
+				<a href={props.href} className={props.className}>
+					{props.children}
+				</a>
+			),
 		});
 
 		const breadcrumbsComponent = container.getElementsByTagName('nav');
@@ -40,6 +50,11 @@ describe('<Breadcrumbs />', () => {
 		const { container } = renderBreadcrumbs({
 			items: MOCK_BREADCRUMBS,
 			icon: <span>icon</span>,
+			linkComponent: (props) => (
+				<a href={props.href} className={props.className}>
+					{props.children}
+				</a>
+			),
 		});
 
 		const breadcrumbsComponent = container.querySelectorAll('.c-breadcrumbs__item');
@@ -51,6 +66,11 @@ describe('<Breadcrumbs />', () => {
 		const { container } = renderBreadcrumbs({
 			items: MOCK_BREADCRUMBS,
 			icon: <span>icon</span>,
+			linkComponent: (props) => (
+				<a href={props.href} className={props.className}>
+					{props.children}
+				</a>
+			),
 		});
 
 		const icons = container.querySelectorAll('.c-breadcrumbs__icon');
