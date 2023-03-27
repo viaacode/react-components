@@ -30,7 +30,11 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	const tooltipSlot = useSlot(TooltipContent, children);
 	const triggerSlot = useSlot(TooltipTrigger, children);
 
-	const { styles, attributes } = usePopper(referenceElement, popperElement, {
+	const {
+		styles,
+		attributes,
+		update: updatePopperPosition,
+	} = usePopper(referenceElement, popperElement, {
 		placement: position,
 		modifiers: [
 			{
@@ -43,7 +47,7 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	});
 
 	const handleMouseMove = useCallback(
-		(evt: Event) => {
+		async (evt: Event) => {
 			const elem = evt.target as HTMLElement;
 			let tooltipElem: HTMLElement | null = null;
 			if (elem.classList.contains('c-tooltip-component-trigger')) {
@@ -51,9 +55,14 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 			} else if (elem.closest('.c-tooltip-component-trigger')) {
 				tooltipElem = elem.closest('.c-tooltip-component-trigger');
 			}
-			setShow(!!tooltipElem && tooltipElem.getAttribute('data-id') === id);
+
+			const tempShow = !!tooltipElem && tooltipElem.getAttribute('data-id') === id;
+			if (tempShow) {
+				await updatePopperPosition?.();
+			}
+			setShow(tempShow);
 		},
-		[id]
+		[id, updatePopperPosition]
 	);
 
 	useEffect(() => {
