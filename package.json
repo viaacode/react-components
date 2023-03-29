@@ -71,7 +71,7 @@
     "clsx": "1.1.1",
     "draft-js": "0.10.5",
     "lodash-es": "^4.17.21",
-    "postcss": "8.4.19",
+    "postcss": "8.4.21",
     "react-colorful": "5.5.1",
     "react-modal": "3.14.4",
     "react-scrollbars-custom": "4.1.1",
