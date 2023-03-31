@@ -19,6 +19,9 @@ const Datepicker: FC<DatepickerProps> = (props) => {
 			calendarClassName={rootCls}
 			popperClassName={rootCls}
 			showPopperArrow={false}
+			showMonthDropdown
+			showYearDropdown
+			dropdownMode="select"
 			{...props}
 		/>
 	);
