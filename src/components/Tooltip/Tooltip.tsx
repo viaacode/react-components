@@ -39,6 +39,18 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 					offset: [0, offset || 10],
 				},
 			},
+			{
+				name: 'computeStyles',
+				options: {
+					adaptive: false,
+				},
+			},
+			{
+				name: 'computeStyles2',
+				options: {
+					gpuAcceleration: false,
+				},
+			},
 		],
 	});
 
@@ -68,7 +80,11 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 
 	return tooltipSlot && triggerSlot ? (
 		<>
-			<div className="c-tooltip-component-trigger" data-id={id} ref={setReferenceElement}>
+			<div
+				className="c-tooltip-component-trigger"
+				data-id={id}
+				ref={(el) => setReferenceElement(el)}
+			>
 				{triggerSlot}
 			</div>
 
@@ -81,7 +97,7 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 						'c-tooltip-component--show': show,
 					}
 				)}
-				ref={setPopperElement}
+				ref={(el) => setPopperElement(el)}
 				style={styles.popper}
 				{...attributes.popper}
 			>
