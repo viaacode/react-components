@@ -2,17 +2,22 @@ $vendor-c: "react-datepicker";
 $component: "c-datepicker";
 
 .#{$component} {
-    .#{$vendor-c}__current-month {
-        &.#{$vendor-c}__current-month--hasYearDropdown.#{$vendor-c}__current-month--hasMonthDropdown,
-        &.#{$vendor-c}__current-month--hasMonthYearDropdown {
-            display: none;
-        }
-    }
+	.#{$vendor-c}__current-month {
+		&.#{$vendor-c}__current-month--hasYearDropdown.#{$vendor-c}__current-month--hasMonthDropdown,
+		&.#{$vendor-c}__current-month--hasMonthYearDropdown {
+			display: none;
+		}
+	}
 
-    .#{$vendor-c}__navigation {
-        &--previous,
-        &--next {
-            display: none;
-        }
-    }
+	.#{$vendor-c}__navigation {
+		&--previous,
+		&--next {
+			display: none;
+		}
+	}
+
+	[role="alert"] {
+		// Hide current month and year since it is already visible in the dropdowns for month and year
+		display: none;
+	}
 }
