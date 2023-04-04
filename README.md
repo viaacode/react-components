@@ -62,12 +62,13 @@ Other available commands are:
 ## Deploy
 
 1. Make sure all PR's are merged into `master`
-2. Update `package.json` by running `npm version patch`. This wil automatically update:
+2. Pull latest master
+3. Update `package.json` by running `npm version patch`. This wil automatically update:
     1. Version in `package.json` and `package-lock.json`
     2. Create a tag
-3. Push to the remote (`git push --follow-tags origin`)
-4. Go to [meemoo's nexus](http://do-prd-mvn-01.do.viaa.be:8081/#browse/browse:npm-viaa:%40meemoo%2Freact-components) and check if the version is deployed
-5. Open pull requests for all repositories and make sure to use the latest version for `@meemoo/react-components`
+4. Push to the remote (`git push --follow-tags origin`)
+5. Go to [meemoo's nexus](http://do-prd-mvn-01.do.viaa.be:8081/#browse/browse:npm-viaa:%40meemoo%2Freact-components) and check if the version is deployed
+6. Open pull requests for all repositories and make sure to use the latest version for `@meemoo/react-components`
 
 ## Team
 
