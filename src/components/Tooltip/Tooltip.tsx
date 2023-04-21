@@ -43,18 +43,6 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 					offset: [0, offset || 10],
 				},
 			},
-			{
-				name: 'computeStyles',
-				options: {
-					adaptive: false,
-				},
-			},
-			{
-				name: 'computeStyles2',
-				options: {
-					gpuAcceleration: false,
-				},
-			},
 		],
 	});
 
@@ -68,14 +56,16 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 				tooltipElem = elem.closest('.c-tooltip-component-trigger');
 			}
 
-			const tempShow = !!tooltipElem && tooltipElem.getAttribute('data-id') === id;
-			if (tempShow) {
-				await updatePopperPosition?.();
-			}
-			setShow(tempShow);
+			setShow(!!tooltipElem && tooltipElem.getAttribute('data-id') === id);
 		},
-		[id, updatePopperPosition]
+		[id]
 	);
+
+	useEffect(() => {
+		if (show) {
+			updatePopperPosition?.();
+		}
+	}, [show]);
 
 	useEffect(() => {
 		document.body.addEventListener('mousemove', handleMouseMove);
