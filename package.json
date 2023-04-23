@@ -1,9 +1,9 @@
 {
   "name": "@meemoo/react-components",
   "version": "2.25.7",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/esm/index.d.ts",
+  "main": "dist/index.mjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "repository": "github:viaacode/react-components",
   "homepage": "https://github.com/viaacode/react-components#readme",
   "author": "Andry Charlier <andry.charlier@studiohyperdrive.be>",
@@ -17,10 +17,9 @@
     "dist"
   ],
   "scripts": {
+    "preinstall": "npx force-resolutions",
     "prepare": "husky install",
-    "preversion": "npm run lint && npm test && npm run type-check",
-    "prebuild": "rimraf dist",
-    "build": "rollup -c",
+    "build": "tsc && vite build",
     "copy-to-avo-client": "rimraf ../avo2-client/node_modules/@meemoo/react-components/dist ../avo2-client/node_modules/.cache  && cp -r dist package.json ../avo2-client/node_modules/@meemoo/react-components",
     "copy-to-hetarchief-client": "rimraf ../hetarchief-client/node_modules/@meemoo/react-components/dist ../hetarchief-client/node_modules/.cache ../hetarchief-client/.next && cp -r dist package.json ../hetarchief-client/node_modules/@meemoo/react-components",
     "copy-to-admin-core": "rimraf ../react-admin-core-module/ui/node_modules/@meemoo/react-components/dist ../react-admin-core-module/ui/node_modules/.cache && cp -r dist package.json ../react-admin-core-module/ui/node_modules/@meemoo/react-components",
@@ -54,29 +53,29 @@
     ]
   },
   "peerDependencies": {
-    "@popperjs/core": "2.11.6",
-    "date-fns": "^2.16.0",
-    "react": "^16.14.0 || ^17.0.2",
-    "react-datepicker": "4.11.0",
-    "react-dom": "^16.14.0 || ^17.0.2",
-    "react-popper": "2.3.0"
-  },
-  "dependencies": {
     "@flowplayer/player": "3.3.0",
+    "@popperjs/core": "2.11.6",
     "@viaa/avo2-types": "2.45.5",
     "autosize": "5.0.1",
-    "braft-editor": "^2.3.9",
-    "braft-extensions": "0.1.1",
     "classnames": "2.3.2",
     "clsx": "1.1.1",
-    "draft-js": "0.10.5",
+    "date-fns": "^2.16.0",
     "lodash-es": "^4.17.21",
     "postcss": "8.4.19",
     "react-colorful": "5.5.1",
+    "react-datepicker": "4.11.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
     "react-modal": "3.14.4",
+    "react-popper": "2.3.0",
     "react-scrollbars-custom": "4.1.1",
     "react-select": "5.2.1",
     "react-table": "7.7.0"
+  },
+  "dependencies": {
+    "draft-js": "0.10.5",
+    "braft-editor": "^2.3.9",
+    "braft-extensions": "0.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "15.0.0",
@@ -106,6 +105,7 @@
     "@types/uuid": "8.3.4",
     "@typescript-eslint/eslint-plugin": "5.8.0",
     "@typescript-eslint/parser": "5.8.0",
+    "@vitejs/plugin-react": "4.0.0",
     "autoprefixer": "10.4.2",
     "cross-env": "7.0.3",
     "css-loader": "6.5.1",
@@ -125,8 +125,6 @@
     "lorem-ipsum": "2.0.4",
     "npm-force-resolutions": "0.0.10",
     "prettier": "2.5.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
     "react-select-event": "5.3.0",
     "rimraf": "3.0.2",
     "rollup": "2.61.1",
@@ -146,14 +144,19 @@
     "stylelint-config-standard-scss": "3.0.0",
     "ts-jest": "27.1.2",
     "tslib": "2.3.1",
-    "typescript": "4.5.4"
+    "typescript": "4.5.4",
+    "vite": "^4.3.1",
+    "vite-plugin-dts": "^2.3.0",
+    "vite-plugin-externalize-deps": "^0.5.0",
+    "vite-plugin-svgr": "^2.4.0",
+    "vite-tsconfig-paths": "^4.2.0"
   },
   "publishConfig": {
     "@viaa:registry": "http://do-prd-mvn-01.do.viaa.be:8081/repository/npm-viaa/"
   },
   "snyk": true,
   "resolutions": {
-    "**/react": "17.0.2",
-    "**/react-dom": "17.0.2"
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   }
 }
