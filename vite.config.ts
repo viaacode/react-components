@@ -2,6 +2,7 @@ import { resolve } from 'path';
 
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import dts from 'vite-plugin-dts';
 import { externalizeDeps } from 'vite-plugin-externalize-deps';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
@@ -16,5 +17,5 @@ export default defineConfig({
 			formats: ['es'],
 		},
 	},
-	plugins: [react(), viteTsconfigPaths(), dts(), externalizeDeps()],
+	plugins: [react(), viteTsconfigPaths(), dts(), externalizeDeps(), cssInjectedByJsPlugin()],
 });
