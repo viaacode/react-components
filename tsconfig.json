@@ -7,7 +7,7 @@
       "esnext"
     ],
     "types": ["node", "vite/client", "jest", "@testing-library/jest-dom"],
-    "module": "ESNext",
+    "module": "esnext",
     "moduleResolution": "node",
     "skipLibCheck": true,
     "esModuleInterop": true,

@@ -1,5 +1,4 @@
 import flowplayer, { Player } from '@flowplayer/player';
-import '@flowplayer/player/flowplayer.css';
 import audioPlugin from '@flowplayer/player/plugins/audio';
 import cuepointsPlugin from '@flowplayer/player/plugins/cuepoints';
 import googleAnalyticsPlugin from '@flowplayer/player/plugins/google-analytics';
