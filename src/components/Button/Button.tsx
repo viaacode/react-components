@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { FC, forwardRef, MouseEvent, ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip';
 
 import { ButtonProps } from './Button.types';
 
@@ -18,6 +19,7 @@ const Button: FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>(
 			label,
 			rootClassName: root = 'c-button',
 			title,
+			toolTipText,
 			type = 'button',
 			variants,
 			onClick,
@@ -47,7 +49,18 @@ const Button: FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>(
 			</span>
 		);
 
-		return (
+		const wrapInTooltip = (element: JSX.Element): JSX.Element => {
+			return (
+				<Tooltip position="top">
+					<TooltipTrigger>{element}</TooltipTrigger>
+					<TooltipContent>
+						<span>{toolTipText}</span>
+					</TooltipContent>
+				</Tooltip>
+			);
+		};
+
+		const element = (
 			<button
 				{...htmlButtonProps}
 				className={rootCls}
@@ -71,6 +84,8 @@ const Button: FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>(
 				</div>
 			</button>
 		);
+
+		return toolTipText ? wrapInTooltip(element) : element;
 	}
 );
 
