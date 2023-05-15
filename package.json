@@ -62,7 +62,7 @@
     "react-popper": "2.3.0"
   },
   "dependencies": {
-    "@flowplayer/player": "3.3.0",
+    "@flowplayer/player": "3.4.5",
     "@viaa/avo2-types": "2.45.5",
     "autosize": "5.0.1",
     "braft-editor": "^2.3.9",
