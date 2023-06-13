@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "@flowplayer/player": "3.3.0",
-    "@viaa/avo2-types": "2.45.5",
+    "@viaa/avo2-types": "2.48.16",
     "autosize": "5.0.1",
     "braft-editor": "^2.3.9",
     "braft-extensions": "0.1.1",
@@ -75,7 +75,7 @@
     "react-colorful": "5.5.1",
     "react-modal": "3.14.4",
     "react-scrollbars-custom": "4.1.1",
-    "react-select": "5.2.1",
+    "react-select": "5.7.3",
     "react-table": "7.7.0"
   },
   "devDependencies": {
