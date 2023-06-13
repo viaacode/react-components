@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "2.25.10",
+  "version": "2.25.11",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "@flowplayer/player": "3.3.0",
-    "@viaa/avo2-types": "2.48.16",
+    "@viaa/avo2-types": "2.48.18",
     "autosize": "5.0.1",
     "braft-editor": "^2.3.9",
     "braft-extensions": "0.1.1",
