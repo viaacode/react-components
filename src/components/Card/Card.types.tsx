@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
 import { DefaultComponentProps } from '../../types';
 
@@ -16,4 +16,10 @@ export interface CardProps extends DefaultComponentProps {
 	tags?: ReactNode;
 	title?: ReactNode;
 	toolbar?: ReactNode;
+	linkComponent: FC<{
+		href: string;
+		className?: string;
+		children: ReactNode | string;
+	}>;
+	to?: string;
 }

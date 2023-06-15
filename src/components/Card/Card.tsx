@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 import { bemCls, getVariantClasses, keysEnter, keysSpacebar, onKey } from '../../utils';
 
@@ -10,6 +10,7 @@ const defaultProps: CardProps = {
 	mode: 'light',
 	orientation: 'vertical',
 	padding: 'none',
+	linkComponent: ({ children }) => <>{children}</>,
 };
 
 const Card: FC<CardProps> = ({
@@ -30,6 +31,8 @@ const Card: FC<CardProps> = ({
 	title,
 	toolbar,
 	variants,
+	linkComponent,
+	to,
 }) => {
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
@@ -41,6 +44,15 @@ const Card: FC<CardProps> = ({
 		[bem('', `padded-${padding}`)]: !!padding,
 	});
 
+	const wrapInLinkIfExist = (children: ReactNode | string): ReactNode => {
+		if (to) {
+			return <Link href={to}>{children}</Link>;
+		} else {
+			return children;
+		}
+	};
+
+	const Link = linkComponent;
 	return (
 		<article
 			className={rootCls}
@@ -53,38 +65,47 @@ const Card: FC<CardProps> = ({
 				  }
 				: {})}
 		>
-			<section className={clsx(bem('top-wrapper'))}>
-				{tags && <div className={clsx(bem('tags-wrapper'))}>{tags}</div>}
+			{wrapInLinkIfExist(
+				<section className={clsx(bem('top-wrapper'))}>
+					{tags && <div className={clsx(bem('tags-wrapper'))}>{tags}</div>}
 
-				{image && (
-					<div className={clsx(bem('image-wrapper'))}>
-						{typeof image === 'string' ? (
-							<img
-								className="u-image-responsive"
-								src={image}
-								alt={title?.toString() || "The card's image"}
-							/> //eslint-disable-line
-						) : (
-							image
+					{image && (
+						<div className={clsx(bem('image-wrapper'))}>
+							{typeof image === 'string' ? (
+								<img
+									className="u-image-responsive"
+									src={image}
+									alt={title?.toString() || "The card's image"}
+								/> //eslint-disable-line
+							) : (
+								image
+							)}
+						</div>
+					)}
+				</section>
+			)}
+
+			<section className={clsx(bem('bottom-wrapper'))}>
+				{toolbar && <div className={clsx(bem('toolbar-wrapper'))}>{toolbar}</div>}
+				{wrapInLinkIfExist(
+					<div>
+						{(title || toolbar) && (
+							<div className={clsx(bem('header-wrapper'))}>
+								{title && <div className={clsx(bem('title-wrapper'))}>{title}</div>}
+							</div>
+						)}
+
+						{subtitle && (
+							<div className={clsx(bem('subtitle-wrapper'))}>{subtitle}</div>
+						)}
+
+						{caption && <div className={clsx(bem('subtitle-wrapper'))}>{caption}</div>}
+
+						{children && (
+							<div className={clsx(bem('children-wrapper'))}>{children}</div>
 						)}
 					</div>
 				)}
-			</section>
-
-			<section className={clsx(bem('bottom-wrapper'))}>
-				{(title || toolbar) && (
-					<div className={clsx(bem('header-wrapper'))}>
-						{title && <div className={clsx(bem('title-wrapper'))}>{title}</div>}
-
-						{toolbar && <div className={clsx(bem('toolbar-wrapper'))}>{toolbar}</div>}
-					</div>
-				)}
-
-				{subtitle && <div className={clsx(bem('subtitle-wrapper'))}>{subtitle}</div>}
-
-				{caption && <div className={clsx(bem('subtitle-wrapper'))}>{caption}</div>}
-
-				{children && <div className={clsx(bem('children-wrapper'))}>{children}</div>}
 			</section>
 		</article>
 	);
