@@ -1,4 +1,4 @@
-import { FC, ReactElement, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
 import { DefaultComponentProps } from '../../types';
 
@@ -8,7 +8,7 @@ export interface BreadcrumbsProps extends DefaultComponentProps {
 	linkComponent: FC<{
 		href: string;
 		className?: string;
-		children: ReactElement | string;
+		children: ReactNode | string;
 	}>;
 }
 
