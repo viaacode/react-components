@@ -16,7 +16,7 @@ export interface CardProps extends DefaultComponentProps {
 	tags?: ReactNode;
 	title?: ReactNode;
 	toolbar?: ReactNode;
-	linkComponent: FC<{
+	linkComponent?: FC<{
 		href: string;
 		className?: string;
 		children: ReactNode | string;

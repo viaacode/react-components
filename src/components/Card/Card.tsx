@@ -31,9 +31,15 @@ const Card: FC<CardProps> = ({
 	title,
 	toolbar,
 	variants,
-	linkComponent,
+	linkComponent = defaultProps.linkComponent as FC<{
+		href: string;
+		className?: string;
+		children: ReactNode | string;
+	}>,
 	to,
 }) => {
+	const Link = linkComponent;
+
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
 		[bem('', 'offset')]: offset,
@@ -52,7 +58,6 @@ const Card: FC<CardProps> = ({
 		}
 	};
 
-	const Link = linkComponent;
 	return (
 		<article
 			className={rootCls}
