@@ -56,7 +56,11 @@ const Pagination: FunctionComponent<PaginationProps> = ({
 		return (
 			<div
 				key={pageIndex}
-				className={clsx(bem('btn'), pageIndex === currentPage && bem('btn', 'active'))}
+				className={clsx(
+					bem('btn'),
+					pageIndex === currentPage && bem('btn', 'active'),
+					pageIndex.toString().length > 3 && bem('btn', 'long')
+				)}
 				onClick={pageIndex !== currentPage ? () => changePage(pageIndex) : () => null}
 				onKeyPress={(e) => (e.key === 'Enter' ? changePage(pageIndex) : () => null)}
 				role="button"
