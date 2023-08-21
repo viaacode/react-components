@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "2.25.16",
+  "version": "2.25.18",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -107,7 +107,7 @@
     "@typescript-eslint/eslint-plugin": "5.8.0",
     "@typescript-eslint/parser": "5.8.0",
     "autoprefixer": "10.4.2",
-    "bump-package-versions": "1.0.5",
+    "bump-package-versions": "1.0.6",
     "cross-env": "7.0.3",
     "css-loader": "6.5.1",
     "eslint": "8.5.0",
