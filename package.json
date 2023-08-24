@@ -56,9 +56,9 @@
   "peerDependencies": {
     "@popperjs/core": "2.11.6",
     "date-fns": "^2.16.0",
-    "react": "^16.14.0 || ^17.0.2",
-    "react-datepicker": "4.11.0",
-    "react-dom": "^16.14.0 || ^17.0.2",
+    "react": "17.0.2",
+    "react-datepicker": "4.7.0",
+    "react-dom": "17.0.2",
     "react-popper": "2.3.0"
   },
   "dependencies": {
@@ -98,9 +98,9 @@
     "@types/jest": "27.0.3",
     "@types/lodash-es": "4.17.6",
     "@types/node": "14.6.1",
-    "@types/react": "16.9.48",
+    "@types/react": "17.0.65",
     "@types/react-datepicker": "4.4.2",
-    "@types/react-dom": "16.9.8",
+    "@types/react-dom": "17.0.20",
     "@types/react-modal": "3.13.1",
     "@types/react-table": "7.7.9",
     "@types/uuid": "8.3.4",
@@ -153,8 +153,8 @@
     "@viaa:registry": "http://do-prd-mvn-01.do.viaa.be:8081/repository/npm-viaa/"
   },
   "snyk": true,
-  "resolutions": {
-    "**/react": "17.0.2",
-    "**/react-dom": "17.0.2"
+  "overrides": {
+    "@types/react": "17.0.65",
+    "@types/react-dom": "17.0.20"
   }
 }

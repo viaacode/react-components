@@ -1,8 +1,8 @@
 pipeline {
-    agent {
-        kubernetes {
-            defaultContainer 'oc'
-            yaml """\
+	agent {
+		kubernetes {
+			defaultContainer 'oc'
+			yaml """\
         apiVersion: v1
         kind: Pod
         metadata:
@@ -19,7 +19,7 @@ pipeline {
             tty: true
             imagePullPolicy: Always
           - name: npm
-            image: node:lts
+            image: node:20.4-alpine
             command:
             - cat
             tty: true
@@ -32,128 +32,131 @@ pipeline {
 
 
         """.stripIndent()
-        }
-    }
-    options {
-        timeout(time: 45, unit: 'MINUTES')
-        disableConcurrentBuilds()
-    }
-    environment {
-        OC_PROJECT = 'hetarchief'
-        BASE_IMG = 'node:12-alpine'
-        OC_URL = 'https://c113-e.private.eu-de.containers.cloud.ibm.com:30227'
-        JIRA_URL = 'meemoo.atlassian.net'
-        APP_NAME = 'react-components'
-        BRANCH_NAME = 'master'
-    }
+		}
+	}
+	options {
+		timeout(time: 45, unit: 'MINUTES')
+		disableConcurrentBuilds()
+	}
+	environment {
+		OC_PROJECT = 'hetarchief'
+		BASE_IMG = 'node:20.4-alpine'
+		OC_URL = 'https://c113-e.private.eu-de.containers.cloud.ibm.com:30227'
+		JIRA_URL = 'meemoo.atlassian.net'
+		APP_NAME = 'react-components'
+		BRANCH_NAME = 'master'
+	}
 
-    stages {
-        stage('Calculate extra ENV vars') {
-            steps {
-                script {
-                    env.GIT_SHORT_COMMIT = sh(script: "printf \$(git rev-parse --short ${GIT_COMMIT})", returnStdout: true)
-                    env.IMAGE_TAG = sh(script: 'git describe --tags || echo latest', returnStdout: true)
-                    // The name used for the build config based on the image tag
-                    // Replace '.' with '_' as '.' is not allowed.
-                    env.BUILD_CONFIG_NAME = sh(script: 'echo "${IMAGE_TAG}" | sed -r "s/\\./\\-/g"', returnStdout: true)
-                }
-            }
-        }
+	stages {
+		stage('Calculate extra ENV vars') {
+			steps {
+				script {
+					env.GIT_SHORT_COMMIT = sh(script: "printf \$(git rev-parse --short ${GIT_COMMIT})", returnStdout: true)
+					env.IMAGE_TAG = sh(script: 'git describe --tags || echo latest', returnStdout: true)
+					// The name used for the build config based on the image tag
+					// Replace '.' with '_' as '.' is not allowed.
+					env.BUILD_CONFIG_NAME = sh(script: 'echo "${IMAGE_TAG}" | sed -r "s/\\./\\-/g"', returnStdout: true)
+				}
+			}
+		}
 
-        stage('Build code') {
-            when {
-                not {
-                    buildingTag()
-                }
-            }
-            steps {
-                container('oc') {
-                    script {
-                        sh '''#!/bin/bash
+		stage('Build code') {
+			when {
+				not {
+					buildingTag()
+				}
+			}
+			steps {
+				container('oc') {
+					script {
+						sh '''
+							#!/bin/bash
 			                echo no deployment for this build atm
-                            '''
-                    }
-                }
-                container('npm') {
+                           '''
+					}
+				}
+				container('npm') {
 
-                    script {
-                        sh '''#!/bin/bash
-			npm --registry=https://registry.npmjs.org install --force && npm run build || exit 1
-			'''
-                    } // script
-                }
-            }
-        }// end stage build
+					script {
+						sh '''
+							#!/bin/bash
+							npm --registry=https://registry.npmjs.org install --force && npm run build || exit 1
+						'''
+					} // script
+				}
+			}
+		}// end stage build
 
 
-        stage('Publish') {
-            steps {
-                container('npm') {
-                    script {
-                        echo "Publishing package to registry"
-                        configFileProvider([configFile(fileId: "npmrc", variable: 'configFile')]) {
-                            sh "cat $configFile > .npmrc"
-                        }
-                        sh '''#/bin/bash
-            npm config fix
-			npm publish
-			echo "removing .npmrc for installto nexus not seems @viaa:registry=.."
-			rm -f .npmrc
-			'''
-                    } // script
-                }// end container
-            } // steps
-        } // stage
+		stage('Publish') {
+			steps {
+				container('npm') {
+					script {
+						echo "Publishing package to registry"
+						configFileProvider([configFile(fileId: "npmrc", variable: 'configFile')]) {
+							sh "cat $configFile > .npmrc"
+						}
+						sh '''
+							#/bin/bash
+							npm config fix
+							npm publish
+							echo "removing .npmrc for installto nexus not seems @viaa:registry=.."
+							rm -f .npmrc
+						'''
+					} // script
+				}// end container
+			} // steps
+		} // stage
 
-    }
-    post {
-        success {
-            script {
-                if (env.BRANCH_NAME.startsWith('PR')) {
-                    setGitHubBuildStatus('Build', 'SUCCESS')
-                }
-            }
-        }
-        failure {
-            script {
-                if (env.BRANCH_NAME.startsWith('PR')) {
-                    setGitHubBuildStatus('Build', 'FAILURE')
-                }
-            }
-        }
-        always {
-            container('default') {
-                // Archive tets results
-                script {
-                    if (fileExists('./tests/test_results.xml')) {
-                        junit 'tests/test_results.xml'
-                    } else {
-                        echo 'No test results found'
-                    }
-                }
-            }
-        }
-    }
+	}
+	post {
+		success {
+			script {
+				if (env.BRANCH_NAME.startsWith('PR')) {
+					setGitHubBuildStatus('Build', 'SUCCESS')
+				}
+			}
+		}
+		failure {
+			script {
+				if (env.BRANCH_NAME.startsWith('PR')) {
+					setGitHubBuildStatus('Build', 'FAILURE')
+				}
+			}
+		}
+		always {
+			container('default') {
+				// Archive tets results
+				script {
+					if (fileExists('./tests/test_results.xml')) {
+						junit 'tests/test_results.xml'
+					} else {
+						echo 'No test results found'
+					}
+				}
+			}
+		}
+	}
 }
 
-void getImageFromDockerfile() {
-    return 'node:lts'
+String getImageFromDockerfile() {
+	return 'node:20.4-alpine'
 }
 
 void setGitHubBuildStatus(String message, String state) {
-    step([
-            $class            : 'GitHubCommitStatusSetter',
-            reposSource       : [$class: 'ManuallyEnteredRepositorySource', url: "${GIT_URL}"],
-            commitShaSource   : [$class: 'ManuallyEnteredShaSource', sha: "${GIT_COMMIT}"],
-            errorHandlers     : [[$class: 'ChangingBuildStatusErrorHandler', result: 'UNSTABLE']],
-            statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: message, state: state]]]
-    ])
+	step([
+		$class            : 'GitHubCommitStatusSetter',
+		reposSource       : [$class: 'ManuallyEnteredRepositorySource', url: "${GIT_URL}"],
+		commitShaSource   : [$class: 'ManuallyEnteredShaSource', sha: "${GIT_COMMIT}"],
+		errorHandlers     : [[$class: 'ChangingBuildStatusErrorHandler', result: 'UNSTABLE']],
+		statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: message, state: state]]]
+	])
 }
 
 void getAllCommitsBetweenTags(String from, String to) {
-    commit_messages = sh(script: "git log ${from}...${to} --merges --format=%b", returnStdout: true)
+	commit_messages = sh(script: "git log ${from}...${to} --merges --format=%b", returnStdout: true)
 
-    return commit_messages
+	return commit_messages
 }
 
 
