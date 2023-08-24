@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "2.25.19",
+  "version": "2.26.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -18,7 +18,6 @@
   ],
   "scripts": {
     "prepare": "husky install",
-    "preversion": "npm run lint && npm test && npm run type-check",
     "prebuild": "rimraf dist",
     "build": "rollup -c",
     "copy-to-avo-client": "rimraf ../avo2-client/node_modules/@meemoo/react-components/dist ../avo2-client/node_modules/.cache  && cp -r dist package.json ../avo2-client/node_modules/@meemoo/react-components",
@@ -39,7 +38,7 @@
     "type-check": "tsc --noEmit",
     "licenses": "license-checker --csv --out licenses.csv",
     "snyk-protect": "snyk protect",
-    "bump": "bump-package-versions ./package.json"
+    "bump": "bump-package-versions --part=patch --strategy=highest ./package.json"
   },
   "browserslist": {
     "production": [
@@ -124,7 +123,6 @@
     "license-checker": "25.0.1",
     "lint-staged": "^13.0.3",
     "lorem-ipsum": "2.0.4",
-    "npm-force-resolutions": "0.0.10",
     "prettier": "2.5.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
