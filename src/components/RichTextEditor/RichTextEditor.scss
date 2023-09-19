@@ -1,3 +1,6 @@
+@use "braft-editor/dist/index";
+@use "braft-extensions/dist/table";
+
 .c-rich-text-editor {
 	.public-DraftEditor-content {
 		word-break: normal;

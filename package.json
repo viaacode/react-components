@@ -17,8 +17,8 @@
     "dist"
   ],
   "scripts": {
+    "preinstall": "npx force-resolutions",
     "prepare": "husky install",
-    "prebuild": "rimraf dist",
     "build": "vite build",
     "copy-to-avo-client": "rimraf ../avo2-client/node_modules/@meemoo/react-components/dist ../avo2-client/node_modules/.cache  && cp -r dist package.json ../avo2-client/node_modules/@meemoo/react-components",
     "copy-to-hetarchief-client": "rimraf ../hetarchief-client/node_modules/@meemoo/react-components/dist ../hetarchief-client/node_modules/.cache ../hetarchief-client/.next && cp -r dist package.json ../hetarchief-client/node_modules/@meemoo/react-components",
@@ -72,6 +72,11 @@
     "react-scrollbars-custom": "4.1.1",
     "react-select": "5.7.3",
     "react-table": "7.7.0"
+  },
+  "dependencies": {
+    "braft-editor": "^2.3.9",
+    "braft-extensions": "0.1.1",
+    "draft-js": "0.10.5"
   },
   "devDependencies": {
     "@commitlint/cli": "17.7.1",
