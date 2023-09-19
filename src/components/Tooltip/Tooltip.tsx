@@ -65,7 +65,7 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 		if (show) {
 			updatePopperPosition?.();
 		}
-	}, [show]);
+	}, [show, updatePopperPosition]);
 
 	useEffect(() => {
 		document.body.addEventListener('mousemove', handleMouseMove);

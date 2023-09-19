@@ -231,9 +231,6 @@ jspm_packages
 /dist
 storybook-static
 
-# rollup
-.rpt2_cache
-
 # misc
 .DS_Store
 .env.local

@@ -9,7 +9,7 @@ import { TagsInputGroup, TagsInputProps } from './TagsInput.types';
 
 const TagsInput = <
 	AllowMulti extends boolean = true,
-	Group extends TagsInputGroup = TagsInputGroup
+	Group extends TagsInputGroup = TagsInputGroup,
 >({
 	allowCreate = false,
 	className = '',

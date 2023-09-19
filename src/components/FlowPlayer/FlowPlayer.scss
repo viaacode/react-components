@@ -180,10 +180,7 @@ $fp-controls-header-width-mobile: 50px;
 		display: none;
 		justify-content: flex-end;
 		position: absolute;
-		top: auto;
-		right: 0;
-		bottom: 0;
-		left: auto;
+		inset: auto 0 0 auto;
 		width: $fp-controls-header-width-mobile;
 
 		@media (min-width: $g-bp2) {
@@ -459,19 +456,13 @@ $fp-controls-header-width-mobile: 50px;
 
 		.pane {
 			position: absolute;
-			left: 0;
-			right: 0;
-			top: 0;
-			bottom: 0;
+			inset: 0;
 			padding: 0;
 			margin: 0;
 
 			.poster {
 				position: absolute;
-				left: 0;
-				right: 0;
-				top: 0;
-				bottom: 0;
+				inset: 0;
 				padding: 0;
 				margin: 0;
 			}

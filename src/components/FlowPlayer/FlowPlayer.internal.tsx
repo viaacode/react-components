@@ -426,6 +426,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		tempPlayer.on('timeupdate', handleTimeUpdate);
 
 		setPlayer(tempPlayer);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		drawCustomElements,
 		end,
@@ -454,6 +455,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 	useEffect(() => {
 		videoContainerRef.current && !player.current && reInitFlowPlayer();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [videoContainerRef]); // Only redo effect when ref changes
 
 	useEffect(() => {
@@ -510,6 +512,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				clearInterval(drawPeaksTimerId);
 			}
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [waveformData, peakCanvas, setDrawPeaksTimerId]);
 
 	useEffect(() => {
@@ -520,6 +523,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		return () => {
 			clearInterval(timerId);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleMediaCardClicked = useCallback(
@@ -532,6 +536,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 			updateCuepointPosition();
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[player, updateCuepointPosition]
 	);
 
@@ -559,6 +564,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				</ul>
 			);
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[handleMediaCardClicked, activeItemIndex]
 	);
 
@@ -577,6 +583,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				{customControls}
 			</div>
 		),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[dataPlayerId]
 	);
 

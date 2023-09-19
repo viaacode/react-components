@@ -6,7 +6,7 @@ import { DefaultComponentProps } from '../../types';
 
 export type TagsInputProps<
 	AllowMulti extends boolean = true,
-	Group extends TagsInputGroup = TagsInputGroup
+	Group extends TagsInputGroup = TagsInputGroup,
 > = DefaultComponentProps &
 	(
 		| (CreatableProps<TagInfo, AllowMulti, Group> & { allowCreate?: true })
