@@ -8,7 +8,7 @@ import keyboardPlugin from '@flowplayer/player/plugins/keyboard';
 import playlistPlugin from '@flowplayer/player/plugins/playlist';
 import speedPlugin from '@flowplayer/player/plugins/speed';
 import subtitlesPlugin from '@flowplayer/player/plugins/subtitles';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { get, isNil, noop } from 'lodash-es';
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { default as Scrollbar } from 'react-scrollbars-custom';
@@ -567,7 +567,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	const playerHtml = useMemo(
 		() => (
 			<div
-				className={classnames('c-video-player-inner')}
+				className={clsx('c-video-player-inner')}
 				data-player-id={dataPlayerId}
 				ref={videoContainerRef}
 			>
@@ -582,7 +582,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 	return useMemo(() => {
 		return (
-			<div className={classnames(className, 'c-video-player')}>
+			<div className={clsx(className, 'c-video-player')}>
 				{playerHtml}
 				{playlistItems && (
 					<div className="c-video-player__playlist__wrapper">
