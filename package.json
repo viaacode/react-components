@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "main": "dist/index.mjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -17,7 +17,6 @@
     "dist"
   ],
   "scripts": {
-    "preinstall": "npx force-resolutions",
     "prepare": "husky install",
     "build": "vite build",
     "copy-to-avo-client": "rimraf ../avo2-client/node_modules/@meemoo/react-components/dist ../avo2-client/node_modules/.cache  && cp -r dist package.json ../avo2-client/node_modules/@meemoo/react-components",
@@ -55,7 +54,7 @@
   "peerDependencies": {
     "@flowplayer/player": "3.3.0",
     "@popperjs/core": "2.11.6",
-    "@viaa/avo2-types": "2.48.40",
+    "@viaa/avo2-types": "2.49.0",
     "autosize": "6.0.1",
     "clsx": "2.0.0",
     "date-fns": "^2.16.0",
@@ -67,7 +66,7 @@
     "react-modal": "3.14.4",
     "react-popper": "2.3.0",
     "react-scrollbars-custom": "4.1.1",
-    "react-select": "5.7.3",
+    "react-select": "5.7.4",
     "react-table": "7.7.0"
   },
   "dependencies": {
