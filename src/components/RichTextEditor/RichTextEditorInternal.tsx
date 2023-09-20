@@ -1,7 +1,5 @@
 import BraftEditor, { MediaType } from 'braft-editor';
-import 'braft-editor/dist/index.css';
 import Table from 'braft-extensions/dist/table';
-import 'braft-extensions/dist/table.css';
 import clsx from 'clsx';
 import { without } from 'lodash-es';
 import React, { FunctionComponent } from 'react';

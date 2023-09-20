@@ -1,5 +1,4 @@
 import flowplayer, { Player } from '@flowplayer/player';
-import '@flowplayer/player/flowplayer.css';
 import audioPlugin from '@flowplayer/player/plugins/audio';
 import cuepointsPlugin from '@flowplayer/player/plugins/cuepoints';
 import googleAnalyticsPlugin from '@flowplayer/player/plugins/google-analytics';
@@ -8,7 +7,7 @@ import keyboardPlugin from '@flowplayer/player/plugins/keyboard';
 import playlistPlugin from '@flowplayer/player/plugins/playlist';
 import speedPlugin from '@flowplayer/player/plugins/speed';
 import subtitlesPlugin from '@flowplayer/player/plugins/subtitles';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { get, isNil, noop } from 'lodash-es';
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { default as Scrollbar } from 'react-scrollbars-custom';
@@ -426,6 +425,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		tempPlayer.on('timeupdate', handleTimeUpdate);
 
 		setPlayer(tempPlayer);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		drawCustomElements,
 		end,
@@ -454,6 +454,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 	useEffect(() => {
 		videoContainerRef.current && !player.current && reInitFlowPlayer();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [videoContainerRef]); // Only redo effect when ref changes
 
 	useEffect(() => {
@@ -510,6 +511,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				clearInterval(drawPeaksTimerId);
 			}
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [waveformData, peakCanvas, setDrawPeaksTimerId]);
 
 	useEffect(() => {
@@ -520,6 +522,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		return () => {
 			clearInterval(timerId);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleMediaCardClicked = useCallback(
@@ -532,6 +535,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 			updateCuepointPosition();
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[player, updateCuepointPosition]
 	);
 
@@ -559,6 +563,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				</ul>
 			);
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[handleMediaCardClicked, activeItemIndex]
 	);
 
@@ -567,7 +572,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	const playerHtml = useMemo(
 		() => (
 			<div
-				className={classnames('c-video-player-inner')}
+				className={clsx('c-video-player-inner')}
 				data-player-id={dataPlayerId}
 				ref={videoContainerRef}
 			>
@@ -577,12 +582,13 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				{customControls}
 			</div>
 		),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[dataPlayerId]
 	);
 
 	return useMemo(() => {
 		return (
-			<div className={classnames(className, 'c-video-player')}>
+			<div className={clsx(className, 'c-video-player')}>
 				{playerHtml}
 				{playlistItems && (
 					<div className="c-video-player__playlist__wrapper">

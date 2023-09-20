@@ -3,7 +3,6 @@ module.exports = {
 	ignoreFiles: ['src/v1/**/*.(scss|sass|css)', 'src/styles/themes/avo2/**/*.(scss|sass|css)'],
 	rules: {
 		'selector-class-pattern': null,
-		'string-quotes': 'double',
 		'no-descending-specificity': null,
 	},
 };
