@@ -24,7 +24,10 @@ export default defineConfig({
 		viteTsconfigPaths(),
 		svgrPlugin(),
 		dts(),
-		externalizeDeps(),
+		externalizeDeps({
+			deps: false,
+			peerDeps: true,
+		}),
 		cssInjectedByJsPlugin(),
 	],
 	define: {
