@@ -1,7 +1,7 @@
 {
   "name": "@meemoo/react-components",
-  "version": "3.0.4",
-  "main": "dist/index.js",
+  "version": "3.0.5",
+  "main": "dist/index.mjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "repository": "github:viaacode/react-components",

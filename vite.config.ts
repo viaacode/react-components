@@ -15,7 +15,7 @@ export default defineConfig({
 			entry: resolve(__dirname, 'src/index.ts'),
 			name: '@meemoo/react-components',
 			fileName: 'index',
-			formats: ['es', 'cjs'],
+			formats: ['es'],
 		},
 		sourcemap: true,
 	},
