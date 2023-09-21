@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { forwardRef } from 'react';
+import React, { FC, forwardRef } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 
@@ -46,4 +46,4 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 	}
 );
 
-export default Checkbox;
+export default Checkbox as FC<CheckboxProps>;

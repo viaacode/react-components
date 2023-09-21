@@ -27,6 +27,7 @@ export default defineConfig({
 		externalizeDeps({
 			deps: false,
 			peerDeps: true,
+			devDeps: false,
 		}),
 		cssInjectedByJsPlugin(),
 	],
