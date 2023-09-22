@@ -21,8 +21,8 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 			align = 'right',
 			className,
 			disabled = TextInputDefaults.disabled,
-			iconEnd = () => TextInputDefaults.iconEnd,
 			iconStart = () => TextInputDefaults.iconStart,
+			iconEnd = () => TextInputDefaults.iconEnd,
 			nodeCancel = 'x',
 			nodeSubmit = '✓',
 			onCancel = () => null,
@@ -44,8 +44,8 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		const bem = bemCls.bind(root);
 		const rootCls = clsx(className, root, getVariantClasses(root, variants), {
 			[bem('', 'disabled')]: disabled,
-			[bem('', 'icon-start')]: iconStart,
-			[bem('', 'icon-end')]: iconEnd,
+			[bem('', 'icon-start')]: !!iconStart,
+			[bem('', 'icon-end')]: !!iconEnd,
 		});
 
 		/**
@@ -175,7 +175,11 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					[bem('', 'closed')]: !editable,
 				})}
 			>
-				{iconStart && renderIcon(isFunction(iconStart) ? iconStart() : iconStart, 'start')}
+				{iconStart &&
+					renderIcon(
+						isFunction(iconStart) ? iconStart(onOpenHandler) : iconStart,
+						'start'
+					)}
 				{editable && align === 'left' && renderButtons()}
 
 				<span
@@ -211,7 +215,8 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 				/>
 
 				{editable && align === 'right' && renderButtons()}
-				{iconEnd && renderIcon(isFunction(iconEnd) ? iconEnd() : iconEnd, 'end')}
+				{iconEnd &&
+					renderIcon(isFunction(iconEnd) ? iconEnd(onOpenHandler) : iconEnd, 'end')}
 			</div>
 		);
 	}
