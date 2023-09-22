@@ -1,12 +1,14 @@
+import clsx from 'clsx';
 import React, { FC } from 'react';
+import DatePicker from 'react-datepicker';
 
 import { VariantsProp } from '../../types';
-import { Datepicker } from '../Datepicker';
+import { getVariantClasses } from '../../utils';
 
 import { TimepickerProps } from './Timepicker.types';
 
 const Timepicker: FC<TimepickerProps> = (props) => {
-	const { variants } = props;
+	const { variants, className } = props;
 
 	const getVariants = (): VariantsProp => {
 		if (variants) {
@@ -20,7 +22,24 @@ const Timepicker: FC<TimepickerProps> = (props) => {
 		return ['time'];
 	};
 
-	return <Datepicker {...props} variants={getVariants()} />;
+	const classNames = clsx(
+		className,
+		'c-datepicker',
+		getVariantClasses('c-datepicker', getVariants())
+	);
+
+	return (
+		<DatePicker
+			wrapperClassName={classNames}
+			calendarClassName={classNames}
+			popperClassName={classNames}
+			showPopperArrow={false}
+			showMonthDropdown
+			showYearDropdown
+			dropdownMode="select"
+			{...props}
+		/>
+	);
 };
 
 export default Timepicker;

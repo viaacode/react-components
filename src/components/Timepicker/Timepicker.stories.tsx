@@ -14,7 +14,9 @@ export default {
 const Template: ComponentStory<typeof Timepicker> = (props) => {
 	const [date, setDate] = useState(new Date());
 
-	return <Timepicker {...props} selected={date} onChange={(date) => date && setDate(date)} />;
+	return (
+		<Timepicker {...props} selected={date} onChange={(date: Date) => date && setDate(date)} />
+	);
 };
 
 export const Default = Template.bind({});

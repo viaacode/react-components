@@ -9,7 +9,6 @@ export * from './Checkbox';
 export * from './CheckboxList';
 export * from './ColorPicker';
 export * from './ContentInput';
-export * from './Datepicker';
 export * from './Dropdown';
 export * from './FlowPlayer';
 export * from './FormControl';
