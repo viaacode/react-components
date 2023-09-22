@@ -69,10 +69,12 @@
     "react-select": "5.7.4",
     "react-table": "7.7.0"
   },
-  "devDependencies": {
+  "dependencies": {
     "braft-editor": "^2.3.9",
     "braft-extensions": "0.1.1",
-    "draft-js": "0.10.5",
+    "draft-js": "0.10.5"
+  },
+  "devDependencies": {
     "@commitlint/cli": "17.7.1",
     "@commitlint/config-conventional": "17.7.0",
     "@storybook/addon-essentials": "6.5.17-alpha.0",
@@ -152,6 +154,7 @@
     "@types/react-dom": "17.0.20",
     "stylelint": "15.10.3",
     "@storybook/addons": "6.5.17-alpha.0",
-    "postcss": "8.4.30"
+    "postcss": "8.4.30",
+    "@emotion/react": "11.11.1"
   }
 }

@@ -28,6 +28,7 @@ export default defineConfig({
 			deps: false,
 			peerDeps: true,
 			devDeps: false,
+			except: ['braft-editor', 'braft-extensions', 'draft-js'],
 		}),
 		cssInjectedByJsPlugin(),
 	],
