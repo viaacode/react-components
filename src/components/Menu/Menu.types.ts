@@ -5,6 +5,7 @@ import { DefaultComponentProps } from '../../types';
 import { MenuItemInfo } from './MenuContent/MenuContent.types';
 
 export interface MenuProps extends DefaultComponentProps {
+	children?: React.ReactNode;
 	menuItems?: MenuItemInfo[] | MenuItemInfo[][]; // Between arrays, there will be a divider
 	renderItem?: (menuItem: MenuItemInfo) => ReactNode; // If you want to render your own item
 	noResultsLabel?: string;

@@ -22,6 +22,7 @@ export type {
 } from 'react-table';
 
 export interface TableProps<T extends TableData> extends DefaultComponentProps {
+	children?: React.ReactNode;
 	getCellProps?: (column: ColumnInstance<T>) => Partial<TableCellProps>;
 	getColumnProps?: (
 		column: HeaderGroup<T> | ColumnInstance<T>

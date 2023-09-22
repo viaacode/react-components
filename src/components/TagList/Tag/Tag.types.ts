@@ -3,6 +3,7 @@ import { KeyboardEvent, MouseEvent, ReactNode } from 'react';
 import { DefaultComponentProps } from '../../../types';
 
 export interface TagProps extends DefaultComponentProps {
+	children?: React.ReactNode;
 	active?: boolean;
 	closeIcon?: ReactNode;
 	/**

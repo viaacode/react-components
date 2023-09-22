@@ -3,9 +3,9 @@ import { ReactNode } from 'react';
 import { TextInputProps } from '../TextInput';
 
 export type StopPropagationObject = { stopPropagation: () => void };
-export type StopPropagationFunction = (e: StopPropagationObject) => void;
 
 export interface ContentInputProps extends TextInputProps {
+	children?: React.ReactNode;
 	align?: 'left' | 'right';
 	nodeCancel?: ReactNode;
 	nodeSubmit?: ReactNode;
@@ -13,6 +13,6 @@ export interface ContentInputProps extends TextInputProps {
 	onClose?: () => void;
 	onConfirm?: (value: string | ReadonlyArray<string> | number) => Promise<void>;
 	onOpen?: () => void;
-	iconStart?: (onOpenHandler: StopPropagationFunction) => ReactNode;
-	iconEnd?: (onOpenHandler: StopPropagationFunction) => ReactNode;
+	iconEnd?: ReactNode | (() => ReactNode) | null;
+	iconStart?: ReactNode | (() => ReactNode) | null;
 }

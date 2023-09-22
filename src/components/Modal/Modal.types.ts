@@ -5,6 +5,7 @@ import { DefaultComponentProps } from '../../types';
 import { ButtonProps } from '../Button';
 
 export interface ModalProps extends DefaultComponentProps {
+	children?: React.ReactNode;
 	closeButtonProps?: ButtonProps;
 	footer?: ReactNode;
 	heading?: ReactNode;

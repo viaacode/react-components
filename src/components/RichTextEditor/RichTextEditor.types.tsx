@@ -36,6 +36,7 @@ export type Heading = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
 export const ALL_RICH_TEXT_HEADINGS: Heading[] = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'normal'];
 
 export interface RichTextEditorProps {
+	children?: React.ReactNode;
 	className?: string;
 	rootClassName?: string;
 	id?: string;

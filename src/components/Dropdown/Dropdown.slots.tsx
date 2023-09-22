@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 
-export const DropdownButton: FC = ({ children }) => <>{children}</>;
-export const DropdownContent: FC = ({ children }) => <>{children}</>;
+export const DropdownButton: FC<{ children?: ReactNode }> = ({ children }) => <>{children}</>;
+export const DropdownContent: FC<{ children?: ReactNode }> = ({ children }) => <>{children}</>;

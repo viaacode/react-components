@@ -1,6 +1,7 @@
 import { CSSProperties, InputHTMLAttributes, MutableRefObject, RefCallback } from 'react';
 
 export interface DefaultComponentProps {
+	children?: React.ReactNode;
 	className?: string;
 	style?: CSSProperties;
 	rootClassName?: string;

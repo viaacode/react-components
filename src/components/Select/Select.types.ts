@@ -5,6 +5,7 @@ import { DefaultComponentProps } from '../../types';
 type HTMLSelectAttrs = SelectHTMLAttributes<HTMLSelectElement>;
 
 export interface SelectProps extends DefaultComponentProps, HTMLSelectAttrs {
+	children?: React.ReactNode;
 	iconEnd?: ReactNode;
 	iconStart?: ReactNode;
 	options?: SelectOption[];

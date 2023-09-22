@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { isFunction } from 'lodash-es';
 import React, {
 	FC,
 	forwardRef,
@@ -174,7 +175,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					[bem('', 'closed')]: !editable,
 				})}
 			>
-				{renderIcon(iconStart(onOpenHandler), 'start')}
+				{iconStart && renderIcon(isFunction(iconStart) ? iconStart() : iconStart, 'start')}
 				{editable && align === 'left' && renderButtons()}
 
 				<span
@@ -210,7 +211,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 				/>
 
 				{editable && align === 'right' && renderButtons()}
-				{renderIcon(iconEnd(onOpenHandler), 'end')}
+				{iconEnd && renderIcon(isFunction(iconEnd) ? iconEnd() : iconEnd, 'end')}
 			</div>
 		);
 	}

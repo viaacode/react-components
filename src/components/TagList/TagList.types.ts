@@ -11,6 +11,7 @@ export interface TagOption {
 }
 
 export interface TagListProps extends DefaultComponentProps {
+	children?: React.ReactNode;
 	closeIcon?: ReactNode;
 	tags: TagOption[];
 	onTagClosed?: (tagId: string | number, clickEvent: MouseEvent | KeyboardEvent) => void;

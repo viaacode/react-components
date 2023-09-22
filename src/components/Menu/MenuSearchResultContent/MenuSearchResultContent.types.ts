@@ -10,6 +10,7 @@ export interface MenuSearchResultItemInfo {
 }
 
 export interface MenuSearchResultContentProps extends DefaultComponentProps {
+	children?: React.ReactNode;
 	menuItems: MenuSearchResultItemInfo[];
 	noResultsLabel?: string;
 	onClick?: (menuItemId: string | number) => void;

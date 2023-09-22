@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React, { cloneElement, FC, ReactElement, useState } from 'react';
+import React, { cloneElement, FC, ReactElement, ReactNode, useState } from 'react';
 import { ActionMeta, OnChangeValue } from 'react-select';
 
 import { SelectOption } from '../Select.types';
@@ -13,7 +13,7 @@ export default {
 	component: ReactSelect,
 } as ComponentMeta<typeof ReactSelect>;
 
-const ReactSelectStoryComponent: FC = ({ children }) => {
+const ReactSelectStoryComponent: FC<{ children?: ReactNode }> = ({ children }) => {
 	const [value, setValue] = useState<SelectOption | null>(null);
 
 	const onChange = (

@@ -87,6 +87,7 @@ export type FlowplayerSourceListSchema = {
 export type FlowplayerSourceList = FlowplayerSourceListSchema;
 
 export interface FlowPlayerProps extends DefaultComponentProps {
+	children?: React.ReactNode;
 	src: string | { type: string; src: string }[] | FlowplayerSourceListSchema;
 	poster?: string;
 	logo?: string;

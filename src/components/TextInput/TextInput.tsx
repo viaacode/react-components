@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { isFunction } from 'lodash-es';
 import React, { FC, forwardRef, ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
@@ -36,8 +37,8 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 		const bem = bemCls.bind(root);
 		const rootCls = clsx(className, root, getVariantClasses(root, variants), {
 			[bem('', 'disabled')]: disabled,
-			[bem('', 'icon-start')]: iconStart,
-			[bem('', 'icon-end')]: iconEnd,
+			[bem('', 'icon-start')]: !!iconStart,
+			[bem('', 'icon-end')]: !!iconEnd,
 		});
 
 		const hasContainerEvents = !!onContainerClick || !!onContainerKeyUp;
@@ -58,7 +59,7 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 
 		return (
 			<div className={rootCls}>
-				{iconStart && renderIcon(iconStart, 'start')}
+				{iconStart && renderIcon(isFunction(iconStart) ? iconStart() : iconStart, 'start')}
 				<input
 					{...inputProps}
 					className={bem('field')}
@@ -72,7 +73,7 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 					onClick={onContainerClick}
 					onKeyUp={onContainerKeyUp}
 				/>
-				{iconEnd && renderIcon(iconEnd, 'end')}
+				{iconEnd && renderIcon(isFunction(iconEnd) ? iconEnd() : iconEnd, 'end')}
 			</div>
 		);
 	}

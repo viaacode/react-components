@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { DefaultComponentProps } from '../../types';
 
 export interface PaginationProps extends DefaultComponentProps {
+	children?: React.ReactNode;
 	pageCount: number;
 	displayCount?: number;
 	currentPage?: number;

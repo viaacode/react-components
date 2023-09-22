@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React, { ChangeEvent, cloneElement, FC, ReactElement, useState } from 'react';
+import React, { ChangeEvent, cloneElement, FC, ReactElement, ReactNode, useState } from 'react';
 
 import Select from './Select';
 import { selectOptionsMock } from './__mocks__/select';
@@ -10,7 +10,7 @@ export default {
 	component: Select,
 } as ComponentMeta<typeof Select>;
 
-const SelectStoryComponent: FC = ({ children }) => {
+const SelectStoryComponent: FC<{ children?: ReactNode }> = ({ children }) => {
 	const [value, setValue] = useState('');
 
 	const onChange = (e: ChangeEvent<HTMLSelectElement>) => {

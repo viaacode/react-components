@@ -8,6 +8,7 @@ export interface ButtonProps
 	extends DefaultComponentProps,
 		HTMLButtonAttrs,
 		RefAttributes<HTMLButtonElement> {
+	children?: React.ReactNode;
 	disabled?: boolean;
 	icon?: ReactNode;
 	iconStart?: ReactNode;

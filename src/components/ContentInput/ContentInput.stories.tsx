@@ -31,10 +31,10 @@ Default.args = {
 
 export const CustomButtons = Template.bind({});
 CustomButtons.args = {
-	iconEnd: (onOpenHandler) => (
+	iconEnd: () => (
 		<>
 			<button>1</button>
-			<button onClick={onOpenHandler}>2</button>
+			<button onClick={() => console.info('test button click 2')}>2</button>
 			<button>3</button>
 		</>
 	),

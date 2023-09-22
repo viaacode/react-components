@@ -3,6 +3,7 @@ import { FC, ReactNode } from 'react';
 import { DefaultComponentProps } from '../../types';
 
 export interface BreadcrumbsProps extends DefaultComponentProps {
+	children?: React.ReactNode;
 	items: Breadcrumb[];
 	icon: ReactNode;
 	linkComponent: FC<{

@@ -3,6 +3,7 @@ import { FC, ReactNode } from 'react';
 import { DefaultComponentProps } from '../../types';
 
 export interface CardProps extends DefaultComponentProps {
+	children?: React.ReactNode;
 	edge?: 'zinc' | 'none';
 	image?: ReactNode;
 	mode?: 'light' | 'dark';
