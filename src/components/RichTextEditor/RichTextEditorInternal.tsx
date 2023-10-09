@@ -1,7 +1,6 @@
 import BraftEditor, { MediaType } from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
 import clsx from 'clsx';
-import { without } from 'lodash-es';
 import React, { FunctionComponent } from 'react';
 
 import {
@@ -164,7 +163,9 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	};
 
 	const getHiddenHeadingClasses = (): string => {
-		const hiddenHeadings = without(ALL_RICH_TEXT_HEADINGS, ...enabledHeadings);
+		const hiddenHeadings = ALL_RICH_TEXT_HEADINGS.filter((val) =>
+			enabledHeadings.includes(val)
+		);
 		return hiddenHeadings.map((heading) => `c-rich-text-editor--hide-${heading}`).join(' ');
 	};
 

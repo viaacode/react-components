@@ -1,6 +1,5 @@
 import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { cloneDeep } from 'lodash-es';
 import React, { cloneElement, ReactElement, useState } from 'react';
 
 import { Button } from '../Button';
@@ -175,7 +174,7 @@ Cuepoints.args = {
 };
 
 export const Playlist = Template.bind({});
-const srcWithoutCuepoints = cloneDeep(MOCK_PLAYLIST_SOURCE);
+const srcWithoutCuepoints = JSON.parse(JSON.stringify(MOCK_PLAYLIST_SOURCE));
 srcWithoutCuepoints.items = srcWithoutCuepoints.items.map((item: any) => {
 	delete item.cuepoints;
 	return item;

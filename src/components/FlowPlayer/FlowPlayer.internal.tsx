@@ -8,9 +8,11 @@ import playlistPlugin from '@flowplayer/player/plugins/playlist';
 import speedPlugin from '@flowplayer/player/plugins/speed';
 import subtitlesPlugin from '@flowplayer/player/plugins/subtitles';
 import clsx from 'clsx';
-import { get, isNil, noop } from 'lodash-es';
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { default as Scrollbar } from 'react-scrollbars-custom';
+
+import { isNil } from '../../utils/is-nil';
+import { noop } from '../../utils/noop';
 
 import {
 	ALL_FLOWPLAYER_PLUGINS,
@@ -296,7 +298,9 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	};
 
 	const handleTimeUpdate = () => {
-		(onTimeUpdate || noop)(get(videoContainerRef, 'current.currentTime', 0));
+		(onTimeUpdate || noop)(
+			(videoContainerRef?.current as HTMLVideoElement | null)?.currentTime || 0
+		);
 	};
 
 	const reInitFlowPlayer = useCallback(() => {

@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import { isFunction } from 'lodash-es';
 import React, { FC, forwardRef, ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
+import { isFunction } from '../../utils/is-function';
 
 import { TextInputProps } from './TextInput.types';
 
@@ -59,7 +59,13 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 
 		return (
 			<div className={rootCls}>
-				{iconStart && renderIcon(isFunction(iconStart) ? iconStart() : iconStart, 'start')}
+				{iconStart &&
+					renderIcon(
+						isFunction(iconStart)
+							? (iconStart as () => ReactNode)()
+							: (iconStart as ReactNode),
+						'start'
+					)}
 				<input
 					{...inputProps}
 					className={bem('field')}
@@ -73,7 +79,13 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 					onClick={onContainerClick}
 					onKeyUp={onContainerKeyUp}
 				/>
-				{iconEnd && renderIcon(isFunction(iconEnd) ? iconEnd() : iconEnd, 'end')}
+				{iconEnd &&
+					renderIcon(
+						isFunction(iconEnd)
+							? (iconEnd as () => ReactNode)()
+							: (iconEnd as ReactNode),
+						'end'
+					)}
 			</div>
 		);
 	}

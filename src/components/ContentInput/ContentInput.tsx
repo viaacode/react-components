@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { isFunction } from 'lodash-es';
 import React, {
 	FC,
 	forwardRef,
@@ -11,6 +10,7 @@ import React, {
 } from 'react';
 
 import { bemCls, getVariantClasses, keysEnter, keysEscape, keysSpacebar, onKey } from '../../utils';
+import { isFunction } from '../../utils/is-function';
 import { TextInputDefaults } from '../TextInput/TextInput';
 
 import { ContentInputProps, StopPropagationObject } from './ContentInput.types';
@@ -177,7 +177,9 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 			>
 				{iconStart &&
 					renderIcon(
-						isFunction(iconStart) ? iconStart(onOpenHandler) : iconStart,
+						isFunction(iconStart)
+							? (iconStart as (handler: any) => ReactNode)(onOpenHandler)
+							: (iconStart as ReactNode),
 						'start'
 					)}
 				{editable && align === 'left' && renderButtons()}
@@ -216,7 +218,12 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 
 				{editable && align === 'right' && renderButtons()}
 				{iconEnd &&
-					renderIcon(isFunction(iconEnd) ? iconEnd(onOpenHandler) : iconEnd, 'end')}
+					renderIcon(
+						isFunction(iconEnd)
+							? (iconEnd as (handler: any) => ReactNode)(onOpenHandler)
+							: (iconEnd as ReactNode),
+						'end'
+					)}
 			</div>
 		);
 	}
