@@ -14,3 +14,9 @@ export const Default = Template.bind({});
 Default.args = {
 	label: 'Check me!',
 };
+
+export const Spinner = Template.bind({});
+Spinner.args = {
+	label: 'Check me!',
+	showSpinner: true,
+};

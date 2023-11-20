@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { FC, forwardRef } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
+import { Spinner } from '../Spinner';
 
 import { CheckboxProps } from './Checkbox.types';
 
@@ -9,6 +10,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 	(
 		{
 			checked = false,
+			showSpinner = false,
 			checkIcon,
 			className,
 			disabled = false,
@@ -39,7 +41,8 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 					value={value}
 					onChange={onChange}
 				/>
-				<span className={bem('check-icon')}>{checkIcon}</span>
+				{showSpinner && <Spinner />}
+				{!showSpinner && <span className={bem('check-icon')}>{checkIcon}</span>}
 				{label && <span className={bem('label')}>{label}</span>}
 			</label>
 		);
