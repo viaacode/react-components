@@ -1,15 +1,16 @@
 $component: "c-avatar";
 
 .#{$component} {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 
-    &__image {
-        line-height: 1;
-        min-width: 1em;
-        min-height: 1em;
-        border-radius: 50%;
-        text-align: center;
-        overflow: hidden;
-    }
+	&__image {
+		line-height: 1;
+		min-width: 1em;
+		min-height: 1em;
+		border-radius: 50%;
+		text-align: center;
+		overflow: hidden;
+		aspect-ratio: 1 / 1;
+	}
 }
