@@ -28,8 +28,8 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 			variants,
 			value = TextInputDefaults.value,
 			onChange = TextInputDefaults.onChange,
-			onContainerClick,
-			onContainerKeyUp,
+			onClick,
+			onKeyUp,
 			...inputProps
 		},
 		ref
@@ -41,7 +41,7 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 			[bem('', 'icon-end')]: !!iconEnd,
 		});
 
-		const hasContainerEvents = !!onContainerClick || !!onContainerKeyUp;
+		const hasContainerEvents = !!onClick || !!onKeyUp;
 
 		/**
 		 * Render
@@ -76,8 +76,8 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 					onChange={onChange}
 					role={hasContainerEvents ? 'button' : undefined}
 					tabIndex={hasContainerEvents ? 0 : undefined}
-					onClick={onContainerClick}
-					onKeyUp={onContainerKeyUp}
+					onClick={onClick}
+					onKeyUp={onKeyUp}
 				/>
 				{iconEnd &&
 					renderIcon(
