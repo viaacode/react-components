@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "3.0.20",
+  "version": "3.0.21",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -40,22 +40,10 @@
     "snyk-protect": "snyk protect",
     "bump": "bump-package-versions --part=patch --strategy=highest ./package.json"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "peerDependencies": {
     "@flowplayer/player": "3.3.0",
     "@popperjs/core": "2.11.6",
-    "@viaa/avo2-types": "2.49.4",
+    "@viaa/avo2-types": "2.49.5",
     "autosize": "6.0.1",
     "clsx": "2.0.0",
     "date-fns": "^2.16.0",
@@ -151,5 +139,17 @@
     "@storybook/addons": "6.5.17-alpha.0",
     "postcss": "8.4.30",
     "@emotion/react": "11.11.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
