@@ -1,4 +1,5 @@
 import { BraftEditorProps } from 'braft-editor';
+import { ReactNode } from 'react';
 
 export type RichTextEditorControl =
 	| 'font-size' // Text size selector
@@ -35,8 +36,11 @@ export type Heading = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
 
 export const ALL_RICH_TEXT_HEADINGS: Heading[] = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'normal'];
 
+/**
+ * @deprecated Use RichTextEditorWithInternalStateProps instead since the full editor state isn't exposed, which should be more performant
+ */
 export interface RichTextEditorProps {
-	children?: React.ReactNode;
+	children?: ReactNode;
 	className?: string;
 	rootClassName?: string;
 	id?: string;
@@ -49,6 +53,27 @@ export interface RichTextEditorProps {
 	onFocus?: () => void;
 	onBlur?: () => void;
 	onChange?: (editorState: RichEditorState) => void;
+	onTab?: () => void;
+	onDelete?: () => void;
+	onSave?: () => void;
+	enabledHeadings?: Heading[];
+	braft?: Partial<BraftEditorProps>; // TODO: remove 1:1 mapped properties above
+}
+
+export interface RichTextEditorWithInternalStateProps {
+	children?: ReactNode;
+	className?: string;
+	rootClassName?: string;
+	id?: string;
+	initialHtml?: string;
+	value?: string;
+	placeholder?: string;
+	controls?: RichTextEditorControl[];
+	disabled?: boolean;
+	media?: RichTextEditorMedia;
+	onFocus?: () => void;
+	onBlur?: () => void;
+	onChange?: (newValue: string) => void;
 	onTab?: () => void;
 	onDelete?: () => void;
 	onSave?: () => void;
