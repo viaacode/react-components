@@ -112,7 +112,7 @@ Audio.args = {
 	...MOCK_FLOW_PLAYER_PROPS_FULL,
 	src: [
 		{
-			src: 'https://bertyhell.s3.eu-central-1.amazonaws.com/projects/test-files/road-to-joy.mp3',
+			src: 'https://cdn.flowplayer.com/token:eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI4ZDhjZjMzMi0xZWRlLTQ5ZDUtYmI3MC1jMTkzMzgzYzVkNjMiLCJuYmYiOjE3MDkxMTEwOTcsImlzcyI6Imh0dHBzOi8vd3d3LmZsb3dwbGF5ZXIuY29tIiwiZXhwIjoxNzA5MTk3NDk3LCJpYXQiOjE3MDkxMTEwOTd9.Td9X3lD8E3T8_w4wzrlxo-ImN6Em4EhdWLdN1t7Qw8_VewM9rO62pD-FCMbwND05_VFbtKyMdcBUO4LofBtNhyu8dVxDZiuCY1UPntMU9gYCOkhhxrouxtgEMZr32g4sVjEiR-eLY00hL3LjuanAS6A30gN6P2hBfFGlwm2rHQnfZGm1WClT3KFP3W4Lu5Ahgoo8lbIC908YVq9U7odwTN8m8Zb28jgznFglkmdXWTjAY_PMf5-j0_7oxFQWbtd5YAHNxVKu5vo2MLLBubh3CkIh_sZBLpf0WvY5zTHrk5_aEz2uFwufMjROxfVKNJiVx05paYHUeBkSw4B1bk2r4RELGpKOnYpakAW_GZAZdXvwlmlzvcl8-I4xJVZgwnwFUIML3fnl-YaH2xyIAvHqXc7SvMN-IyRuYc5y33wiJVl-EEf2eZk_Ufnxmpe8SYDiohxdE-koQ4VXLZzA6_khQwGwNbd3uzhhQ8uGTN-4-j2962Obq4xx8PFcxh3tgcO5_dcp7R27UuEo31hizKVL9O2h9B0h4wvcdDqYuChjhNyX7XIpmLfYAMjes_wuJZdi0WvuHzoAeJCqPAJDBpjDF7L3mqupflAsmcIx5OspxmLM76YlzK_uIk7aVlaZ7_uCJhUiDBLICLI0Ep-kEf4JaT3-d_e-y9G-qfOrU_hDF50/bacec074-242b-499f-9ca8-38e382b6e179/v-8d8cf332-1ede-49d5-bb70-c193383c5d63_original.mp3',
 			type: 'audio/mp3',
 		},
 	],

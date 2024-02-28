@@ -44,6 +44,7 @@ flowplayer(
 
 export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	src,
+	type,
 	poster,
 	title,
 	metadata,
@@ -89,7 +90,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	const [activeItemIndex, setActiveItemIndex] = useState<number>(0);
 
 	const isPlaylist = (src as FlowplayerSourceList)?.type === 'flowplayer/playlist';
-	const isAudio = (src as any)?.[0]?.type === 'audio/mp3';
+	const isAudio = type === 'audio';
 
 	const createTitleOverlay = useCallback(() => {
 		const titleOverlay = document.createElement('div');
@@ -303,6 +304,19 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		);
 	};
 
+	const getPreload = () => {
+		if (preload) {
+			return preload;
+		}
+		if (autoplay) {
+			return 'auto';
+		}
+		if (poster) {
+			return 'none';
+		}
+		return 'metadata';
+	};
+
 	const reInitFlowPlayer = useCallback(() => {
 		if (!videoContainerRef.current) {
 			return;
@@ -333,7 +347,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			multiplay: false,
 			ui: (flowplayer as any).ui.LOGO_ON_RIGHT | (flowplayer as any).ui.USE_DRAG_HANDLE,
 			plugins,
-			preload: preload || (!poster ? 'metadata' : 'none'),
+			preload: getPreload(),
 			lang: 'nl',
 
 			// KEYBOARD
@@ -576,7 +590,9 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	const playerHtml = useMemo(
 		() => (
 			<div
-				className={clsx('c-video-player-inner')}
+				className={clsx('c-video-player-inner', {
+					['c-video-player-inner--audio']: isAudio,
+				})}
 				data-player-id={dataPlayerId}
 				ref={videoContainerRef}
 			>

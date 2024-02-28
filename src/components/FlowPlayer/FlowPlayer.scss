@@ -73,6 +73,16 @@ $fp-controls-header-width-mobile: 50px;
 	background-position: center;
 	background-repeat: no-repeat;
 
+	&.c-video-player-inner--audio {
+		video {
+			opacity: 0 !important;
+		}
+
+		&.flowplayer {
+			background-size: cover !important;
+		}
+	}
+
 	.fp-play,
 	.fp-pause {
 		position: absolute;

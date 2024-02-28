@@ -89,6 +89,7 @@ export type FlowplayerSourceList = FlowplayerSourceListSchema;
 export interface FlowPlayerProps extends DefaultComponentProps {
 	children?: React.ReactNode;
 	src: string | { type: string; src: string }[] | FlowplayerSourceListSchema;
+	type: 'video' | 'audio';
 	poster?: string;
 	logo?: string;
 	title?: string;
