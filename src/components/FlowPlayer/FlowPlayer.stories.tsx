@@ -116,6 +116,7 @@ Audio.args = {
 			type: 'audio/mp3',
 		},
 	],
+	type: 'audio',
 	poster: undefined,
 	waveformData: peakJson.data,
 };
