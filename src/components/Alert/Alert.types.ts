@@ -3,9 +3,9 @@ import { ReactNode } from 'react';
 import { DefaultComponentProps } from '../../types';
 
 export interface AlertProps extends DefaultComponentProps {
-	children?: React.ReactNode;
+	children?: ReactNode;
 	id?: string;
-	title?: string;
+	title?: ReactNode;
 	content: ReactNode;
 	icon?: ReactNode;
 	closeIcon?: ReactNode;
