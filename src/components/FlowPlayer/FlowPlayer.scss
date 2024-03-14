@@ -24,10 +24,6 @@ $fp-controls-header-width-mobile: 50px;
 	flex-direction: column;
 	position: relative;
 
-	@media (min-width: $g-bp2) {
-		flex-direction: row;
-	}
-
 	.c-video-player__playlist__wrapper {
 		position: relative;
 		min-width: 30%;
