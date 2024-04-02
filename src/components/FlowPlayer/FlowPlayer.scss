@@ -24,15 +24,29 @@ $fp-controls-header-width-mobile: 50px;
 	flex-direction: column;
 	position: relative;
 
-	.c-video-player__playlist__wrapper {
-		position: relative;
-		min-width: 30%;
+	// This has effect on both the playlist feature of the video as the copyright text under the image
+	// playlist feature: https://meemoo.atlassian.net/browse/AVO-3201
+	// copyright text: https://meemoo.atlassian.net/browse/AVO-2724
+	&.c-video-player--playlist {
+		@media (min-width: $g-bp2) {
+			flex-direction: row;
+		}
 
-		.c-video-player__playlist__scrollable {
-			position: absolute;
-			top: 0;
-			bottom: 0;
-			overflow-y: auto;
+		.c-video-player__playlist__wrapper {
+			position: relative;
+			min-width: 30%;
+
+			// Hide the playlist on mobile, just show the video player, that plays each video after another
+			@media (max-width: $g-bp2) {
+				display: none;
+			}
+
+			.c-video-player__playlist__scrollable {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				overflow-y: auto;
+			}
 		}
 	}
 

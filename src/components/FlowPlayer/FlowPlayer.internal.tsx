@@ -608,7 +608,11 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 	return useMemo(() => {
 		return (
-			<div className={clsx(className, 'c-video-player')}>
+			<div
+				className={clsx(className, 'c-video-player', {
+					['c-video-player--playlist']: isPlaylist,
+				})}
+			>
 				{playerHtml}
 				{playlistItems && (
 					<div className="c-video-player__playlist__wrapper">
