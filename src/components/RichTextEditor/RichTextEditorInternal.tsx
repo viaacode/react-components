@@ -38,8 +38,8 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	BraftEditor.use(Table(tableOptions));
 
 	const getHiddenHeadingClasses = (): string => {
-		const hiddenHeadings = ALL_RICH_TEXT_HEADINGS.filter((val) =>
-			enabledHeadings.includes(val)
+		const hiddenHeadings = ALL_RICH_TEXT_HEADINGS.filter(
+			(val) => !enabledHeadings.includes(val)
 		);
 		return hiddenHeadings.map((heading) => `c-rich-text-editor--hide-${heading}`).join(' ');
 	};
