@@ -103,3 +103,8 @@ export const WithSelectAboveItZIndex = TemplateWithSelect.bind({});
 WithSelectAboveItZIndex.args = {
 	controls: RICH_TEXT_EDITOR_OPTIONS,
 };
+
+export const WithLimitedHeadings = Template.bind({});
+WithLimitedHeadings.args = {
+	enabledHeadings: ['h3', 'h4', 'h6'],
+};

@@ -38,6 +38,14 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	BraftEditor.use(Table(tableOptions));
 
 	const getHiddenHeadingClasses = (): string => {
+		console.log('starting rte: ', {
+			enabledHeadings,
+			ALL_RICH_TEXT_HEADINGS,
+		});
+		if (enabledHeadings.length === 0) {
+			// if no enabled headings are passed, show all headings
+			return '';
+		}
 		const hiddenHeadings = ALL_RICH_TEXT_HEADINGS.filter(
 			(val) => !enabledHeadings.includes(val)
 		);
