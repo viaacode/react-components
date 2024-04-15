@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import React, { FunctionComponent } from 'react';
 
 import { getLanguage } from './RichTextEditor.consts';
+import { getHiddenHeadingClasses } from './RichTextEditor.helpers';
 import { ALL_RICH_TEXT_HEADINGS, RichTextEditorProps } from './RichTextEditor.types';
 
 import './RichTextEditor.scss';
@@ -37,24 +38,15 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 
 	BraftEditor.use(Table(tableOptions));
 
-	const getHiddenHeadingClasses = (): string => {
-		console.log('starting rte: ', {
-			enabledHeadings,
-			ALL_RICH_TEXT_HEADINGS,
-		});
-		if (enabledHeadings.length === 0) {
-			// if no enabled headings are passed, show all headings
-			return '';
-		}
-		const hiddenHeadings = ALL_RICH_TEXT_HEADINGS.filter(
-			(val) => !enabledHeadings.includes(val)
-		);
-		return hiddenHeadings.map((heading) => `c-rich-text-editor--hide-${heading}`).join(' ');
-	};
-
 	return (
 		<div
-			className={clsx(root, className, getHiddenHeadingClasses(), 'c-content', { disabled })}
+			className={clsx(
+				root,
+				className,
+				getHiddenHeadingClasses(enabledHeadings),
+				'c-content',
+				{ disabled }
+			)}
 			id={id}
 		>
 			<BraftEditor
