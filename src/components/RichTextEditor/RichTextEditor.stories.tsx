@@ -108,3 +108,9 @@ export const WithLimitedHeadings = Template.bind({});
 WithLimitedHeadings.args = {
 	enabledHeadings: ['h3', 'h4', 'h6'],
 };
+
+export const WithHtmlView = Template.bind({});
+WithHtmlView.args = {
+	...MOCK_RICH_TEXT_EDITOR_PROPS,
+	controls: [...RICH_TEXT_EDITOR_OPTIONS, 'separator', 'editHtml'],
+};

@@ -94,6 +94,7 @@ export function getLanguage(languages: any, context: string): any {
 				emoji: 'Emoji',
 				fullscreen: 'Fullscreen',
 				exitFullscreen: 'Fullscreen sluiten',
+				htmlEdit: 'HTML bewerken',
 			},
 			linkEditor: {
 				textInputPlaceHolder: 'Link tekst invoeren',
