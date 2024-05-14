@@ -43,6 +43,24 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	}, []);
 
 	useEffect(() => {
+		const controlItems = document.querySelectorAll(
+			'.control-item:not(.html-edit-button)'
+		) as NodeListOf<HTMLElement>;
+		if (isHtmlView) {
+			controlItems.forEach((item: HTMLElement) => {
+				item.style.opacity = '0.5';
+				item.style.pointerEvents = 'none';
+			});
+		} else {
+			controlItems.forEach((item: HTMLElement) => {
+				item.style.opacity = '1';
+				item.style.pointerEvents = 'auto';
+			});
+		}
+	}, [isHtmlView]);
+
+	useEffect(() => {
+		setHtml(state?.toHTML() || '');
 		const formattedHtml = beautify.html(state?.toHTML() || '', {
 			indent_size: 2,
 		});
@@ -69,7 +87,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 						title: 'HTML',
 						html: 'HTML',
 						text: 'HTML',
-						className: isHtmlView ? 'active' : '',
+						className: `html-edit-button ${isHtmlView ? 'active' : ''}`,
 						onClick: () => {
 							if (isHtmlView) {
 								onChange?.(BraftEditor.createEditorState(html || ''));
