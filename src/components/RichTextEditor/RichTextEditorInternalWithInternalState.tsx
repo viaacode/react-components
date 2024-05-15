@@ -36,9 +36,17 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 		if (value && !richTextEditorState) {
 			setRichTextEditorState(BraftEditor.createEditorState(value || ''));
 		}
+		return () => {
+			if (richTextEditorState) {
+				setRichTextEditorState(null);
+			}
+		};
 	}, [value, richTextEditorState]);
 
 	useEffect(() => {
+		if (!richTextEditorState) {
+			return;
+		}
 		const newValue: string = richTextEditorState?.toHTML() || '';
 		if (newValue.replace('<p></p>', '').trim() && newValue !== value) {
 			onChange?.(newValue);
