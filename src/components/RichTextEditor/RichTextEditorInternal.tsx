@@ -2,7 +2,7 @@ import BraftEditor, { EditorState, ExtendControlType, MediaType } from 'braft-ed
 import Table from 'braft-extensions/dist/table';
 import clsx from 'clsx';
 import beautify from 'js-beautify';
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { getLanguage } from './RichTextEditor.consts';
 import { getHiddenHeadingClasses } from './RichTextEditor.helpers';
@@ -35,7 +35,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	const [perttyHtml, setPrettyHtml] = useState('');
 	const htmlEditRef = useRef<HTMLPreElement | null>(null);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const toolbarElement = document.querySelector('.bf-controlbar');
 		if (!toolbarElement) return;
 		const height = toolbarElement.getBoundingClientRect().height;
@@ -79,23 +79,26 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 
 	const newControls = controls
 		? [
-				...(controls || []),
-				controls?.includes('editHtml') &&
-					({
-						key: 'editHtml',
-						type: 'button',
-						title: 'HTML',
-						html: 'HTML',
-						text: 'HTML',
-						className: `html-edit-button ${isHtmlView ? 'active' : ''}`,
-						onClick: () => {
-							if (isHtmlView) {
-								onChange?.(BraftEditor.createEditorState(html || ''));
-							}
-							setIsHtmlView((prev) => !prev);
-						},
-						disabled: false,
-					} as ExtendControlType),
+				...(controls || [].filter((control: string) => control !== 'editHtml')),
+				...(controls?.includes('editHtml')
+					? [
+							{
+								key: 'editHtml',
+								type: 'button',
+								title: 'HTML',
+								html: 'HTML',
+								text: 'HTML',
+								className: `html-edit-button ${isHtmlView ? 'active' : ''}`,
+								onClick: () => {
+									if (isHtmlView) {
+										onChange?.(BraftEditor.createEditorState(html || ''));
+									}
+									setIsHtmlView((prev) => !prev);
+								},
+								disabled: false,
+							} as ExtendControlType,
+					  ]
+					: []),
 		  ]
 		: undefined;
 
