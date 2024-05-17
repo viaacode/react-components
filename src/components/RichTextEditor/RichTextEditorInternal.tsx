@@ -1,7 +1,8 @@
-import BraftEditor, { EditorState, MediaType } from 'braft-editor';
+import BraftEditor, { EditorState, ExtendControlType, MediaType } from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
 import clsx from 'clsx';
-import React, { FunctionComponent } from 'react';
+import beautify from 'js-beautify';
+import React, { FunctionComponent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { getLanguage } from './RichTextEditor.consts';
 import { getHiddenHeadingClasses } from './RichTextEditor.helpers';
@@ -28,6 +29,44 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	rootClassName: root = 'c-rich-text-editor',
 	state,
 }) => {
+	const [isHtmlView, setIsHtmlView] = useState(false);
+	const [toolbarHeight, setToolbarHeight] = useState(0);
+	const [html, setHtml] = useState(initialHtml);
+	const [perttyHtml, setPrettyHtml] = useState('');
+	const htmlEditRef = useRef<HTMLPreElement | null>(null);
+
+	useLayoutEffect(() => {
+		const toolbarElement = document.querySelector('.bf-controlbar');
+		if (!toolbarElement) return;
+		const height = toolbarElement.getBoundingClientRect().height;
+		setToolbarHeight(height);
+	}, []);
+
+	useEffect(() => {
+		const controlItems = document.querySelectorAll(
+			'.control-item:not(.html-edit-button)'
+		) as NodeListOf<HTMLElement>;
+		if (isHtmlView) {
+			controlItems.forEach((item: HTMLElement) => {
+				item.style.opacity = '0.5';
+				item.style.pointerEvents = 'none';
+			});
+		} else {
+			controlItems.forEach((item: HTMLElement) => {
+				item.style.opacity = '1';
+				item.style.pointerEvents = 'auto';
+			});
+		}
+	}, [isHtmlView]);
+
+	useEffect(() => {
+		setHtml(state?.toHTML() || '');
+		const formattedHtml = beautify.html(state?.toHTML() || '', {
+			indent_size: 2,
+		});
+		setPrettyHtml(formattedHtml);
+	}, [state]);
+
 	const tableOptions = {
 		columnResizable: false, //  Whether to allow drag to adjust the column width, default false
 		defaultColumns: 3, //  default number of columns
@@ -37,6 +76,31 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	};
 
 	BraftEditor.use(Table(tableOptions));
+
+	const newControls = controls
+		? [
+				...(controls || [].filter((control: string) => control !== 'editHtml')),
+				...(controls?.includes('editHtml')
+					? [
+							{
+								key: 'editHtml',
+								type: 'button',
+								title: 'HTML',
+								html: 'HTML',
+								text: 'HTML',
+								className: `html-edit-button ${isHtmlView ? 'active' : ''}`,
+								onClick: () => {
+									if (isHtmlView) {
+										onChange?.(BraftEditor.createEditorState(html || ''));
+									}
+									setIsHtmlView((prev) => !prev);
+								},
+								disabled: false,
+							} as ExtendControlType,
+					  ]
+					: []),
+		  ]
+		: undefined;
 
 	return (
 		<div
@@ -51,7 +115,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 		>
 			<BraftEditor
 				{...braft}
-				controls={controls}
+				controls={newControls as ExtendControlType[]}
 				id={id}
 				language={getLanguage}
 				media={media as unknown as MediaType}
@@ -65,6 +129,25 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 				readOnly={disabled}
 				value={state || BraftEditor.createEditorState(initialHtml || '')}
 			/>
+			{isHtmlView ? (
+				<pre
+					ref={htmlEditRef}
+					style={{
+						top: `${toolbarHeight}px`,
+					}}
+					className={`${root}__html-view`}
+					onBlur={() => {
+						onChange?.(BraftEditor.createEditorState(html || ''));
+					}}
+					contentEditable={true}
+					onInput={() => {
+						const html = htmlEditRef.current?.innerText;
+						setHtml(html || '');
+					}}
+				>
+					{perttyHtml}
+				</pre>
+			) : null}
 		</div>
 	);
 };

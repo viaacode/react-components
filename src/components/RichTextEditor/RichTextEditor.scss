@@ -2,6 +2,18 @@
 @use "braft-extensions/dist/table";
 
 .c-rich-text-editor {
+	position: relative;
+
+	pre {
+		position: absolute;
+		margin: 15px;
+		width: 100%;
+		height: 100%;
+		background-color: white;
+		z-index: 1;
+		outline: none;
+	}
+
 	.public-DraftEditor-content {
 		word-break: normal;
 	}

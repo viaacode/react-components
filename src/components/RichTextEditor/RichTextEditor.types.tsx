@@ -30,7 +30,8 @@ export type RichTextEditorControl =
 	| 'redo' // Redo operation
 	| 'table' // Table
 	| 'fullscreen' // Make editor fullscreen
-	| 'separator'; // Split line, continuous multiple separators will only be displayed as 1
+	| 'separator' // Split line, continuous multiple separators will only be displayed as 1
+	| 'editHtml'; // Provides a separate HTML view to edit the HTML content of the editor
 
 export type Heading = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
 
