@@ -1,12 +1,13 @@
 import BraftEditor, { EditorState, MediaType } from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
 import clsx from 'clsx';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 
 import { getLanguage } from './RichTextEditor.consts';
 import { getHiddenHeadingClasses } from './RichTextEditor.helpers';
 import {
 	ALL_RICH_TEXT_HEADINGS,
+	RichEditorState,
 	RichTextEditorWithInternalStateProps,
 } from './RichTextEditor.types';
 
@@ -30,30 +31,9 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 	enabledHeadings = ALL_RICH_TEXT_HEADINGS,
 	rootClassName: root = 'c-rich-text-editor',
 }) => {
-	const [richTextEditorState, setRichTextEditorState] = useState<EditorState | null>(null);
-
-	useEffect(() => {
-		if (value && !richTextEditorState) {
-			setRichTextEditorState(BraftEditor.createEditorState(value || ''));
-		}
-		return () => {
-			if (richTextEditorState) {
-				setRichTextEditorState(null);
-			}
-		};
-	}, [value, richTextEditorState]);
-
-	useEffect(() => {
-		if (!richTextEditorState) {
-			return;
-		}
-		const newValue: string = richTextEditorState?.toHTML() || '';
-		if (newValue.replace('<p></p>', '').trim() && newValue !== value) {
-			onChange?.(newValue);
-		}
-		// Do not include value in the dependency array since it would cause an infinite react render loop
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [onChange, richTextEditorState]);
+	const [richTextEditorState, setRichTextEditorState] = useState<EditorState>(
+		BraftEditor.createEditorState(value || '')
+	);
 
 	const tableOptions = {
 		columnResizable: false, //  Whether to allow drag to adjust the column width, default false
@@ -83,7 +63,10 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 				language={getLanguage}
 				media={media as unknown as MediaType}
 				onBlur={() => onBlur?.()}
-				onChange={setRichTextEditorState}
+				onChange={(newEditorState: RichEditorState) => {
+					setRichTextEditorState(newEditorState);
+					onChange?.(newEditorState.toHTML());
+				}}
 				onDelete={onDelete}
 				onFocus={onFocus}
 				onSave={() => richTextEditorState && onSave?.()}
