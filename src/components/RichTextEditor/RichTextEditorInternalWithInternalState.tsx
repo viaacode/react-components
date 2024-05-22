@@ -1,10 +1,10 @@
-import BraftEditor, { EditorState, MediaType } from 'braft-editor';
+import BraftEditor, { ControlType, EditorState, ExtendControlType, MediaType } from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
 import clsx from 'clsx';
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { getLanguage } from './RichTextEditor.consts';
-import { getHiddenHeadingClasses } from './RichTextEditor.helpers';
+import { getHiddenHeadingClasses, prettifyHtml } from './RichTextEditor.helpers';
 import {
 	ALL_RICH_TEXT_HEADINGS,
 	RichEditorState,
@@ -31,9 +31,37 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 	enabledHeadings = ALL_RICH_TEXT_HEADINGS,
 	rootClassName: root = 'c-rich-text-editor',
 }) => {
+	const [isHtmlView, setIsHtmlView] = useState(false);
+	const [toolbarHeight, setToolbarHeight] = useState(0);
+	const [prettyHtml, setPrettyHtml] = useState('');
+	const htmlEditRef = useRef<HTMLTextAreaElement | null>(null);
 	const [richTextEditorState, setRichTextEditorState] = useState<EditorState>(
 		BraftEditor.createEditorState(value || '')
 	);
+
+	useLayoutEffect(() => {
+		const toolbarElement = document.querySelector('.bf-controlbar');
+		if (!toolbarElement) return;
+		const height = toolbarElement.getBoundingClientRect().height;
+		setToolbarHeight(height);
+	}, []);
+
+	useEffect(() => {
+		const controlItems = document.querySelectorAll(
+			'.control-item:not(.html-edit-button)'
+		) as NodeListOf<HTMLElement>;
+		if (isHtmlView) {
+			controlItems.forEach((item: HTMLElement) => {
+				item.style.opacity = '0.5';
+				item.style.pointerEvents = 'none';
+			});
+		} else {
+			controlItems.forEach((item: HTMLElement) => {
+				item.style.opacity = '1';
+				item.style.pointerEvents = 'auto';
+			});
+		}
+	}, [isHtmlView]);
 
 	const tableOptions = {
 		columnResizable: false, //  Whether to allow drag to adjust the column width, default false
@@ -44,6 +72,33 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 	};
 
 	BraftEditor.use(Table(tableOptions));
+
+	const newControls: ControlType[] | undefined = controls
+		? ([
+				...(controls || [].filter((control: string) => control !== 'editHtml')),
+				...(controls?.includes('editHtml')
+					? [
+							{
+								key: 'editHtml',
+								type: 'button',
+								title: 'HTML',
+								html: 'HTML',
+								text: 'HTML',
+								className: `html-edit-button ${isHtmlView ? 'active' : ''}`,
+								onClick: () => {
+									if (isHtmlView) {
+										setRichTextEditorState(
+											BraftEditor.createEditorState(prettyHtml || '')
+										);
+									}
+									setIsHtmlView((prev) => !prev);
+								},
+								disabled: false,
+							} as ExtendControlType,
+					  ]
+					: []),
+		  ] as (ControlType | ExtendControlType)[])
+		: undefined;
 
 	return (
 		<div
@@ -58,14 +113,16 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 		>
 			<BraftEditor
 				{...braft}
-				controls={controls}
+				controls={newControls}
 				id={id}
 				language={getLanguage}
 				media={media as unknown as MediaType}
 				onBlur={() => onBlur?.()}
 				onChange={(newEditorState: RichEditorState) => {
 					setRichTextEditorState(newEditorState);
-					onChange?.(newEditorState.toHTML());
+					const newhtml = newEditorState.toHTML();
+					onChange?.(newhtml);
+					setPrettyHtml(prettifyHtml(newhtml));
 				}}
 				onDelete={onDelete}
 				onFocus={onFocus}
@@ -75,6 +132,22 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 				readOnly={disabled}
 				value={richTextEditorState}
 			/>
+			{isHtmlView ? (
+				<textarea
+					ref={htmlEditRef}
+					style={{
+						top: `${toolbarHeight}px`,
+					}}
+					className={`${root}__html-view`}
+					onBlur={() => {
+						setRichTextEditorState(BraftEditor.createEditorState(prettyHtml || ''));
+					}}
+					onChange={(evt) => {
+						setPrettyHtml(evt.target.value);
+					}}
+					value={prettyHtml}
+				/>
+			) : null}
 		</div>
 	);
 };

@@ -1,11 +1,10 @@
 import BraftEditor, { EditorState, ExtendControlType, MediaType } from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
 import clsx from 'clsx';
-import beautify from 'js-beautify';
 import React, { FunctionComponent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { getLanguage } from './RichTextEditor.consts';
-import { getHiddenHeadingClasses } from './RichTextEditor.helpers';
+import { getHiddenHeadingClasses, prettifyHtml } from './RichTextEditor.helpers';
 import { ALL_RICH_TEXT_HEADINGS, RichTextEditorProps } from './RichTextEditor.types';
 
 import './RichTextEditor.scss';
@@ -32,7 +31,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	const [isHtmlView, setIsHtmlView] = useState(false);
 	const [toolbarHeight, setToolbarHeight] = useState(0);
 	const [html, setHtml] = useState(initialHtml);
-	const [perttyHtml, setPrettyHtml] = useState('');
+	const [prettyHtml, setPrettyHtml] = useState('');
 	const htmlEditRef = useRef<HTMLPreElement | null>(null);
 
 	useLayoutEffect(() => {
@@ -61,9 +60,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 
 	useEffect(() => {
 		setHtml(state?.toHTML() || '');
-		const formattedHtml = beautify.html(state?.toHTML() || '', {
-			indent_size: 2,
-		});
+		const formattedHtml = prettifyHtml(state?.toHTML());
 		setPrettyHtml(formattedHtml);
 	}, [state]);
 
@@ -145,7 +142,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 						setHtml(html || '');
 					}}
 				>
-					{perttyHtml}
+					{prettyHtml}
 				</pre>
 			) : null}
 		</div>

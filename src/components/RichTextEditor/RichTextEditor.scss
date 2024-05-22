@@ -4,7 +4,8 @@
 .c-rich-text-editor {
 	position: relative;
 
-	pre {
+	pre,
+	textarea {
 		position: absolute;
 		margin: 15px;
 		width: 100%;
@@ -12,6 +13,8 @@
 		background-color: white;
 		z-index: 1;
 		outline: none;
+		border: 0;
+		padding: 0;
 	}
 
 	.public-DraftEditor-content {
