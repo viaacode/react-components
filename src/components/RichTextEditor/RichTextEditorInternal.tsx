@@ -134,6 +134,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 					ref={htmlEditRef}
 					style={{
 						top: `${toolbarHeight}px`,
+						height: `calc(100% - ${toolbarHeight}px)`,
 					}}
 					className={`${root}__html-view`}
 					onBlur={() => {
