@@ -12,6 +12,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({
 	className,
 	rootClassName: root = 'c-breadcrumbs',
 	variants,
+	foregroundColor,
 }) => {
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants));
@@ -20,6 +21,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({
 
 	const renderBreadcrumb = ({ label, to }: Breadcrumb, i: number): ReactNode => {
 		const isLast = i === count - 1;
+		const foregroundStyle = foregroundColor ? { color: foregroundColor } : {};
 
 		const Link = linkComponent;
 		return (
@@ -29,13 +31,17 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({
 				aria-current={isLast ? 'page' : undefined}
 			>
 				{isLast ? (
-					<p className={clsx(bem('link'), bem('link--active'))}>{label}</p>
+					<p style={foregroundStyle} className={clsx(bem('link'), bem('link--active'))}>
+						{label}
+					</p>
 				) : (
 					<>
-						<Link className={bem('link')} key={label} href={to}>
+						<Link style={foregroundStyle} className={bem('link')} key={label} href={to}>
 							{label}
 						</Link>
-						<div className={bem('icon')}>{icon}</div>
+						<div style={foregroundStyle} className={bem('icon')}>
+							{icon}
+						</div>
 					</>
 				)}
 			</li>

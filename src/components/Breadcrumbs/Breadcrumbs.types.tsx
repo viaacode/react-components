@@ -10,7 +10,9 @@ export interface BreadcrumbsProps extends DefaultComponentProps {
 		href: string;
 		className?: string;
 		children: ReactNode | string;
+		style: Record<string, string | undefined>;
 	}>;
+	foregroundColor?: string;
 }
 
 export interface Breadcrumb {
