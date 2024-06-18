@@ -33,7 +33,7 @@ const FormControl: FC<FormControlProps> = ({
 
 				<div className={bem('input')}>{children}</div>
 
-				{errors && (
+				{!!errors?.[0] && (
 					<ul className={bem('errors')}>
 						{errors.map((error, i) => (
 							<li key={i}>{error}</li>
