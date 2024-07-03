@@ -121,4 +121,7 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	googleAnalyticsId?: string;
 	googleAnalyticsEvents?: GoogleAnalyticsEvent[];
 	googleAnalyticsTitle?: string;
+	seekable?: Config['seekable'];
+	ui?: Config['ui'];
+	controls?: Config['controls'];
 }
