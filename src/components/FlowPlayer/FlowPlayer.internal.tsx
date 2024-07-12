@@ -73,6 +73,9 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	googleAnalyticsId,
 	googleAnalyticsEvents,
 	googleAnalyticsTitle,
+	seekable,
+	ui,
+	controls,
 }) => {
 	const videoContainerRef = useRef<HTMLDivElement>(null);
 	const peakCanvas = useRef<HTMLCanvasElement>(null);
@@ -345,16 +348,20 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			// CONFIGURATION
 			autoplay: autoplay ? flowplayer.autoplay.ON : flowplayer.autoplay.OFF,
 			multiplay: false,
-			ui: (flowplayer as any).ui.LOGO_ON_RIGHT | (flowplayer as any).ui.USE_DRAG_HANDLE,
+			ui: ui || (flowplayer as any).ui.LOGO_ON_RIGHT | (flowplayer as any).ui.USE_DRAG_HANDLE,
 			plugins,
 			preload: getPreload(),
 			lang: 'nl',
+			seekable,
+			controls,
 
 			// KEYBOARD
 			...(plugins.includes('keyboard') ? { keyboard: { seek_step: '15' } } : {}),
 
 			// SPEED
-			...(plugins.includes('speed') && speed ? { speed: speed } : {}),
+			...(plugins.includes('speed') && speed
+				? { speed: speed }
+				: { speed: { options: [], labels: [] } }),
 
 			// CUEPOINTS
 			// Only set cuepoints if an end point was passed in the props or one of the playlist items has cuepoints configured
