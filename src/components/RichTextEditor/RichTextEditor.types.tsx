@@ -66,7 +66,6 @@ export interface RichTextEditorWithInternalStateProps {
 	className?: string;
 	rootClassName?: string;
 	id?: string;
-	initialHtml?: string;
 	value?: string;
 	placeholder?: string;
 	controls?: RichTextEditorControl[];

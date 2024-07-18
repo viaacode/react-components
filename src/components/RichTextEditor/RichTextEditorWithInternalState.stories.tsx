@@ -5,7 +5,10 @@ import React, { cloneElement, ReactElement, useState } from 'react';
 import Select from '../Select/Select';
 import { selectOptionsMock } from '../Select/__mocks__/select';
 
-import { RichTextEditorControl } from './RichTextEditor.types';
+import {
+	RichTextEditorControl,
+	RichTextEditorWithInternalStateProps,
+} from './RichTextEditor.types';
 import RichTextEditorWithInternalState from './RichTextEditorWithInternalState';
 
 const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
@@ -32,10 +35,11 @@ const MOCK_RICH_TEXT_EDITOR_PROPS = {
 
 const RichTextEditorWithInternalStateStoryComponent = ({
 	children,
+	...props
 }: {
 	children: ReactElement;
-}) => {
-	const [value, setValue] = useState<string>('');
+} & RichTextEditorWithInternalStateProps) => {
+	const [value, setValue] = useState<string>(props.value || '');
 
 	return cloneElement(children, {
 		value,
@@ -52,7 +56,7 @@ export default {
 } as ComponentMeta<typeof RichTextEditorWithInternalState>;
 
 const Template: ComponentStory<typeof RichTextEditorWithInternalState> = (args) => (
-	<RichTextEditorWithInternalStateStoryComponent>
+	<RichTextEditorWithInternalStateStoryComponent {...args}>
 		<RichTextEditorWithInternalState {...args} />
 	</RichTextEditorWithInternalStateStoryComponent>
 );

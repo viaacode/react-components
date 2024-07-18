@@ -33,7 +33,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 }) => {
 	const [isHtmlView, setIsHtmlView] = useState(false);
 	const [toolbarHeight, setToolbarHeight] = useState(0);
-	const [prettyHtml, setPrettyHtml] = useState('');
+	const [prettyHtml, setPrettyHtml] = useState(prettifyHtml(value || ''));
 	const htmlEditRef = useRef<HTMLTextAreaElement | null>(null);
 	const [richTextEditorState, setRichTextEditorState] = useState<EditorState>(
 		BraftEditor.createEditorState(value || '')
