@@ -13,7 +13,11 @@ function average(nums: number[]) {
 export function drawPeak(
 	canvas: HTMLCanvasElement,
 	waveformData: number[],
-	percentagePlayed: number
+	percentagePlayed: number,
+	colorBackground = '#FFFFFF',
+	colorInactivePeakLine = '#ADADAD',
+	colorActivePeakLine = '#00c8aa',
+	heightFactor = 1
 ) {
 	const ctx = canvas.getContext('2d');
 
@@ -22,7 +26,8 @@ export function drawPeak(
 	}
 
 	const numOfBars = 100;
-	const barWidth = canvas.width / 100 / 2;
+	const margin = 1;
+	const barWidth = canvas.width / (100 + margin) / 2;
 
 	// Convert the waveform amplitude to bar height
 	const scaleY = (amplitude: number, canvasHeight: number, minVal: number, maxVal: number) => {
@@ -30,7 +35,7 @@ export function drawPeak(
 	};
 
 	// Reset the canvas
-	ctx.fillStyle = '#FFFFFF';
+	ctx.fillStyle = colorBackground;
 	ctx.fillRect(0, 0, canvas.width || 0, canvas.height || 0);
 
 	const half = (canvas.height || 0) / 2;
@@ -51,16 +56,21 @@ export function drawPeak(
 	const minVal = Math.min(...values);
 	const maxVal = Math.max(...values);
 	for (let barIndex = 0; barIndex < numOfBars; barIndex++) {
-		const h = scaleY(values[barIndex], half, minVal, maxVal);
+		const barHeight = scaleY(values[barIndex], half, minVal, maxVal);
 
 		// Change color for already played audio
 		const percentageDrawn = barIndex / numOfBars;
 		if (percentageDrawn > percentagePlayed) {
-			ctx.fillStyle = '#ADADAD';
+			ctx.fillStyle = colorInactivePeakLine;
 		} else {
-			ctx.fillStyle = '#00c8aa';
+			ctx.fillStyle = colorActivePeakLine;
 		}
 
-		ctx.fillRect((canvas.width / numOfBars) * barIndex, half - h, barWidth, h * 2);
+		ctx.fillRect(
+			(canvas.width / (numOfBars + margin)) * (barIndex + margin / 2),
+			half - barHeight * heightFactor,
+			barWidth,
+			barHeight * 2 * heightFactor
+		);
 	}
 }

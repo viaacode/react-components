@@ -87,7 +87,7 @@ export type FlowplayerSourceListSchema = {
 export type FlowplayerSourceList = FlowplayerSourceListSchema;
 
 export interface FlowPlayerProps extends DefaultComponentProps {
-	children?: React.ReactNode;
+	children?: ReactNode;
 	src: string | { type: string; src: string }[] | FlowplayerSourceListSchema;
 	type: 'video' | 'audio';
 	poster?: string;
@@ -124,4 +124,8 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	seekable?: Config['seekable'];
 	ui?: Config['ui'];
 	controls?: Config['controls'];
+	peakColorBackground?: string; // eg: '#FFFFFF'
+	peakColorInactive?: string; // eg: '#ADADAD'
+	peakColorActive?: string; // eg: '#00C8AA'
+	peakHeightFactor?: number; // Ratio to make the peaks less or more high. Defaults to 1
 }

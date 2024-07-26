@@ -76,6 +76,10 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	seekable,
 	ui,
 	controls,
+	peakColorBackground,
+	peakColorInactive,
+	peakColorActive,
+	peakHeightFactor,
 }) => {
 	const videoContainerRef = useRef<HTMLDivElement>(null);
 	const peakCanvas = useRef<HTMLCanvasElement>(null);
@@ -518,10 +522,14 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			drawPeak(
 				peakCanvas.current,
 				waveformData || [],
-				player.current?.duration ? player.current.currentTime / player.current.duration : 0
+				player.current?.duration ? player.current.currentTime / player.current.duration : 0,
+				peakColorBackground,
+				peakColorInactive,
+				peakColorActive,
+				peakHeightFactor
 			);
 		}
-	}, [peakCanvas, waveformData]);
+	}, [peakColorActive, peakColorBackground, peakColorInactive, peakHeightFactor, waveformData]);
 
 	useEffect(() => {
 		if (waveformData && peakCanvas.current) {
