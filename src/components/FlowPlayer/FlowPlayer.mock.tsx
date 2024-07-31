@@ -4,6 +4,7 @@ export const MOCK_FLOW_PLAYER_PROPS: FlowPlayerProps = {
 	src: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
 	title: 'Title',
 	autoplay: false,
+	type: 'video',
 };
 
 export const MOCK_FLOW_PLAYER_PROPS_FULL: FlowPlayerProps = {

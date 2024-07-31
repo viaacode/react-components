@@ -15,5 +15,6 @@ export interface ButtonProps
 	iconEnd?: ReactNode;
 	label?: string | ReactNode;
 	buttonRef?: RefObject<HTMLButtonElement>;
-	toolTipText?: string;
+	tooltipText?: string;
+	tooltipPosition?: 'top' | 'right' | 'bottom' | 'left';
 }

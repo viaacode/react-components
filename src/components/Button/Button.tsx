@@ -19,7 +19,8 @@ const Button: FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>(
 			label,
 			rootClassName: root = 'c-button',
 			title,
-			toolTipText,
+			tooltipText,
+			tooltipPosition,
 			type = 'button',
 			variants,
 			onClick,
@@ -51,10 +52,10 @@ const Button: FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>(
 
 		const wrapInTooltip = (element: JSX.Element): JSX.Element => {
 			return (
-				<Tooltip position="top">
+				<Tooltip position={tooltipPosition || 'top'}>
 					<TooltipTrigger>{element}</TooltipTrigger>
 					<TooltipContent>
-						<span>{toolTipText}</span>
+						<span>{tooltipText}</span>
 					</TooltipContent>
 				</Tooltip>
 			);
@@ -85,7 +86,7 @@ const Button: FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>(
 			</button>
 		);
 
-		return toolTipText ? wrapInTooltip(element) : element;
+		return tooltipText ? wrapInTooltip(element) : element;
 	}
 );
 
