@@ -1,14 +1,14 @@
 import { ReactNode } from 'react';
 
 import { DefaultComponentProps } from '../../types';
-import { PaginationProps } from '../Pagination/Pagination.types';
+import { PaginationProps } from '../Pagination';
 import { PaginationProgressProps } from '../PaginationProgress';
 
 export interface PaginationBarProps
 	extends DefaultComponentProps,
 		Pick<PaginationProps, 'onPageChange'>,
 		Pick<PaginationProgressProps, 'start' | 'total'> {
-	children?: React.ReactNode;
+	children?: ReactNode;
 	count: number;
 	showBackToTop?: boolean;
 	nextLabel: string;
@@ -17,4 +17,6 @@ export interface PaginationBarProps
 	previousIcon: ReactNode;
 	backToTopLabel: string;
 	backToTopIcon: ReactNode;
+	labelBetweenPageStartAndEnd?: string;
+	labelBetweenPageEndAndTotal?: string;
 }

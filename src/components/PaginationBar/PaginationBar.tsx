@@ -18,6 +18,8 @@ const PaginationBar: FC<PaginationBarProps> = ({
 	previousIcon,
 	backToTopLabel,
 	backToTopIcon,
+	labelBetweenPageStartAndEnd,
+	labelBetweenPageEndAndTotal,
 	start,
 	total,
 }) => {
@@ -27,7 +29,13 @@ const PaginationBar: FC<PaginationBarProps> = ({
 	const renderProgress = () => {
 		const end = start + count;
 
-		return <PaginationProgress {...{ start: start + 1, end, total }} />;
+		return (
+			<PaginationProgress
+				{...{ start: start + 1, end, total }}
+				labelBetweenPageStartAndEnd={labelBetweenPageStartAndEnd}
+				labelBetweenPageEndAndTotal={labelBetweenPageEndAndTotal}
+			/>
+		);
 	};
 
 	const scrollTo = (yLocation = 0): void => {

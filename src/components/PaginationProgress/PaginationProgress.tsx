@@ -2,8 +2,16 @@ import React, { FC } from 'react';
 
 import { PaginationProgressProps } from './PaginationProgress.types';
 
-const PaginationProgress: FC<PaginationProgressProps> = ({ start, end, total }) => {
-	const text = `${start}-${end > total ? total : end} van ${total}`;
+const PaginationProgress: FC<PaginationProgressProps> = ({
+	start,
+	end,
+	total,
+	labelBetweenPageStartAndEnd = '-',
+	labelBetweenPageEndAndTotal = ' van',
+}) => {
+	const text = `${start}${labelBetweenPageStartAndEnd}${
+		end > total ? total : end
+	}${labelBetweenPageEndAndTotal}${total}`;
 
 	return <span className="c-pagination-progress">{text}</span>;
 };
