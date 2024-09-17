@@ -5,7 +5,7 @@ import { bemCls, getVariantClasses, keysEnter, keysSpacebar, onKey } from '../..
 
 import { CardProps } from './Card.types';
 
-const defaultProps: CardProps = {
+export const cardDefaultProps: CardProps = {
 	edge: 'zinc',
 	mode: 'light',
 	orientation: 'vertical',
@@ -31,7 +31,7 @@ const Card: FC<CardProps> = ({
 	title,
 	toolbar,
 	variants,
-	linkComponent = defaultProps.linkComponent as FC<{
+	linkComponent = cardDefaultProps.linkComponent as FC<{
 		href: string;
 		className?: string;
 		children: ReactNode | string;
@@ -115,7 +115,5 @@ const Card: FC<CardProps> = ({
 		</article>
 	);
 };
-
-Card.defaultProps = defaultProps;
 
 export default Card;
