@@ -13,32 +13,29 @@ export const cardDefaultProps: CardProps = {
 	linkComponent: ({ children }) => <>{children}</>,
 };
 
-const Card: FC<CardProps> = ({
-	children,
-	className,
-	edge,
-	image,
-	mode,
-	offset,
-	onClick,
-	orientation,
-	padding,
-	rootClassName: root = 'c-card',
-	shadow,
-	subtitle,
-	caption,
-	tags,
-	title,
-	toolbar,
-	variants,
-	linkComponent = cardDefaultProps.linkComponent as FC<{
-		href: string;
-		className?: string;
-		children: ReactNode | string;
-	}>,
-	to,
-}) => {
-	const Link = linkComponent;
+const Card: FC<CardProps> = (props) => {
+	const {
+		children,
+		className,
+		edge,
+		image,
+		mode,
+		offset,
+		onClick,
+		orientation,
+		padding,
+		rootClassName: root = 'c-card',
+		shadow,
+		subtitle,
+		caption,
+		tags,
+		title,
+		toolbar,
+		variants,
+		linkComponent,
+		to,
+	} = { ...cardDefaultProps, ...props };
+	const Link = linkComponent as FC<{ children: ReactNode; href: string }>;
 
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants), {
