@@ -7,67 +7,118 @@ import { PaginationProgress } from '../PaginationProgress';
 
 import { PaginationBarProps } from './PaginationBar.types';
 
+import './PaginationBar.scss';
+
 const PaginationBar: FC<PaginationBarProps> = ({
 	className,
-	count,
+	startItem,
+	totalItems,
+	itemsPerPage,
+	displayCount = 5,
 	onPageChange,
-	showBackToTop,
+	onScrollToTop,
+	showBackToTop = true,
+	showProgress = true,
+	showFirstAndLastButtons = false,
+	showButtonLabels = false,
 	nextLabel,
 	nextIcon,
 	previousLabel,
 	previousIcon,
+	firstLabel,
+	firstIcon,
+	lastLabel,
+	lastIcon,
 	backToTopLabel,
 	backToTopIcon,
 	labelBetweenPageStartAndEnd,
 	labelBetweenPageEndAndTotal,
-	start,
-	total,
 }) => {
-	const pageCount = Math.ceil(total / count);
-	const currentPage = start / count;
+	const pageCount = Math.ceil(totalItems / itemsPerPage);
+	const currentPage = startItem / itemsPerPage;
 
 	const renderProgress = () => {
-		const end = start + count;
+		const endItem = startItem + itemsPerPage;
 
+		// Keep the div, so flexbox positions the page buttons in the center
 		return (
-			<PaginationProgress
-				{...{ start: start + 1, end, total }}
-				labelBetweenPageStartAndEnd={labelBetweenPageStartAndEnd}
-				labelBetweenPageEndAndTotal={labelBetweenPageEndAndTotal}
+			<div className="c-pagination-bar__progress">
+				{showProgress && (
+					<PaginationProgress
+						{...{ startItem: startItem + 1, endItem, totalItems }}
+						labelBetweenPageStartAndEnd={labelBetweenPageStartAndEnd}
+						labelBetweenPageEndAndTotal={labelBetweenPageEndAndTotal}
+					/>
+				)}
+			</div>
+		);
+	};
+
+	const renderPreviousButton = (onClick: () => void, disabled: boolean) => {
+		return (
+			<Button
+				disabled={disabled}
+				label={showButtonLabels ? previousLabel : undefined}
+				iconStart={previousIcon}
+				aria-label={previousLabel}
+				onClick={onClick}
 			/>
 		);
 	};
 
-	const scrollTo = (yLocation = 0): void => {
-		window.scrollTo({ top: yLocation, left: 0, behavior: 'smooth' });
+	const renderNextButton = (onClick: () => void, disabled: boolean) => {
+		return (
+			<Button
+				disabled={disabled}
+				label={showButtonLabels ? nextLabel : undefined}
+				iconEnd={nextIcon}
+				aria-label={nextLabel}
+				onClick={onClick}
+			/>
+		);
+	};
+
+	const renderFirstButton = (onClick: () => void, disabled: boolean) => {
+		if (!showFirstAndLastButtons) {
+			return null;
+		}
+		return (
+			<Button
+				disabled={disabled}
+				label={showButtonLabels ? firstLabel : undefined}
+				iconStart={firstIcon}
+				aria-label={firstLabel}
+				onClick={onClick}
+			/>
+		);
+	};
+
+	const renderLastButton = (onClick: () => void, disabled: boolean) => {
+		if (!showFirstAndLastButtons) {
+			return null;
+		}
+		return (
+			<Button
+				disabled={disabled}
+				label={showButtonLabels ? lastLabel : undefined}
+				iconEnd={lastIcon}
+				aria-label={lastLabel}
+				onClick={onClick}
+			/>
+		);
 	};
 
 	const renderPagination = () => (
 		<Pagination
-			buttons={{
-				next: (
-					<Button
-						className="u-pl-24:sm u-pl-8"
-						disabled={currentPage + 1 === pageCount}
-						variants={['text', 'neutral']}
-						label={nextLabel}
-						iconEnd={nextIcon}
-					/>
-				),
-				previous: (
-					<Button
-						className="u-pr-24:sm u-pr-8"
-						disabled={currentPage + 1 === 1}
-						variants={['text', 'neutral']}
-						label={previousLabel}
-						iconStart={previousIcon}
-					/>
-				),
-			}}
+			renderPreviousButton={renderPreviousButton}
+			renderNextButton={renderNextButton}
+			renderFirstButton={renderFirstButton}
+			renderLastButton={renderLastButton}
 			showFirstLastNumbers
 			onPageChange={onPageChange}
 			currentPage={currentPage}
 			pageCount={pageCount}
+			displayCount={displayCount}
 		/>
 	);
 
@@ -81,19 +132,22 @@ const PaginationBar: FC<PaginationBarProps> = ({
 		>
 			{renderProgress()}
 
-			{total > count && renderPagination()}
+			{itemsPerPage < totalItems && renderPagination()}
 
-			{showBackToTop && (
-				<div className="c-pagination-bar__back-to-top-wrapper">
+			<div className="c-pagination-bar__back-to-top-wrapper">
+				{showBackToTop && (
 					<Button
 						className="c-pagination-bar__back-to-top"
 						variants={['text', 'neutral']}
 						label={backToTopLabel}
 						iconEnd={backToTopIcon}
-						onClick={() => scrollTo(0)}
+						onClick={() => {
+							console.log('scrolling to top:');
+							onScrollToTop?.();
+						}}
 					/>
-				</div>
-			)}
+				)}
+			</div>
 		</div>
 	);
 };

@@ -14,7 +14,7 @@ const Template: ComponentStory<typeof PaginationProgress> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-	start: 1,
-	end: 9,
-	total: 20,
+	startItem: 1,
+	endItem: 9,
+	totalItems: 20,
 };

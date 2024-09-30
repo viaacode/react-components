@@ -1,0 +1,14 @@
+.c-pagination-bar {
+	display: flex;
+	flex-direction: row;
+
+	.c-pagination {
+		display: flex;
+		flex-direction: row;
+
+		.c-pagination__pages {
+			display: flex;
+			flex-direction: row;
+		}
+	}
+}

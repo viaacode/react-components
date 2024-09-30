@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { Fragment, FunctionComponent, ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
+import { Button } from '../Button';
 
 import { PaginationProps } from './Pagination.types';
 
@@ -11,9 +12,11 @@ const Pagination: FunctionComponent<PaginationProps> = ({
 	displayCount = 5,
 	currentPage = 0,
 	onPageChange = () => null,
-	showFirstLastButtons,
 	showFirstLastNumbers,
-	buttons,
+	renderPreviousButton,
+	renderNextButton,
+	renderFirstButton,
+	renderLastButton,
 	rootClassName: root = 'c-pagination',
 	variants,
 }) => {
@@ -54,20 +57,16 @@ const Pagination: FunctionComponent<PaginationProps> = ({
 
 	const renderNumber = (pageIndex: number): ReactNode => {
 		return (
-			<div
-				key={pageIndex}
-				className={clsx(
-					bem('btn'),
-					pageIndex === currentPage && bem('btn', 'active'),
-					pageIndex.toString().length > 3 && bem('btn', 'long')
-				)}
+			<Button
+				key={'c-pagination__page-button__' + pageIndex}
+				className={clsx('c-pagination__page-button', {
+					'c-pagination__page-button--active': pageIndex === currentPage,
+					'c-pagination__page-button--long': pageIndex.toString().length > 3,
+				})}
+				disabled={currentPage === pageIndex}
+				label={pageIndex + 1}
 				onClick={pageIndex !== currentPage ? () => changePage(pageIndex) : () => null}
-				onKeyPress={(e) => (e.key === 'Enter' ? changePage(pageIndex) : () => null)}
-				role="button"
-				tabIndex={0}
-			>
-				{pageIndex + 1}
-			</div>
+			/>
 		);
 	};
 
@@ -105,61 +104,11 @@ const Pagination: FunctionComponent<PaginationProps> = ({
 
 	return (
 		<div className={rootCls}>
-			{showFirstLastButtons && buttons?.first && (
-				<div
-					className={clsx(bem('btn'), currentPage === 0 && bem('btn', 'disabled'))}
-					onClick={() => changePage(0)}
-					onKeyPress={(e) => (e.key === 'Enter' ? changePage(0) : () => null)}
-					role="button"
-					tabIndex={0}
-				>
-					{buttons?.first}
-				</div>
-			)}
-			{buttons?.previous && (
-				<div
-					className={clsx(bem('btn'), currentPage === 0 && bem('btn', 'disabled'))}
-					onClick={() => changePage(currentPage - 1)}
-					onKeyPress={(e) =>
-						e.key === 'Enter' ? changePage(currentPage - 1) : () => null
-					}
-					role="button"
-					tabIndex={0}
-				>
-					{buttons?.previous}
-				</div>
-			)}
+			{renderFirstButton?.(() => changePage(0), currentPage === 0)}
+			{renderPreviousButton?.(() => changePage(currentPage - 1), currentPage === 0)}
 			<div className={bem('pages')}>{renderPages()}</div>
-			{buttons?.next && (
-				<div
-					className={clsx(
-						bem('btn'),
-						currentPage === pageCount - 1 && bem('btn', 'disabled')
-					)}
-					onClick={() => changePage(currentPage + 1)}
-					onKeyPress={(e) =>
-						e.key === 'Enter' ? changePage(currentPage + 1) : () => null
-					}
-					role="button"
-					tabIndex={0}
-				>
-					{buttons?.next}
-				</div>
-			)}
-			{showFirstLastButtons && buttons?.last && (
-				<div
-					className={clsx(
-						bem('btn'),
-						currentPage === pageCount - 1 && bem('btn', 'disabled')
-					)}
-					onClick={() => changePage(pageCount - 1)}
-					onKeyPress={(e) => (e.key === 'Enter' ? changePage(pageCount - 1) : () => null)}
-					role="button"
-					tabIndex={0}
-				>
-					{buttons?.last}
-				</div>
-			)}
+			{renderNextButton?.(() => changePage(currentPage + 1), currentPage === pageCount - 1)}
+			{renderLastButton?.(() => changePage(pageCount - 1), currentPage === pageCount - 1)}
 		</div>
 	);
 };

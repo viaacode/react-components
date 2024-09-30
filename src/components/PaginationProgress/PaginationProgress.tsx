@@ -3,15 +3,15 @@ import React, { FC } from 'react';
 import { PaginationProgressProps } from './PaginationProgress.types';
 
 const PaginationProgress: FC<PaginationProgressProps> = ({
-	start,
-	end,
-	total,
+	startItem,
+	endItem,
+	totalItems,
 	labelBetweenPageStartAndEnd = '-',
-	labelBetweenPageEndAndTotal = ' van',
+	labelBetweenPageEndAndTotal = ' van ',
 }) => {
-	const text = `${start}${labelBetweenPageStartAndEnd}${
-		end > total ? total : end
-	}${labelBetweenPageEndAndTotal}${total}`;
+	const text = `${startItem}${labelBetweenPageStartAndEnd}${
+		endItem > totalItems ? totalItems : endItem
+	}${labelBetweenPageEndAndTotal}${totalItems}`;
 
 	return <span className="c-pagination-progress">{text}</span>;
 };
