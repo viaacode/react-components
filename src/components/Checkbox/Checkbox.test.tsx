@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 
-import { Checkbox } from './Checkbox';
+import Checkbox from './Checkbox';
 import { CheckboxProps } from './Checkbox.types';
 
 const mockLabel = 'Check me!';

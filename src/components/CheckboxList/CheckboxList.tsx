@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { FC } from 'react';
 
 import { keysEnter, keysSpacebar, onKey } from '../../utils';
-import { Checkbox } from '../Checkbox';
+import Checkbox from '../Checkbox/Checkbox';
 
 import './CheckboxList.scss';
 import { CheckboxListProps } from './CheckboxList.types';
