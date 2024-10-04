@@ -18,6 +18,7 @@ export * from './MultiSelect';
 export * from './Pagination';
 export * from './PaginationBar';
 export * from './PaginationProgress';
+export * from './ProgressBar';
 export * from './RadioButton';
 export * from './RichTextEditor';
 export * from './Select';

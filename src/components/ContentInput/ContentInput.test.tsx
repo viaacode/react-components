@@ -41,13 +41,13 @@ describe('components/<ContentInput />', () => {
 		expect(input).toHaveAttribute('type', type);
 	});
 
-	it('Should call the onChange handler on every input', () => {
+	it('Should call the onChange handler on every input', async () => {
 		const inputValue = 'My value';
 		const onChange = jest.fn();
 		renderContentInput({ onChange });
 
 		const input = screen.getByDisplayValue(mockValue);
-		userEvent.type(input, inputValue);
+		await userEvent.type(input, inputValue);
 		expect(onChange).toHaveBeenCalledTimes(inputValue.length);
 	});
 });

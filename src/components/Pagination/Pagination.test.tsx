@@ -1,14 +1,13 @@
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
-import React, { ReactNode } from 'react';
+import React from 'react';
+
+import { Button } from '../Button';
 
 import Pagination from './Pagination';
+import { PaginationProps } from './Pagination.types';
 
-const renderPagination = ({ pageCount = 10, ...rest }): RenderResult => {
+const renderPagination = ({ pageCount = 10, ...rest }: Partial<PaginationProps>): RenderResult => {
 	return render(<Pagination pageCount={pageCount} {...rest} />);
-};
-
-const renderButton = (label: string): ReactNode => {
-	return <span>{label}</span>;
 };
 
 describe('<Pagination />', () => {
@@ -61,7 +60,7 @@ describe('<Pagination />', () => {
 
 		const activePage = container.querySelector('.c-pagination__pages')?.firstChild;
 
-		expect(activePage).toHaveClass('c-pagination__btn--active');
+		expect(activePage).toHaveClass('c-pagination__page-button--active');
 	});
 
 	it('Should correctly set the `currentPage`', () => {
@@ -69,7 +68,7 @@ describe('<Pagination />', () => {
 
 		const { container } = renderPagination({ currentPage });
 
-		const activePage = container.querySelector('.c-pagination__btn--active');
+		const activePage = container.querySelector('.c-pagination__page-button--active');
 
 		expect(activePage?.textContent).toEqual(String(currentPage + 1));
 	});
@@ -139,7 +138,7 @@ describe('<Pagination />', () => {
 
 		const button = container
 			.getElementsByClassName('c-pagination__pages')[0]
-			.getElementsByClassName('c-pagination__btn')[buttonIndex];
+			.getElementsByClassName('c-pagination__page-button')[buttonIndex];
 
 		fireEvent.click(button);
 
@@ -155,7 +154,7 @@ describe('<Pagination />', () => {
 
 		const button = container
 			.getElementsByClassName('c-pagination__pages')[0]
-			.getElementsByClassName('c-pagination__btn')[activeIndex];
+			.getElementsByClassName('c-pagination__page-button')[activeIndex];
 
 		fireEvent.click(button);
 
@@ -166,14 +165,13 @@ describe('<Pagination />', () => {
 		const onPageChange = jest.fn();
 		const activeIndex = 2;
 		const buttonLabel = 'previous';
-		const buttons = {
-			previous: renderButton(buttonLabel),
-		};
 
 		renderPagination({
 			onPageChange,
 			currentPage: activeIndex,
-			buttons,
+			renderPreviousButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonLabel} />
+			),
 		});
 
 		const button = screen.getByText(buttonLabel);
@@ -188,14 +186,13 @@ describe('<Pagination />', () => {
 		const onPageChange = jest.fn();
 		const activeIndex = 2;
 		const buttonLabel = 'next';
-		const buttons = {
-			next: renderButton(buttonLabel),
-		};
 
 		renderPagination({
 			onPageChange,
 			currentPage: activeIndex,
-			buttons,
+			renderNextButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonLabel} />
+			),
 		});
 
 		const button = screen.getByText(buttonLabel);
@@ -209,17 +206,14 @@ describe('<Pagination />', () => {
 	it('Should be able to jump to the first page', () => {
 		const onPageChange = jest.fn();
 		const activeIndex = 2;
-		const showFirstLastButtons = true;
 		const buttonLabel = 'first';
-		const buttons = {
-			first: renderButton(buttonLabel),
-		};
 
 		renderPagination({
 			onPageChange,
 			currentPage: activeIndex,
-			buttons,
-			showFirstLastButtons,
+			renderFirstButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonLabel} />
+			),
 		});
 
 		const button = screen.getByText(buttonLabel);
@@ -234,18 +228,15 @@ describe('<Pagination />', () => {
 		const onPageChange = jest.fn();
 		const pageCount = 20;
 		const activeIndex = 2;
-		const showFirstLastButtons = true;
 		const buttonLabel = 'last';
-		const buttons = {
-			last: renderButton(buttonLabel),
-		};
 
 		renderPagination({
 			onPageChange,
 			currentPage: activeIndex,
-			buttons,
+			renderLastButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonLabel} />
+			),
 			pageCount,
-			showFirstLastButtons,
 		});
 
 		const button = screen.getByText(buttonLabel);
@@ -257,17 +248,16 @@ describe('<Pagination />', () => {
 	});
 
 	it('Should render first and last page buttons', () => {
-		const showFirstLastButtons = true;
-		const buttonLabelLast = 'last';
 		const buttonLabelFirst = 'first';
-		const buttons = {
-			last: renderButton(buttonLabelLast),
-			first: renderButton(buttonLabelFirst),
-		};
+		const buttonLabelLast = 'last';
 
 		renderPagination({
-			buttons,
-			showFirstLastButtons,
+			renderFirstButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonLabelFirst} />
+			),
+			renderLastButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonLabelLast} />
+			),
 		});
 
 		const buttonLast = screen.getByText(buttonLabelLast);
@@ -278,14 +268,10 @@ describe('<Pagination />', () => {
 	});
 
 	it('Should not render first and last page buttons by default', () => {
-		const buttonLabelLast = 'last';
 		const buttonLabelFirst = 'first';
-		const buttons = {
-			last: renderButton(buttonLabelLast),
-			first: renderButton(buttonLabelFirst),
-		};
+		const buttonLabelLast = 'last';
 
-		renderPagination({ buttons });
+		renderPagination({});
 
 		const buttonLast = screen.queryByText(buttonLabelLast);
 		const buttonFirst = screen.queryByText(buttonLabelFirst);
@@ -303,53 +289,75 @@ describe('<Pagination />', () => {
 			currentPage: activeIndex,
 			showFirstLastNumbers,
 			pageCount,
+			renderFirstButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label="first" />
+			),
+			renderLastButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label="last" />
+			),
 		});
 
-		const buttonLast = screen.getByText(7);
-		const buttonFirst = screen.getByText(5);
+		// Pages:
+		// 1 ... 5 6 7 ... 10
+		const buttonPage1 = screen.getByText(1).closest('button');
+		const buttonPage5 = screen.getByText(5).closest('button');
+		const buttonPage7 = screen.getByText(7).closest('button');
+		const buttonPage10 = screen.getByText(10).closest('button');
 
-		expect(buttonLast.nextElementSibling?.textContent).toEqual('...');
-		expect(buttonLast.nextElementSibling?.nextSibling?.textContent).toEqual(String(pageCount));
-		expect(buttonFirst.previousSibling?.textContent).toEqual('...');
-		expect(buttonFirst.previousSibling?.previousSibling?.textContent).toEqual('1');
+		expect(buttonPage1?.previousElementSibling).toBeNull();
+		expect(buttonPage1?.nextElementSibling?.textContent).toEqual('...');
+
+		expect(buttonPage5?.previousElementSibling?.textContent).toEqual('...');
+		expect(buttonPage5?.nextElementSibling?.textContent).toEqual('6');
+
+		expect(buttonPage7?.previousElementSibling?.textContent).toEqual('6');
+		expect(buttonPage7?.nextElementSibling?.textContent).toEqual('...');
+
+		expect(buttonPage10?.previousElementSibling?.textContent).toEqual('...');
+		expect(buttonPage10?.nextElementSibling).toBeNull();
 	});
 
 	it('Should not render first and last page numbers with ellipsis when they are already rendered', () => {
 		const showFirstLastNumbers = true;
-		const activeIndex = 3;
+		const currentPage = 3;
 		const pageCount = 5;
 
+		// Pages:
+		// 1 2 3 4 5
 		renderPagination({
-			activeIndex,
+			currentPage,
 			showFirstLastNumbers,
 			pageCount,
 		});
 
-		const buttonLast = screen.getByText(4);
-		const buttonFirst = screen.getByText(2);
+		const buttonFirst = screen.getByText(2).closest('button');
+		const buttonLast = screen.getByText(4).closest('button');
 
 		expect(buttonLast).toBeInTheDocument();
-		expect(buttonLast.nextSibling?.textContent).toEqual(String(pageCount));
+		expect(buttonLast?.nextSibling?.textContent).toEqual(String(pageCount));
 		expect(buttonFirst).toBeInTheDocument();
-		expect(buttonFirst.previousSibling?.textContent).toEqual('1');
+		expect(buttonFirst?.previousSibling?.textContent).toEqual('1');
 	});
 
 	it('Should render buttons', () => {
-		const showFirstLastButtons = true;
+		const buttonFirstLabel = 'First';
 		const buttonPreviousLabel = 'Previous';
 		const buttonNextLabel = 'Next';
-		const buttonFirstLabel = 'First';
 		const buttonLastLabel = 'Last';
-		const buttons = {
-			previous: renderButton(buttonPreviousLabel),
-			next: renderButton(buttonNextLabel),
-			first: renderButton(buttonFirstLabel),
-			last: renderButton(buttonLastLabel),
-		};
 
 		renderPagination({
-			showFirstLastButtons,
-			buttons,
+			renderFirstButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonFirstLabel} />
+			),
+			renderPreviousButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonPreviousLabel} />
+			),
+			renderNextButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonNextLabel} />
+			),
+			renderLastButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonLastLabel} />
+			),
 		});
 
 		const buttonPrevious = screen.getByText(buttonPreviousLabel);
@@ -365,22 +373,25 @@ describe('<Pagination />', () => {
 
 	it('Should set disabled class on back buttons when first page is active', () => {
 		const currentPage = 0;
-		const showFirstLastButtons = true;
 		const buttonPreviousLabel = 'Previous';
 		const buttonNextLabel = 'Next';
 		const buttonFirstLabel = 'First';
 		const buttonLastLabel = 'Last';
-		const buttons = {
-			previous: renderButton(buttonPreviousLabel),
-			next: renderButton(buttonNextLabel),
-			first: renderButton(buttonFirstLabel),
-			last: renderButton(buttonLastLabel),
-		};
 
 		renderPagination({
 			currentPage,
-			showFirstLastButtons,
-			buttons,
+			renderFirstButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonFirstLabel} />
+			),
+			renderPreviousButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonPreviousLabel} />
+			),
+			renderNextButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonNextLabel} />
+			),
+			renderLastButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonLastLabel} />
+			),
 		});
 
 		const buttonPrevious = screen.getByText(buttonPreviousLabel);
@@ -388,32 +399,35 @@ describe('<Pagination />', () => {
 		const buttonLast = screen.getByText(buttonLastLabel);
 		const buttonFirst = screen.getByText(buttonFirstLabel);
 
-		expect(buttonPrevious.parentElement).toHaveClass('c-pagination__btn--disabled');
-		expect(buttonNext.parentElement).not.toHaveClass('c-pagination__btn--disabled');
-		expect(buttonLast.parentElement).not.toHaveClass('c-pagination__btn--disabled');
-		expect(buttonFirst.parentElement).toHaveClass('c-pagination__btn--disabled');
+		expect(buttonPrevious.parentElement?.parentElement).toHaveClass('c-button--disabled');
+		expect(buttonNext.parentElement?.parentElement).not.toHaveClass('c-button--disabled');
+		expect(buttonLast.parentElement?.parentElement).not.toHaveClass('c-button--disabled');
+		expect(buttonFirst.parentElement?.parentElement).toHaveClass('c-button--disabled');
 	});
 
 	it('Should set disabled class on next buttons when last page is active', () => {
 		const pageCount = 10;
 		const currentPage = 9; // index
-		const showFirstLastButtons = true;
+		const buttonFirstLabel = 'First';
 		const buttonPreviousLabel = 'Previous';
 		const buttonNextLabel = 'Next';
-		const buttonFirstLabel = 'First';
 		const buttonLastLabel = 'Last';
-		const buttons = {
-			previous: renderButton(buttonPreviousLabel),
-			next: renderButton(buttonNextLabel),
-			first: renderButton(buttonFirstLabel),
-			last: renderButton(buttonLastLabel),
-		};
 
 		renderPagination({
 			currentPage,
 			pageCount,
-			showFirstLastButtons,
-			buttons,
+			renderFirstButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonFirstLabel} />
+			),
+			renderPreviousButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonPreviousLabel} />
+			),
+			renderNextButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonNextLabel} />
+			),
+			renderLastButton: (onClick, disabled) => (
+				<Button onClick={onClick} disabled={disabled} label={buttonLastLabel} />
+			),
 		});
 
 		const buttonPrevious = screen.getByText(buttonPreviousLabel);
@@ -421,9 +435,9 @@ describe('<Pagination />', () => {
 		const buttonLast = screen.getByText(buttonLastLabel);
 		const buttonFirst = screen.getByText(buttonFirstLabel);
 
-		expect(buttonPrevious.parentElement).not.toHaveClass('c-pagination__btn--disabled');
-		expect(buttonNext.parentElement).toHaveClass('c-pagination__btn--disabled');
-		expect(buttonLast.parentElement).toHaveClass('c-pagination__btn--disabled');
-		expect(buttonFirst.parentElement).not.toHaveClass('c-pagination__btn--disabled');
+		expect(buttonPrevious.parentElement?.parentElement).not.toHaveClass('c-button--disabled');
+		expect(buttonNext.parentElement?.parentElement).toHaveClass('c-button--disabled');
+		expect(buttonLast.parentElement?.parentElement).toHaveClass('c-button--disabled');
+		expect(buttonFirst.parentElement?.parentElement).not.toHaveClass('c-button--disabled');
 	});
 });

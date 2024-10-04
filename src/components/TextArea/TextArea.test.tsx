@@ -39,13 +39,13 @@ describe('components/<TextArea />', () => {
 		expect(textarea).toHaveAttribute('rows', rows.toString());
 	});
 
-	it('Should call the onChange handler on every input', () => {
+	it('Should call the onChange handler on every input', async () => {
 		const inputValue = 'My value';
 		const onChange = jest.fn();
 		renderTextArea({ onChange });
 
 		const textarea = screen.getByDisplayValue(mockValue);
-		userEvent.type(textarea, inputValue);
+		await userEvent.type(textarea, inputValue);
 		expect(onChange).toHaveBeenCalledTimes(inputValue.length);
 	});
 });

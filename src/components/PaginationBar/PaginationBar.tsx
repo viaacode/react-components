@@ -142,7 +142,6 @@ const PaginationBar: FC<PaginationBarProps> = ({
 						label={backToTopLabel}
 						iconEnd={backToTopIcon}
 						onClick={() => {
-							console.log('scrolling to top:');
 							onScrollToTop?.();
 						}}
 					/>

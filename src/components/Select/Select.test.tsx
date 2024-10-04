@@ -70,12 +70,12 @@ describe('components/<Select />', () => {
 		expect(option3).toBeInTheDocument();
 	});
 
-	it('Should call onChange when selecting an option', () => {
+	it('Should call onChange when selecting an option', async () => {
 		const onChange = jest.fn();
 		const { container } = renderSelect({ options: selectOptionsMock, onChange, value: '' });
 
 		const select = container.querySelector('.c-select__element') as HTMLSelectElement;
-		userEvent.selectOptions(select, selectOptionsMock[0].value);
+		await userEvent.selectOptions(select, selectOptionsMock[0].value);
 		expect(onChange).toHaveBeenCalledTimes(1);
 	});
 });

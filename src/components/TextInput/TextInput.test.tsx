@@ -7,8 +7,8 @@ import { TextInputProps } from './TextInput.types';
 
 const mockValue = 'Text value';
 
-const renderTextInput = ({ value = mockValue, ...rest }: TextInputProps = {}) => {
-	return render(<TextInput {...rest} value={value} />);
+const renderTextInput = ({ value = mockValue, onChange, ...rest }: TextInputProps = {}) => {
+	return render(<TextInput {...rest} value={value} onChange={onChange} />);
 };
 
 describe('components/<TextInput />', () => {
@@ -41,13 +41,13 @@ describe('components/<TextInput />', () => {
 		expect(input).toHaveAttribute('type', type);
 	});
 
-	it('Should call the onChange handler on every input', () => {
+	it('Should call the onChange handler on every input', async () => {
 		const inputValue = 'My value';
 		const onChange = jest.fn();
 		renderTextInput({ onChange });
 
 		const input = screen.getByDisplayValue(mockValue);
-		userEvent.type(input, inputValue);
+		await userEvent.type(input, inputValue);
 		expect(onChange).toHaveBeenCalledTimes(inputValue.length);
 	});
 });
