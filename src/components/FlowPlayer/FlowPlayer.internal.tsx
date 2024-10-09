@@ -9,7 +9,7 @@ import speedPlugin from '@flowplayer/player/plugins/speed';
 import subtitlesPlugin from '@flowplayer/player/plugins/subtitles';
 import clsx from 'clsx';
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { default as Scrollbar } from 'react-scrollbars-custom';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import { isNil } from '../../utils/is-nil';
 import { noop } from '../../utils/noop';
@@ -632,9 +632,9 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				{playlistItems && (
 					<div className="c-video-player__playlist__wrapper">
 						{playlistScrollable && (
-							<Scrollbar className="c-video-player__playlist__scrollable" noScrollX>
+							<PerfectScrollbar className="c-video-player__playlist__scrollable">
 								{renderPlaylistItems(playlistItems)}
-							</Scrollbar>
+							</PerfectScrollbar>
 						)}
 						{!playlistScrollable && renderPlaylistItems(playlistItems)}
 					</div>
