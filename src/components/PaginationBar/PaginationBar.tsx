@@ -37,6 +37,14 @@ const PaginationBar: FC<PaginationBarProps> = ({
 	const pageCount = Math.ceil(totalItems / itemsPerPage);
 	const currentPage = startItem / itemsPerPage;
 
+	const handleScrollToTop = () => {
+		if (onScrollToTop) {
+			onScrollToTop();
+		} else {
+			window.scrollTo(0, 0);
+		}
+	};
+
 	const renderProgress = () => {
 		const endItem = startItem + itemsPerPage;
 
@@ -141,9 +149,7 @@ const PaginationBar: FC<PaginationBarProps> = ({
 						variants={['text', 'neutral']}
 						label={backToTopLabel}
 						iconEnd={backToTopIcon}
-						onClick={() => {
-							onScrollToTop?.();
-						}}
+						onClick={handleScrollToTop}
 					/>
 				)}
 			</div>
