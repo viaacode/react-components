@@ -18,6 +18,9 @@ $c-spinner-fullscreen-holder-bg: rgba(#000, 0.5);
 $c-video-player-progress-inner-bg: $color-teal-bright;
 $fp-controls-header-width-desktop: 60px;
 $fp-controls-header-width-mobile: 50px;
+$fp-progress-bar-height: 6px;
+$fp-progress-bar-height--half: math.div($fp-progress-bar-height - 2, 2); // Compensate for the progress bar that is higher (originally 1px, now 6px)
+$fp-dragger-width: 1em; // em because flowplayer uses em units
 
 .c-video-player {
 	display: flex;
@@ -237,21 +240,19 @@ $fp-controls-header-width-mobile: 50px;
 		z-index: 0;
 	}
 
-	&.use-drag-handle .fp-controls:hover {
-		.fp-timeline {
-			height: 6px;
-		}
-
-		.dragger {
-			transform: scale(1.3);
-		}
+	.fp-timeline {
+		margin-left: 0.7rem;
 	}
 
 	.fp-progress,
 	.fp-bar,
 	.fp-buffer,
 	.fp-hover {
-		height: 6px;
+		height: $fp-progress-bar-height;
+	}
+
+	.fp-controls:hover .fp-dragger {
+		transform: scale(1.3) !important;
 	}
 
 	.fp-progress {
@@ -259,12 +260,10 @@ $fp-controls-header-width-mobile: 50px;
 	}
 
 	.fp-dragger {
-		top: -0.62rem;
-		transform: translateX(2px);
-	}
-
-	.fp-controls:hover .fp-dragger {
-		transform: scale(1.2);
+		margin-top: $fp-progress-bar-height--half;
+		transform-origin: 50% 50%;
+		right: -$fp-dragger-width / 2;
+		position: absolute;
 	}
 
 	.fp-cuepoint {
