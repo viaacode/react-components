@@ -33,7 +33,7 @@ const MenuContent: FC<MenuContentProps> = ({
 				className={rootCls}
 				onClick={() => onClick(menuItemInfo.id)}
 				tabIndex={0}
-				key={`menu-item-${menuItemInfo.id ?? index}`}
+				key={`menu-item-${menuItemInfo.key ?? menuItemInfo.id ?? index}`}
 			>
 				<div className={bem('label')}>
 					{menuItemInfo.iconStart && menuItemInfo.iconStart}
@@ -59,7 +59,7 @@ const MenuContent: FC<MenuContentProps> = ({
 								return (
 									<Fragment
 										key={`menu-item-group-${menuItems
-											.map((mi) => mi.id ?? index)
+											.map((mi) => mi.key ?? mi.id ?? index)
 											.join('-')}`}
 									>
 										{renderMenuItems(menuItems)}
@@ -70,7 +70,7 @@ const MenuContent: FC<MenuContentProps> = ({
 							return (
 								<Fragment
 									key={`menu-item-group-${menuItems
-										.map((mi) => mi.id ?? index)
+										.map((mi) => mi.key ?? mi.id ?? index)
 										.join('-')}`}
 								>
 									{renderMenuItems(menuItems)}

@@ -19,7 +19,7 @@ $c-video-player-progress-inner-bg: $color-teal-bright;
 $fp-controls-header-width-desktop: 60px;
 $fp-controls-header-width-mobile: 50px;
 $fp-progress-bar-height: 6px;
-$fp-progress-bar-height--half: math.div($fp-progress-bar-height - 2, 2); // Compensate for the progress bar that is higher (originally 1px, now 6px)
+$fp-progress-bar-height-half: math.div($fp-progress-bar-height - 2, 2); // Compensate for the progress bar that is higher (originally 1px, now 6px)
 $fp-dragger-width: 1em; // em because flowplayer uses em units
 
 .c-video-player {
@@ -260,9 +260,9 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 	}
 
 	.fp-dragger {
-		margin-top: $fp-progress-bar-height--half;
+		margin-top: $fp-progress-bar-height-half;
 		transform-origin: 50% 50%;
-		right: -$fp-dragger-width / 2;
+		right: math.div(-$fp-dragger-width, 2);
 		position: absolute;
 	}
 
