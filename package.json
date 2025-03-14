@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "4.0.34",
+  "version": "4.0.35",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -43,7 +43,7 @@
   "peerDependencies": {
     "@flowplayer/player": "3.3.0",
     "@popperjs/core": "2.11.6",
-    "@viaa/avo2-types": "3.0.15",
+    "@viaa/avo2-types": "3.0.16",
     "autosize": "6.0.1",
     "clsx": "2.0.0",
     "date-fns": "^2.16.0",
