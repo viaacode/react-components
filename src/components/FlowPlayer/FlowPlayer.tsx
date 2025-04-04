@@ -1,4 +1,4 @@
-import React, { FunctionComponent, Suspense } from 'react';
+import React, { FunctionComponent, ReactNode, Suspense } from 'react';
 
 import { Flex } from '../Flex/Flex';
 
@@ -6,13 +6,19 @@ import { FlowPlayerProps } from './FlowPlayer.types';
 
 const FlowplayerInternal = React.lazy(() => import('./FlowPlayer.internal'));
 
-export const FlowPlayer: FunctionComponent<FlowPlayerProps> = (props) => {
+export const FlowPlayer: FunctionComponent<
+	FlowPlayerProps & { renderLoader?: () => ReactNode }
+> = ({ renderLoader, ...props }) => {
 	return (
 		<Suspense
 			fallback={
-				<Flex orientation="horizontal" center>
-					Laden ...
-				</Flex>
+				renderLoader ? (
+					renderLoader()
+				) : (
+					<Flex orientation="horizontal" center>
+						Laden ...
+					</Flex>
+				)
 			}
 		>
 			<FlowplayerInternal {...props} />
