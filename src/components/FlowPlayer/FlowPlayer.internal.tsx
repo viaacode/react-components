@@ -518,10 +518,10 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	}, [player, fullscreen]);
 
 	const drawPeaksHandler = useCallback(() => {
-		if (waveformData && peakCanvas.current) {
+		if (peakCanvas.current) {
 			drawPeak(
 				peakCanvas.current,
-				waveformData || [],
+				waveformData || null,
 				player.current?.duration ? player.current.currentTime / player.current.duration : 0,
 				peakColorBackground,
 				peakColorInactive,
@@ -532,7 +532,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	}, [peakColorActive, peakColorBackground, peakColorInactive, peakHeightFactor, waveformData]);
 
 	useEffect(() => {
-		if (waveformData && peakCanvas.current) {
+		if (peakCanvas.current) {
 			if (drawPeaksTimerId) {
 				clearInterval(drawPeaksTimerId);
 			}
@@ -545,7 +545,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			}
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [waveformData, peakCanvas, setDrawPeaksTimerId]);
+	}, [peakCanvas, setDrawPeaksTimerId]);
 
 	useEffect(() => {
 		const timerId = setInterval(() => {
@@ -611,9 +611,7 @@ export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				data-player-id={dataPlayerId}
 				ref={videoContainerRef}
 			>
-				{waveformData && (
-					<canvas ref={peakCanvas} className="c-peak" width="1212" height="779" />
-				)}
+				<canvas ref={peakCanvas} className="c-peak" width="1212" height="779" />
 				{customControls}
 			</div>
 		),

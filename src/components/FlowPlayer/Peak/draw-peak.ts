@@ -1,3 +1,5 @@
+import { FALLBACK_VALUES } from './fallback-peak-values';
+
 function add(accumulator: number, a: number) {
 	return accumulator + a;
 }
@@ -12,7 +14,7 @@ function average(nums: number[]) {
 
 export function drawPeak(
 	canvas: HTMLCanvasElement,
-	waveformData: number[],
+	waveformData: number[] | null,
 	percentagePlayed: number,
 	colorBackground = '#FFFFFF',
 	colorInactivePeakLine = '#ADADAD',
@@ -21,7 +23,7 @@ export function drawPeak(
 ) {
 	const ctx = canvas.getContext('2d');
 
-	if (!ctx || !waveformData) {
+	if (!ctx) {
 		return;
 	}
 
@@ -40,17 +42,20 @@ export function drawPeak(
 
 	const half = (canvas.height || 0) / 2;
 
-	const waveFormLength = waveformData.length;
-
 	// Draw the peak bars
-	const values = [];
-	for (let barIndex = 0; barIndex < numOfBars; barIndex++) {
-		const rawDataSegment = waveformData.slice(
-			(waveFormLength / numOfBars) * barIndex,
-			((barIndex + 1) / numOfBars) * waveFormLength
-		);
-		const val = average(rawDataSegment);
-		values.push(val);
+	let values: number[] = [];
+	if (waveformData?.length) {
+		const waveFormLength = waveformData.length;
+		for (let barIndex = 0; barIndex < numOfBars; barIndex++) {
+			const rawDataSegment = waveformData.slice(
+				(waveFormLength / numOfBars) * barIndex,
+				((barIndex + 1) / numOfBars) * waveFormLength
+			);
+			const val = average(rawDataSegment);
+			values.push(val);
+		}
+	} else {
+		values = FALLBACK_VALUES;
 	}
 
 	const minVal = Math.min(...values);
