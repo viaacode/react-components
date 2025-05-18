@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "4.0.41",
+  "version": "4.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "github:viaacode/react-components",
