@@ -12,5 +12,3 @@ export const FlexItem: FunctionComponent<FlexItemProps> = ({ className, shrink, 
 		{children}
 	</div>
 );
-
-export default FlexItem;

@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React, { CSSProperties } from 'react';
 
-import Card from './Card';
+import { Card } from './Card';
 import { cardImageMock, cardTitleMock } from './__mocks__/card';
 
 export default {

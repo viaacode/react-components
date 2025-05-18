@@ -13,7 +13,7 @@ export const cardDefaultProps: CardProps = {
 	linkComponent: ({ children }) => <>{children}</>,
 };
 
-const Card: FC<CardProps> = (props) => {
+export const Card: FC<CardProps> = (props) => {
 	const {
 		children,
 		className,
@@ -112,5 +112,3 @@ const Card: FC<CardProps> = (props) => {
 		</article>
 	);
 };
-
-export default Card;

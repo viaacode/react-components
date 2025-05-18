@@ -42,7 +42,7 @@ flowplayer(
 	googleAnalyticsPlugin
 );
 
-export const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
+const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	src,
 	type,
 	poster,

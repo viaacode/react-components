@@ -1,7 +1,7 @@
 import { render, RenderResult, screen } from '@testing-library/react'; //eslint-disable-line
 import React from 'react';
 
-import Card from './Card';
+import { Card } from './Card';
 import { cardImageMock, cardTitleMock } from './__mocks__/card';
 
 const subtitle = '(1 Dec. 2021)';

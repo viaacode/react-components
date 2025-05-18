@@ -16,7 +16,7 @@ export const TextInputDefaults = {
 	onChange: () => null,
 };
 
-const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProps>(
+export const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProps>(
 	(
 		{
 			className,
@@ -90,5 +90,3 @@ const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextInputProp
 		);
 	}
 );
-
-export default TextInput;
