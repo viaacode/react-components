@@ -117,7 +117,7 @@ Audio.args = {
 		},
 	],
 	type: 'audio',
-	poster: undefined,
+	poster: 'https://placehold.co/1920x1080', // will be replaced by wave form fallback, since avo and hetarchief contain an ugly speaker poster as the poster for audio items
 	waveformData: peakJson.data,
 };
 

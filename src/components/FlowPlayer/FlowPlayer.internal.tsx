@@ -532,7 +532,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	}, [peakColorActive, peakColorBackground, peakColorInactive, peakHeightFactor, waveformData]);
 
 	useEffect(() => {
-		if (peakCanvas.current) {
+		if (peakCanvas.current && isAudio) {
 			if (drawPeaksTimerId) {
 				clearInterval(drawPeaksTimerId);
 			}

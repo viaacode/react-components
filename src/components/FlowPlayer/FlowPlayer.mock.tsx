@@ -9,8 +9,8 @@ export const MOCK_FLOW_PLAYER_PROPS: FlowPlayerProps = {
 
 export const MOCK_FLOW_PLAYER_PROPS_FULL: FlowPlayerProps = {
 	...MOCK_FLOW_PLAYER_PROPS,
-	poster: 'https://via.placeholder.com/1920x1080',
-	logo: 'https://via.placeholder.com/100x100',
+	poster: 'https://placehold.co/1920x1080',
+	logo: 'https://placehold.co/100x100',
 	metadata: ['30-12-2011', 'VRT'],
 };
 
