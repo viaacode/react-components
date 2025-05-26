@@ -80,6 +80,12 @@ export interface FlowplayerSourceItem {
 	cuepoints?: Cuepoints;
 }
 
+export interface FlowplayerCommand {
+	event: string;
+	payload?: any;
+	result?: any;
+}
+
 export type FlowplayerSourceListSchema = {
 	type: 'flowplayer/playlist';
 	items: FlowplayerSourceItem[];
