@@ -14,6 +14,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { isNil } from '../../utils/is-nil';
 import { noop } from '../../utils/noop';
 
+import { registerCommands } from './FlowPlayer.commands';
 import {
 	ALL_FLOWPLAYER_PLUGINS,
 	DELAY_BETWEEN_PLAYLIST_VIDEOS,
@@ -453,6 +454,8 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		tempPlayer.on('loadeddata', handleLoadedMetadata);
 		tempPlayer.on('timeupdate', handleTimeUpdate);
 
+		registerCommands(tempPlayer);
+
 		setPlayer(tempPlayer);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
@@ -639,7 +642,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				)}
 			</div>
 		);
-	}, [playlistItems, playlistScrollable, className, renderPlaylistItems, playerHtml]);
+	}, [isPlaylist, playlistItems, playlistScrollable, className, renderPlaylistItems, playerHtml]);
 };
 
 export default FlowPlayerInternal;
