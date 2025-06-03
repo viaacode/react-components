@@ -14,13 +14,13 @@ export default defineConfig({
 		lib: {
 			entry: resolve(__dirname, 'src/index.ts'),
 			name: '@meemoo/react-components',
-			fileName: (format, entryName) => {
+			fileName: (_, entryName) => {
 				if (entryName === 'src/index') {
-					return `index.${format === 'es' ? 'js' : 'cjs'}`;
+					return `index.js`;
 				}
-				return `${entryName}.${format === 'es' ? 'js' : 'cjs'}`;
+				return `${entryName}.js`;
 			},
-			formats: ['es', 'cjs'],
+			formats: ['es'],
 		},
 		rollupOptions: {
 			output: {
