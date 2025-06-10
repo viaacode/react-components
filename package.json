@@ -1,6 +1,7 @@
 {
   "name": "@meemoo/react-components",
   "version": "4.1.4",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {

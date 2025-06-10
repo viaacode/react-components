@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	preset: 'ts-jest/presets/js-with-ts',
 	setupFilesAfterEnv: ['<rootDir>/jest/jest.setup.js'],
 	moduleNameMapper: {
