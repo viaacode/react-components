@@ -1,9 +1,9 @@
 import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React, { useState } from 'react';
 
 import PaginationBar from './PaginationBar';
-import { PaginationBarProps } from './PaginationBar.types';
+import type { PaginationBarProps } from './PaginationBar.types';
 
 export default {
 	title: 'Components/PaginationBar',

@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 
-import { AvatarProps } from './Avatar.types';
+import type { AvatarProps } from './Avatar.types';
 import './Avatar.scss';
 
 const Avatar: FC<AvatarProps> = ({

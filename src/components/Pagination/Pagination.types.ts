@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
-import { DefaultComponentProps } from '../../types';
+import type { DefaultComponentProps } from '../../types';
 
 export interface PaginationProps extends DefaultComponentProps {
 	children?: ReactNode;

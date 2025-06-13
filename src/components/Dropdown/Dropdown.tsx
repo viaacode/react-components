@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { FC, useMemo, useState } from 'react';
+import React, { type FC, useMemo, useState } from 'react';
 import { usePopper } from 'react-popper';
 
 import { useClickOutside, useKeyPress, useSlot } from '../../hooks';
@@ -9,7 +9,7 @@ import { Menu } from '../Menu';
 
 import './Dropdown.scss';
 import { DropdownButton, DropdownContent } from './Dropdown.slots';
-import { DropdownProps } from './Dropdown.types';
+import type { DropdownProps } from './Dropdown.types';
 
 /**
  * This component provides a button that can show a flyout with some children inside of it.
@@ -97,8 +97,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		<>
 			{
 				// Wrapper element should not be tabbable
-				// but it should handle onKeyUp events bubbling up
-				// eslint-disable-next-line jsx-a11y/no-static-element-interactions
+				// But it should handle onKeyUp events bubbling up
 				<div
 					className={rootCls}
 					onClick={() => toggle()}

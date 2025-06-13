@@ -1,6 +1,6 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { type FunctionComponent, type ReactNode } from 'react';
 
-import { DefaultComponentProps } from '../../../types';
+import type { DefaultComponentProps } from '../../../types';
 
 export interface FlexItemProps extends DefaultComponentProps {
 	shrink?: boolean;
@@ -8,7 +8,7 @@ export interface FlexItemProps extends DefaultComponentProps {
 }
 
 export const FlexItem: FunctionComponent<FlexItemProps> = ({ className, shrink, children }) => (
-	<div className={className + ' o-flex__item' + (shrink ? ' o-flex__item--shrink' : '')}>
+	<div className={`${className} o-flex__item${shrink ? ' o-flex__item--shrink' : ''}`}>
 		{children}
 	</div>
 );

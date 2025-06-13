@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import React, { useEffect, useMemo } from 'react';
-import { HeaderGroup, usePagination, useSortBy, useTable } from 'react-table';
+import { type HeaderGroup, usePagination, useSortBy, useTable } from 'react-table';
 
 import { bemCls, getVariantClasses } from '../../utils';
 
 import { defaultPropGetter, defaultSortingIcons } from './Table.const';
-import { OrderDirection, TableData, TableProps } from './Table.types';
+import { OrderDirection, type TableData, type TableProps } from './Table.types';
 
 const Table = <D extends TableData>({
 	className,
@@ -83,6 +83,7 @@ const Table = <D extends TableData>({
 						{headerGroups.map((group, i) => (
 							<tr
 								{...group.getHeaderGroupProps()}
+								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 								key={i}
 								className={clsx(bem('row'), bem('row', 'header'))}
 							>
@@ -94,6 +95,7 @@ const Table = <D extends TableData>({
 											getColumnProps(column),
 											getHeaderProps(column),
 										])}
+										// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 										key={`${i}-${j}`}
 									>
 										{column.render('Header')}
@@ -105,20 +107,15 @@ const Table = <D extends TableData>({
 						))}
 					</thead>
 
-					<tbody
-						className={clsx(bem('wrapper'), bem('wrapper', 'body'))}
-						{...getTableBodyProps()}
-					>
+					<tbody className={clsx(bem('wrapper'), bem('wrapper', 'body'))} {...getTableBodyProps()}>
 						{page.map((row, i) => {
 							prepareRow(row);
 
 							return (
 								<tr
-									onClick={(e) => onRowClick && onRowClick(e, row)}
-									{...row.getRowProps([
-										{ className: trBodyClass },
-										getRowProps(row),
-									])}
+									onClick={(e) => onRowClick?.(e, row)}
+									{...row.getRowProps([{ className: trBodyClass }, getRowProps(row)])}
+									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 									key={i}
 								>
 									{row.cells.map((cell, j) => {
@@ -129,6 +126,7 @@ const Table = <D extends TableData>({
 													getColumnProps(cell.column),
 													getCellProps(cell.column),
 												])}
+												// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 												key={`${i}-${j}`}
 											>
 												{cell.render('Cell')}

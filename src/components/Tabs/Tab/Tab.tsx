@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { bemCls, getVariantClasses } from '../../../utils';
 
 import './Tab.scss';
-import { TabProps } from './Tab.types';
+import type { TabProps } from './Tab.types';
 
 const Tab: FC<TabProps> = ({
 	active,
@@ -23,7 +23,13 @@ const Tab: FC<TabProps> = ({
 	});
 
 	return (
-		<button className={rootCls} tabIndex={0} onClick={onClick} onKeyPress={onKeyPress}>
+		<button
+			type="button"
+			className={rootCls}
+			tabIndex={0}
+			onClick={onClick}
+			onKeyPress={onKeyPress}
+		>
 			{icon && <span className={bem('icon')}>{icon}</span>}
 			<span className={bem('label')}>{label}</span>
 		</button>

@@ -1,6 +1,6 @@
-import React from 'react';
+import type React from 'react';
 
-import { DefaultComponentProps } from '../../types';
+import type { DefaultComponentProps } from '../../types';
 
 export interface ColorPickerProps extends DefaultComponentProps {
 	children?: React.ReactNode;

@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { keysEnter, keysSpacebar, onKey } from '../../utils';
 import Checkbox from '../Checkbox/Checkbox';
 
 import './CheckboxList.scss';
-import { CheckboxListProps } from './CheckboxList.types';
+import type { CheckboxListProps } from './CheckboxList.types';
 
 const CheckboxList: FC<CheckboxListProps<unknown>> = ({
 	items,
@@ -21,13 +21,12 @@ const CheckboxList: FC<CheckboxListProps<unknown>> = ({
 				const isChecked = !!item.checked;
 
 				return (
-					// eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
 					<li
 						key={`c-checkbox-list--${i}--${value}`}
 						className={clsx('c-checkbox-list__item', itemClassName, {
-							['is-checked']: isChecked,
+							'is-checked': isChecked,
 						})}
-						// eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+						// biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
 						tabIndex={0}
 						onKeyDown={(e) =>
 							onKey(e, [...keysEnter, ...keysSpacebar], () => {

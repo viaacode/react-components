@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { bemCls, getVariantClasses } from '../../../utils';
 
-import { TagEvents, TagProps } from './Tag.types';
+import type { TagEvents, TagProps } from './Tag.types';
 
 const Tag: FC<TagProps> = ({
 	active,
@@ -55,6 +55,7 @@ const Tag: FC<TagProps> = ({
 
 			{isClosable && !closeButton ? (
 				<button
+					type="button"
 					className={bem('close')}
 					onClick={onTagClose}
 					onKeyPress={(e) => e.key === 'Enter' && onTagClose(e)}

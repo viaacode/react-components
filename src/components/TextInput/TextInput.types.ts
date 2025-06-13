@@ -1,6 +1,6 @@
-import { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
+import type { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 
-import { DefaultComponentProps, HTMLInputAttrs } from '../../types';
+import type { DefaultComponentProps, HTMLInputAttrs } from '../../types';
 
 export interface TextInputProps extends DefaultComponentProps, HTMLInputAttrs {
 	children?: ReactNode;

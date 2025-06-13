@@ -1,4 +1,4 @@
-import { FlowplayerCommand } from './FlowPlayer.types';
+import type { FlowplayerCommand } from './FlowPlayer.types';
 
 const MESSAGE_TYPE = 'avo.videoplayer';
 
@@ -119,7 +119,7 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 					break;
 
 				case 'get_state': {
-					let state;
+					let state: string;
 					if (videoPlayer.paused) {
 						state = 'paused';
 					} else if (videoPlayer.ended) {

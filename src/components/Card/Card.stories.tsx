@@ -1,5 +1,5 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React, { CSSProperties } from 'react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import React, { type CSSProperties } from 'react';
 
 import { Card } from './Card';
 import { cardImageMock, cardTitleMock } from './__mocks__/card';
@@ -45,14 +45,9 @@ const Template: ComponentStory<typeof Card> = (args) => {
 
 					<br />
 
-					<Card
-						{...args}
-						edge="none"
-						padding="vertical"
-						title={<b>A card with no border</b>}
-					>
-						Now that&apos;s more like it, this card has an image, a title in bold, gets
-						rid of the border and adds some much needed vertical padding
+					<Card {...args} edge="none" padding="vertical" title={<b>A card with no border</b>}>
+						Now that&apos;s more like it, this card has an image, a title in bold, gets rid of the
+						border and adds some much needed vertical padding
 					</Card>
 				</div>
 
@@ -68,9 +63,9 @@ const Template: ComponentStory<typeof Card> = (args) => {
 						subtitle="Including a subtitle"
 						toolbar="both"
 					>
-						Things keep getting better; Now we have a card that has padding on both the
-						content and image, reintroducs the border, adds a subtitle and adds
-						&quot;both&quot; in the toolbar-area
+						Things keep getting better; Now we have a card that has padding on both the content and
+						image, reintroducs the border, adds a subtitle and adds &quot;both&quot; in the
+						toolbar-area
 					</Card>
 				</div>
 
@@ -85,8 +80,7 @@ const Template: ComponentStory<typeof Card> = (args) => {
 						title="A card with padding on just the content"
 						toolbar="content"
 					>
-						Okay, maybe we&apos;d like to give our visual just that little bit of extra
-						space...
+						Okay, maybe we&apos;d like to give our visual just that little bit of extra space...
 					</Card>
 				</div>
 			</section>
@@ -108,9 +102,8 @@ const Template: ComponentStory<typeof Card> = (args) => {
 						toolbar="both + horizontal"
 					>
 						<span>
-							Aenean nec feugiat nisi. Pellentesque vel nunc sit amet augue tincidunt
-							egestas. Cras vitae molestie leo. Nullam sed arcu aliquet, porta massa
-							vel, feugiat sapien.
+							Aenean nec feugiat nisi. Pellentesque vel nunc sit amet augue tincidunt egestas. Cras
+							vitae molestie leo. Nullam sed arcu aliquet, porta massa vel, feugiat sapien.
 						</span>
 					</Card>
 				</div>
@@ -127,9 +120,8 @@ const Template: ComponentStory<typeof Card> = (args) => {
 						toolbar="content + horizontal"
 					>
 						<span>
-							Aenean nec feugiat nisi. Pellentesque vel nunc sit amet augue tincidunt
-							egestas. Cras vitae molestie leo. Nullam sed arcu aliquet, porta massa
-							vel, feugiat sapien.
+							Aenean nec feugiat nisi. Pellentesque vel nunc sit amet augue tincidunt egestas. Cras
+							vitae molestie leo. Nullam sed arcu aliquet, porta massa vel, feugiat sapien.
 						</span>
 					</Card>
 				</div>
@@ -152,9 +144,9 @@ const Template: ComponentStory<typeof Card> = (args) => {
 						title={<h2 style={h2}>A dark card</h2>}
 					>
 						<span>
-							Het Sint-Felixpakhuis is één van de meest tot de verbeelding sprekende
-							voorbeelden, van pakhuizen uit de 19e eeuw. In 1860 werd het gebouwd als
-							warenhuis voor simpele artikelen.
+							Het Sint-Felixpakhuis is één van de meest tot de verbeelding sprekende voorbeelden,
+							van pakhuizen uit de 19e eeuw. In 1860 werd het gebouwd als warenhuis voor simpele
+							artikelen.
 						</span>
 					</Card>
 				</div>
@@ -170,16 +162,14 @@ const Template: ComponentStory<typeof Card> = (args) => {
 						padding="content"
 						orientation="horizontal"
 						title={
-							<h2 style={h2}>
-								An offset card with a very long title that spans multiple lines
-							</h2>
+							<h2 style={h2}>An offset card with a very long title that spans multiple lines</h2>
 						}
 						offset
 					>
 						<span>
-							Het Museum voor Schone Kunsten Gent (MSK) is het oudste museum in
-							België. De kern van de collectie gaat terug tot 1798. Het museum is
-							gehuisvest in een verlaten deel van de binnenstad.
+							Het Museum voor Schone Kunsten Gent (MSK) is het oudste museum in België. De kern van
+							de collectie gaat terug tot 1798. Het museum is gehuisvest in een verlaten deel van de
+							binnenstad.
 						</span>
 					</Card>
 				</div>
@@ -200,16 +190,14 @@ const Template: ComponentStory<typeof Card> = (args) => {
 							</>
 						}
 						title={
-							<h2 style={h2}>
-								An offset card with a very long title that spans multiple lines
-							</h2>
+							<h2 style={h2}>An offset card with a very long title that spans multiple lines</h2>
 						}
 						offset
 					>
 						<span>
-							Het Museum voor Schone Kunsten Gent (MSK) is het oudste museum in
-							België. De kern van de collectie gaat terug tot 1798. Het museum is
-							gehuisvest in een verlaten deel van de binnenstad.
+							Het Museum voor Schone Kunsten Gent (MSK) is het oudste museum in België. De kern van
+							de collectie gaat terug tot 1798. Het museum is gehuisvest in een verlaten deel van de
+							binnenstad.
 						</span>
 					</Card>
 				</div>

@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { Fragment, FunctionComponent, ReactNode } from 'react';
+import React, { Fragment, type FunctionComponent, type ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 import { Button } from '../Button';
 
-import { PaginationProps } from './Pagination.types';
+import type { PaginationProps } from './Pagination.types';
 
 const Pagination: FunctionComponent<PaginationProps> = ({
 	className,
@@ -58,7 +58,7 @@ const Pagination: FunctionComponent<PaginationProps> = ({
 	const renderNumber = (pageIndex: number): ReactNode => {
 		return (
 			<Button
-				key={'c-pagination__page-button__' + pageIndex}
+				key={`c-pagination__page-button__${pageIndex}`}
 				className={clsx('c-pagination__page-button', {
 					'c-pagination__page-button--active': pageIndex === currentPage,
 					'c-pagination__page-button--long': pageIndex.toString().length > 3,

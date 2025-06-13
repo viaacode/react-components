@@ -1,8 +1,8 @@
-import React, { FunctionComponent, Suspense } from 'react';
+import React, { type FunctionComponent, Suspense } from 'react';
 
 import { Flex } from '../Flex/Flex';
 
-import { RichTextEditorProps } from './RichTextEditor.types';
+import type { RichTextEditorProps } from './RichTextEditor.types';
 
 /**
  * @deprecated Use RichTextEditorInternalWithInternalState instead since the full editor state isn't exposed, which should be more performant

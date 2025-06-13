@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { Button } from '../Button';
 import Pagination from '../Pagination/Pagination';
 import { PaginationProgress } from '../PaginationProgress';
 
-import { PaginationBarProps } from './PaginationBar.types';
+import type { PaginationBarProps } from './PaginationBar.types';
 
 import './PaginationBar.scss';
 

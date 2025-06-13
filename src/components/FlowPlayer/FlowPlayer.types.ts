@@ -1,8 +1,8 @@
-import { Config } from '@flowplayer/player';
-import { type Avo } from '@viaa/avo2-types';
-import { type ReactElement, type ReactNode } from 'react';
+import type { Config } from '@flowplayer/player';
+import type { Avo } from '@viaa/avo2-types';
+import type { ReactElement, ReactNode } from 'react';
 
-import { type DefaultComponentProps } from '../../types';
+import type { DefaultComponentProps } from '../../types';
 
 export type FlowplayerPlugin =
 	| 'subtitles'

@@ -1,4 +1,4 @@
-import { GoogleAnalyticsEvent } from './FlowPlayer.types';
+import type { GoogleAnalyticsEvent } from './FlowPlayer.types';
 
 export function setPlayingVideoSeekTime(seekTime: number): void {
 	const playingVideo: HTMLVideoElement | null = document.querySelector(
@@ -15,9 +15,8 @@ export function getPlayingVideoSeekTime(): number | null {
 	) as HTMLVideoElement | null;
 	if (playingVideo) {
 		return playingVideo.currentTime;
-	} else {
-		return null;
 	}
+	return null;
 }
 
 export const convertGAEventsArrayToObject = (googleAnalyticsEvents: GoogleAnalyticsEvent[]) => {

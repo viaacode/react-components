@@ -1,14 +1,19 @@
-import BraftEditor, { ControlType, EditorState, ExtendControlType, MediaType } from 'braft-editor';
+import BraftEditor, {
+	type ControlType,
+	type EditorState,
+	type ExtendControlType,
+	type MediaType,
+} from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
 import clsx from 'clsx';
-import React, { FunctionComponent, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { type FunctionComponent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { getLanguage } from './RichTextEditor.consts';
 import { getHiddenHeadingClasses, prettifyHtml } from './RichTextEditor.helpers';
 import {
 	ALL_RICH_TEXT_HEADINGS,
-	RichEditorState,
-	RichTextEditorWithInternalStateProps,
+	type RichEditorState,
+	type RichTextEditorWithInternalStateProps,
 } from './RichTextEditor.types';
 
 import './RichTextEditor.scss';
@@ -51,15 +56,15 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 			'.control-item:not(.html-edit-button)'
 		) as NodeListOf<HTMLElement>;
 		if (isHtmlView) {
-			controlItems.forEach((item: HTMLElement) => {
+			for (const item of controlItems) {
 				item.style.opacity = '0.5';
 				item.style.pointerEvents = 'none';
-			});
+			}
 		} else {
-			controlItems.forEach((item: HTMLElement) => {
+			for (const item of controlItems) {
 				item.style.opacity = '1';
 				item.style.pointerEvents = 'auto';
-			});
+			}
 		}
 	}, [isHtmlView]);
 
@@ -87,28 +92,22 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 								className: `html-edit-button ${isHtmlView ? 'active' : ''}`,
 								onClick: () => {
 									if (isHtmlView) {
-										setRichTextEditorState(
-											BraftEditor.createEditorState(prettyHtml || '')
-										);
+										setRichTextEditorState(BraftEditor.createEditorState(prettyHtml || ''));
 									}
 									setIsHtmlView((prev) => !prev);
 								},
 								disabled: false,
 							} as ExtendControlType,
-					  ]
+						]
 					: []),
-		  ] as (ControlType | ExtendControlType)[])
+			] as (ControlType | ExtendControlType)[])
 		: undefined;
 
 	return (
 		<div
-			className={clsx(
-				root,
-				className,
-				getHiddenHeadingClasses(enabledHeadings),
-				'c-content',
-				{ disabled }
-			)}
+			className={clsx(root, className, getHiddenHeadingClasses(enabledHeadings), 'c-content', {
+				disabled,
+			})}
 			id={id}
 		>
 			<BraftEditor

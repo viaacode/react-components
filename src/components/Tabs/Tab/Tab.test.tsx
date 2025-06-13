@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 
 import Tab from './Tab';
-import { TabProps } from './Tab.types';
+import type { TabProps } from './Tab.types';
 
 const mockId = 'tab-id';
 const mockLabel = 'Tab me!';

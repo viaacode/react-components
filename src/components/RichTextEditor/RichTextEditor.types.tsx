@@ -1,5 +1,5 @@
-import { BraftEditorProps } from 'braft-editor';
-import { ReactNode } from 'react';
+import type { BraftEditorProps } from 'braft-editor';
+import type { ReactNode } from 'react';
 
 export type RichTextEditorControl =
 	| 'font-size' // Text size selector

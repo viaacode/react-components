@@ -3,7 +3,7 @@ import React from 'react';
 
 import Breadcrumbs from './Breadcrumbs';
 import { MOCK_BREADCRUMBS } from './Breadcrumbs.mock';
-import { BreadcrumbsProps } from './Breadcrumbs.types';
+import type { BreadcrumbsProps } from './Breadcrumbs.types';
 
 const renderBreadcrumbs = ({ ...props }: BreadcrumbsProps) => {
 	return render(<Breadcrumbs {...props} />);

@@ -105,10 +105,9 @@ storiesOf('components/Tooltip', module)
 	.add('Tooltip dynamic position', () => (
 		<div>
 			<button
+				type="button"
 				onClick={() => {
-					const trigger = document.getElementsByClassName(
-						'c-tooltip-component-trigger'
-					)?.[0];
+					const trigger = document.getElementsByClassName('c-tooltip-component-trigger')?.[0];
 					if (trigger) {
 						(trigger as HTMLElement).style.marginLeft = '400px';
 					}

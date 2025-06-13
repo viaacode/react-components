@@ -1,9 +1,9 @@
 import { fireEvent, render } from '@testing-library/react';
-import React, { PropsWithChildren } from 'react';
+import React, { type PropsWithChildren } from 'react';
 
 import Menu from './Menu';
-import { MenuProps } from './Menu.types';
-import { MenuItemInfo } from './MenuContent';
+import type { MenuProps } from './Menu.types';
+import type { MenuItemInfo } from './MenuContent';
 import { MenuSearchResultContent } from './MenuSearchResultContent';
 import {
 	menuItems,

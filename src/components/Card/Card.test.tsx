@@ -1,4 +1,4 @@
-import { render, RenderResult, screen } from '@testing-library/react'; //eslint-disable-line
+import { type RenderResult, render, screen } from '@testing-library/react'; //eslint-disable-line
 import React from 'react';
 
 import { Card } from './Card';

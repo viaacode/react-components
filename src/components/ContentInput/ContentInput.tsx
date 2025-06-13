@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import React, {
-	FC,
+	type FC,
 	forwardRef,
-	KeyboardEvent,
-	MouseEvent,
-	ReactNode,
+	type KeyboardEvent,
+	type MouseEvent,
+	type ReactNode,
 	useCallback,
 	useState,
 } from 'react';
@@ -13,7 +13,7 @@ import { bemCls, getVariantClasses, keysEnter, keysEscape, keysSpacebar, onKey }
 import { isFunction } from '../../utils/is-function';
 import { TextInputDefaults } from '../TextInput/TextInput';
 
-import { ContentInputProps, StopPropagationObject } from './ContentInput.types';
+import type { ContentInputProps, StopPropagationObject } from './ContentInput.types';
 
 const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, ContentInputProps>(
 	(
@@ -105,14 +105,13 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 
 		const isSingleElement = (node: ReactNode) => {
 			const el = node as JSX.Element;
-			return !(el && el.props && el.props.children && el.props.children.length > 1);
+			return !(el?.props?.children && el.props.children.length > 1);
 		};
 
 		const makeInteractionObject = (func: (e: MouseEvent | KeyboardEvent) => void) => {
 			return {
 				onClick: func,
-				onKeyDown: (e: KeyboardEvent) =>
-					onKey(e, [...keysEnter, ...keysSpacebar], () => func(e)),
+				onKeyDown: (e: KeyboardEvent) => onKey(e, [...keysEnter, ...keysSpacebar], () => func(e)),
 				role: 'button',
 				tabIndex: 0,
 			};
@@ -129,7 +128,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 						? {
 								...makeInteractionObject(onOpenHandler),
 								tabIndex: disabled || editable ? -1 : 0, // Disable start & end when editable or disabled
-						  }
+							}
 						: {})}
 				>
 					{iconNode}
@@ -143,9 +142,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 						className={clsx(bem('submit'), {
 							[bem('', 'interactable')]: isSingleElement(nodeSubmit),
 						})}
-						{...(isSingleElement(nodeSubmit)
-							? makeInteractionObject(onConfirmHandler)
-							: {})}
+						{...(isSingleElement(nodeSubmit) ? makeInteractionObject(onConfirmHandler) : {})}
 						tabIndex={disabled || !editable ? -1 : 0} // Disable submit & cancel when not editable or disabled
 					>
 						{nodeSubmit}
@@ -157,9 +154,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 						className={clsx(bem('cancel'), {
 							[bem('', 'interactable')]: isSingleElement(nodeCancel),
 						})}
-						{...(isSingleElement(nodeCancel)
-							? makeInteractionObject(onCancelHandler)
-							: {})}
+						{...(isSingleElement(nodeCancel) ? makeInteractionObject(onCancelHandler) : {})}
 						tabIndex={disabled || !editable ? -1 : 0} // Disable submit & cancel when not editable or disabled
 					>
 						{nodeCancel}
@@ -189,8 +184,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					tabIndex={editable ? -1 : 0}
 					onClick={onOpenHandler}
 					onKeyDown={(e) =>
-						!editable &&
-						onKey(e, [...keysEnter, ...keysSpacebar], () => onOpenHandler(e))
+						!editable && onKey(e, [...keysEnter, ...keysSpacebar], () => onOpenHandler(e))
 					}
 					className={bem('value')}
 				>

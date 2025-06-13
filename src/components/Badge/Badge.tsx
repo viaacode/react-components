@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { getVariantClasses } from '../../utils';
 
-import { BadgeProps } from './Badge.types';
+import type { BadgeProps } from './Badge.types';
 
 const Badge: FC<BadgeProps> = ({
 	className,

@@ -1,8 +1,8 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
-import { DefaultComponentProps } from '../../types';
+import type { DefaultComponentProps } from '../../types';
 
-import { MenuItemInfo } from './MenuContent/MenuContent.types';
+import type { MenuItemInfo } from './MenuContent/MenuContent.types';
 
 export interface MenuProps extends DefaultComponentProps {
 	children?: React.ReactNode;

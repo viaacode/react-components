@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { bemCls, getVariantClasses, getVariantsArray } from '../../utils';
 
 import { Tab } from './Tab';
-import { TabsProps } from './Tabs.types';
+import type { TabsProps } from './Tabs.types';
 
 const Tabs: FC<TabsProps> = ({
 	className,

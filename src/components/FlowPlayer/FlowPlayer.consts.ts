@@ -1,4 +1,4 @@
-import { FlowplayerPlugin } from './FlowPlayer.types';
+import type { FlowplayerPlugin } from './FlowPlayer.types';
 
 export const DELAY_BETWEEN_PLAYLIST_VIDEOS = 7;
 

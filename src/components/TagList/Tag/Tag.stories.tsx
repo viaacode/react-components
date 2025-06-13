@@ -1,5 +1,5 @@
 import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 
 import Tag from './Tag';
@@ -20,12 +20,7 @@ export const CustomCloseButton = Template.bind({});
 CustomCloseButton.args = {
 	label: 'Tag 1',
 	closeButton: (
-		<div
-			role="button"
-			tabIndex={0}
-			onClick={action('Custom close button')}
-			onKeyDown={() => null}
-		>
+		<div role="button" tabIndex={0} onClick={action('Custom close button')} onKeyDown={() => null}>
 			Close
 		</div>
 	),

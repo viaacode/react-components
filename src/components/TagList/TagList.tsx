@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 // import { VariantsProp } from '../../types';
 import { bemCls, getVariantClasses, getVariantsArray } from '../../utils';
 
 import { Tag } from './Tag';
-import { TagListProps, TagOption } from './TagList.types';
+import type { TagListProps, TagOption } from './TagList.types';
 
 const TagList: FC<TagListProps> = ({
 	className,
@@ -23,10 +23,7 @@ const TagList: FC<TagListProps> = ({
 	return !!tags && !!tags.length ? (
 		<ul className={rootCls}>
 			{tags.map((tag: TagOption) => {
-				const tagVariants = [
-					...getVariantsArray(variants),
-					...getVariantsArray(tag.variants),
-				];
+				const tagVariants = [...getVariantsArray(variants), ...getVariantsArray(tag.variants)];
 
 				return (
 					<li key={tag.id} className={clsx(bem('item'))}>

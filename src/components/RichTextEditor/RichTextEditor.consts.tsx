@@ -118,5 +118,5 @@ export function getLanguage(languages: any, context: string): any {
 			},
 		};
 	}
-	return languages['nl'] || languages['en'];
+	return languages.nl || languages.en;
 }

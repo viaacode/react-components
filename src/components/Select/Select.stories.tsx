@@ -1,6 +1,13 @@
 import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React, { ChangeEvent, cloneElement, FC, ReactElement, ReactNode, useState } from 'react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import React, {
+	type ChangeEvent,
+	cloneElement,
+	type FC,
+	type ReactElement,
+	type ReactNode,
+	useState,
+} from 'react';
 
 import Select from './Select';
 import { selectOptionsMock } from './__mocks__/select';

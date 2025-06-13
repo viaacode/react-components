@@ -1,9 +1,9 @@
 import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React, { cloneElement, ReactElement, useState } from 'react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import React, { cloneElement, type ReactElement, useState } from 'react';
 
 import TagsInput from './TagsInput';
-import { TagInfo } from './TagsInput.types';
+import type { TagInfo } from './TagsInput.types';
 import { tagsInputOptionsMock } from './__mocks__/tags-input';
 
 const TagsInputStoryComponent = ({ children }: { children: ReactElement }) => {

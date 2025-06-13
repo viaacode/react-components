@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import React from 'react';
 
 import Alert from './Alert';
-import { AlertProps } from './Alert.types';
+import type { AlertProps } from './Alert.types';
 
 const mockTitle = 'Title';
 const mockContent = <p>content</p>;

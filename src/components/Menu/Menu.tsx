@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 
 import './Menu.scss';
-import { MenuProps } from './Menu.types';
+import type { MenuProps } from './Menu.types';
 import MenuContent from './MenuContent/MenuContent';
 
 const Menu: FC<MenuProps> = ({

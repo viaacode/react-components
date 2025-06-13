@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC, forwardRef, ReactNode } from 'react';
+import React, { type FC, forwardRef, type ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 import { isFunction } from '../../utils/is-function';
 
-import { TextInputProps } from './TextInput.types';
+import type { TextInputProps } from './TextInput.types';
 
 export const TextInputDefaults = {
 	disabled: false,
@@ -61,9 +61,7 @@ export const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextIn
 			<div className={rootCls}>
 				{iconStart &&
 					renderIcon(
-						isFunction(iconStart)
-							? (iconStart as () => ReactNode)()
-							: (iconStart as ReactNode),
+						isFunction(iconStart) ? (iconStart as () => ReactNode)() : (iconStart as ReactNode),
 						'start'
 					)}
 				<input
@@ -81,9 +79,7 @@ export const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextIn
 				/>
 				{iconEnd &&
 					renderIcon(
-						isFunction(iconEnd)
-							? (iconEnd as () => ReactNode)()
-							: (iconEnd as ReactNode),
+						isFunction(iconEnd) ? (iconEnd as () => ReactNode)() : (iconEnd as ReactNode),
 						'end'
 					)}
 			</div>

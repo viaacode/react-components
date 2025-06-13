@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React, { cloneElement, ReactElement, useState } from 'react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import React, { cloneElement, type ReactElement, useState } from 'react';
 
 import { Button } from '../Button';
 import { Modal } from '../Modal';
@@ -63,8 +63,8 @@ const FlowPlayerStoryComponentExternalControls = ({ children }: { children: Reac
 				onToggleFullscreen: (val: boolean) => setFullscreen(val),
 			})}
 			<br />
-			<Button label={`play/pause`} onClick={() => setPause(!pause)} />
-			<Button label={`toggle fullscreen`} onClick={() => setFullscreen(!fullscreen)} />
+			<Button label="play/pause" onClick={() => setPause(!pause)} />
+			<Button label="toggle fullscreen" onClick={() => setFullscreen(!fullscreen)} />
 		</>
 	);
 };
@@ -147,7 +147,8 @@ Thumbnail.args = MOCK_FLOW_PLAYER_PROPS_FULL;
 export const Thumbnail43 = Template.bind({});
 Thumbnail43.args = {
 	...MOCK_FLOW_PLAYER_PROPS_FULL,
-	poster: 'https://archief-media.viaa.be/viaa/TESTBEELD/70412f5bdb594b7eb7518e261ec01d57973cba5becca46dab6870d78246c4b05/keyframes/keyframes_1_1/keyframe1.jpg',
+	poster:
+		'https://archief-media.viaa.be/viaa/TESTBEELD/70412f5bdb594b7eb7518e261ec01d57973cba5becca46dab6870d78246c4b05/keyframes/keyframes_1_1/keyframe1.jpg',
 };
 
 export const NoThumbnail = Template.bind({});
@@ -261,7 +262,7 @@ export const CustomButton = Template.bind({});
 CustomButton.args = {
 	...MOCK_FLOW_PLAYER_PROPS_FULL,
 	customControls: (
-		<button style={{ zIndex: 1, backgroundColor: 'blue', position: 'fixed' }}>
+		<button type="button" style={{ zIndex: 1, backgroundColor: 'blue', position: 'fixed' }}>
 			custom button
 		</button>
 	),

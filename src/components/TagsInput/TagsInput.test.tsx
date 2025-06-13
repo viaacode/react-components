@@ -3,7 +3,7 @@ import React from 'react';
 import selectEvent from 'react-select-event';
 
 import TagsInput from './TagsInput';
-import { TagsInputProps } from './TagsInput.types';
+import type { TagsInputProps } from './TagsInput.types';
 
 const renderTagsInput = (props: TagsInputProps) => {
 	return render(<TagsInput {...props} />);

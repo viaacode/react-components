@@ -1,4 +1,4 @@
-import { RefTypes } from '../../types';
+import type { RefTypes } from '../../types';
 
 export const assignRef = <T>(ref: RefTypes<T>, newValue: T) => {
 	if (typeof ref === 'function') {
@@ -10,5 +10,9 @@ export const assignRef = <T>(ref: RefTypes<T>, newValue: T) => {
 };
 
 export const mergeRefs = <T>(refs: RefTypes<T>[]) => {
-	return (newValue: T) => refs.forEach((ref) => assignRef(ref, newValue));
+	return (newValue: T) => {
+		for (const ref of refs) {
+			assignRef(ref, newValue);
+		}
+	};
 };

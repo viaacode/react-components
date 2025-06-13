@@ -5,7 +5,7 @@ import React, { forwardRef, useEffect } from 'react';
 import { useCallbackRef } from '../../hooks';
 import { bemCls, getVariantClasses, mergeRefs } from '../../utils';
 
-import { TextAreaProps } from './TextArea.types';
+import type { TextAreaProps } from './TextArea.types';
 
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 	(
@@ -22,12 +22,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 		ref
 	) => {
 		const bem = bemCls.bind(root);
-		const rootCls = clsx(
-			className,
-			root,
-			bem('', 'textarea'),
-			getVariantClasses(root, variants)
-		);
+		const rootCls = clsx(className, root, bem('', 'textarea'), getVariantClasses(root, variants));
 
 		const [textArea, textAreaRef] = useCallbackRef<HTMLTextAreaElement>();
 

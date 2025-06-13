@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 
-import { FormControlProps } from './FormControl.types';
+import type { FormControlProps } from './FormControl.types';
 
 const FormControl: FC<FormControlProps> = ({
 	children,
@@ -36,6 +36,7 @@ const FormControl: FC<FormControlProps> = ({
 				{!!errors?.[0] && (
 					<ul className={bem('errors')}>
 						{errors.map((error, i) => (
+							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 							<li key={i}>{error}</li>
 						))}
 					</ul>

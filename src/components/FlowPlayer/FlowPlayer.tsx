@@ -1,8 +1,8 @@
-import React, { FunctionComponent, ReactNode, Suspense } from 'react';
+import React, { type FunctionComponent, type ReactNode, Suspense } from 'react';
 
 import { Flex } from '../Flex/Flex';
 
-import { FlowPlayerProps } from './FlowPlayer.types';
+import type { FlowPlayerProps } from './FlowPlayer.types';
 
 const FlowplayerInternal = React.lazy(() => import('./FlowPlayer.internal'));
 

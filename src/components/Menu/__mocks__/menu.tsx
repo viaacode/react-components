@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { MenuItemInfo } from '../MenuContent/MenuContent.types';
-import { MenuSearchResultItemInfo } from '../MenuSearchResultContent/MenuSearchResultContent.types';
+import type { MenuItemInfo } from '../MenuContent/MenuContent.types';
+import type { MenuSearchResultItemInfo } from '../MenuSearchResultContent/MenuSearchResultContent.types';
 
 export const menuItems = [
 	{ label: 'Aluminium', id: 'aluminium' },

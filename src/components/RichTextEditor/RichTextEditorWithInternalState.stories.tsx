@@ -1,11 +1,11 @@
 import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React, { cloneElement, ReactElement, useState } from 'react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import React, { cloneElement, type ReactElement, useState } from 'react';
 
 import Select from '../Select/Select';
 import { selectOptionsMock } from '../Select/__mocks__/select';
 
-import {
+import type {
 	RichTextEditorControl,
 	RichTextEditorWithInternalStateProps,
 } from './RichTextEditor.types';
@@ -103,7 +103,8 @@ export const WithInitialTable = Template.bind({});
 WithInitialTable.args = {
 	...MOCK_RICH_TEXT_EDITOR_PROPS,
 	controls: [...RICH_TEXT_EDITOR_OPTIONS, 'separator', 'table'],
-	value: '<p></p><p></p><table class="c-editor-table"><tr><td colSpan="1" rowSpan="1"><u>dit is een test</u></td><td colSpan="1" rowSpan="1"><u>dit ook</u></td><td colSpan="1" rowSpan="1"><u>ook dit</u></td></tr><tr><td colSpan="1" rowSpan="1">test</td><td colSpan="1" rowSpan="1"><strong>test</strong></td><td colSpan="1" rowSpan="1">test</td></tr><tr><td colSpan="1" rowSpan="1"></td><td colSpan="1" rowSpan="1"></td><td colSpan="1" rowSpan="1"></td></tr></table><p></p>',
+	value:
+		'<p></p><p></p><table class="c-editor-table"><tr><td colSpan="1" rowSpan="1"><u>dit is een test</u></td><td colSpan="1" rowSpan="1"><u>dit ook</u></td><td colSpan="1" rowSpan="1"><u>ook dit</u></td></tr><tr><td colSpan="1" rowSpan="1">test</td><td colSpan="1" rowSpan="1"><strong>test</strong></td><td colSpan="1" rowSpan="1">test</td></tr><tr><td colSpan="1" rowSpan="1"></td><td colSpan="1" rowSpan="1"></td><td colSpan="1" rowSpan="1"></td></tr></table><p></p>',
 };
 
 export const WithSelectAboveItZIndex = TemplateWithSelect.bind({});

@@ -2,7 +2,7 @@ import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 
 import Tag from './Tag';
-import { TagProps } from './Tag.types';
+import type { TagProps } from './Tag.types';
 
 const tagId = 'tag-id';
 const tagText = 'Tag label';
@@ -19,9 +19,9 @@ describe('components/<Tag />', () => {
 
 		const tag = container.querySelector('.c-tag');
 		expect(tag).toHaveClass(className);
-		variants.forEach((variant) => {
+		for (const variant of variants) {
 			expect(tag).toHaveClass(`c-tag--${variant}`);
-		});
+		}
 	});
 
 	it('Should be able to be set active', () => {

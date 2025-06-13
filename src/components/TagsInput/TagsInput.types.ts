@@ -1,8 +1,8 @@
-import { ReactNode } from 'react';
-import { GroupBase, Props as ReactSelectProps } from 'react-select';
-import { CreatableProps } from 'react-select/creatable';
+import type { ReactNode } from 'react';
+import type { GroupBase, Props as ReactSelectProps } from 'react-select';
+import type { CreatableProps } from 'react-select/creatable';
 
-import { DefaultComponentProps } from '../../types';
+import type { DefaultComponentProps } from '../../types';
 
 export type TagsInputProps<
 	AllowMulti extends boolean = true,

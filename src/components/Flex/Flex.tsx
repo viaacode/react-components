@@ -1,6 +1,6 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { type FunctionComponent, type ReactNode } from 'react';
 
-import { DefaultComponentProps } from '../../types';
+import type { DefaultComponentProps } from '../../types';
 
 import './Flex.scss';
 
@@ -47,7 +47,7 @@ export const Flex: FunctionComponent<FlexProps> = ({
 	];
 
 	return (
-		<div className={className + ' ' + classes.join(' ')} style={style}>
+		<div className={`${className} ${classes.join(' ')}`} style={style}>
 			{children}
 		</div>
 	);

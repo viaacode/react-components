@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import React, { cloneElement, FC, ReactElement, ReactNode, useState } from 'react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import React, { cloneElement, type FC, type ReactElement, type ReactNode, useState } from 'react';
 
 import CheckboxList from './CheckboxList';
 

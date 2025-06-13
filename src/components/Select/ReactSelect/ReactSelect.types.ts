@@ -1,6 +1,6 @@
-import { Props } from 'react-select';
+import type { Props } from 'react-select';
 
-import { DefaultComponentProps } from '../../../types';
-import { SelectOption } from '../Select.types';
+import type { DefaultComponentProps } from '../../../types';
+import type { SelectOption } from '../Select.types';
 
 export type ReactSelectProps = Omit<Props<SelectOption>, 'isMulti'> & DefaultComponentProps;

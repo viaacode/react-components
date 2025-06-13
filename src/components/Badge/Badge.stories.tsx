@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 
 import Badge from './Badge';
@@ -15,14 +15,14 @@ Default.args = {
 	text: 'Pending approval',
 };
 
-export const Success = Template.bind({});
-Success.args = {
+export const SuccessBadge = Template.bind({});
+SuccessBadge.args = {
 	text: 'Approval granted',
 	type: 'success',
 };
 
-export const Error = Template.bind({});
-Error.args = {
+export const ErrorBadge = Template.bind({});
+ErrorBadge.args = {
 	text: 'Approval denied',
 	type: 'error',
 };

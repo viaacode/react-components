@@ -3,7 +3,7 @@ import React from 'react';
 
 import Table from './Table';
 import { defaultSortingIcons } from './Table.const';
-import { TableData, TableProps } from './Table.types';
+import type { TableData, TableProps } from './Table.types';
 import { mockColumns, mockData } from './__mocks__/table';
 
 const renderTable = <T extends TableData>(props: TableProps<T>) => {
@@ -19,13 +19,13 @@ describe('<Table />', () => {
 			},
 		});
 
-		mockColumns.forEach((col) => {
+		for (const col of mockColumns) {
 			const text = col.Header as string;
 
 			if (text) {
 				expect(screen.getByText(new RegExp(text))).toBeDefined();
 			}
-		});
+		}
 	});
 
 	it('Should be able to render with items', () => {
@@ -36,7 +36,7 @@ describe('<Table />', () => {
 			},
 		});
 
-		mockData.forEach((row) => {
+		for (const row of mockData) {
 			const { name, id } = row;
 
 			if (id !== undefined) {
@@ -46,7 +46,7 @@ describe('<Table />', () => {
 			if (name) {
 				expect(screen.getByText(name)).toBeDefined();
 			}
-		});
+		}
 	});
 
 	it('Should be able to render custom cell content', () => {
@@ -57,13 +57,13 @@ describe('<Table />', () => {
 			},
 		});
 
-		mockData.forEach((row) => {
+		for (const row of mockData) {
 			const { created_at } = row;
 
 			if (created_at) {
 				expect(screen.getByText(new Date(created_at).toLocaleDateString())).toBeDefined();
 			}
-		});
+		}
 	});
 
 	it('Should render sorting icons by default', () => {
@@ -79,9 +79,9 @@ describe('<Table />', () => {
 			return !disableSortBy && Header;
 		});
 
-		expect(
-			screen.getAllByText(new RegExp(defaultSortingIcons.default as string)).length
-		).toEqual(filterableCols.length);
+		expect(screen.getAllByText(new RegExp(defaultSortingIcons.default as string)).length).toEqual(
+			filterableCols.length
+		);
 	});
 
 	it('Should communicate sorting actions through onSortChange', () => {
@@ -98,9 +98,7 @@ describe('<Table />', () => {
 		// Initial output
 		expect(onSortChange).toHaveBeenCalledTimes(1);
 
-		const filterableCol = mockColumns.find(
-			({ Header, disableSortBy }) => !disableSortBy && Header
-		);
+		const filterableCol = mockColumns.find(({ Header, disableSortBy }) => !disableSortBy && Header);
 
 		if (filterableCol) {
 			const header = screen.getByText(new RegExp(filterableCol.Header as string));
@@ -124,9 +122,7 @@ describe('<Table />', () => {
 			onSortChange,
 		});
 
-		const filterableCol = mockColumns.find(
-			({ Header, disableSortBy }) => !disableSortBy && Header
-		);
+		const filterableCol = mockColumns.find(({ Header, disableSortBy }) => !disableSortBy && Header);
 
 		if (filterableCol) {
 			const text = filterableCol.Header as string;

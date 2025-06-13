@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
-import { RefTypes } from '../../types';
+import type { RefTypes } from '../../types';
 
 import { mergeRefs } from './merge-refs';
 

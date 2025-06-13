@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import TextArea from './TextArea';
-import { TextAreaProps } from './TextArea.types';
+import type { TextAreaProps } from './TextArea.types';
 
 const mockValue = 'Text value';
 

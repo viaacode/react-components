@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 
-import { RadioButtonProps } from './RadioButton.types';
+import type { RadioButtonProps } from './RadioButton.types';
 
 const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
 	(

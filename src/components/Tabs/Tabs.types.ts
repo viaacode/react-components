@@ -1,6 +1,6 @@
-import { DefaultComponentProps } from '../../types';
+import type { DefaultComponentProps } from '../../types';
 
-import { TabProps } from './Tab';
+import type { TabProps } from './Tab';
 
 export interface TabsProps extends DefaultComponentProps {
 	children?: React.ReactNode;

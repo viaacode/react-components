@@ -1,6 +1,6 @@
-import { KeyboardEvent, MouseEvent, ReactNode } from 'react';
+import type { KeyboardEvent, MouseEvent, ReactNode } from 'react';
 
-import { DefaultComponentProps, VariantsProp } from '../../types';
+import type { DefaultComponentProps, VariantsProp } from '../../types';
 
 export interface TagOption {
 	active?: boolean;

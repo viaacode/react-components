@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
-import { PaginationProgressProps } from './PaginationProgress.types';
+import type { PaginationProgressProps } from './PaginationProgress.types';
 
 const PaginationProgress: FC<PaginationProgressProps> = ({
 	startItem,

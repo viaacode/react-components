@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC, Fragment } from 'react';
+import React, { type FC, Fragment, type ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../../utils';
 
-import { MenuContentProps, MenuItemInfo } from './MenuContent.types';
+import type { MenuContentProps, MenuItemInfo } from './MenuContent.types';
 
 import './MenuContent.scss';
 
@@ -30,6 +30,7 @@ const MenuContent: FC<MenuContentProps> = ({
 		}
 		return (
 			<button
+				type="button"
 				className={rootCls}
 				onClick={() => onClick(menuItemInfo.id)}
 				tabIndex={0}
@@ -48,7 +49,7 @@ const MenuContent: FC<MenuContentProps> = ({
 		return menuItems.map(renderMenuItem);
 	};
 
-	const renderMenuItemArrays = (menuItemArrays: MenuItemInfo[] | MenuItemInfo[][]) => {
+	const renderMenuItemArrays = (menuItemArrays: MenuItemInfo[] | MenuItemInfo[][]): ReactNode => {
 		if (menuItems.length) {
 			if (Array.isArray(menuItemArrays[0])) {
 				// Array of arrays with dividers in between
@@ -89,15 +90,15 @@ const MenuContent: FC<MenuContentProps> = ({
 		}
 		if (noResultsLabel) {
 			return (
-				<div className={bem('item')} key={`menu-item-no-results`}>
+				<div className={bem('item')} key="menu-item-no-results">
 					<div className={bem('label')}>{noResultsLabel}</div>
 				</div>
 			);
 		}
-		return <Fragment />;
+		return null;
 	};
 
-	return <Fragment>{renderMenuItemArrays(menuItems)}</Fragment>;
+	return renderMenuItemArrays(menuItems);
 };
 
 export default MenuContent;

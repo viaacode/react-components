@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React, { useState } from 'react';
 
 import ContentInput from './ContentInput';
@@ -33,9 +33,11 @@ export const CustomButtons = Template.bind({});
 CustomButtons.args = {
 	iconEnd: () => (
 		<>
-			<button>1</button>
-			<button onClick={() => console.info('test button click 2')}>2</button>
-			<button>3</button>
+			<button type="button">1</button>
+			<button type="button" onClick={() => console.info('test button click 2')}>
+				2
+			</button>
+			<button type="button">3</button>
 		</>
 	),
 	onCancel: () => console.info('cancel'),

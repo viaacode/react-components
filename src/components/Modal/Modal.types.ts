@@ -1,8 +1,8 @@
-import { CSSProperties, ReactNode } from 'react';
-import { OnAfterOpenCallback } from 'react-modal';
+import type { CSSProperties, ReactNode } from 'react';
+import type { OnAfterOpenCallback } from 'react-modal';
 
-import { DefaultComponentProps } from '../../types';
-import { ButtonProps } from '../Button';
+import type { DefaultComponentProps } from '../../types';
+import type { ButtonProps } from '../Button';
 
 export interface ModalProps extends DefaultComponentProps {
 	children?: React.ReactNode;

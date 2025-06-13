@@ -1,5 +1,5 @@
 import React from 'react';
-import { CellProps, Column } from 'react-table';
+import type { CellProps, Column } from 'react-table';
 
 export interface MockTableData {
 	id: number;
@@ -38,6 +38,6 @@ export const mockColumns: Column<MockTableData>[] = [
 	},
 	{
 		id: 'Actions',
-		Cell: <button>More</button>,
+		Cell: <button type="button">More</button>,
 	},
 ];

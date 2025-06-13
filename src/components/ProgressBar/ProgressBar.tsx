@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 import { getVariantClasses } from '../../utils';
 
-import { ProgressBarProps } from './ProgressBar.types';
+import type { ProgressBarProps } from './ProgressBar.types';
 
 import './ProgressBar.scss';
 
@@ -17,7 +17,7 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 	const roundedPercentage = Math.round(percentage);
 	return (
 		<div className={rootCls}>
-			<div className="c-progress-bar__fill" style={{ width: percentage + '%' }} />
+			<div className="c-progress-bar__fill" style={{ width: `${percentage}%` }} />
 			<span
 				className="c-progress-bar__label--dark"
 				style={{

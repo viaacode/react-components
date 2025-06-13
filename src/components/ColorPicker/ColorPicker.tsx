@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 
 import './ColorPicker.scss';
 import { bemCls, getVariantClasses } from '../../utils';
 
-import { ColorPickerProps } from './ColorPicker.types';
+import type { ColorPickerProps } from './ColorPicker.types';
 
 const ColorPicker: FC<ColorPickerProps> = ({
 	color,
@@ -28,6 +28,7 @@ const ColorPicker: FC<ColorPickerProps> = ({
 		<div className={rootCls} style={style}>
 			<div className={bem('', 'controls')}>
 				<button
+					type="button"
 					className={bem('', 'trigger')}
 					style={{ backgroundColor: color }}
 					onClick={() => setShowColorPicker((show) => !show)}
@@ -48,7 +49,11 @@ const ColorPicker: FC<ColorPickerProps> = ({
 				)}
 			</div>
 			{showColorPicker && (
-				<button className={bem('', 'underlay')} onClick={() => setShowColorPicker(false)} />
+				<button
+					type="button"
+					className={bem('', 'underlay')}
+					onClick={() => setShowColorPicker(false)}
+				/>
 			)}
 		</div>
 	);

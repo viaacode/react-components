@@ -1,8 +1,8 @@
-import { fireEvent, render, RenderOptions, screen } from '@testing-library/react';
-import React, { PropsWithChildren } from 'react';
+import { type RenderOptions, fireEvent, render, screen } from '@testing-library/react';
+import React, { type PropsWithChildren } from 'react';
 
 import Modal from './Modal';
-import { ModalProps } from './Modal.types';
+import type { ModalProps } from './Modal.types';
 
 const text = 'Title of the Modal';
 const noPadding = { padding: '' };

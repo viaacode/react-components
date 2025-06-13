@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import React, { PropsWithChildren } from 'react';
+import React, { type PropsWithChildren } from 'react';
 
 import Button from './Button';
-import { ButtonProps } from './Button.types';
+import type { ButtonProps } from './Button.types';
 
 const mockLabel = 'Click me!';
 

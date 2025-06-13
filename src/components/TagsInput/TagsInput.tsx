@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
 import { bemCls, getVariantClasses } from '../../utils';
 
-import { TagsInputGroup, TagsInputProps } from './TagsInput.types';
+import type { TagsInputGroup, TagsInputProps } from './TagsInput.types';
 
 const TagsInput = <
 	AllowMulti extends boolean = true,

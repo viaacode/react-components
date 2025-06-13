@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 import { bemCls, getVariantClasses, keysEnter, keysSpacebar, onKey } from '../../utils';
 
-import { CardProps } from './Card.types';
+import type { CardProps } from './Card.types';
 
 export const cardDefaultProps: CardProps = {
 	edge: 'zinc',
@@ -50,9 +50,8 @@ export const Card: FC<CardProps> = (props) => {
 	const wrapInLinkIfExist = (children: ReactNode | string): ReactNode => {
 		if (to) {
 			return <Link href={to}>{children}</Link>;
-		} else {
-			return children;
 		}
+		return children;
 	};
 
 	return (
@@ -64,7 +63,7 @@ export const Card: FC<CardProps> = (props) => {
 						role: 'button',
 						tabIndex: 0,
 						onKeyUp: (e) => onKey(e, [...keysSpacebar, ...keysEnter], () => onClick()),
-				  }
+					}
 				: {})}
 		>
 			{wrapInLinkIfExist(
@@ -97,15 +96,11 @@ export const Card: FC<CardProps> = (props) => {
 							</div>
 						)}
 
-						{subtitle && (
-							<div className={clsx(bem('subtitle-wrapper'))}>{subtitle}</div>
-						)}
+						{subtitle && <div className={clsx(bem('subtitle-wrapper'))}>{subtitle}</div>}
 
 						{caption && <div className={clsx(bem('subtitle-wrapper'))}>{caption}</div>}
 
-						{children && (
-							<div className={clsx(bem('children-wrapper'))}>{children}</div>
-						)}
+						{children && <div className={clsx(bem('children-wrapper'))}>{children}</div>}
 					</div>
 				)}
 			</section>

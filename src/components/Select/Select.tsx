@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React, { forwardRef, ReactNode } from 'react';
+import React, { forwardRef, type ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 
-import { SelectProps } from './Select.types';
+import type { SelectProps } from './Select.types';
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
 	(

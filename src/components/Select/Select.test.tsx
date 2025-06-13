@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import Select from './Select';
-import { SelectProps } from './Select.types';
+import type { SelectProps } from './Select.types';
 import { selectOptionsMock } from './__mocks__/select';
 
 const renderSelect = ({ ...rest }: Partial<SelectProps> = {}) => {
@@ -20,11 +20,7 @@ describe('components/<Select />', () => {
 		const select = container.querySelector('select') as HTMLSelectElement;
 		const selectContainer = select.parentElement;
 
-		expect(selectContainer).toHaveClass(
-			rootClassName,
-			className,
-			`${rootClassName}--${variants}`
-		);
+		expect(selectContainer).toHaveClass(rootClassName, className, `${rootClassName}--${variants}`);
 	});
 
 	it('Should set select specific attributes', () => {

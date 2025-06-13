@@ -1,11 +1,11 @@
 import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
-import { Column } from 'react-table';
+import type { Column } from 'react-table';
 
 import Table from './Table';
 import { defaultSortingIcons } from './Table.const';
-import { TableData } from './Table.types';
+import type { TableData } from './Table.types';
 import { mockColumns, mockData } from './__mocks__/table';
 
 export default {

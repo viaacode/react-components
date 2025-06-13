@@ -1,4 +1,4 @@
-import { CSSProperties, InputHTMLAttributes, MutableRefObject, RefCallback } from 'react';
+import type { CSSProperties, InputHTMLAttributes, MutableRefObject, RefCallback } from 'react';
 
 export interface DefaultComponentProps {
 	children?: React.ReactNode;

@@ -11,8 +11,7 @@ export function useClickOutside(
 				ref !== event.target &&
 				!ref.contains(event.target as Node) &&
 				!exemptions.some(
-					(element: Element) =>
-						element === event.target || element.contains(event.target as Node)
+					(element: Element) => element === event.target || element.contains(event.target as Node)
 				)
 			) {
 				onClickOutside(event);

@@ -1,5 +1,5 @@
-import { MouseEvent, ReactNode } from 'react';
-import {
+import type { MouseEvent, ReactNode } from 'react';
+import type {
 	ColumnInstance,
 	HeaderGroup,
 	Row,
@@ -10,7 +10,7 @@ import {
 	UsePaginationInstanceProps,
 } from 'react-table';
 
-import { DefaultComponentProps } from '../../types';
+import type { DefaultComponentProps } from '../../types';
 
 export type {
 	Column,
@@ -30,10 +30,7 @@ export interface TableProps<T extends TableData> extends DefaultComponentProps {
 	getHeaderProps?: (column: HeaderGroup<T>) => Partial<TableHeaderProps>;
 	getRowProps?: (row: Row<T>) => Partial<TableRowProps>;
 	onRowClick?: (event: MouseEvent<HTMLTableRowElement>, row: Row<T>) => void;
-	onSortChange?: (
-		sortProp: string | undefined,
-		sortDirection: OrderDirection | undefined
-	) => void;
+	onSortChange?: (sortProp: string | undefined, sortDirection: OrderDirection | undefined) => void;
 	options: TableOptions<T>;
 	pagination?: (instance: UsePaginationInstanceProps<T>) => ReactNode;
 	sortingIcons?: TableSortingIcons;

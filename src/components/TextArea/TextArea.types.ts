@@ -1,6 +1,6 @@
-import { TextareaHTMLAttributes } from 'react';
+import type { TextareaHTMLAttributes } from 'react';
 
-import { DefaultComponentProps } from '../../types';
+import type { DefaultComponentProps } from '../../types';
 
 export type HTMLTextAreaAttrs = TextareaHTMLAttributes<HTMLTextAreaElement>;
 

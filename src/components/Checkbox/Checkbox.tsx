@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import React, { FC, forwardRef } from 'react';
+import React, { type FC, forwardRef } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 import { Spinner } from '../Spinner';
 
-import { CheckboxProps } from './Checkbox.types';
+import type { CheckboxProps } from './Checkbox.types';
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 	(

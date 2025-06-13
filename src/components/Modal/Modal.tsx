@@ -1,12 +1,12 @@
 import clsx from 'clsx';
-import React, { FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 
 import { bemCls, getVariantClasses } from '../../utils';
 import { Button } from '../Button';
 
 import { MODAL_CLOSE_ICON } from './Modal.const';
-import { ModalProps } from './Modal.types';
+import type { ModalProps } from './Modal.types';
 
 const Modal: FC<ModalProps> = ({
 	children,

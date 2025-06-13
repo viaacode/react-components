@@ -1,4 +1,4 @@
-import { TagOption } from '../TagList.types';
+import type { TagOption } from '../TagList.types';
 
 export const tags: TagOption[] = [
 	{ label: 'Aluminium', id: 'aluminium' },

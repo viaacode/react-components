@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { TextInput } from './TextInput';
-import { TextInputProps } from './TextInput.types';
+import type { TextInputProps } from './TextInput.types';
 
 const mockValue = 'Text value';
 
@@ -32,7 +32,7 @@ describe('components/<TextInput />', () => {
 		const id = 'input-id';
 		const placeholder = 'placeholder';
 		const type = 'tel';
-		renderTextInput({ ['aria-label']: ariaLabel, id, placeholder, type });
+		renderTextInput({ 'aria-label': ariaLabel, id, placeholder, type });
 
 		const input = screen.queryByDisplayValue(mockValue);
 		expect(input).toHaveAttribute('aria-label', ariaLabel);

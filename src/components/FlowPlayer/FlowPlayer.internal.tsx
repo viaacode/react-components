@@ -1,4 +1,4 @@
-import flowplayer, { Player } from '@flowplayer/player';
+import flowplayer, { type Player } from '@flowplayer/player';
 import audioPlugin from '@flowplayer/player/plugins/audio';
 import cuepointsPlugin from '@flowplayer/player/plugins/cuepoints';
 import googleAnalyticsPlugin from '@flowplayer/player/plugins/google-analytics';
@@ -8,7 +8,14 @@ import playlistPlugin from '@flowplayer/player/plugins/playlist';
 import speedPlugin from '@flowplayer/player/plugins/speed';
 import subtitlesPlugin from '@flowplayer/player/plugins/subtitles';
 import clsx from 'clsx';
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+	type FunctionComponent,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import { isNil } from '../../utils/is-nil';
@@ -21,9 +28,9 @@ import {
 	dutchFlowplayerTranslations,
 } from './FlowPlayer.consts';
 import { convertGAEventsArrayToObject } from './FlowPlayer.helpers';
-import {
-	FlowplayerConfigWithPlugins,
+import type {
 	FlowPlayerProps,
+	FlowplayerConfigWithPlugins,
 	FlowplayerSourceItem,
 	FlowplayerSourceList,
 	FlowplayerSourceListSchema,
@@ -117,13 +124,13 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		titleOverlay.classList.add('a-flowplayer__title');
 		titleOverlay.appendChild(publishDiv);
 
-		if (metadata && metadata.length) {
-			metadata.forEach((metadata: string) => {
+		if (metadata?.length) {
+			for (const metadata1 of metadata) {
 				const substitleDiv = document.createElement('div');
-				substitleDiv.innerText = metadata;
+				substitleDiv.innerText = metadata1;
 				substitleDiv.classList.add('c-title-overlay__meta');
 				publishDiv.appendChild(substitleDiv);
-			});
+			}
 		}
 
 		return titleOverlay;
@@ -168,28 +175,24 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			cuePointIndicator.classList.add('fp-cuepoint');
 			timeline.prepend(cuePointIndicator);
 		}
-	}, [createLogoOverlay, createTitleOverlay, videoContainerRef]);
+	}, [createLogoOverlay, createTitleOverlay]);
 
 	/**
 	 * Jump to first cuepoint if it exists
 	 * @private
 	 */
-	const jumpToFirstCuepoint = useCallback(
-		(tempPlayer?: Player) => {
-			if (!player.current && !tempPlayer) {
-				return;
-			}
-			const flowplayerInstance = player.current || tempPlayer;
-			const startTime =
-				(flowplayerInstance.opts as FlowplayerConfigWithPlugins).cuepoints?.[0].startTime ||
-				0;
+	const jumpToFirstCuepoint = useCallback((tempPlayer?: Player) => {
+		if (!player.current && !tempPlayer) {
+			return;
+		}
+		const flowplayerInstance = player.current || tempPlayer;
+		const startTime =
+			(flowplayerInstance.opts as FlowplayerConfigWithPlugins).cuepoints?.[0].startTime || 0;
 
-			if (startTime) {
-				flowplayerInstance.currentTime = startTime;
-			}
-		},
-		[player]
-	);
+		if (startTime) {
+			flowplayerInstance.currentTime = startTime;
+		}
+	}, []);
 
 	/**
 	 * Updates the styles of the timeline cuepoint indicator according to the active cuepoint
@@ -203,15 +206,12 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			}
 
 			const cuePointIndicator: HTMLDivElement | null =
-				flowplayerInstance.parentElement.querySelector(
-					'.fp-cuepoint'
-				) as HTMLDivElement | null;
+				flowplayerInstance.parentElement.querySelector('.fp-cuepoint') as HTMLDivElement | null;
 
 			if (cuePointIndicator) {
 				let start = (flowplayerInstance.opts as FlowplayerConfigWithPlugins).cuepoints?.[0]
 					?.startTime;
-				let end = (flowplayerInstance.opts as FlowplayerConfigWithPlugins).cuepoints?.[0]
-					?.endTime;
+				let end = (flowplayerInstance.opts as FlowplayerConfigWithPlugins).cuepoints?.[0]?.endTime;
 
 				if (isNil(start) && isNil(end)) {
 					cuePointIndicator.style.display = 'none';
@@ -221,17 +221,16 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				start = start || 0;
 				end = (end || duration || 0) as number;
 
-				cuePointIndicator.style.left = Math.round((start / duration) * 100) + '%';
-				cuePointIndicator.style.width = ((end - start) / duration) * 100 + '%';
+				cuePointIndicator.style.left = `${Math.round((start / duration) * 100)}%`;
+				cuePointIndicator.style.width = `${((end - start) / duration) * 100}%`;
 				cuePointIndicator.style.display = 'block';
 			}
 		} catch (err) {
 			console.error(
-				'Failed to update cuepoint location on the flowplayer progress bar: ' +
-					JSON.stringify(err)
+				`Failed to update cuepoint location on the flowplayer progress bar: ${JSON.stringify(err)}`
 			);
 		}
-	}, [player]);
+	}, []);
 
 	/**
 	 * Sets the cuepoint config from the active item in the playlist as the cuepoint on the flowplayer
@@ -259,7 +258,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				player.current.opts.poster = playlistItem.poster;
 			}
 		},
-		[player, src]
+		[src]
 	);
 
 	const handleLoadedMetadata = () => {
@@ -325,6 +324,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		return 'metadata';
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const reInitFlowPlayer = useCallback(() => {
 		if (!videoContainerRef.current) {
 			return;
@@ -379,7 +379,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 								endTime: end,
 							},
 						],
-				  }
+					}
 				: {}),
 
 			// PLAYLIST
@@ -390,7 +390,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 							skip_controls: true,
 							delay: DELAY_BETWEEN_PLAYLIST_VIDEOS,
 						},
-				  }
+					}
 				: {}),
 
 			// SUBTITLES
@@ -399,7 +399,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 						subtitles: {
 							tracks: subtitles,
 						},
-				  }
+					}
 				: {}),
 
 			// CHROMECAST
@@ -408,7 +408,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 						chromecast: {
 							app: (flowplayer as any).chromecast.apps.STABLE,
 						},
-				  }
+					}
 				: {}),
 
 			// GOOGLE ANALYTICS
@@ -421,7 +421,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 								: {},
 							media_title: googleAnalyticsTitle || title,
 						},
-				  }
+					}
 				: {}),
 		};
 
@@ -457,7 +457,6 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		registerCommands(tempPlayer);
 
 		setPlayer(tempPlayer);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		drawCustomElements,
 		end,
@@ -484,9 +483,9 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		videoContainerRef,
 	]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		videoContainerRef.current && !player.current && reInitFlowPlayer();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [videoContainerRef]); // Only redo effect when ref changes
 
 	useEffect(() => {
@@ -502,6 +501,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		};
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (isNil(pause) || !player.current) {
 			return;
@@ -513,6 +513,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		}
 	}, [player, pause]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (isNil(fullscreen) || !player.current) {
 			return;
@@ -534,6 +535,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		}
 	}, [peakColorActive, peakColorBackground, peakColorInactive, peakHeightFactor, waveformData]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (peakCanvas.current && isAudio) {
 			if (drawPeaksTimerId) {
@@ -547,9 +549,9 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				clearInterval(drawPeaksTimerId);
 			}
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [peakCanvas, setDrawPeaksTimerId]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const timerId = setInterval(() => {
 			updateCuepointPosition();
@@ -558,9 +560,9 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		return () => {
 			clearInterval(timerId);
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const handleMediaCardClicked = useCallback(
 		(itemIndex: number): void => {
 			setActiveItemIndex(itemIndex);
@@ -571,10 +573,10 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 			updateCuepointPosition();
 		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[player, updateCuepointPosition]
+		[updateCuepointPosition]
 	);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const renderPlaylistItems = useCallback(
 		(playlistItems: FlowplayerSourceList['items']) => {
 			return (
@@ -582,15 +584,10 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 					{playlistItems.map((item: FlowplayerSourceItem, itemIndex) => {
 						return (
 							<li
-								key={item.src + '--' + itemIndex}
-								className={
-									'c-video-player__playlist__item' +
-									(activeItemIndex === itemIndex
-										? ' c-video-player__playlist__item--active'
-										: '')
-								}
+								key={`${item.src}--${itemIndex}`}
+								className={`c-video-player__playlist__item${activeItemIndex === itemIndex ? ' c-video-player__playlist__item--active' : ''}`}
 							>
-								<button onClick={() => handleMediaCardClicked(itemIndex)}>
+								<button type="button" onClick={() => handleMediaCardClicked(itemIndex)}>
 									{renderPlaylistTile?.(item) || item.title}
 								</button>
 							</li>
@@ -599,17 +596,17 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				</ul>
 			);
 		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[handleMediaCardClicked, activeItemIndex]
 	);
 
 	const playlistItems = useMemo(() => (src as FlowplayerSourceListSchema)?.items, [src]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const playerHtml = useMemo(
 		() => (
 			<div
 				className={clsx('c-video-player-inner', {
-					['c-video-player-inner--audio']: isAudio,
+					'c-video-player-inner--audio': isAudio,
 				})}
 				data-player-id={dataPlayerId}
 				ref={videoContainerRef}
@@ -618,7 +615,6 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				{customControls}
 			</div>
 		),
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[dataPlayerId]
 	);
 
@@ -626,7 +622,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		return (
 			<div
 				className={clsx(className, 'c-video-player', {
-					['c-video-player--playlist']: isPlaylist,
+					'c-video-player--playlist': isPlaylist,
 				})}
 			>
 				{playerHtml}

@@ -1,6 +1,6 @@
-import { ButtonHTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
+import type { ButtonHTMLAttributes, ReactNode, RefAttributes, RefObject } from 'react';
 
-import { DefaultComponentProps } from '../../types';
+import type { DefaultComponentProps } from '../../types';
 
 type HTMLButtonAttrs = ButtonHTMLAttributes<HTMLButtonElement>;
 
