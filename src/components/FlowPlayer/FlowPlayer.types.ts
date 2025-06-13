@@ -82,6 +82,7 @@ export interface FlowplayerSourceItem {
 
 export interface FlowplayerCommand {
 	event: string;
+	id: string | undefined; // Same id as received to confirm handling of the command
 	payload?: any;
 	result?: any;
 }

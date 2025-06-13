@@ -22,27 +22,41 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 				case 'initialize':
 					// Notify the parent window of future state changes in the video player.
 					videoPlayer.addEventListener('play', () =>
-						sendMessage({ event: 'state_change', payload: { state: 'playing' } })
+						sendMessage({
+							event: 'state_change',
+							id: message.id,
+							payload: { state: 'playing' },
+						})
 					);
 
 					videoPlayer.addEventListener('pause', () =>
-						sendMessage({ event: 'state_change', payload: { state: 'paused' } })
+						sendMessage({
+							event: 'state_change',
+							id: message.id,
+							payload: { state: 'paused' },
+						})
 					);
 
 					videoPlayer.addEventListener('ended', () =>
-						sendMessage({ event: 'state_change', payload: { state: 'ended' } })
+						sendMessage({
+							event: 'state_change',
+							id: message.id,
+							payload: { state: 'ended' },
+						})
 					);
 
 					videoPlayer.addEventListener('error', () =>
 						sendMessage({
 							event: 'error',
+							id: message.id,
+
 							payload: { code: 'unknown', error: 'error' },
 						})
 					);
 
 					// Confirm that the player is initialized and ready to accept
 					// further commands.
-					sendMessage({ event: 'initialized', result: {} });
+					sendMessage({ event: 'initialized', id: message.id, result: {} });
 					break;
 
 				case 'play':
@@ -57,6 +71,7 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 					videoPlayer.currentTime = message.payload.currentTime;
 					sendMessage({
 						event: message.command,
+						id: message.id,
 						result: { currentTime: videoPlayer.currentTime },
 					});
 					break;
@@ -65,6 +80,7 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 					videoPlayer.playbackRate = message.payload.playbackRate;
 					sendMessage({
 						event: message.command,
+						id: message.id,
 						result: { playbackRate: videoPlayer.playbackRate },
 					});
 					break;
@@ -72,6 +88,7 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 				case 'get_current_time':
 					sendMessage({
 						event: message.command,
+						id: message.id,
 						result: { currentTime: videoPlayer.currentTime },
 					});
 					break;
@@ -79,18 +96,24 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 				case 'get_playback_rate':
 					sendMessage({
 						event: message.command,
+						id: message.id,
 						result: { playbackRate: videoPlayer.playbackRate },
 					});
 					break;
 
 				case 'set_muted':
 					videoPlayer.muted = message.payload.muted;
-					sendMessage({ event: message.command, result: { muted: videoPlayer.muted } });
+					sendMessage({
+						event: message.command,
+						id: message.id,
+						result: { muted: videoPlayer.muted },
+					});
 					break;
 
 				case 'get_duration':
 					sendMessage({
 						event: message.command,
+						id: message.id,
 						result: { duration: videoPlayer.duration },
 					});
 					break;
@@ -104,7 +127,11 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 					} else {
 						state = 'playing';
 					}
-					sendMessage({ event: message.command, result: { state: state } });
+					sendMessage({
+						event: message.command,
+						id: message.id,
+						result: { state: state },
+					});
 					break;
 				}
 
@@ -118,5 +145,5 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 
 	// Notify the parent window that the player is ready to
 	// accept the `initialize` command.
-	sendMessage({ event: 'ready' });
+	sendMessage({ event: 'ready', id: undefined });
 }
