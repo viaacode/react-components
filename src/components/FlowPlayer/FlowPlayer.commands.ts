@@ -9,6 +9,13 @@ function sendMessage(message: FlowplayerCommand) {
 	window.parent.postMessage({ _type: MESSAGE_TYPE, ...message }, '*');
 }
 
+async function initializeVideo(videoPlayer: HTMLVideoElement) {
+	videoPlayer.muted = true;
+	await videoPlayer.play();
+	videoPlayer.pause();
+	videoPlayer.muted = false;
+}
+
 export function registerCommands(videoPlayer: HTMLVideoElement): void {
 	// Listen and respond to commands from the parent window.
 	window.addEventListener('message', async (event) => {
@@ -20,6 +27,8 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 		try {
 			switch (message.command) {
 				case 'initialize':
+					await initializeVideo(videoPlayer);
+
 					// Notify the parent window of future state changes in the video player.
 					videoPlayer.addEventListener('play', () =>
 						sendMessage({
@@ -60,7 +69,7 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 					break;
 
 				case 'play':
-					videoPlayer.play();
+					await videoPlayer.play();
 					break;
 
 				case 'pause':
@@ -142,6 +151,7 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 			console.error(error);
 		}
 	});
+
 
 	// Notify the parent window that the player is ready to
 	// accept the `initialize` command.
