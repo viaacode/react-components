@@ -251,6 +251,11 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 		height: $fp-progress-bar-height;
 	}
 
+
+	.fp-controls-hidden {
+		display: none;
+	}
+
 	.fp-controls:hover .fp-dragger {
 		transform: scale(1.3) !important;
 	}
