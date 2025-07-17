@@ -9,11 +9,30 @@ function sendMessage(message: FlowplayerCommand) {
 	window.parent.postMessage({ _type: MESSAGE_TYPE, ...message }, '*');
 }
 
-async function initializeVideo(videoPlayer: HTMLVideoElement) {
+function toggleVideoControls(showControls: boolean) {
+	// Not using videoPlayer.controls because the flowPlayer hides those by default and shows its own set of controls
+	// If we would use videoPlayer.controls = showControls, we would see 2 different sets
+
+	// we are hiding .fp-controls since they contain the controls itself
+	// we are hiding .fp-middle to avoid the possibility to click on the video to play/pause the video directly
+	const flowPlayerElements = document.querySelectorAll('.fp-controls, .fp-middle');
+
+	flowPlayerElements.forEach(flowPlayerElement => {
+		if (showControls) {
+			flowPlayerElement.classList.remove('fp-controls-hidden');
+		} else {
+			flowPlayerElement.classList.add('fp-controls-hidden');
+		}
+	})
+}
+
+async function initializeVideo(videoPlayer: HTMLVideoElement, payload: any) {
 	videoPlayer.muted = true;
 	await videoPlayer.play();
 	videoPlayer.pause();
 	videoPlayer.muted = false;
+
+	toggleVideoControls(!!payload.controls)
 }
 
 export function registerCommands(videoPlayer: HTMLVideoElement): void {
@@ -27,7 +46,7 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 		try {
 			switch (message.command) {
 				case 'initialize':
-					await initializeVideo(videoPlayer);
+					await initializeVideo(videoPlayer, message.payload);
 
 					// Notify the parent window of future state changes in the video player.
 					videoPlayer.addEventListener('play', () =>
@@ -119,6 +138,17 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 					});
 					break;
 
+				case 'set_controls':
+					const showControls = message.payload.controls;
+					toggleVideoControls(showControls)
+
+					sendMessage({
+						event: message.command,
+						id: message.id,
+						result: { controls: showControls },
+					});
+					break;
+
 				case 'get_duration':
 					sendMessage({
 						event: message.command,
@@ -151,7 +181,6 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 			console.error(error);
 		}
 	});
-
 
 	// Notify the parent window that the player is ready to
 	// accept the `initialize` command.
