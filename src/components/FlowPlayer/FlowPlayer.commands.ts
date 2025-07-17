@@ -17,13 +17,13 @@ function toggleVideoControls(showControls: boolean) {
 	// we are hiding .fp-middle to avoid the possibility to click on the video to play/pause the video directly
 	const flowPlayerElements = document.querySelectorAll('.fp-controls, .fp-middle');
 
-	flowPlayerElements.forEach(flowPlayerElement => {
+	for (const flowPlayerElement of flowPlayerElements) {
 		if (showControls) {
 			flowPlayerElement.classList.remove('fp-controls-hidden');
 		} else {
 			flowPlayerElement.classList.add('fp-controls-hidden');
 		}
-	})
+	}
 }
 
 async function initializeVideo(videoPlayer: HTMLVideoElement, payload: any) {
@@ -32,7 +32,7 @@ async function initializeVideo(videoPlayer: HTMLVideoElement, payload: any) {
 	videoPlayer.pause();
 	videoPlayer.muted = false;
 
-	toggleVideoControls(!!payload.controls)
+	toggleVideoControls(!!payload.controls);
 }
 
 export function registerCommands(videoPlayer: HTMLVideoElement): void {
@@ -138,9 +138,9 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 					});
 					break;
 
-				case 'set_controls':
+				case 'set_controls': {
 					const showControls = message.payload.controls;
-					toggleVideoControls(showControls)
+					toggleVideoControls(showControls);
 
 					sendMessage({
 						event: message.command,
@@ -148,6 +148,7 @@ export function registerCommands(videoPlayer: HTMLVideoElement): void {
 						result: { controls: showControls },
 					});
 					break;
+				}
 
 				case 'get_duration':
 					sendMessage({
