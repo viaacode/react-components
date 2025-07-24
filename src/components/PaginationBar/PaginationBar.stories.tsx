@@ -1,25 +1,16 @@
-import { action } from '@storybook/addon-actions';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+import { action } from 'storybook/actions';
 
 import PaginationBar from './PaginationBar';
 import type { PaginationBarProps } from './PaginationBar.types';
 
-export default {
+const meta: Meta<typeof PaginationBar> = {
 	title: 'Components/PaginationBar',
 	component: PaginationBar,
-} as ComponentMeta<typeof PaginationBar>;
-
-const Template: ComponentStory<typeof PaginationBar> = (args) => {
-	const [startItem, setStartItem] = useState(args.startItem);
-
-	const handlePageChange = (newPage: number) => {
-		setStartItem(newPage * args.itemsPerPage);
-		action('pagechange')(newPage);
-	};
-
-	return <PaginationBar {...args} startItem={startItem} onPageChange={handlePageChange} />;
 };
+export default meta;
+type Story = StoryObj<typeof PaginationBar>;
 
 const DEFAULT_PROPS: Partial<PaginationBarProps> = {
 	startItem: 0,
@@ -34,20 +25,37 @@ const DEFAULT_PROPS: Partial<PaginationBarProps> = {
 	backToTopIcon: <p>backtotopicon</p>,
 };
 
-export const Default = Template.bind({});
-Default.args = {
-	...DEFAULT_PROPS,
+const PaginationBarTemplate = (args: any) => {
+	const [startItem, setStartItem] = useState(args.startItem);
+
+	const handlePageChange = (newPage: number) => {
+		setStartItem(newPage * args.itemsPerPage);
+		action('pagechange')(newPage);
+	};
+
+	return <PaginationBar {...args} startItem={startItem} onPageChange={handlePageChange} />;
 };
 
-export const WithFirstAndLast = Template.bind({});
-WithFirstAndLast.args = {
-	...DEFAULT_PROPS,
-	showFirstAndLastButtons: true,
+export const Default: Story = {
+	args: {
+		...DEFAULT_PROPS,
+	},
+	render: PaginationBarTemplate,
 };
 
-export const NoLabels = Template.bind({});
-NoLabels.args = {
-	...DEFAULT_PROPS,
-	showFirstAndLastButtons: true,
-	showButtonLabels: false,
+export const WithFirstAndLast: Story = {
+	args: {
+		...DEFAULT_PROPS,
+		showFirstAndLastButtons: true,
+	},
+	render: PaginationBarTemplate,
+};
+
+export const NoLabels: Story = {
+	args: {
+		...DEFAULT_PROPS,
+		showFirstAndLastButtons: true,
+		showButtonLabels: false,
+	},
+	render: PaginationBarTemplate,
 };

@@ -1,18 +1,19 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import Breadcrumbs from './Breadcrumbs';
 import { MOCK_BREADCRUMBS } from './Breadcrumbs.mock';
 
-export default {
+const meta: Meta<typeof Breadcrumbs> = {
 	title: 'Components/Breadcrumbs',
 	component: Breadcrumbs,
-} as ComponentMeta<typeof Breadcrumbs>;
+};
+export default meta;
+type Story = StoryObj<typeof Breadcrumbs>;
 
-const Template: ComponentStory<typeof Breadcrumbs> = (args) => <Breadcrumbs {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-	icon: <span>-</span>,
-	items: MOCK_BREADCRUMBS,
+export const Default: Story = {
+	args: {
+		icon: <span>-</span>,
+		items: MOCK_BREADCRUMBS,
+	},
 };

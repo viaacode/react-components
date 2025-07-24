@@ -1,24 +1,25 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { TextInput } from './TextInput';
 
-export default {
+const meta: Meta<typeof TextInput> = {
 	title: 'Components/TextInput',
 	component: TextInput,
-} as ComponentMeta<typeof TextInput>;
+};
+export default meta;
+type Story = StoryObj<typeof TextInput>;
 
-const Template: ComponentStory<typeof TextInput> = (args) => <TextInput {...args} />;
+export const Default: Story = {
+	args: {},
+};
 
-const TabOrderTemplate: ComponentStory<typeof TextInput> = (args) => (
-	<>
-		<TextInput {...args} />
-		<TextInput {...args} />
-	</>
-);
-
-export const Default = Template.bind({});
-Default.args = {};
-
-export const TabOrder = TabOrderTemplate.bind({});
-TabOrder.args = {};
+export const TabOrder: Story = {
+	render: (args) => (
+		<>
+			<TextInput {...args} />
+			<TextInput {...args} />
+		</>
+	),
+	args: {},
+};

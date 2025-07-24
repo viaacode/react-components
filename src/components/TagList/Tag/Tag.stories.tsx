@@ -1,27 +1,34 @@
-import { action } from '@storybook/addon-actions';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { action } from 'storybook/actions';
 
 import Tag from './Tag';
 
-export default {
+const meta: Meta<typeof Tag> = {
 	title: 'Components/Tag',
 	component: Tag,
-} as ComponentMeta<typeof Tag>;
+};
+export default meta;
+type Story = StoryObj<typeof Tag>;
 
-const Template: ComponentStory<typeof Tag> = (args) => <Tag {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-	label: 'Tag 1',
+export const Default: Story = {
+	args: {
+		label: 'Tag 1',
+	},
 };
 
-export const CustomCloseButton = Template.bind({});
-CustomCloseButton.args = {
-	label: 'Tag 1',
-	closeButton: (
-		<div role="button" tabIndex={0} onClick={action('Custom close button')} onKeyDown={() => null}>
-			Close
-		</div>
-	),
+export const CustomCloseButton: Story = {
+	args: {
+		label: 'Tag 1',
+		closeButton: (
+			<div
+				role="button"
+				tabIndex={0}
+				onClick={action('Custom close button')}
+				onKeyDown={() => null}
+			>
+				Close
+			</div>
+		),
+	},
 };

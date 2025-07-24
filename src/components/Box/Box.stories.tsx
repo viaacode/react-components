@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { loremIpsum } from 'lorem-ipsum';
 import React from 'react';
 
@@ -6,12 +6,14 @@ import Box from './Box';
 
 const content = loremIpsum({ count: 10 });
 
-export default {
+const meta: Meta<typeof Box> = {
 	title: 'Components/Box',
 	component: Box,
-} as ComponentMeta<typeof Box>;
+};
+export default meta;
+type Story = StoryObj<typeof Box>;
 
-const Template: ComponentStory<typeof Box> = (args) => <Box {...args}>{content}</Box>;
-
-export const Default = Template.bind({});
-Default.args = {};
+export const Default: Story = {
+	render: (args) => <Box {...args}>{content}</Box>,
+	args: {},
+};

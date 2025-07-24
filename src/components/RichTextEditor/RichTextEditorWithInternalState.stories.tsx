@@ -1,10 +1,9 @@
-import { action } from '@storybook/addon-actions';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { cloneElement, type ReactElement, useState } from 'react';
+import { action } from 'storybook/actions';
 
 import Select from '../Select/Select';
 import { selectOptionsMock } from '../Select/__mocks__/select';
-
 import type {
 	RichTextEditorControl,
 	RichTextEditorWithInternalStateProps,
@@ -43,82 +42,101 @@ const RichTextEditorWithInternalStateStoryComponent = ({
 
 	return cloneElement(children, {
 		value,
-		onChange: (newHtml: string) => {
-			action('onChange')(newHtml);
-			setValue(newHtml);
+		onChange: (newValue: string) => {
+			action('onChange')(newValue);
+			setValue(newValue);
 		},
 	});
 };
 
-export default {
+const meta: Meta<typeof RichTextEditorWithInternalState> = {
 	title: 'Components/RichTextEditorWithInternalState',
 	component: RichTextEditorWithInternalState,
-} as ComponentMeta<typeof RichTextEditorWithInternalState>;
+};
+export default meta;
+type Story = StoryObj<typeof RichTextEditorWithInternalState>;
 
-const Template: ComponentStory<typeof RichTextEditorWithInternalState> = (args) => (
+const Template = (args: any) => (
 	<RichTextEditorWithInternalStateStoryComponent {...args}>
 		<RichTextEditorWithInternalState {...args} />
 	</RichTextEditorWithInternalStateStoryComponent>
 );
 
-const TemplateWithSelect: ComponentStory<typeof RichTextEditorWithInternalState> = (args) => (
+const TemplateWithSelect = (args: any) => (
 	<>
 		<div style={{ marginBottom: '5px' }}>
 			<Select options={selectOptionsMock} />
 		</div>
-
-		<RichTextEditorWithInternalStateStoryComponent>
+		<RichTextEditorWithInternalStateStoryComponent {...args}>
 			<RichTextEditorWithInternalState {...args} />
 		</RichTextEditorWithInternalStateStoryComponent>
 	</>
 );
 
-export const Default = Template.bind({});
-Default.args = MOCK_RICH_TEXT_EDITOR_PROPS;
-
-export const Placeholder = Template.bind({});
-Placeholder.args = {
-	placeholder: 'Start typing here...',
+export const Default: Story = {
+	args: MOCK_RICH_TEXT_EDITOR_PROPS,
+	render: Template,
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-	...MOCK_RICH_TEXT_EDITOR_PROPS,
-	disabled: true,
+export const Placeholder: Story = {
+	args: {
+		placeholder: 'Start typing here...',
+	},
+	render: Template,
 };
 
-export const WithLimitedButtons = Template.bind({});
-WithLimitedButtons.args = {
-	...MOCK_RICH_TEXT_EDITOR_PROPS,
-	controls: RICH_TEXT_EDITOR_OPTIONS,
+export const Disabled: Story = {
+	args: {
+		...MOCK_RICH_TEXT_EDITOR_PROPS,
+		disabled: true,
+	},
+	render: Template,
 };
 
-export const WithTableButton = Template.bind({});
-WithTableButton.args = {
-	...MOCK_RICH_TEXT_EDITOR_PROPS,
-	controls: [...RICH_TEXT_EDITOR_OPTIONS, 'separator', 'table'],
+export const WithLimitedButtons: Story = {
+	args: {
+		...MOCK_RICH_TEXT_EDITOR_PROPS,
+		controls: RICH_TEXT_EDITOR_OPTIONS,
+	},
+	render: Template,
 };
 
-export const WithInitialTable = Template.bind({});
-WithInitialTable.args = {
-	...MOCK_RICH_TEXT_EDITOR_PROPS,
-	controls: [...RICH_TEXT_EDITOR_OPTIONS, 'separator', 'table'],
-	value:
-		'<p></p><p></p><table class="c-editor-table"><tr><td colSpan="1" rowSpan="1"><u>dit is een test</u></td><td colSpan="1" rowSpan="1"><u>dit ook</u></td><td colSpan="1" rowSpan="1"><u>ook dit</u></td></tr><tr><td colSpan="1" rowSpan="1">test</td><td colSpan="1" rowSpan="1"><strong>test</strong></td><td colSpan="1" rowSpan="1">test</td></tr><tr><td colSpan="1" rowSpan="1"></td><td colSpan="1" rowSpan="1"></td><td colSpan="1" rowSpan="1"></td></tr></table><p></p>',
+export const WithTableButton: Story = {
+	args: {
+		...MOCK_RICH_TEXT_EDITOR_PROPS,
+		controls: [...RICH_TEXT_EDITOR_OPTIONS, 'separator', 'table'],
+	},
+	render: Template,
 };
 
-export const WithSelectAboveItZIndex = TemplateWithSelect.bind({});
-WithSelectAboveItZIndex.args = {
-	controls: RICH_TEXT_EDITOR_OPTIONS,
+export const WithInitialTable: Story = {
+	args: {
+		...MOCK_RICH_TEXT_EDITOR_PROPS,
+		controls: [...RICH_TEXT_EDITOR_OPTIONS, 'separator', 'table'],
+		value:
+			'<p></p><p></p><table class="c-editor-table"><tr><td colSpan="1" rowSpan="1"><u>dit is een test</u></td><td colSpan="1" rowSpan="1"><u>dit ook</u></td><td colSpan="1" rowSpan="1"><u>ook dit</u></td></tr><tr><td colSpan="1" rowSpan="1">test</td><td colSpan="1" rowSpan="1"><strong>test</strong></td><td colSpan="1" rowSpan="1">test</td></tr><tr><td colSpan="1" rowSpan="1"></td><td colSpan="1" rowSpan="1"></td><td colSpan="1" rowSpan="1"></td></tr></table><p></p>',
+	},
+	render: Template,
 };
 
-export const WithLimitedHeadings = Template.bind({});
-WithLimitedHeadings.args = {
-	enabledHeadings: ['h3', 'h4', 'h6'],
+export const WithSelectAboveItZIndex: Story = {
+	args: {
+		controls: RICH_TEXT_EDITOR_OPTIONS,
+	},
+	render: TemplateWithSelect,
 };
 
-export const WithHtmlView = Template.bind({});
-WithHtmlView.args = {
-	...MOCK_RICH_TEXT_EDITOR_PROPS,
-	controls: [...RICH_TEXT_EDITOR_OPTIONS, 'separator', 'editHtml'],
+export const WithLimitedHeadings: Story = {
+	args: {
+		enabledHeadings: ['h3', 'h4', 'h6'],
+	},
+	render: Template,
+};
+
+export const WithHtmlView: Story = {
+	args: {
+		...MOCK_RICH_TEXT_EDITOR_PROPS,
+		controls: [...RICH_TEXT_EDITOR_OPTIONS, 'separator', 'editHtml'],
+	},
+	render: Template,
 };

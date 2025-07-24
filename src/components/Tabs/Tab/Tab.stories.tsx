@@ -1,30 +1,32 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import Tab from './Tab';
 
-export default {
+const meta: Meta<typeof Tab> = {
 	title: 'Components/Tab',
 	component: Tab,
-} as ComponentMeta<typeof Tab>;
+};
+export default meta;
+type Story = StoryObj<typeof Tab>;
 
-const Template: ComponentStory<typeof Tab> = (args) => <Tab {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-	id: 'tab-id',
-	label: 'Tab me!',
-	active: false,
+export const Default: Story = {
+	args: {
+		id: 'tab-id',
+		label: 'Tab me!',
+		active: false,
+	},
 };
 
-export const WithCustomLabel = Template.bind({});
-WithCustomLabel.args = {
-	id: 'tab-id',
-	label: (
-		<>
-			<strong>Strong tag</strong>
-			<small>small tag</small>
-		</>
-	),
-	active: false,
+export const WithCustomLabel: Story = {
+	args: {
+		id: 'tab-id',
+		label: (
+			<>
+				<strong>Strong tag</strong>
+				<small>small tag</small>
+			</>
+		),
+		active: false,
+	},
 };

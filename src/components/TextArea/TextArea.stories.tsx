@@ -1,14 +1,14 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import TextArea from './TextArea';
 
-export default {
+const meta: Meta<typeof TextArea> = {
 	title: 'Components/TextArea',
 	component: TextArea,
-} as ComponentMeta<typeof TextArea>;
+};
+export default meta;
+type Story = StoryObj<typeof TextArea>;
 
-const Template: ComponentStory<typeof TextArea> = (args) => <TextArea {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {};
+export const Default: Story = {
+	args: {},
+};

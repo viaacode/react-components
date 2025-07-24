@@ -1,17 +1,19 @@
-import { action } from '@storybook/addon-actions';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { cloneElement, type FC, type ReactElement, type ReactNode, useState } from 'react';
 import type { ActionMeta, OnChangeValue } from 'react-select';
+import { action } from 'storybook/actions';
 
 import type { SelectOption } from '../Select.types';
 import { selectOptionsMock } from '../__mocks__/select';
 
 import ReactSelect from './ReactSelect';
 
-export default {
-	title: 'Components/ReactSelect',
+const meta: Meta<typeof ReactSelect> = {
 	component: ReactSelect,
-} as ComponentMeta<typeof ReactSelect>;
+	title: 'Components/ReactSelect',
+};
+export default meta;
+type Story = StoryObj<typeof ReactSelect>;
 
 const ReactSelectStoryComponent: FC<{ children?: ReactNode }> = ({ children }) => {
 	const [value, setValue] = useState<SelectOption | null>(null);
@@ -27,11 +29,13 @@ const ReactSelectStoryComponent: FC<{ children?: ReactNode }> = ({ children }) =
 	});
 };
 
-const Template: ComponentStory<typeof ReactSelect> = (args) => (
-	<ReactSelectStoryComponent>
-		<ReactSelect {...args} />
-	</ReactSelectStoryComponent>
-);
-
-export const Default = Template.bind({});
-Default.args = { options: selectOptionsMock };
+export const Default: Story = {
+	args: {
+		options: selectOptionsMock,
+	},
+	render: (args) => (
+		<ReactSelectStoryComponent>
+			<ReactSelect {...args} />
+		</ReactSelectStoryComponent>
+	),
+};

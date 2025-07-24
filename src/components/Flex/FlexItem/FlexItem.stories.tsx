@@ -1,21 +1,23 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { FlexItem } from './FlexItem';
 
-export default {
+const meta: Meta<typeof FlexItem> = {
 	title: 'Components/FlexItem',
 	component: FlexItem,
-} as ComponentMeta<typeof FlexItem>;
+};
+export default meta;
+type Story = StoryObj<typeof FlexItem>;
 
-const Template: ComponentStory<typeof FlexItem> = (args) => (
-	<FlexItem {...args}>Flex Item</FlexItem>
-);
+export const Basic: Story = {
+	args: {},
+	render: (args) => <FlexItem {...args}>Flex Item</FlexItem>,
+};
 
-export const Basic = Template.bind({});
-Basic.args = {};
-
-export const Shrink = Template.bind({});
-Shrink.args = {
-	shrink: true,
+export const Shrink: Story = {
+	args: {
+		shrink: true,
+	},
+	render: (args) => <FlexItem {...args}>Flex Item</FlexItem>,
 };

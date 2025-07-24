@@ -1,6 +1,6 @@
-import { action } from '@storybook/addon-actions';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { cloneElement, type FC, type ReactElement, type ReactNode, useState } from 'react';
+import { action } from 'storybook/actions';
 
 import CheckboxList from './CheckboxList';
 
@@ -32,18 +32,20 @@ const CheckboxListStoryComponent: FC<{ children?: ReactNode }> = ({ children }) 
 	});
 };
 
-export default {
+const meta: Meta<typeof CheckboxList> = {
 	title: 'Components/CheckboxList',
 	component: CheckboxList,
-} as ComponentMeta<typeof CheckboxList>;
+};
+export default meta;
+type Story = StoryObj<typeof CheckboxList>;
 
-const Template: ComponentStory<typeof CheckboxList> = (args) => (
-	<CheckboxListStoryComponent>
-		<CheckboxList {...args} />
-	</CheckboxListStoryComponent>
-);
-
-export const Default = Template.bind({});
-Default.args = {
-	items: DEFAULT_ITEMS,
+export const Default: Story = {
+	args: {
+		items: DEFAULT_ITEMS,
+	},
+	render: (args) => (
+		<CheckboxListStoryComponent>
+			<CheckboxList {...args} />
+		</CheckboxListStoryComponent>
+	),
 };

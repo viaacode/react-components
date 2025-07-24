@@ -1,13 +1,14 @@
-import { action } from '@storybook/addon-actions';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
+import { action } from 'storybook/actions';
 
 import MultiSelect from './MultiSelect';
 
-export default {
+const meta: Meta<typeof MultiSelect> = {
 	title: 'Components/MultiSelect',
 	component: MultiSelect,
-} as ComponentMeta<typeof MultiSelect>;
+};
+export default meta;
+type Story = StoryObj<typeof MultiSelect>;
 
 const MOCK_OPTIONS = [
 	{
@@ -27,11 +28,10 @@ const MOCK_OPTIONS = [
 	},
 ];
 
-const Template: ComponentStory<typeof MultiSelect> = (args) => <MultiSelect {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-	label: 'Dropdown label',
-	options: MOCK_OPTIONS,
-	onChange: action('On change'),
+export const Default: Story = {
+	args: {
+		label: 'Dropdown label',
+		options: MOCK_OPTIONS,
+		onChange: action('On change'),
+	},
 };

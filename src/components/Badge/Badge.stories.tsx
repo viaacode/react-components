@@ -1,28 +1,30 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import Badge from './Badge';
 
-export default {
+const meta: Meta<typeof Badge> = {
 	title: 'Components/Badge',
 	component: Badge,
-} as ComponentMeta<typeof Badge>;
+};
+export default meta;
+type Story = StoryObj<typeof Badge>;
 
-const Template: ComponentStory<typeof Badge> = (args) => <Badge {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-	text: 'Pending approval',
+export const Default: Story = {
+	args: {
+		text: 'Pending approval',
+	},
 };
 
-export const SuccessBadge = Template.bind({});
-SuccessBadge.args = {
-	text: 'Approval granted',
-	type: 'success',
+export const SuccessBadge: Story = {
+	args: {
+		text: 'Approval granted',
+		type: 'success',
+	},
 };
 
-export const ErrorBadge = Template.bind({});
-ErrorBadge.args = {
-	text: 'Approval denied',
-	type: 'error',
+export const ErrorBadge: Story = {
+	args: {
+		text: 'Approval denied',
+		type: 'error',
+	},
 };

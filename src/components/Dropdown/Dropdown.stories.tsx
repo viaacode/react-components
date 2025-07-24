@@ -1,6 +1,6 @@
-import { action } from '@storybook/addon-actions';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { cloneElement, type ReactElement, useState } from 'react';
+import { action } from 'storybook/actions';
 
 import { MenuContent } from '../Menu/MenuContent';
 
@@ -28,12 +28,14 @@ const DropdownStoryComponent = ({ children }: { children: ReactElement }) => {
 	});
 };
 
-export default {
+const meta: Meta<typeof Dropdown> = {
 	title: 'Components/Dropdown',
 	component: Dropdown,
-} as ComponentMeta<typeof Dropdown>;
+};
+export default meta;
+type Story = StoryObj<typeof Dropdown>;
 
-const Template: ComponentStory<typeof Dropdown> = (args) => (
+const DefaultTemplate = (args: any) => (
 	<DropdownStoryComponent>
 		<Dropdown {...args}>
 			<MenuContent menuItems={menuItems} />
@@ -41,22 +43,21 @@ const Template: ComponentStory<typeof Dropdown> = (args) => (
 	</DropdownStoryComponent>
 );
 
-const TemplateWithIcons: ComponentStory<typeof Dropdown> = (args) => {
+const TemplateWithIcons = (args: any) => {
 	const [multiChildren, setMulti] = useState(args.children);
-
-	// Demonstrate what https://github.com/viaacode/react-components/commit/6ae18ae6ed1c055c32bf9d1f55f88fabd48d67f9 fixes
-	// i.e. incorrect positioning when content grows after init
-	const t = setTimeout(() => {
-		setMulti(
-			<>
-				{args.children}
-				{args.children}
-			</>
-		);
-
-		clearTimeout(t);
-	}, 1000);
-
+	React.useEffect(() => {
+		const t = setTimeout(() => {
+			setMulti(
+				<>
+					{args.children}
+					{args.children}
+				</>
+			);
+			clearTimeout(t);
+		}, 1000);
+		// eslint-disable-next-line
+		return () => {};
+	}, [args.children]);
 	return (
 		<div style={{ paddingTop: '200px' }}>
 			<DropdownStoryComponent>
@@ -68,90 +69,112 @@ const TemplateWithIcons: ComponentStory<typeof Dropdown> = (args) => {
 	);
 };
 
-export const Default = Template.bind({});
-Default.args = {
-	label: 'Show Options',
-	isOpen: false,
+export const Default: Story = {
+	args: {
+		label: 'Show Options',
+		isOpen: false,
+	},
+	render: DefaultTemplate,
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-	label: 'Show Options',
-	isOpen: false,
-	isDisabled: true,
+export const Disabled: Story = {
+	args: {
+		label: 'Show Options',
+		isOpen: false,
+		isDisabled: true,
+	},
+	render: DefaultTemplate,
 };
 
-export const FitMenuContent = Template.bind({});
-FitMenuContent.args = {
-	label: 'Show Options',
-	isOpen: false,
-	menuWidth: 'fit-content',
+export const FitMenuContent: Story = {
+	args: {
+		label: 'Show Options',
+		isOpen: false,
+		menuWidth: 'fit-content',
+	},
+	render: DefaultTemplate,
 };
 
-export const FullWidth = Template.bind({});
-FullWidth.args = {
-	label: 'Show Options',
-	isOpen: false,
-	triggerWidth: 'full-width',
+export const FullWidth: Story = {
+	args: {
+		label: 'Show Options',
+		isOpen: false,
+		triggerWidth: 'full-width',
+	},
+	render: DefaultTemplate,
 };
 
-export const FitTrigger = Template.bind({});
-FitTrigger.args = {
-	label: 'Show Options',
-	isOpen: false,
-	menuWidth: 'fit-trigger',
+export const FitTrigger: Story = {
+	args: {
+		label: 'Show Options',
+		isOpen: false,
+		menuWidth: 'fit-trigger',
+	},
+	render: DefaultTemplate,
 };
 
-export const DropdownUp = TemplateWithIcons.bind({});
-DropdownUp.args = {
-	label: 'Show Options',
-	isOpen: false,
-	placement: 'top',
+export const DropdownUp: Story = {
+	args: {
+		label: 'Show Options',
+		isOpen: false,
+		placement: 'top',
+	},
+	render: TemplateWithIcons,
 };
 
-export const DropdownBottomStart = TemplateWithIcons.bind({});
-DropdownBottomStart.args = {
-	label: 'Show Options',
-	menuWidth: 'fit-content',
-	isOpen: false,
-	placement: 'bottom-start',
+export const DropdownBottomStart: Story = {
+	args: {
+		label: 'Show Options',
+		menuWidth: 'fit-content',
+		isOpen: false,
+		placement: 'bottom-start',
+	},
+	render: TemplateWithIcons,
 };
 
-export const DropdownBottomEnd = TemplateWithIcons.bind({});
-DropdownBottomEnd.args = {
-	label: 'Show Options',
-	menuWidth: 'fit-content',
-	isOpen: false,
-	placement: 'bottom-end',
+export const DropdownBottomEnd: Story = {
+	args: {
+		label: 'Show Options',
+		menuWidth: 'fit-content',
+		isOpen: false,
+		placement: 'bottom-end',
+	},
+	render: TemplateWithIcons,
 };
 
-export const DropdownTopStart = TemplateWithIcons.bind({});
-DropdownTopStart.args = {
-	label: 'Show Options',
-	menuWidth: 'fit-content',
-	isOpen: false,
-	placement: 'top-start',
+export const DropdownTopStart: Story = {
+	args: {
+		label: 'Show Options',
+		menuWidth: 'fit-content',
+		isOpen: false,
+		placement: 'top-start',
+	},
+	render: TemplateWithIcons,
 };
 
-export const DropdownTopEnd = TemplateWithIcons.bind({});
-DropdownTopEnd.args = {
-	label: 'Show Options',
-	menuWidth: 'fit-content',
-	isOpen: false,
-	placement: 'top-end',
+export const DropdownTopEnd: Story = {
+	args: {
+		label: 'Show Options',
+		menuWidth: 'fit-content',
+		isOpen: false,
+		placement: 'top-end',
+	},
+	render: TemplateWithIcons,
 };
 
-export const DropdownWithLazyContent = TemplateWithIcons.bind({});
-DropdownWithLazyContent.args = {
-	label: 'Show Options',
-	menuWidth: 'fit-content',
-	isOpen: false,
-	placement: 'right',
-	children: (
-		<DropdownContent>
-			<div style={{ backgroundColor: 'hotpink', maxHeight: '100vh', overflow: 'auto' }}>
-				<h1>One</h1>
-			</div>
-		</DropdownContent>
-	),
+export const DropdownWithLazyContent: Story = {
+	args: {
+		label: 'Show Options',
+		menuWidth: 'fit-content',
+		isOpen: false,
+		placement: 'right',
+		children: (
+			<DropdownContent>
+				<div style={{ backgroundColor: 'hotpink', maxHeight: '100vh', overflow: 'auto' }}>
+					<h1>One</h1>
+				</div>
+			</DropdownContent>
+		),
+	},
+	render: TemplateWithIcons,
 };

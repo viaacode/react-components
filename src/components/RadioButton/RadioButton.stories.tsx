@@ -1,16 +1,16 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import RadioButton from './RadioButton';
 
-export default {
+const meta: Meta<typeof RadioButton> = {
 	title: 'Components/RadioButton',
 	component: RadioButton,
-} as ComponentMeta<typeof RadioButton>;
+};
+export default meta;
+type Story = StoryObj<typeof RadioButton>;
 
-const Template: ComponentStory<typeof RadioButton> = (args) => <RadioButton {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-	label: 'Check me!',
+export const Default: Story = {
+	args: {
+		label: 'Check me!',
+	},
 };

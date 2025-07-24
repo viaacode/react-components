@@ -1,46 +1,51 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { TextInput } from '../TextInput';
-
 import FormControl from './FormControl';
 
-export default {
+const meta: Meta<typeof FormControl> = {
 	title: 'Components/FormControl',
 	component: FormControl,
-} as ComponentMeta<typeof FormControl>;
+};
+export default meta;
+type Story = StoryObj<typeof FormControl>;
 
 const name = 'name';
-const Template: ComponentStory<typeof FormControl> = (args) => <FormControl {...args} />;
 
-export const Basic = Template.bind({});
-Basic.args = {
-	children: <TextInput id={name} />,
+export const Basic: Story = {
+	args: {
+		children: <TextInput id={name} />,
+	},
 };
 
-export const Label = Template.bind({});
-Label.args = {
-	...Basic.args,
-	id: name,
-	label: 'Your first name',
+export const Label: Story = {
+	args: {
+		...Basic.args,
+		id: name,
+		label: 'Your first name',
+	},
 };
 
-export const Required = Template.bind({});
-Required.args = {
-	...Basic.args,
-	id: name,
-	suffix: <i>(Optioneel)</i>,
-	label: <b>Email</b>,
+export const Required: Story = {
+	args: {
+		...Basic.args,
+		id: name,
+		suffix: <i>(Optioneel)</i>,
+		label: <b>Email</b>,
+	},
 };
 
-export const Errors = Template.bind({});
-Errors.args = {
-	...Label.args,
-	errors: [`Something went wrong while validating your ${name}.`],
+export const Errors: Story = {
+	args: {
+		...Label.args,
+		errors: [`Something went wrong while validating your ${name}.`],
+	},
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-	...Errors.args,
-	disabled: true,
+export const Disabled: Story = {
+	args: {
+		...Errors.args,
+		disabled: true,
+	},
 };

@@ -1,6 +1,6 @@
-import { action } from '@storybook/addon-actions';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { cloneElement, type ReactElement, useState } from 'react';
+import { action } from 'storybook/actions';
 
 import Pagination from './Pagination';
 
@@ -24,16 +24,12 @@ const PaginationStoryComponent = ({
 
 const renderButton = (label: string) => <span>{label}</span>;
 
-export default {
+const meta: Meta<typeof Pagination> = {
 	title: 'Components/Pagination',
 	component: Pagination,
-} as ComponentMeta<typeof Pagination>;
-
-const Template: ComponentStory<typeof Pagination> = (args) => (
-	<PaginationStoryComponent>
-		<Pagination {...args} />
-	</PaginationStoryComponent>
-);
+};
+export default meta;
+type Story = StoryObj<typeof Pagination>;
 
 const DEFAULT_ARGS = {
 	pageCount: 5,
@@ -45,20 +41,32 @@ const DEFAULT_ARGS = {
 	renderNextButton: () => renderButton('Volgende'),
 };
 
-export const Default = Template.bind({});
-Default.args = {
-	...DEFAULT_ARGS,
+const Template = (args: any) => (
+	<PaginationStoryComponent>
+		<Pagination {...args} />
+	</PaginationStoryComponent>
+);
+
+export const Default: Story = {
+	args: {
+		...DEFAULT_ARGS,
+	},
+	render: Template,
 };
 
-export const WithFirstLastNumbers = Template.bind({});
-WithFirstLastNumbers.args = {
-	...DEFAULT_ARGS,
-	pageCount: 9,
+export const WithFirstLastNumbers: Story = {
+	args: {
+		...DEFAULT_ARGS,
+		pageCount: 9,
+	},
+	render: Template,
 };
 
-export const WithFirstLastButtons = Template.bind({});
-WithFirstLastButtons.args = {
-	pageCount: 9,
-	renderFirstButton: () => renderButton('Eerste'),
-	renderLastButton: () => renderButton('Laatste'),
+export const WithFirstLastButtons: Story = {
+	args: {
+		pageCount: 9,
+		renderFirstButton: () => renderButton('Eerste'),
+		renderLastButton: () => renderButton('Laatste'),
+	},
+	render: Template,
 };

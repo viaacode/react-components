@@ -1,17 +1,17 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import Tabs from './Tabs';
 import { MOCK_TABS } from './__mocks__/tabs';
 
-export default {
+const meta: Meta<typeof Tabs> = {
 	title: 'Components/Tabs',
 	component: Tabs,
-} as ComponentMeta<typeof Tabs>;
+};
+export default meta;
+type Story = StoryObj<typeof Tabs>;
 
-const Template: ComponentStory<typeof Tabs> = (args) => <Tabs {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-	tabs: MOCK_TABS,
+export const Default: Story = {
+	args: {
+		tabs: MOCK_TABS,
+	},
 };

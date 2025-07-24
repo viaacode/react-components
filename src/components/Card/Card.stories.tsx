@@ -1,13 +1,8 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { type CSSProperties } from 'react';
 
 import { Card } from './Card';
 import { cardImageMock, cardTitleMock } from './__mocks__/card';
-
-export default {
-	title: 'Components/Card',
-	component: Card,
-} as ComponentMeta<typeof Card>;
 
 const container: CSSProperties = {
 	display: 'flex',
@@ -16,46 +11,46 @@ const container: CSSProperties = {
 const column: CSSProperties = { flex: '1 1 0', margin: '10px' };
 const h2: CSSProperties = { fontSize: '3.2rem', lineHeight: 1 };
 
-const Template: ComponentStory<typeof Card> = (args) => {
-	return (
+const meta: Meta<typeof Card> = {
+	title: 'Components/Card',
+	component: Card,
+};
+export default meta;
+type Story = StoryObj<typeof Card>;
+
+export const Overview: Story = {
+	args: {
+		title: <span>{cardTitleMock}</span>,
+		image: <img className="u-image-responsive" src={cardImageMock} alt={cardTitleMock} />, //eslint-disable-line
+	},
+	render: (args) => (
 		<>
 			<section style={{ ...container, flexDirection: 'row' }}>
 				<div style={column}>
 					<h4>Simple</h4>
-
 					<br />
-
 					<Card {...args} image={undefined} title={undefined}>
 						The simplest card
 					</Card>
 				</div>
-
 				<div style={column}>
 					<h4>Border</h4>
-
 					<br />
-
 					<Card {...args} title="A card with a zinc-colored border">
 						This card is still pretty basic but also has an image and a title
 					</Card>
 				</div>
-
 				<div style={column}>
 					<h4>Edgeless</h4>
-
 					<br />
-
 					<Card {...args} edge="none" padding="vertical" title={<b>A card with no border</b>}>
 						Now that&apos;s more like it, this card has an image, a title in bold, gets rid of the
 						border and adds some much needed vertical padding
 					</Card>
 				</div>
-
 				<div style={column}>
 					<h4>Padded</h4>
-
 					<br />
-
 					<Card
 						{...args}
 						padding="both"
@@ -68,12 +63,9 @@ const Template: ComponentStory<typeof Card> = (args) => {
 						toolbar-area
 					</Card>
 				</div>
-
 				<div style={column}>
 					<h4>Wide</h4>
-
 					<br />
-
 					<Card
 						{...args}
 						padding="content"
@@ -84,15 +76,11 @@ const Template: ComponentStory<typeof Card> = (args) => {
 					</Card>
 				</div>
 			</section>
-
 			<br />
-
 			<section style={{ ...container }}>
 				<div style={column}>
 					<h4>Padded + Horizontal</h4>
-
 					<br />
-
 					<Card
 						{...args}
 						padding="both"
@@ -109,9 +97,7 @@ const Template: ComponentStory<typeof Card> = (args) => {
 				</div>
 				<div style={column}>
 					<h4>Wide + Horizontal</h4>
-
 					<br />
-
 					<Card
 						{...args}
 						padding="content"
@@ -126,15 +112,11 @@ const Template: ComponentStory<typeof Card> = (args) => {
 					</Card>
 				</div>
 			</section>
-
 			<br />
-
 			<section style={{ ...container }}>
 				<div style={column}>
 					<h4>Dark</h4>
-
 					<br />
-
 					<Card
 						{...args}
 						mode="dark"
@@ -152,9 +134,7 @@ const Template: ComponentStory<typeof Card> = (args) => {
 				</div>
 				<div style={column}>
 					<h4>Offset</h4>
-
 					<br />
-
 					<Card
 						{...args}
 						mode="dark"
@@ -175,9 +155,7 @@ const Template: ComponentStory<typeof Card> = (args) => {
 				</div>
 				<div style={column}>
 					<h4>Tags</h4>
-
 					<br />
-
 					<Card
 						{...args}
 						mode="dark"
@@ -203,11 +181,5 @@ const Template: ComponentStory<typeof Card> = (args) => {
 				</div>
 			</section>
 		</>
-	);
-};
-
-export const Overview: ComponentStory<typeof Card> = Template.bind({});
-Overview.args = {
-	title: <span>{cardTitleMock}</span>,
-	image: <img className="u-image-responsive" src={cardImageMock} alt={cardTitleMock} />, //eslint-disable-line
+	),
 };

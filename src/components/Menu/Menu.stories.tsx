@@ -1,6 +1,6 @@
-import { action } from '@storybook/addon-actions';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { action } from 'storybook/actions';
 
 import Menu from './Menu';
 import MenuSearchResultContent from './MenuSearchResultContent/MenuSearchResultContent';
@@ -11,42 +11,46 @@ import {
 	menuItemsWithSearch,
 } from './__mocks__/menu';
 
-export default {
+const meta: Meta<typeof Menu> = {
 	title: 'Components/Menu',
 	component: Menu,
-} as ComponentMeta<typeof Menu>;
+};
+export default meta;
+type Story = StoryObj<typeof Menu>;
 
-const Template: ComponentStory<typeof Menu> = (args) => <Menu {...args} />;
-
-const TemplateSearch: ComponentStory<typeof Menu> = (args) => (
-	<Menu {...args}>
-		<MenuSearchResultContent menuItems={menuItemsWithSearch} />
-	</Menu>
-);
-
-export const Default = Template.bind({});
-Default.args = {
-	menuItems: menuItems,
-	onClick: action('clicked menu item'),
+export const Default: Story = {
+	args: {
+		menuItems: menuItems,
+		onClick: action('clicked menu item'),
+	},
 };
 
-export const WithIcons = Template.bind({});
-WithIcons.args = {
-	menuItems: menuItemsWithIcons,
+export const WithIcons: Story = {
+	args: {
+		menuItems: menuItemsWithIcons,
+	},
 };
 
-export const WithDividers = Template.bind({});
-WithDividers.args = {
-	menuItems: menuItemsWithDivider,
+export const WithDividers: Story = {
+	args: {
+		menuItems: menuItemsWithDivider,
+	},
 };
 
-export const WithSearchResults = TemplateSearch.bind({});
-WithSearchResults.args = {
-	search: true,
+export const WithSearchResults: Story = {
+	args: {
+		search: true,
+	},
+	render: (args) => (
+		<Menu {...args}>
+			<MenuSearchResultContent menuItems={menuItemsWithSearch} />
+		</Menu>
+	),
 };
 
-export const NoResults = Template.bind({});
-NoResults.args = {
-	menuItems: [],
-	noResultsLabel: 'No results',
+export const NoResults: Story = {
+	args: {
+		menuItems: [],
+		noResultsLabel: 'No results',
+	},
 };

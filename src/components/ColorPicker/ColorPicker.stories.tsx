@@ -1,10 +1,10 @@
-import { action } from '@storybook/addon-actions';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+import { action } from 'storybook/actions';
 
 import ColorPicker from './ColorPicker';
 
-export default {
+const meta: Meta<typeof ColorPicker> = {
 	title: 'Components/ColorPicker',
 	component: ColorPicker,
 	argTypes: {
@@ -14,17 +14,16 @@ export default {
 			},
 		},
 	},
-} as ComponentMeta<typeof ColorPicker>;
+};
+export default meta;
+type Story = StoryObj<typeof ColorPicker>;
 
-const Template: ComponentStory<typeof ColorPicker> = (args) => {
+const StatefulColorPicker = (args: any) => {
 	const [color, setColor] = useState<string>(args.color as string);
-
 	return (
 		<ColorPicker
 			{...args}
-			input={{
-				id: 'ColorPicker',
-			}}
+			input={{ id: 'ColorPicker' }}
 			color={color}
 			onChange={(newColor) => {
 				action('color changed')(newColor);
@@ -34,18 +33,24 @@ const Template: ComponentStory<typeof ColorPicker> = (args) => {
 	);
 };
 
-export const Default = Template.bind({});
-Default.args = {
-	color: '#00c8aa',
+export const Default: Story = {
+	args: {
+		color: '#00c8aa',
+	},
+	render: StatefulColorPicker,
 };
 
-export const DefaultColor = Template.bind({});
-DefaultColor.args = {
-	color: '#FF0000',
+export const DefaultColor: Story = {
+	args: {
+		color: '#FF0000',
+	},
+	render: StatefulColorPicker,
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-	color: '#00c8aa',
-	disabled: true,
+export const Disabled: Story = {
+	args: {
+		color: '#00c8aa',
+		disabled: true,
+	},
+	render: StatefulColorPicker,
 };

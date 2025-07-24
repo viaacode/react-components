@@ -1,20 +1,26 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import PaginationProgress from './PaginationProgress';
 
-export default {
+const meta: Meta<typeof PaginationProgress> = {
 	title: 'Components/PaginationProgress',
 	component: PaginationProgress,
-} as ComponentMeta<typeof PaginationProgress>;
+};
+export default meta;
+type Story = StoryObj<typeof PaginationProgress>;
 
-const Template: ComponentStory<typeof PaginationProgress> = (args) => (
-	<PaginationProgress {...args} />
-);
+export const Default: Story = {
+	args: {
+		startItem: 1,
+		endItem: 9,
+		totalItems: 20,
+	},
+};
 
-export const Default = Template.bind({});
-Default.args = {
-	startItem: 1,
-	endItem: 9,
-	totalItems: 20,
+export const ThousandsSeparator: Story = {
+	args: {
+		startItem: 123,
+		endItem: 15080,
+		totalItems: 100000000,
+	},
 };

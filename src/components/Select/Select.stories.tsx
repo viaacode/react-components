@@ -1,5 +1,4 @@
-import { action } from '@storybook/addon-actions';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, {
 	type ChangeEvent,
 	cloneElement,
@@ -8,14 +7,17 @@ import React, {
 	type ReactNode,
 	useState,
 } from 'react';
+import { action } from 'storybook/actions';
 
 import Select from './Select';
 import { selectOptionsMock } from './__mocks__/select';
 
-export default {
+const meta: Meta<typeof Select> = {
 	title: 'Components/Select',
 	component: Select,
-} as ComponentMeta<typeof Select>;
+};
+export default meta;
+type Story = StoryObj<typeof Select>;
 
 const SelectStoryComponent: FC<{ children?: ReactNode }> = ({ children }) => {
 	const [value, setValue] = useState('');
@@ -31,13 +33,13 @@ const SelectStoryComponent: FC<{ children?: ReactNode }> = ({ children }) => {
 	});
 };
 
-const Template: ComponentStory<typeof Select> = (args) => (
-	<SelectStoryComponent>
-		<Select {...args} />
-	</SelectStoryComponent>
-);
-
-export const Default = Template.bind({});
-Default.args = {
-	options: selectOptionsMock,
+export const Default: Story = {
+	args: {
+		options: selectOptionsMock,
+	},
+	render: (args) => (
+		<SelectStoryComponent>
+			<Select {...args} />
+		</SelectStoryComponent>
+	),
 };

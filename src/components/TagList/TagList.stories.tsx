@@ -1,7 +1,7 @@
-import { action } from '@storybook/addon-actions';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { loremIpsum } from 'lorem-ipsum';
 import React, { cloneElement, type ReactElement, useState } from 'react';
+import { action } from 'storybook/actions';
 
 import TagList from './TagList';
 import { tags } from './__mocks__/tag-list';
@@ -27,37 +27,47 @@ const TagListStoryComponent = ({ children }: { children: ReactElement }) => {
 	});
 };
 
-export default {
+const meta: Meta<typeof TagList> = {
 	title: 'Components/TagList',
 	component: TagList,
-} as ComponentMeta<typeof TagList>;
+};
+export default meta;
+type Story = StoryObj<typeof TagList>;
 
-const Template: ComponentStory<typeof TagList> = (args) => (
+const Template = (args: any) => (
 	<TagListStoryComponent>
 		<TagList {...args} />
 	</TagListStoryComponent>
 );
 
-export const Default = Template.bind({});
-Default.args = {
-	tags: tags,
-	onTagClosed: undefined,
+export const Default: Story = {
+	args: {
+		tags: tags,
+		onTagClosed: undefined,
+	},
+	render: Template,
 };
 
-export const ClosableTags = Template.bind({});
-ClosableTags.args = {
-	tags: tags,
-	onTagClosed: action('Tag closed'),
-	onTagClicked: action('Tag clicked'),
+export const ClosableTags: Story = {
+	args: {
+		tags: tags,
+		onTagClosed: action('Tag closed'),
+		onTagClicked: action('Tag clicked'),
+	},
+	render: Template,
 };
 
-export const MultilineTags = Template.bind({});
-MultilineTags.args = {
-	tags: [{ label: loremIpsum({ count: 1 }), id: 'test' }],
+export const MultilineTags: Story = {
+	args: {
+		tags: [{ label: loremIpsum({ count: 1 }), id: 'test' }],
+	},
+	render: Template,
 };
 
-export const SelectableTags = Template.bind({});
-SelectableTags.args = {
-	tags: tags,
-	onTagClicked: action('selected a tag'),
+export const SelectableTags: Story = {
+	args: {
+		tags: tags,
+		onTagClicked: action('selected a tag'),
+	},
+	render: Template,
 };

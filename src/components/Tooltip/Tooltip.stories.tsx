@@ -1,12 +1,18 @@
-import { storiesOf } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import Tooltip from './Tooltip';
 import { TooltipContent, TooltipTrigger } from './Tooltip.slots';
 
-storiesOf('components/Tooltip', module)
-	.addParameters({ jest: ['Tooltip'] })
-	.add('Tooltip top', () => (
+const meta: Meta<typeof Tooltip> = {
+	title: 'Components/Tooltip',
+	component: Tooltip,
+};
+export default meta;
+type Story = StoryObj<typeof Tooltip>;
+
+export const TooltipTop: Story = {
+	render: () => (
 		<div className="u-text-center" style={{ paddingTop: '80px' }}>
 			<Tooltip position="top">
 				<TooltipTrigger>
@@ -17,8 +23,11 @@ storiesOf('components/Tooltip', module)
 				</TooltipContent>
 			</Tooltip>
 		</div>
-	))
-	.add('Tooltip right', () => (
+	),
+};
+
+export const TooltipRight: Story = {
+	render: () => (
 		<div className="u-text-center">
 			<Tooltip position="right">
 				<TooltipTrigger>
@@ -29,8 +38,11 @@ storiesOf('components/Tooltip', module)
 				</TooltipContent>
 			</Tooltip>
 		</div>
-	))
-	.add('Tooltip bottom', () => (
+	),
+};
+
+export const TooltipBottom: Story = {
+	render: () => (
 		<div className="u-text-center">
 			<Tooltip position="bottom">
 				<TooltipTrigger>
@@ -41,8 +53,11 @@ storiesOf('components/Tooltip', module)
 				</TooltipContent>
 			</Tooltip>
 		</div>
-	))
-	.add('Tooltip left', () => (
+	),
+};
+
+export const TooltipLeft: Story = {
+	render: () => (
 		<div className="u-text-center" style={{ paddingLeft: '180px' }}>
 			<Tooltip position="left">
 				<TooltipTrigger>
@@ -53,8 +68,11 @@ storiesOf('components/Tooltip', module)
 				</TooltipContent>
 			</Tooltip>
 		</div>
-	))
-	.add('Tooltip offset', () => (
+	),
+};
+
+export const TooltipOffset: Story = {
+	render: () => (
 		<>
 			<div className="u-text-center">
 				<Tooltip position="right">
@@ -77,8 +95,11 @@ storiesOf('components/Tooltip', module)
 				</Tooltip>
 			</div>
 		</>
-	))
-	.add('Tooltip multiple', () => (
+	),
+};
+
+export const TooltipMultiple: Story = {
+	render: () => (
 		<>
 			<div className="u-text-center">
 				<Tooltip position="right">
@@ -101,8 +122,11 @@ storiesOf('components/Tooltip', module)
 				</Tooltip>
 			</div>
 		</>
-	))
-	.add('Tooltip dynamic position', () => (
+	),
+};
+
+export const TooltipDynamicPosition: Story = {
+	render: () => (
 		<div>
 			<button
 				type="button"
@@ -127,4 +151,5 @@ storiesOf('components/Tooltip', module)
 				</TooltipContent>
 			</Tooltip>
 		</div>
-	));
+	),
+};

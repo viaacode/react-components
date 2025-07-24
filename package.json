@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "4.2.2",
+  "version": "4.2.3",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,9 +17,7 @@
     "Bavo Vanderghote <bavo.vanderghote@studiohyperdrive.be>",
     "Bert Verhelst <bert.verhelst@studiohyperdrive.be>"
   ],
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "prepare": "husky install",
     "build": "vite build",
@@ -28,14 +26,13 @@
     "copy-to-admin-core": "rimraf ../react-admin-core-module/ui/node_modules/@meemoo/react-components/dist ../react-admin-core-module/ui/node_modules/.cache ../react-admin-core-module/ui/node_modules/.vite && cp -r dist package.json ../react-admin-core-module/ui/node_modules/@meemoo/react-components",
     "copy": "npm run build && npm run copy-to-avo-client && npm run copy-to-hetarchief-client && npm run copy-to-admin-core",
     "build:analyze": "npm run build -- --config-analyze",
-    "build-storybook": "build-storybook -o build",
-    "build-storybook:with-sourcemaps": "cross-env GENERATE_SOURCEMAP=true build-storybook -o build",
+    "build-storybook": "storybook build",
+    "build-storybook:with-sourcemaps": "cross-env GENERATE_SOURCEMAP=true storybook build",
     "lint": "npm run lint:ts && npm run lint:scss",
     "lint:ts": "biome lint --write src",
     "lint:scss": "stylelint 'src/**/*.{css,scss}' --allow-empty-input",
     "format": "biome format --write src",
-    "dev": "start-storybook -p 3020",
-    "start": "start-storybook -p 3020 --ci",
+    "dev": "storybook dev -p 3020",
     "test": "jest --cache",
     "test:watch": "npm run test -- --watch",
     "test:output": "cross-env CI=true jest --json --outputFile=.storybook/test-results.json",
@@ -71,13 +68,8 @@
     "@biomejs/biome": "1.9.4",
     "@commitlint/cli": "17.7.1",
     "@commitlint/config-conventional": "17.7.0",
-    "@storybook/addon-essentials": "6.5.17-alpha.0",
-    "@storybook/addon-jest": "6.5.17-alpha.0",
-    "@storybook/addons": "6.5.17-alpha.0",
-    "@storybook/builder-webpack5": "6.5.17-alpha.0",
-    "@storybook/manager-webpack5": "6.5.17-alpha.0",
-    "@storybook/preset-scss": "1.0.3",
-    "@storybook/react": "6.5.17-alpha.0",
+    "@storybook/react-vite": "9.0.18",
+    "@storybook/react": "9.0.18",
     "@testing-library/jest-dom": "6.5.0",
     "@testing-library/react": "16.0.1",
     "@testing-library/react-hooks": "8.0.1",
@@ -107,7 +99,7 @@
     "rimraf": "3.0.2",
     "sass": "1.67.0",
     "snyk": "^1.385.2",
-    "storybook-addon-jsx": "7.3.14",
+    "storybook": "9.0.18",
     "stylelint": "15.10.3",
     "stylelint-config-prettier": "9.0.5",
     "stylelint-config-standard-scss": "11.0.0",
@@ -131,20 +123,11 @@
     "@types/react": "18.3.18",
     "@types/react-dom": "18.3.5",
     "stylelint": "15.10.3",
-    "@storybook/addons": "6.5.17-alpha.0",
     "postcss": "8.4.30",
     "@emotion/react": "11.11.1"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   }
 }

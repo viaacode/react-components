@@ -1,6 +1,6 @@
-import { action } from '@storybook/addon-actions';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { cloneElement, type ReactElement, useState } from 'react';
+import { action } from 'storybook/actions';
 
 import TagsInput from './TagsInput';
 import type { TagInfo } from './TagsInput.types';
@@ -22,24 +22,30 @@ const TagsInputStoryComponent = ({ children }: { children: ReactElement }) => {
 	});
 };
 
-export default {
+const meta: Meta<typeof TagsInput> = {
 	title: 'Components/TagsInput',
 	component: TagsInput,
-} as ComponentMeta<typeof TagsInput>;
+};
+export default meta;
+type Story = StoryObj<typeof TagsInput>;
 
-const Template: ComponentStory<typeof TagsInput> = (args) => (
+const Template = (args: any) => (
 	<TagsInputStoryComponent>
 		<TagsInput {...args} />
 	</TagsInputStoryComponent>
 );
 
-export const Default = Template.bind({});
-Default.args = {
-	options: tagsInputOptionsMock,
+export const Default: Story = {
+	args: {
+		options: tagsInputOptionsMock,
+	},
+	render: Template,
 };
 
-export const AllowCreate = Template.bind({});
-AllowCreate.args = {
-	allowCreate: true,
-	value: tagsInputOptionsMock,
+export const AllowCreate: Story = {
+	args: {
+		allowCreate: true,
+		value: tagsInputOptionsMock,
+	},
+	render: Template,
 };
