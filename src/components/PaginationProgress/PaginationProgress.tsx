@@ -1,5 +1,6 @@
 import React, { type FC } from 'react';
 
+import { numberWithCommas } from '../../utils/numbers-with-commas';
 import type { PaginationProgressProps } from './PaginationProgress.types';
 
 const PaginationProgress: FC<PaginationProgressProps> = ({
@@ -9,9 +10,9 @@ const PaginationProgress: FC<PaginationProgressProps> = ({
 	labelBetweenPageStartAndEnd = '-',
 	labelBetweenPageEndAndTotal = ' van ',
 }) => {
-	const text = `${startItem}${labelBetweenPageStartAndEnd}${
+	const text = `${numberWithCommas(startItem)}${labelBetweenPageStartAndEnd}${numberWithCommas(
 		endItem > totalItems ? totalItems : endItem
-	}${labelBetweenPageEndAndTotal}${totalItems}`;
+	)}${labelBetweenPageEndAndTotal}${numberWithCommas(totalItems)}`;
 
 	return <span className="c-pagination-progress">{text}</span>;
 };
