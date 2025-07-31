@@ -15,7 +15,7 @@ function toggleVideoControls(showControls: boolean) {
 
 	// we are hiding .fp-controls since they contain the controls itself
 	// we are hiding .fp-middle to avoid the possibility to click on the video to play/pause the video directly
-	const flowPlayerElements = document.querySelectorAll('.fp-controls, .fp-middle, .fp-right');
+	const flowPlayerElements = document.querySelectorAll('.fp-controls, .fp-middle, .fp-header');
 
 	for (const flowPlayerElement of flowPlayerElements) {
 		if (showControls) {
