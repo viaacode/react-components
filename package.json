@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "4.3.2",
+  "version": "4.4.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,9 +17,7 @@
     "Bavo Vanderghote <bavo.vanderghote@studiohyperdrive.be>",
     "Bert Verhelst <bert.verhelst@studiohyperdrive.be>"
   ],
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "prepare": "husky install",
     "build": "vite build",
@@ -47,7 +45,7 @@
   "peerDependencies": {
     "@flowplayer/player": "3.3.0",
     "@popperjs/core": "2.11.6",
-    "@viaa/avo2-types": "3.0.22",
+    "@viaa/avo2-types": "3.3.0",
     "autosize": "6.0.1",
     "caniuse-lite": "^1.0.30001712",
     "clsx": "2.0.0",
@@ -130,15 +128,7 @@
     "@emotion/react": "11.11.1"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   }
 }
