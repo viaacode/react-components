@@ -135,5 +135,5 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	peakColorInactive?: string; // eg: '#ADADAD'
 	peakColorActive?: string; // eg: '#00C8AA'
 	peakHeightFactor?: number; // Ratio to make the peaks less or more high. Defaults to 1
-	enabledRestartCuePoints?: boolean;
+	enableRestartCuePointsButton?: boolean;
 }
