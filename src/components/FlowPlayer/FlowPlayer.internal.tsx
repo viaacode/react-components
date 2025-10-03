@@ -89,7 +89,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	peakColorInactive,
 	peakColorActive,
 	peakHeightFactor,
-	enabledRestartCuePoints,
+	enableRestartCuePointsButton,
 }) => {
 	const videoContainerRef = useRef<HTMLDivElement>(null);
 	const peakCanvas = useRef<HTMLCanvasElement>(null);
@@ -617,7 +617,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				<div
 					className={clsx('c-video-player-inner', {
 						'c-video-player-inner--audio': isAudio,
-						'c-video-player-inner--enabled-restart-cue-points': enabledRestartCuePoints,
+						'c-video-player-inner--enable-restart-cue-points-button': enableRestartCuePointsButton,
 					})}
 					data-player-id={dataPlayerId}
 					ref={videoContainerRef}
