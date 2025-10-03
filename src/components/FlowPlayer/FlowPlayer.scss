@@ -18,9 +18,36 @@ $c-spinner-fullscreen-holder-bg: rgba(#000, 0.5);
 $c-video-player-progress-inner-bg: $color-teal-bright;
 $fp-controls-header-width-desktop: 60px;
 $fp-controls-header-width-mobile: 50px;
+$fp-controls-height: 3.6em;
 $fp-progress-bar-height: 6px;
 $fp-progress-bar-height-half: math.div($fp-progress-bar-height - 2, 2); // Compensate for the progress bar that is higher (originally 1px, now 6px)
 $fp-dragger-width: 1em; // em because flowplayer uses em units
+
+@mixin icon-layout {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-(math.div($player-play-button-dimensions, 2)), -(math.div($player-play-button-dimensions, 2)));
+	background-image: url("data:image/svg+xml,%3Csvg fill='none' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 21.9999C4.835 21.9999 4.67 21.9589 4.521 21.8779C4.2 21.7019 4 21.3659 4 20.9999V2.99989C4 2.63389 4.2 2.29689 4.521 2.12189C4.841 1.94689 5.232 1.95989 5.541 2.15889L19.541 11.1589C19.827 11.3429 20 11.6599 20 11.9999C20 12.3399 19.827 12.6569 19.541 12.8409L5.541 21.8409C5.376 21.9459 5.188 21.9999 5 21.9999ZM6 4.83189V19.1679L17.15 11.9999L6 4.83189Z' fill='white' fill-opacity='0.67'/%3E%3C/svg%3E%0A");
+	background-size: $player-play-button-icon-dimensions;
+	background-position: 55% center;
+	background-repeat: no-repeat;
+	width: $player-play-button-dimensions;
+	height: $player-play-button-dimensions;
+	background-color: rgba($c-play-overlay-inner-bg, 0.5);
+	border-radius: 50%;
+	box-shadow: 0 0 5px 0 rgba($color-gray-shadow, 0.5);
+
+	&:hover {
+		background-color: rgba($c-play-overlay-inner-bg, 0.7);
+		box-shadow: 0 0 10px 0 rgba($color-gray-shadow, 0.7);
+		transition: 0.14s background $player-easing-soft;
+	}
+
+	> * {
+		display: none;
+	}
+}
 
 .c-video-player {
 	display: flex;
@@ -94,29 +121,7 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 
 	.fp-play,
 	.fp-pause {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-(math.div($player-play-button-dimensions, 2)), -(math.div($player-play-button-dimensions, 2)));
-		background-image: url("data:image/svg+xml,%3Csvg fill='none' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 21.9999C4.835 21.9999 4.67 21.9589 4.521 21.8779C4.2 21.7019 4 21.3659 4 20.9999V2.99989C4 2.63389 4.2 2.29689 4.521 2.12189C4.841 1.94689 5.232 1.95989 5.541 2.15889L19.541 11.1589C19.827 11.3429 20 11.6599 20 11.9999C20 12.3399 19.827 12.6569 19.541 12.8409L5.541 21.8409C5.376 21.9459 5.188 21.9999 5 21.9999ZM6 4.83189V19.1679L17.15 11.9999L6 4.83189Z' fill='white' fill-opacity='0.67'/%3E%3C/svg%3E%0A");
-		background-size: $player-play-button-icon-dimensions;
-		background-position: 55% center;
-		background-repeat: no-repeat;
-		width: $player-play-button-dimensions;
-		height: $player-play-button-dimensions;
-		background-color: rgba($c-play-overlay-inner-bg, 0.5);
-		border-radius: 50%;
-		box-shadow: 0 0 5px 0 rgba($color-gray-shadow, 0.5);
-
-		&:hover {
-			background-color: rgba($c-play-overlay-inner-bg, 0.7);
-			box-shadow: 0 0 10px 0 rgba($color-gray-shadow, 0.7);
-			transition: 0.14s background $player-easing-soft;
-		}
-
-		> * {
-			display: none;
-		}
+		@include icon-layout;
 	}
 
 	.fp-pause {
@@ -230,6 +235,7 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 
 	.fp-controls {
 		width: calc(100% - #{$fp-controls-header-width-mobile});
+		height: $fp-controls-height;
 
 		@media (min-width: $g-bp2) {
 			width: calc(100% - #{$fp-controls-header-width-desktop});
@@ -573,4 +579,49 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 	top: 0;
 	left: 0;
 	pointer-events: none;
+}
+
+.c-video-player-inner.c-video-player-inner--enabled-restart-cue-points + .c-video-player-inner-overlay{
+	position: absolute;
+	width: 100%;
+	height: calc(100% - $fp-controls-height);
+	padding-top: $fp-controls-height;
+	pointer-events: none;
+	display: inline-flex;
+	justify-content: center;
+	gap: math.div($player-play-button-dimensions, 2) * 3;
+
+	.fp-replay,
+	.fp-custom-play {
+		@include icon-layout;
+		display: none;
+		position: relative;
+		pointer-events: all;
+		cursor: pointer;
+		left: unset;
+		transform: translate(0, -(math.div($player-play-button-dimensions, 2)));
+	}
+
+	.fp-replay{
+		background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_19_57)'%3E%3Cpath d='M37.3332 26.6667H53.3332V10.6667H47.9998V17.9467C43.9998 13.36 38.2665 10.6667 31.9998 10.6667C20.2398 10.6667 10.6665 20.24 10.6665 32C10.6665 43.76 20.2398 53.3333 31.9998 53.3333C38.9598 53.3333 45.5198 49.92 49.5198 44.1867L45.1465 41.1467C42.1598 45.44 37.2532 48 32.0265 48C23.1998 48 16.0265 40.8267 16.0265 32C16.0265 23.1733 23.1998 16 32.0265 16C36.6665 16 40.9065 17.9733 43.9198 21.3333H37.3598V26.6667H37.3332Z' fill='white'/%3E%3Cg clip-path='url(%23clip1_19_57)'%3E%3Cpath d='M26 24.32V39.68L40.09 32L26 24.32Z' fill='white'/%3E%3C/g%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_19_57'%3E%3Crect width='64' height='64' fill='white'/%3E%3C/clipPath%3E%3CclipPath id='clip1_19_57'%3E%3Crect width='24' height='24' fill='white' transform='translate(20 20)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A");
+	}
+}
+
+.c-video-player-inner.c-video-player-inner--enabled-restart-cue-points.is-paused + .c-video-player-inner-overlay{
+	.fp-replay,
+	.fp-custom-play {
+		display: block;
+	}
+}
+
+.c-video-player-inner.c-video-player-inner--enabled-restart-cue-points {
+	&.is-paused,
+	&.is-toggling,
+	&.is-ended {
+		.fp-play,
+		.fp-pause {
+			display: none !important;
+			transition: none !important;
+		}
+	}
 }
