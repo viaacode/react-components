@@ -17,6 +17,7 @@ import React, {
 	useState,
 } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import { keysEnter, keysSpacebar, onKey } from '../../utils';
 
 import { isNil } from '../../utils/is-nil';
 import { noop } from '../../utils/noop';
@@ -88,6 +89,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	peakColorInactive,
 	peakColorActive,
 	peakHeightFactor,
+	enabledRestartCuePoints,
 }) => {
 	const videoContainerRef = useRef<HTMLDivElement>(null);
 	const peakCanvas = useRef<HTMLCanvasElement>(null);
@@ -576,6 +578,13 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		[updateCuepointPosition]
 	);
 
+	const handleReplayClicked = useCallback((): void => {
+		player.current.currentTime =
+			(player.current.opts as FlowplayerConfigWithPlugins).cuepoints?.[0].startTime || 0;
+		player.current.play();
+	}, []);
+	const handlePlayClicked = useCallback((): void => player.current.play(), []);
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const renderPlaylistItems = useCallback(
 		(playlistItems: FlowplayerSourceList['items']) => {
@@ -604,16 +613,45 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const playerHtml = useMemo(
 		() => (
-			<div
-				className={clsx('c-video-player-inner', {
-					'c-video-player-inner--audio': isAudio,
-				})}
-				data-player-id={dataPlayerId}
-				ref={videoContainerRef}
-			>
-				<canvas ref={peakCanvas} className="c-peak" width="1212" height="779" />
-				{customControls}
-			</div>
+			<>
+				<div
+					className={clsx('c-video-player-inner', {
+						'c-video-player-inner--audio': isAudio,
+						'c-video-player-inner--enabled-restart-cue-points': enabledRestartCuePoints,
+					})}
+					data-player-id={dataPlayerId}
+					ref={videoContainerRef}
+				>
+					<canvas ref={peakCanvas} className="c-peak" width="1212" height="779" />
+					{customControls}
+				</div>
+				<div className="c-video-player-inner-overlay">
+					<span
+						className="fp-icon fp-replay"
+						onClick={handleReplayClicked}
+						onKeyDown={(e) =>
+							onKey(e, [...keysEnter, ...keysSpacebar], () => {
+								if (keysSpacebar.includes(e.key)) {
+									e.preventDefault();
+								}
+								handleReplayClicked();
+							})
+						}
+					/>
+					<span
+						className="fp-icon fp-custom-play"
+						onClick={handlePlayClicked}
+						onKeyDown={(e) =>
+							onKey(e, [...keysEnter, ...keysSpacebar], () => {
+								if (keysSpacebar.includes(e.key)) {
+									e.preventDefault();
+								}
+								handlePlayClicked();
+							})
+						}
+					/>
+				</div>
+			</>
 		),
 		[dataPlayerId]
 	);
