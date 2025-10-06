@@ -11,6 +11,7 @@ export interface PaginationBarProps
 	onScrollToTop?: () => void;
 	children?: ReactNode;
 	itemsPerPage: number;
+	visualTotalItems?: number;
 	showBackToTop?: boolean;
 	showProgress?: boolean;
 	showFirstAndLastButtons?: boolean;
