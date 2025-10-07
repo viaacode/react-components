@@ -11,6 +11,9 @@ export interface PaginationBarProps
 	onScrollToTop?: () => void;
 	children?: ReactNode;
 	itemsPerPage: number;
+	// The amount of total items we want to display in the pagination. Calculations will still be done based on totalItems
+	// The search for example only can get max 10.000 items but the total can be well over that limit
+	// https://meemoo.atlassian.net/browse/AVO-3409
 	visualTotalItems?: number;
 	showBackToTop?: boolean;
 	showProgress?: boolean;
