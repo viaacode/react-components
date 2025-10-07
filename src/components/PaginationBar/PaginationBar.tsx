@@ -13,6 +13,7 @@ const PaginationBar: FC<PaginationBarProps> = ({
 	className,
 	startItem,
 	totalItems,
+	visualTotalItems,
 	itemsPerPage,
 	displayCount = 5,
 	onPageChange,
@@ -53,7 +54,7 @@ const PaginationBar: FC<PaginationBarProps> = ({
 			<div className="c-pagination-bar__progress">
 				{showProgress && (
 					<PaginationProgress
-						{...{ startItem: startItem + 1, endItem, totalItems }}
+						{...{ startItem: startItem + 1, endItem, totalItems: visualTotalItems || totalItems }}
 						labelBetweenPageStartAndEnd={labelBetweenPageStartAndEnd}
 						labelBetweenPageEndAndTotal={labelBetweenPageEndAndTotal}
 					/>
