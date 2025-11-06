@@ -2,10 +2,10 @@ import clsx from 'clsx';
 import React, { useEffect, useMemo } from 'react';
 import { type HeaderGroup, usePagination, useSortBy, useTable } from 'react-table';
 
-import { bemCls, getVariantClasses } from '../../utils';
+import { bemCls, getVariantClasses } from '../../utils/index.js';
 
-import { defaultPropGetter, defaultSortingIcons } from './Table.const';
-import { OrderDirection, type TableData, type TableProps } from './Table.types';
+import { defaultPropGetter, defaultSortingIcons } from './Table.const.js';
+import { OrderDirection, type TableData, type TableProps } from './Table.types.js';
 
 const Table = <D extends TableData>({
 	className,

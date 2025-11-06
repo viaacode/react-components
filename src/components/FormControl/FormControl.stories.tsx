@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { TextInput } from '../TextInput';
-import FormControl from './FormControl';
+import { TextInput } from '../TextInput/index.js';
+import FormControl from './FormControl.js';
 
 const meta: Meta<typeof FormControl> = {
 	title: 'Components/FormControl',

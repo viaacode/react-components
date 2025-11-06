@@ -1,4 +1,4 @@
-import flowplayer, { type Player } from '@flowplayer/player';
+import { type Player, flowplayer } from '@flowplayer/player';
 import audioPlugin from '@flowplayer/player/plugins/audio';
 import cuepointsPlugin from '@flowplayer/player/plugins/cuepoints';
 import googleAnalyticsPlugin from '@flowplayer/player/plugins/google-analytics';
@@ -17,26 +17,26 @@ import React, {
 	useState,
 } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { keysEnter, keysSpacebar, onKey } from '../../utils';
+import { keysEnter, keysSpacebar, onKey } from '../../utils/index.js';
 
-import { isNil } from '../../utils/is-nil';
-import { noop } from '../../utils/noop';
+import { isNil } from '../../utils/is-nil.js';
+import { noop } from '../../utils/noop.js';
 
-import { registerCommands } from './FlowPlayer.commands';
+import { registerCommands } from './FlowPlayer.commands.js';
 import {
 	ALL_FLOWPLAYER_PLUGINS,
 	DELAY_BETWEEN_PLAYLIST_VIDEOS,
 	dutchFlowplayerTranslations,
-} from './FlowPlayer.consts';
-import { convertGAEventsArrayToObject } from './FlowPlayer.helpers';
+} from './FlowPlayer.consts.js';
+import { convertGAEventsArrayToObject } from './FlowPlayer.helpers.js';
 import type {
 	FlowPlayerProps,
 	FlowplayerConfigWithPlugins,
 	FlowplayerSourceItem,
 	FlowplayerSourceList,
 	FlowplayerSourceListSchema,
-} from './FlowPlayer.types';
-import { drawPeak } from './Peak/draw-peak';
+} from './FlowPlayer.types.js';
+import { drawPeak } from './Peak/draw-peak.js';
 
 import './FlowPlayer.scss';
 
@@ -667,9 +667,9 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				{playlistItems && (
 					<div className="c-video-player__playlist__wrapper">
 						{playlistScrollable && (
-							<PerfectScrollbar className="c-video-player__playlist__scrollable">
+							<PerfectScrollbar.default className="c-video-player__playlist__scrollable">
 								{renderPlaylistItems(playlistItems)}
-							</PerfectScrollbar>
+							</PerfectScrollbar.default>
 						)}
 						{!playlistScrollable && renderPlaylistItems(playlistItems)}
 					</div>

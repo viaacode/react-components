@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import React, { forwardRef } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils';
+import { bemCls, getVariantClasses } from '../../utils/index.js';
 
-import type { RadioButtonProps } from './RadioButton.types';
+import type { RadioButtonProps } from './RadioButton.types.js';
 
 const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
 	(

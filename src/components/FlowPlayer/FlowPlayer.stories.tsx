@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 
-import { Button } from '../Button';
-import { Modal } from '../Modal';
+import { Button } from '../Button/index.js';
+import { Modal } from '../Modal/index.js';
 
-import { FlowPlayer } from './FlowPlayer';
-import { setPlayingVideoSeekTime } from './FlowPlayer.helpers';
-import { MOCK_FLOW_PLAYER_PROPS_FULL, MOCK_PLAYLIST_SOURCE } from './FlowPlayer.mock';
+import { setPlayingVideoSeekTime } from './FlowPlayer.helpers.js';
+import { FlowPlayer } from './FlowPlayer.js';
+import { MOCK_FLOW_PLAYER_PROPS_FULL, MOCK_PLAYLIST_SOURCE } from './FlowPlayer.mock.js';
 import peakJson from './Peak/__mock__/peak.json';
 
 const FlowPlayerStoryComponentSetTimeButtons = ({ children }: { children: ReactElement }) => (

@@ -3,10 +3,10 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 // import { VariantsProp } from '../../types';
-import { bemCls, getVariantClasses, getVariantsArray } from '../../utils';
+import { bemCls, getVariantClasses, getVariantsArray } from '../../utils/index.js';
 
-import { Tag } from './Tag';
-import type { TagListProps, TagOption } from './TagList.types';
+import { Tag } from './Tag/index.js';
+import type { TagListProps, TagOption } from './TagList.types.js';
 
 const TagList: FC<TagListProps> = ({
 	className,

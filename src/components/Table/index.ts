@@ -1,3 +1,3 @@
-export { default as Table } from './Table';
-export * from './Table.const';
-export * from './Table.types';
+export { default as Table } from './Table.js';
+export * from './Table.const.js';
+export * from './Table.types.js';

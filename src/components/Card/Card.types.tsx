@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from 'react';
 
-import type { DefaultComponentProps } from '../../types';
+import type { DefaultComponentProps } from '../../types/index.js';
 
 export interface CardProps extends DefaultComponentProps {
 	children?: React.ReactNode;

@@ -1,4 +1,4 @@
-import type { RefTypes } from '../../types';
+import type { RefTypes } from '../../types/index.js';
 
 export const assignRef = <T>(ref: RefTypes<T>, newValue: T) => {
 	if (typeof ref === 'function') {

@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import React, { type FC, type ReactNode } from 'react';
 
-import { bemCls, getVariantClasses, keysEnter, keysSpacebar, onKey } from '../../utils';
+import { bemCls, getVariantClasses, keysEnter, keysSpacebar, onKey } from '../../utils/index.js';
 
-import type { CardProps } from './Card.types';
+import type { CardProps } from './Card.types.js';
 
 export const cardDefaultProps: CardProps = {
 	edge: 'zinc',

@@ -1,5 +1,5 @@
 import 'braft-editor/dist/output.css';
 
-export * from './components';
-export * from './hooks';
-export * from './utils';
+export * from './components/index.js';
+export * from './hooks/index.js';
+export * from './utils/index.js';

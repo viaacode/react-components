@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 
-import Avatar from './Avatar';
-import type { AvatarProps } from './Avatar.types';
+import Avatar from './Avatar.js';
+import type { AvatarProps } from './Avatar.types.js';
 
 const renderAvatar = ({ text = 'text', ...props }: AvatarProps) => {
 	return render(

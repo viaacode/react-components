@@ -1,2 +1,2 @@
-export { default as RadioButton } from './RadioButton';
-export * from './RadioButton.types';
+export { default as RadioButton } from './RadioButton.js';
+export * from './RadioButton.types.js';

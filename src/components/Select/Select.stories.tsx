@@ -9,8 +9,8 @@ import React, {
 } from 'react';
 import { action } from 'storybook/actions';
 
-import Select from './Select';
-import { selectOptionsMock } from './__mocks__/select';
+import Select from './Select.js';
+import { selectOptionsMock } from './__mocks__/select.js';
 
 const meta: Meta<typeof Select> = {
 	title: 'Components/Select',

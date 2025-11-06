@@ -1,4 +1,4 @@
-import type { SelectOption } from '../Select.types';
+import type { SelectOption } from '../Select.types.js';
 
 export const selectOptionsMock: SelectOption[] = [
 	{

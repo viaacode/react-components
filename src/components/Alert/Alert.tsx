@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils';
-import { Button } from '../Button';
+import { bemCls, getVariantClasses } from '../../utils/index.js';
+import { Button } from '../Button/index.js';
 
-import type { AlertProps } from './Alert.types';
+import type { AlertProps } from './Alert.types.js';
 
 const Alert: FC<AlertProps> = ({
 	id,

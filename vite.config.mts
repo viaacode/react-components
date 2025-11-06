@@ -1,10 +1,10 @@
-import { resolve } from 'path';
+import {resolve} from 'node:path';
 
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import {defineConfig} from 'vite';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import dts from 'vite-plugin-dts';
-import { externalizeDeps } from 'vite-plugin-externalize-deps';
+import {externalizeDeps} from 'vite-plugin-externalize-deps';
 import svgrPlugin from 'vite-plugin-svgr';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 
@@ -16,7 +16,7 @@ export default defineConfig({
 			name: '@meemoo/react-components',
 			fileName: (_, entryName) => {
 				if (entryName === 'src/index') {
-					return `index.js`;
+					return 'index.js';
 				}
 				return `${entryName}.js`;
 			},

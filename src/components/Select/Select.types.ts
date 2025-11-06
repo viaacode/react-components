@@ -1,6 +1,6 @@
 import type { ReactNode, SelectHTMLAttributes } from 'react';
 
-import type { DefaultComponentProps } from '../../types';
+import type { DefaultComponentProps } from '../../types/index.js';
 
 type HTMLSelectAttrs = SelectHTMLAttributes<HTMLSelectElement>;
 

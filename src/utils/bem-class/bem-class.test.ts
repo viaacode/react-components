@@ -1,4 +1,4 @@
-import { bemCls } from './bem-class';
+import { bemCls } from './bem-class.js';
 
 const blockClass = 'block';
 const bem = bemCls.bind(blockClass);

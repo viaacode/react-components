@@ -1,7 +1,7 @@
 import type { Options, Placement } from '@popperjs/core';
 import type { ReactNode } from 'react';
 
-import type { DefaultComponentProps } from '../../types';
+import type { DefaultComponentProps } from '../../types/index.js';
 
 export interface DropdownProps extends DefaultComponentProps {
 	children: ReactNode;

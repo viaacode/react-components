@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { action } from 'storybook/actions';
 
-import PaginationBar from './PaginationBar';
-import type { PaginationBarProps } from './PaginationBar.types';
+import PaginationBar from './PaginationBar.js';
+import type { PaginationBarProps } from './PaginationBar.types.js';
 
 const meta: Meta<typeof PaginationBar> = {
 	title: 'Components/PaginationBar',

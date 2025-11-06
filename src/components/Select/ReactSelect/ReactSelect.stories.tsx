@@ -3,10 +3,10 @@ import React, { cloneElement, type FC, type ReactElement, type ReactNode, useSta
 import type { ActionMeta, OnChangeValue } from 'react-select';
 import { action } from 'storybook/actions';
 
-import type { SelectOption } from '../Select.types';
-import { selectOptionsMock } from '../__mocks__/select';
+import type { SelectOption } from '../Select.types.js';
+import { selectOptionsMock } from '../__mocks__/select.js';
 
-import ReactSelect from './ReactSelect';
+import ReactSelect from './ReactSelect.js';
 
 const meta: Meta<typeof ReactSelect> = {
 	component: ReactSelect,

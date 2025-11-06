@@ -1,6 +1,6 @@
 import React, { type FunctionComponent, type ReactNode } from 'react';
 
-import type { DefaultComponentProps } from '../../../types';
+import type { DefaultComponentProps } from '../../../types/index.js';
 
 export interface FlexItemProps extends DefaultComponentProps {
 	shrink?: boolean;

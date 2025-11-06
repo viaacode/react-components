@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { loremIpsum } from 'lorem-ipsum';
 import React from 'react';
 
-import { Flex } from './Flex';
-import { FlexItem } from './FlexItem/FlexItem';
+import { Flex } from './Flex.js';
+import { FlexItem } from './FlexItem/FlexItem.js';
 
 const content1 = loremIpsum({ count: 1 });
 const content2 = loremIpsum({ count: 4 });

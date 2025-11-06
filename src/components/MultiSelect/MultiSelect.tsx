@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import React, { type FC, type ReactElement, useState } from 'react';
 
-import { CheckboxList } from '../CheckboxList';
-import { Dropdown } from '../Dropdown';
+import { CheckboxList } from '../CheckboxList/index.js';
+import { Dropdown } from '../Dropdown/index.js';
 
-import type { MultiSelectOption, MultiSelectProps } from './MultiSelect.types';
+import type { MultiSelectOption, MultiSelectProps } from './MultiSelect.types.js';
 
 const MultiSelect: FC<MultiSelectProps> = ({
 	className,

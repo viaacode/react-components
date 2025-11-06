@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { keysEnter, keysSpacebar, onKey } from '../../utils';
-import Checkbox from '../Checkbox/Checkbox';
+import { keysEnter, keysSpacebar, onKey } from '../../utils/index.js';
+import Checkbox from '../Checkbox/Checkbox.js';
 
 import './CheckboxList.scss';
-import type { CheckboxListProps } from './CheckboxList.types';
+import type { CheckboxListProps } from './CheckboxList.types.js';
 
 const CheckboxList: FC<CheckboxListProps<unknown>> = ({
 	items,

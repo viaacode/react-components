@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import PaginationProgress from './PaginationProgress';
+import PaginationProgress from './PaginationProgress.js';
 
 const meta: Meta<typeof PaginationProgress> = {
 	title: 'Components/PaginationProgress',

@@ -1,2 +1,2 @@
-export { default as PaginationBar } from './PaginationBar';
-export * from './PaginationBar.types';
+export { default as PaginationBar } from './PaginationBar.js';
+export * from './PaginationBar.types.js';

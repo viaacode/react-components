@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import React, { type ReactNode } from 'react';
 
-import TagList from './TagList';
-import type { TagListProps } from './TagList.types';
-import { tags as tagsMock } from './__mocks__/tag-list';
+import TagList from './TagList.js';
+import type { TagListProps } from './TagList.types.js';
+import { tags as tagsMock } from './__mocks__/tag-list.js';
 
 const renderLabel = (label: string, className: string): ReactNode => {
 	return <span className={className}>{label}</span>;

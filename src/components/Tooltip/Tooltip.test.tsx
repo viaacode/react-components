@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 
-import Tooltip from './Tooltip';
-import { TooltipContent, TooltipTrigger } from './Tooltip.slots';
+import Tooltip from './Tooltip.js';
+import { TooltipContent, TooltipTrigger } from './Tooltip.slots.js';
 
 const contentText = 'This is a tooltip';
 const triggerText = 'Hover me!';

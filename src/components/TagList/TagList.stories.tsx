@@ -3,8 +3,8 @@ import { loremIpsum } from 'lorem-ipsum';
 import React, { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 
-import TagList from './TagList';
-import { tags } from './__mocks__/tag-list';
+import TagList from './TagList.js';
+import { tags } from './__mocks__/tag-list.js';
 
 const TagListStoryComponent = ({ children }: { children: ReactElement }) => {
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);

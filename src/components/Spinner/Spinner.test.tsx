@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 
-import Spinner from './Spinner';
-import type { SpinnerProps } from './Spinner.types';
+import Spinner from './Spinner.js';
+import type { SpinnerProps } from './Spinner.types.js';
 
 const renderSpinner = ({ ...rest }: Partial<SpinnerProps>) => {
 	return render(<Spinner {...rest} />);

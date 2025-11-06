@@ -1,2 +1,2 @@
-export { ProgressBar } from './ProgressBar';
-export * from './ProgressBar.types';
+export { ProgressBar } from './ProgressBar.js';
+export * from './ProgressBar.types.js';

@@ -1,2 +1,2 @@
-export { default as Pagination } from './Pagination';
-export * from './Pagination.types';
+export { default as Pagination } from './Pagination.js';
+export * from './Pagination.types.js';

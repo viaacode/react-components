@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { cloneElement, type FC, type ReactElement, type ReactNode, useState } from 'react';
 import { action } from 'storybook/actions';
 
-import CheckboxList from './CheckboxList';
+import CheckboxList from './CheckboxList.js';
 
 const DEFAULT_ITEMS: { label: string; value: unknown; checked?: boolean }[] = [
 	{ label: 'item A', value: 'itemA' },

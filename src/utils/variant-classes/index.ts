@@ -1,1 +1,1 @@
-export * from './variant-classes';
+export * from './variant-classes.js';

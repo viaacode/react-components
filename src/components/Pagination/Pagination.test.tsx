@@ -1,10 +1,10 @@
 import { type RenderResult, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 
-import { Button } from '../Button';
+import { Button } from '../Button/index.js';
 
-import Pagination from './Pagination';
-import type { PaginationProps } from './Pagination.types';
+import Pagination from './Pagination.js';
+import type { PaginationProps } from './Pagination.types.js';
 
 const renderPagination = ({ pageCount = 10, ...rest }: Partial<PaginationProps>): RenderResult => {
 	return render(<Pagination pageCount={pageCount} {...rest} />);

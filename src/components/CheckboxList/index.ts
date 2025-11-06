@@ -1,2 +1,2 @@
-export { default as CheckboxList } from './CheckboxList';
-export * from './CheckboxList.types';
+export { default as CheckboxList } from './CheckboxList.js';
+export * from './CheckboxList.types.js';

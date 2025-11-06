@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import React, { Fragment, type FunctionComponent, type ReactNode } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils';
-import { Button } from '../Button';
+import { bemCls, getVariantClasses } from '../../utils/index.js';
+import { Button } from '../Button/index.js';
 
-import type { PaginationProps } from './Pagination.types';
+import type { PaginationProps } from './Pagination.types.js';
 
 const Pagination: FunctionComponent<PaginationProps> = ({
 	className,

@@ -1,2 +1,2 @@
-export { default as MultiSelect } from './MultiSelect';
-export * from './MultiSelect.types';
+export { default as MultiSelect } from './MultiSelect.js';
+export * from './MultiSelect.types.js';

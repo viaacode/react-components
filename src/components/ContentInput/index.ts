@@ -1,2 +1,2 @@
-export { default as ContentInput } from './ContentInput';
-export * from './ContentInput.types';
+export { default as ContentInput } from './ContentInput.js';
+export * from './ContentInput.types.js';

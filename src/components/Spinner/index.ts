@@ -1,2 +1,2 @@
-export { default as Spinner } from './Spinner';
-export * from './Spinner.types';
+export { default as Spinner } from './Spinner.js';
+export * from './Spinner.types.js';

@@ -1,4 +1,4 @@
-import type { FlowPlayerProps, FlowplayerSourceList } from './FlowPlayer.types';
+import type { FlowPlayerProps, FlowplayerSourceList } from './FlowPlayer.types.js';
 
 export const MOCK_FLOW_PLAYER_PROPS: FlowPlayerProps = {
 	src: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',

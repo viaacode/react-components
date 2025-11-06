@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 
-import Breadcrumbs from './Breadcrumbs';
-import { MOCK_BREADCRUMBS } from './Breadcrumbs.mock';
-import type { BreadcrumbsProps } from './Breadcrumbs.types';
+import Breadcrumbs from './Breadcrumbs.js';
+import { MOCK_BREADCRUMBS } from './Breadcrumbs.mock.js';
+import type { BreadcrumbsProps } from './Breadcrumbs.types.js';
 
 const renderBreadcrumbs = ({ ...props }: BreadcrumbsProps) => {
 	return render(<Breadcrumbs {...props} />);

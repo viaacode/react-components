@@ -1,3 +1,3 @@
-export { default as Dropdown } from './Dropdown';
-export * from './Dropdown.types';
-export * from './Dropdown.slots';
+export { default as Dropdown } from './Dropdown.js';
+export * from './Dropdown.types.js';
+export * from './Dropdown.slots.js';

@@ -9,11 +9,18 @@ import React, {
 	useState,
 } from 'react';
 
-import { bemCls, getVariantClasses, keysEnter, keysEscape, keysSpacebar, onKey } from '../../utils';
-import { isFunction } from '../../utils/is-function';
-import { TextInputDefaults } from '../TextInput/TextInput';
+import {
+	bemCls,
+	getVariantClasses,
+	keysEnter,
+	keysEscape,
+	keysSpacebar,
+	onKey,
+} from '../../utils/index.js';
+import { isFunction } from '../../utils/is-function.js';
+import { TextInputDefaults } from '../TextInput/TextInput.js';
 
-import type { ContentInputProps, StopPropagationObject } from './ContentInput.types';
+import type { ContentInputProps, StopPropagationObject } from './ContentInput.types.js';
 
 const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, ContentInputProps>(
 	(

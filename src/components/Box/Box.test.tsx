@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { loremIpsum } from 'lorem-ipsum';
 import React from 'react';
 
-import Box from './Box';
+import Box from './Box.js';
 
 const content = loremIpsum({ count: 10 });
 

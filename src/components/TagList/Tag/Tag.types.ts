@@ -1,6 +1,6 @@
 import type { KeyboardEvent, MouseEvent, ReactNode } from 'react';
 
-import type { DefaultComponentProps } from '../../../types';
+import type { DefaultComponentProps } from '../../../types/index.js';
 
 export interface TagProps extends DefaultComponentProps {
 	children?: React.ReactNode;

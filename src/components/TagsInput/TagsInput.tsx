@@ -3,9 +3,9 @@ import React, { type ReactElement } from 'react';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
-import { bemCls, getVariantClasses } from '../../utils';
+import { bemCls, getVariantClasses } from '../../utils/index.js';
 
-import type { TagsInputGroup, TagsInputProps } from './TagsInput.types';
+import type { TagsInputGroup, TagsInputProps } from './TagsInput.types.js';
 
 const TagsInput = <
 	AllowMulti extends boolean = true,

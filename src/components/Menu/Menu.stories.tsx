@@ -2,14 +2,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { action } from 'storybook/actions';
 
-import Menu from './Menu';
-import MenuSearchResultContent from './MenuSearchResultContent/MenuSearchResultContent';
+import Menu from './Menu.js';
+import MenuSearchResultContent from './MenuSearchResultContent/MenuSearchResultContent.js';
 import {
 	menuItems,
 	menuItemsWithDivider,
 	menuItemsWithIcons,
 	menuItemsWithSearch,
-} from './__mocks__/menu';
+} from './__mocks__/menu.js';
 
 const meta: Meta<typeof Menu> = {
 	title: 'Components/Menu',

@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 
-import Select from '../Select/Select';
-import { selectOptionsMock } from '../Select/__mocks__/select';
+import Select from '../Select/Select.js';
+import { selectOptionsMock } from '../Select/__mocks__/select.js';
 
-import RichTextEditor from './RichTextEditor';
-import type { RichTextEditorControl } from './RichTextEditor.types';
+import RichTextEditor from './RichTextEditor.js';
+import type { RichTextEditorControl } from './RichTextEditor.types.js';
 
 const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
 	'fullscreen',

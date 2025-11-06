@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { FlexItem } from './FlexItem';
+import { FlexItem } from './FlexItem.js';
 
 const meta: Meta<typeof FlexItem> = {
 	title: 'Components/FlexItem',

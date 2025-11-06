@@ -8,11 +8,11 @@ import React, {
 } from 'react';
 import { usePopper } from 'react-popper';
 
-import { useSlot } from '../../hooks/use-slot';
-import { generateRandomId } from '../../utils/generate-random-id/generate-random-id';
+import { useSlot } from '../../hooks/use-slot/index.js';
+import { generateRandomId } from '../../utils/generate-random-id/generate-random-id.js';
 
 import './Tooltip.scss';
-import { TooltipContent, TooltipTrigger } from './Tooltip.slots';
+import { TooltipContent, TooltipTrigger } from './Tooltip.slots.js';
 
 export interface TooltipPropsSchema {
 	children: ReactNode;

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { type CSSProperties } from 'react';
 
-import { Card } from './Card';
-import { cardImageMock, cardTitleMock } from './__mocks__/card';
+import { Card } from './Card.js';
+import { cardImageMock, cardTitleMock } from './__mocks__/card.js';
 
 const container: CSSProperties = {
 	display: 'flex',

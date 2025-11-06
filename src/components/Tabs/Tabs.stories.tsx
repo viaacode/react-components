@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Tabs from './Tabs';
-import { MOCK_TABS } from './__mocks__/tabs';
+import Tabs from './Tabs.js';
+import { MOCK_TABS } from './__mocks__/tabs.js';
 
 const meta: Meta<typeof Tabs> = {
 	title: 'Components/Tabs',
