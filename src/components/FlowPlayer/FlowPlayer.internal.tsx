@@ -34,6 +34,7 @@ import { drawPeak } from './Peak/draw-peak.js';
 import './FlowPlayer.scss';
 
 const flowplayerGlobal = flowplayer as unknown as typeof FlowPlayerFunc;
+const PerfectScrollbarGlobal = PerfectScrollbar as unknown as typeof PerfectScrollbar.default;
 
 flowplayerGlobal(
 	subtitlesPlugin,
@@ -666,9 +667,9 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				{playlistItems && (
 					<div className="c-video-player__playlist__wrapper">
 						{playlistScrollable && (
-							<PerfectScrollbar.default className="c-video-player__playlist__scrollable">
+							<PerfectScrollbarGlobal className="c-video-player__playlist__scrollable">
 								{renderPlaylistItems(playlistItems)}
-							</PerfectScrollbar.default>
+							</PerfectScrollbarGlobal>
 						)}
 						{!playlistScrollable && renderPlaylistItems(playlistItems)}
 					</div>

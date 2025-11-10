@@ -18,6 +18,8 @@ import {
 
 import './RichTextEditor.scss';
 
+const BraftEditorGlobal = BraftEditor as unknown as typeof BraftEditor.default;
+
 const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateProps> = ({
 	braft,
 	className,
@@ -41,7 +43,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 	const [prettyHtml, setPrettyHtml] = useState(prettifyHtml(value || ''));
 	const htmlEditRef = useRef<HTMLTextAreaElement | null>(null);
 	const [richTextEditorState, setRichTextEditorState] = useState<EditorState>(
-		BraftEditor.default.createEditorState(value || '')
+		BraftEditorGlobal.createEditorState(value || '')
 	);
 
 	useLayoutEffect(() => {
@@ -76,7 +78,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 		withDropdown: true, //  Whether a drop-down menu pops up before inserting a table
 	};
 
-	BraftEditor.default.use(Table(tableOptions));
+	BraftEditorGlobal.use(Table(tableOptions));
 
 	const newControls: ControlType[] | undefined = controls
 		? ([
@@ -92,7 +94,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 								className: `html-edit-button ${isHtmlView ? 'active' : ''}`,
 								onClick: () => {
 									if (isHtmlView) {
-										setRichTextEditorState(BraftEditor.default.createEditorState(prettyHtml || ''));
+										setRichTextEditorState(BraftEditorGlobal.createEditorState(prettyHtml || ''));
 									}
 									setIsHtmlView((prev) => !prev);
 								},
@@ -110,7 +112,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 			})}
 			id={id}
 		>
-			<BraftEditor.default
+			<BraftEditorGlobal
 				{...braft}
 				controls={newControls}
 				id={id}
@@ -139,7 +141,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 					}}
 					className={`${root}__html-view`}
 					onBlur={() => {
-						setRichTextEditorState(BraftEditor.default.createEditorState(prettyHtml || ''));
+						setRichTextEditorState(BraftEditorGlobal.createEditorState(prettyHtml || ''));
 					}}
 					onChange={(evt) => {
 						setPrettyHtml(evt.target.value);
