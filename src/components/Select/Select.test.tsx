@@ -1,10 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import React from 'react';
-
+import { selectOptionsMock } from './__mocks__/select.js';
 import Select from './Select.js';
 import type { SelectProps } from './Select.types.js';
-import { selectOptionsMock } from './__mocks__/select.js';
 
 const renderSelect = ({ ...rest }: Partial<SelectProps> = {}) => {
 	return render(<Select {...rest} />);

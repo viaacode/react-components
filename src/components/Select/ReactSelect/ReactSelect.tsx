@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC, forwardRef } from 'react';
+import { type FC, forwardRef } from 'react';
 import Select from 'react-select';
 
 import { assignRef, getVariantClasses } from '../../../utils/index.js';

@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { loremIpsum } from 'lorem-ipsum';
-import React from 'react';
 
 import { Flex } from './Flex.js';
 import { FlexItem } from './FlexItem/FlexItem.js';

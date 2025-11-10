@@ -1,5 +1,5 @@
-import { type RenderOptions, fireEvent, render, screen } from '@testing-library/react';
-import React, { type PropsWithChildren } from 'react';
+import { fireEvent, type RenderOptions, render, screen } from '@testing-library/react';
+import type { PropsWithChildren } from 'react';
 
 import Modal from './Modal.js';
 import type { ModalProps } from './Modal.types.js';

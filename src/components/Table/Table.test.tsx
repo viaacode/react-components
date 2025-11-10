@@ -1,10 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
-
+import { mockColumns, mockData } from './__mocks__/table.js';
 import { defaultSortingIcons } from './Table.const.js';
 import Table from './Table.js';
 import type { TableData, TableProps } from './Table.types.js';
-import { mockColumns, mockData } from './__mocks__/table.js';
 
 const renderTable = <T extends TableData>(props: TableProps<T>) => {
 	return render(<Table {...props} />);

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils/index.js';
 
@@ -22,27 +22,25 @@ const FormControl: FC<FormControlProps> = ({
 	});
 
 	return (
-		<>
-			<div className={rootCls}>
-				{label && (
-					<label htmlFor={id} className={bem('label')}>
-						{label}
-						{suffix ? <> {suffix}</> : null}
-					</label>
-				)}
+		<div className={rootCls}>
+			{label && (
+				<label htmlFor={id} className={bem('label')}>
+					{label}
+					{suffix ? <> {suffix}</> : null}
+				</label>
+			)}
 
-				<div className={bem('input')}>{children}</div>
+			<div className={bem('input')}>{children}</div>
 
-				{!!errors?.[0] && (
-					<ul className={bem('errors')}>
-						{errors.map((error, i) => (
-							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-							<li key={i}>{error}</li>
-						))}
-					</ul>
-				)}
-			</div>
-		</>
+			{!!errors?.[0] && (
+				<ul className={bem('errors')}>
+					{errors.map((error, i) => (
+						// biome-ignore lint/suspicious/noArrayIndexKey: TODO fix
+						<li key={i}>{error}</li>
+					))}
+				</ul>
+			)}
+		</div>
 	);
 };
 

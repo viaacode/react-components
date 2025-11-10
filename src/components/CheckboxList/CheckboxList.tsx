@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
 
 import { keysEnter, keysSpacebar, onKey } from '../../utils/index.js';
 import Checkbox from '../Checkbox/Checkbox.js';
@@ -26,7 +26,7 @@ const CheckboxList: FC<CheckboxListProps<unknown>> = ({
 						className={clsx('c-checkbox-list__item', itemClassName, {
 							'is-checked': isChecked,
 						})}
-						// biome-ignore lint/a11y/noNoninteractiveTabindex: <explanation>
+						// biome-ignore lint/a11y/noNoninteractiveTabindex: TODO fix
 						tabIndex={0}
 						onKeyDown={(e) =>
 							onKey(e, [...keysEnter, ...keysSpacebar], () => {

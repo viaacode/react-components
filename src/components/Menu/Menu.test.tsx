@@ -1,16 +1,16 @@
 import { fireEvent, render } from '@testing-library/react';
-import React, { type PropsWithChildren } from 'react';
-
-import Menu from './Menu.js';
-import type { MenuProps } from './Menu.types.js';
-import type { MenuItemInfo } from './MenuContent/index.js';
-import { MenuSearchResultContent } from './MenuSearchResultContent/index.js';
+import type { PropsWithChildren } from 'react';
 import {
 	menuItems,
 	menuItemsWithDivider,
 	menuItemsWithIcons,
 	menuItemsWithSearch,
 } from './__mocks__/menu.js';
+import Menu from './Menu.js';
+import type { MenuProps } from './Menu.types.js';
+import type { MenuItemInfo } from './MenuContent/index.js';
+import { MenuSearchResultContent } from './MenuSearchResultContent/index.js';
+
 const renderMenu = ({ children = null, ...args }: PropsWithChildren<MenuProps>) => {
 	return render(<Menu {...args}>{children}</Menu>);
 };

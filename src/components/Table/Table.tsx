@@ -1,11 +1,10 @@
+import { Avo } from '@viaa/avo2-types';
 import clsx from 'clsx';
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { type HeaderGroup, usePagination, useSortBy, useTable } from 'react-table';
-
 import { bemCls, getVariantClasses } from '../../utils/index.js';
-
 import { defaultPropGetter, defaultSortingIcons } from './Table.const.js';
-import { OrderDirection, type TableData, type TableProps } from './Table.types.js';
+import type { TableData, TableProps } from './Table.types.js';
 
 const Table = <D extends TableData>({
 	className,
@@ -55,11 +54,16 @@ const Table = <D extends TableData>({
 
 	useEffect(() => {
 		const orderProp = sortBy[0]?.id || undefined;
-		const orderDirection = sortBy[0]
-			? sortBy[0].desc
-				? OrderDirection.desc
-				: OrderDirection.asc
-			: undefined;
+		let orderDirection: Avo.Search.OrderDirection | undefined;
+		if (sortBy[0]) {
+			if (sortBy[0].desc) {
+				orderDirection = Avo.Search.OrderDirection.DESC;
+			} else {
+				orderDirection = Avo.Search.OrderDirection.ASC;
+			}
+		} else {
+			orderDirection = undefined;
+		}
 		onSortChange?.(orderProp, orderDirection);
 	}, [sortBy, onSortChange]);
 
@@ -83,7 +87,7 @@ const Table = <D extends TableData>({
 						{headerGroups.map((group, i) => (
 							<tr
 								{...group.getHeaderGroupProps()}
-								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+								// biome-ignore lint/suspicious/noArrayIndexKey: TODO fix
 								key={i}
 								className={clsx(bem('row'), bem('row', 'header'))}
 							>
@@ -95,7 +99,7 @@ const Table = <D extends TableData>({
 											getColumnProps(column),
 											getHeaderProps(column),
 										])}
-										// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+										// biome-ignore lint/suspicious/noArrayIndexKey: TODO fix
 										key={`${i}-${j}`}
 									>
 										{column.render('Header')}
@@ -115,7 +119,7 @@ const Table = <D extends TableData>({
 								<tr
 									onClick={(e) => onRowClick?.(e, row)}
 									{...row.getRowProps([{ className: trBodyClass }, getRowProps(row)])}
-									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+									// biome-ignore lint/suspicious/noArrayIndexKey: TODO fix
 									key={i}
 								>
 									{row.cells.map((cell, j) => {
@@ -126,7 +130,7 @@ const Table = <D extends TableData>({
 													getColumnProps(cell.column),
 													getCellProps(cell.column),
 												])}
-												// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+												// biome-ignore lint/suspicious/noArrayIndexKey: TODO fix
 												key={`${i}-${j}`}
 											>
 												{cell.render('Cell')}

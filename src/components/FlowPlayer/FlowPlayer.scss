@@ -594,6 +594,7 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 	.fp-replay,
 	.fp-custom-play {
 		@include icon-layout;
+
 		display: none;
 		position: relative;
 		pointer-events: all;

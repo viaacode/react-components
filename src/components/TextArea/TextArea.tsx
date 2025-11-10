@@ -1,6 +1,6 @@
 import autosize from 'autosize';
 import clsx from 'clsx';
-import React, { forwardRef, useEffect } from 'react';
+import { forwardRef, useEffect } from 'react';
 
 import { useCallbackRef } from '../../hooks/index.js';
 import { bemCls, getVariantClasses, mergeRefs } from '../../utils/index.js';

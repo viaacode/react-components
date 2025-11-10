@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC, useMemo, useState } from 'react';
+import { type FC, useMemo, useState } from 'react';
 import { usePopper } from 'react-popper';
 
 import { useClickOutside, useKeyPress, useSlot } from '../../hooks/index.js';
@@ -105,12 +105,12 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 			{
 				// Wrapper element should not be tabbable
 				// But it should handle onKeyUp events bubbling up
+				// biome-ignore lint/a11y/noStaticElementInteractions: TODO fix
 				<div
 					className={rootCls}
 					onClick={() => toggle()}
 					onKeyUp={(e) => onKey(e, [...keysEnter, ...keysSpacebar], toggle)}
 					ref={setReferenceElement}
-					aria-expanded={isOpen}
 					aria-controls={id}
 				>
 					{dropdownButtonSlot || (
@@ -134,7 +134,6 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 					flyoutClassName,
 					isOpen ? 'c-dropdown__content-open' : 'c-dropdown__content-closed'
 				)}
-				aria-expanded={isOpen}
 				id={id}
 			>
 				<Menu

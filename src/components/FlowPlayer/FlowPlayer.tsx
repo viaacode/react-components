@@ -1,10 +1,10 @@
-import React, { type FunctionComponent, type ReactNode, Suspense } from 'react';
+import { type FunctionComponent, lazy, type ReactNode, Suspense } from 'react';
 
 import { Flex } from '../Flex/Flex.js';
 
 import type { FlowPlayerProps } from './FlowPlayer.types.js';
 
-const FlowplayerInternal = React.lazy(() => import('./FlowPlayer.internal.js'));
+const FlowplayerInternal = lazy(() => import('./FlowPlayer.internal.js'));
 
 export const FlowPlayer: FunctionComponent<
 	FlowPlayerProps & { renderLoader?: () => ReactNode }

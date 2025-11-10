@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 
 import './ColorPicker.scss';

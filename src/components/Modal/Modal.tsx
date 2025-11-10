@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 
 import { bemCls, getVariantClasses } from '../../utils/index.js';

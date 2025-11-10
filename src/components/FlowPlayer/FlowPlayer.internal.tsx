@@ -1,4 +1,4 @@
-import { type Player, flowplayer } from '@flowplayer/player';
+import { flowplayer, type Player } from '@flowplayer/player';
 import audioPlugin from '@flowplayer/player/plugins/audio';
 import cuepointsPlugin from '@flowplayer/player/plugins/cuepoints';
 import googleAnalyticsPlugin from '@flowplayer/player/plugins/google-analytics';
@@ -8,14 +8,7 @@ import playlistPlugin from '@flowplayer/player/plugins/playlist';
 import speedPlugin from '@flowplayer/player/plugins/speed';
 import subtitlesPlugin from '@flowplayer/player/plugins/subtitles';
 import clsx from 'clsx';
-import React, {
-	type FunctionComponent,
-	useCallback,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from 'react';
+import { type FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { keysEnter, keysSpacebar, onKey } from '../../utils/index.js';
 
@@ -326,7 +319,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		return 'metadata';
 	};
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: TODO fix
 	const reInitFlowPlayer = useCallback(() => {
 		if (!videoContainerRef.current) {
 			return;
@@ -485,7 +478,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		videoContainerRef,
 	]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: TODO fix
 	useEffect(() => {
 		videoContainerRef.current && !player.current && reInitFlowPlayer();
 	}, [videoContainerRef]); // Only redo effect when ref changes
@@ -503,7 +496,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		};
 	}, []);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: TODO fix
 	useEffect(() => {
 		if (isNil(pause) || !player.current) {
 			return;
@@ -515,7 +508,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		}
 	}, [player, pause]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: TODO fix
 	useEffect(() => {
 		if (isNil(fullscreen) || !player.current) {
 			return;
@@ -537,7 +530,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		}
 	}, [peakColorActive, peakColorBackground, peakColorInactive, peakHeightFactor, waveformData]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: TODO fix
 	useEffect(() => {
 		if (peakCanvas.current && isAudio) {
 			if (drawPeaksTimerId) {
@@ -553,7 +546,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		};
 	}, [peakCanvas, setDrawPeaksTimerId]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: TODO fix
 	useEffect(() => {
 		const timerId = setInterval(() => {
 			updateCuepointPosition();
@@ -564,7 +557,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		};
 	}, []);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: TODO fix
 	const handleMediaCardClicked = useCallback(
 		(itemIndex: number): void => {
 			setActiveItemIndex(itemIndex);
@@ -585,7 +578,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	}, []);
 	const handlePlayClicked = useCallback((): void => player.current.play(), []);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: TODO fix
 	const renderPlaylistItems = useCallback(
 		(playlistItems: FlowplayerSourceList['items']) => {
 			return (
@@ -610,7 +603,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 	const playlistItems = useMemo(() => (src as FlowplayerSourceListSchema)?.items, [src]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: TODO fix
 	const playerHtml = useMemo(
 		() => (
 			<>
@@ -626,6 +619,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 					{customControls}
 				</div>
 				<div className="c-video-player-inner-overlay">
+					{/** biome-ignore lint/a11y/noStaticElementInteractions: TODO fix */}
 					<span
 						className="fp-icon fp-replay"
 						onClick={handleReplayClicked}
@@ -638,6 +632,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 							})
 						}
 					/>
+					{/** biome-ignore lint/a11y/noStaticElementInteractions: TODO fix */}
 					<span
 						className="fp-icon fp-custom-play"
 						onClick={handlePlayClicked}

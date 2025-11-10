@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 
 import { TextInput } from '../TextInput/index.js';
 import FormControl from './FormControl.js';

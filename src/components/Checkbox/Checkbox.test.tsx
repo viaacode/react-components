@@ -1,5 +1,4 @@
 import { fireEvent, render } from '@testing-library/react';
-import React from 'react';
 
 import Checkbox from './Checkbox.js';
 import type { CheckboxProps } from './Checkbox.types.js';

@@ -1,5 +1,4 @@
 import { render } from '@testing-library/react';
-import React from 'react';
 
 import Breadcrumbs from './Breadcrumbs.js';
 import { MOCK_BREADCRUMBS } from './Breadcrumbs.mock.js';

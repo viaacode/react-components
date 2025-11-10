@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
 
 // import { VariantsProp } from '../../types';
 import { bemCls, getVariantClasses, getVariantsArray } from '../../utils/index.js';

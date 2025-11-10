@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils/index.js';
 

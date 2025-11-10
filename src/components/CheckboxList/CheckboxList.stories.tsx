@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { cloneElement, type FC, type ReactElement, type ReactNode, useState } from 'react';
+import { cloneElement, type FC, type ReactElement, type ReactNode, useState } from 'react';
 import { action } from 'storybook/actions';
 
 import CheckboxList from './CheckboxList.js';

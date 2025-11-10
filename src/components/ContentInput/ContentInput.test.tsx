@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import React from 'react';
 
 import ContentInput from './ContentInput.js';
 import type { ContentInputProps } from './ContentInput.types.js';

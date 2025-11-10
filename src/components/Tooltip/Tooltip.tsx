@@ -1,11 +1,5 @@
 import clsx from 'clsx';
-import React, {
-	type FunctionComponent,
-	type ReactNode,
-	useCallback,
-	useEffect,
-	useState,
-} from 'react';
+import { type FunctionComponent, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { usePopper } from 'react-popper';
 
 import { useSlot } from '../../hooks/use-slot/index.js';

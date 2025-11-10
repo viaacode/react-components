@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+
 import { action } from 'storybook/actions';
 
 import Tag from './Tag.js';

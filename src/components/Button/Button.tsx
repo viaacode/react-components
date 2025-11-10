@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC, forwardRef, type MouseEvent, type ReactNode } from 'react';
+import { type FC, forwardRef, type MouseEvent, type ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils/index.js';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip/index.js';

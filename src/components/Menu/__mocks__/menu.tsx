@@ -1,5 +1,3 @@
-import React from 'react';
-
 import type { MenuItemInfo } from '../MenuContent/MenuContent.types.js';
 import type { MenuSearchResultItemInfo } from '../MenuSearchResultContent/MenuSearchResultContent.types.js';
 

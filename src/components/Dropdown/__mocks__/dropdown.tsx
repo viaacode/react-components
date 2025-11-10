@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const menuItems = [
 	{ label: 'Aluminium', id: 'aluminium' },
 	{ label: 'Cadmium', id: 'cadmium' },

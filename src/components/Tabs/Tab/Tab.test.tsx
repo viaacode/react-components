@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 
 import Tab from './Tab.js';
 import type { TabProps } from './Tab.types.js';

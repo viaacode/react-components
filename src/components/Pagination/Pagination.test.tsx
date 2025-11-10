@@ -1,5 +1,4 @@
-import { type RenderResult, fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
+import { fireEvent, type RenderResult, render, screen } from '@testing-library/react';
 
 import { Button } from '../Button/index.js';
 

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC, Fragment, type ReactNode } from 'react';
+import { type FC, Fragment, type ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../../utils/index.js';
 

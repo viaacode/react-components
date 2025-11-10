@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC, type ReactElement, useState } from 'react';
+import { type FC, type ReactElement, useState } from 'react';
 
 import { CheckboxList } from '../CheckboxList/index.js';
 import { Dropdown } from '../Dropdown/index.js';

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, {
+import {
 	type ChangeEvent,
 	cloneElement,
 	type FC,
@@ -8,9 +8,8 @@ import React, {
 	useState,
 } from 'react';
 import { action } from 'storybook/actions';
-
-import Select from './Select.js';
 import { selectOptionsMock } from './__mocks__/select.js';
+import Select from './Select.js';
 
 const meta: Meta<typeof Select> = {
 	title: 'Components/Select',

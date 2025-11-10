@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC, forwardRef } from 'react';
+import { type FC, forwardRef } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils/index.js';
 import { Spinner } from '../Spinner/index.js';

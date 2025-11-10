@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { cloneElement, type ReactElement, useState } from 'react';
+import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 
 import Pagination from './Pagination.js';

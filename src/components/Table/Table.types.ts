@@ -1,3 +1,4 @@
+import type { Avo } from '@viaa/avo2-types';
 import type { MouseEvent, ReactNode } from 'react';
 import type {
 	ColumnInstance,
@@ -9,12 +10,11 @@ import type {
 	TableRowProps,
 	UsePaginationInstanceProps,
 } from 'react-table';
-
 import type { DefaultComponentProps } from '../../types/index.js';
 
 export type {
-	Column,
 	CellProps,
+	Column,
 	Row,
 	SortingRule,
 	TableOptions,
@@ -30,7 +30,10 @@ export interface TableProps<T extends TableData> extends DefaultComponentProps {
 	getHeaderProps?: (column: HeaderGroup<T>) => Partial<TableHeaderProps>;
 	getRowProps?: (row: Row<T>) => Partial<TableRowProps>;
 	onRowClick?: (event: MouseEvent<HTMLTableRowElement>, row: Row<T>) => void;
-	onSortChange?: (sortProp: string | undefined, sortDirection: OrderDirection | undefined) => void;
+	onSortChange?: (
+		sortProp: string | undefined,
+		sortDirection: Avo.Search.OrderDirection | undefined
+	) => void;
 	options: TableOptions<T>;
 	pagination?: (instance: UsePaginationInstanceProps<T>) => ReactNode;
 	sortingIcons?: TableSortingIcons;
@@ -42,9 +45,4 @@ export interface TableSortingIcons {
 	asc?: ReactNode;
 	default?: ReactNode;
 	desc?: ReactNode;
-}
-
-export enum OrderDirection {
-	asc = 'asc',
-	desc = 'desc',
 }

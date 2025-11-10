@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { cloneElement, type ReactElement, useState } from 'react';
+import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
-
+import { tagsInputOptionsMock } from './__mocks__/tags-input.js';
 import TagsInput from './TagsInput.js';
 import type { TagInfo } from './TagsInput.types.js';
-import { tagsInputOptionsMock } from './__mocks__/tags-input.js';
 
 const TagsInputStoryComponent = ({ children }: { children: ReactElement }) => {
 	const [value, setValue] = useState<TagInfo[]>([]);

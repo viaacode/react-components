@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import type { FC } from 'react';
 
 import { numberWithCommas } from '../../utils/numbers-with-commas.js';
 import type { PaginationProgressProps } from './PaginationProgress.types.js';

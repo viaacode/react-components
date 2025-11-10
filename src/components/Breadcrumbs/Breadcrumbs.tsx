@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC, type ReactNode, useMemo } from 'react';
+import { type FC, type ReactNode, useMemo } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils/index.js';
 

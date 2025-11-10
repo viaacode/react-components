@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 
 import Tooltip from './Tooltip.js';
 import { TooltipContent, TooltipTrigger } from './Tooltip.slots.js';

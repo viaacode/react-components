@@ -1,4 +1,3 @@
-import React from 'react';
 import type { CellProps, Column } from 'react-table';
 
 export interface MockTableData {

@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { cloneElement, type FC, type ReactElement, type ReactNode, useState } from 'react';
+import { cloneElement, type FC, type ReactElement, type ReactNode, useState } from 'react';
 import type { ActionMeta, OnChangeValue } from 'react-select';
 import { action } from 'storybook/actions';
-
-import type { SelectOption } from '../Select.types.js';
 import { selectOptionsMock } from '../__mocks__/select.js';
+import type { SelectOption } from '../Select.types.js';
 
 import ReactSelect from './ReactSelect.js';
 

@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { loremIpsum } from 'lorem-ipsum';
-import React, { cloneElement, type ReactElement, useState } from 'react';
+import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
-
-import TagList from './TagList.js';
 import { tags } from './__mocks__/tag-list.js';
+import TagList from './TagList.js';
 
 const TagListStoryComponent = ({ children }: { children: ReactElement }) => {
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);

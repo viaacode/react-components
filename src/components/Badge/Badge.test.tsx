@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import React from 'react';
 
 import Badge from './Badge.js';
 import type { BadgeProps } from './Badge.types.js';

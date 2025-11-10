@@ -1,4 +1,4 @@
-import React, { type FunctionComponent, type ReactNode } from 'react';
+import type { FunctionComponent, ReactNode } from 'react';
 
 import type { DefaultComponentProps } from '../../types/index.js';
 

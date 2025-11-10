@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { forwardRef, type ReactNode } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils/index.js';
 

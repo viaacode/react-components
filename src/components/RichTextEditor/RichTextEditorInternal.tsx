@@ -5,7 +5,7 @@ import BraftEditor, {
 } from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
 import clsx from 'clsx';
-import React, { type FunctionComponent, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { type FunctionComponent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { getLanguage } from './RichTextEditor.consts.js';
 import { getHiddenHeadingClasses, prettifyHtml } from './RichTextEditor.helpers.js';

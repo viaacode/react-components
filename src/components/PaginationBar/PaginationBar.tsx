@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import type { FC } from 'react';
 
 import { Button } from '../Button/index.js';
 import Pagination from '../Pagination/Pagination.js';

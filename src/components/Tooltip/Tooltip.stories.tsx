@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 
 import Tooltip from './Tooltip.js';
 import { TooltipContent, TooltipTrigger } from './Tooltip.slots.js';
