@@ -13,6 +13,8 @@ import { ALL_RICH_TEXT_HEADINGS, type RichTextEditorProps } from './RichTextEdit
 
 import './RichTextEditor.scss';
 
+const BraftEditorGlobal = BraftEditor as unknown as typeof BraftEditor.default;
+
 const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	braft,
 	className,
@@ -76,7 +78,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 		withDropdown: true, //  Whether a drop-down menu pops up before inserting a table
 	};
 
-	BraftEditor.default.use(Table(tableOptions));
+	BraftEditorGlobal.use(Table(tableOptions));
 
 	const newControls = controls
 		? [
@@ -92,7 +94,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 								className: `html-edit-button ${isHtmlView ? 'active' : ''}`,
 								onClick: () => {
 									if (isHtmlView) {
-										onChange?.(BraftEditor.default.createEditorState(html || ''));
+										onChange?.(BraftEditorGlobal.createEditorState(html || ''));
 									}
 									setIsHtmlView((prev) => !prev);
 								},
@@ -110,7 +112,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 			})}
 			id={id}
 		>
-			<BraftEditor.default
+			<BraftEditorGlobal
 				{...braft}
 				controls={newControls as ExtendControlType[]}
 				id={id}
@@ -124,7 +126,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 				onTab={onTab}
 				placeholder={placeholder}
 				readOnly={disabled}
-				value={state || BraftEditor.default.createEditorState(initialHtml || '')}
+				value={state || BraftEditorGlobal.createEditorState(initialHtml || '')}
 			/>
 			{isHtmlView ? (
 				<pre
@@ -135,7 +137,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 					}}
 					className={`${root}__html-view`}
 					onBlur={() => {
-						onChange?.(BraftEditor.default.createEditorState(html || ''));
+						onChange?.(BraftEditorGlobal.createEditorState(html || ''));
 					}}
 					contentEditable={true}
 					onInput={() => {

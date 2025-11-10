@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import Breadcrumbs from './Breadcrumbs.js';
 import { MOCK_BREADCRUMBS } from './Breadcrumbs.mock.js';

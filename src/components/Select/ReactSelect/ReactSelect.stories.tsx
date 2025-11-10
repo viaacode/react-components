@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { cloneElement, type FC, type ReactElement, type ReactNode, useState } from 'react';
 import type { ActionMeta, OnChangeValue } from 'react-select';
 import { action } from 'storybook/actions';

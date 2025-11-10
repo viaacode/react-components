@@ -1,4 +1,4 @@
-import { flowplayer, type Player } from '@flowplayer/player';
+import flowplayer, { type flowplayer as FlowPlayerFunc, type Player } from '@flowplayer/player';
 import audioPlugin from '@flowplayer/player/plugins/audio';
 import cuepointsPlugin from '@flowplayer/player/plugins/cuepoints';
 import googleAnalyticsPlugin from '@flowplayer/player/plugins/google-analytics';
@@ -33,7 +33,9 @@ import { drawPeak } from './Peak/draw-peak.js';
 
 import './FlowPlayer.scss';
 
-flowplayer(
+const flowplayerGlobal = flowplayer as unknown as typeof FlowPlayerFunc;
+
+flowplayerGlobal(
 	subtitlesPlugin,
 	hlsPlugin,
 	cuepointsPlugin,
@@ -244,7 +246,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 			if (playlistItem) {
 				// Update cuepoint
-				player.current.emit(flowplayer.events.CUEPOINTS, {
+				player.current.emit(flowplayerGlobal.events.CUEPOINTS, {
 					cuepoints: playlistItem.cuepoints,
 				});
 
@@ -296,7 +298,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	const handleCuepointEnd = () => {
 		if (player.current) {
 			player.current.pause();
-			player.current.emit(flowplayer.events.ENDED);
+			player.current.emit(flowplayerGlobal.events.ENDED);
 		}
 	};
 
@@ -346,9 +348,11 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			poster: resolvedPoster,
 
 			// CONFIGURATION
-			autoplay: autoplay ? flowplayer.autoplay.ON : flowplayer.autoplay.OFF,
+			autoplay: autoplay ? flowplayerGlobal.autoplay.ON : flowplayerGlobal.autoplay.OFF,
 			multiplay: false,
-			ui: ui || (flowplayer as any).ui.LOGO_ON_RIGHT | (flowplayer as any).ui.USE_DRAG_HANDLE,
+			ui:
+				ui ||
+				(flowplayerGlobal as any).ui.LOGO_ON_RIGHT | (flowplayerGlobal as any).ui.USE_DRAG_HANDLE,
 			plugins,
 			preload: getPreload(),
 			lang: 'nl',
@@ -420,7 +424,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				: {}),
 		};
 
-		const tempPlayer = flowplayer(videoContainerRef.current as HTMLElement, flowPlayerConfig);
+		const tempPlayer = flowplayerGlobal(videoContainerRef.current as HTMLElement, flowPlayerConfig);
 
 		if (!tempPlayer) {
 			console.error('Failed to init flow player');
@@ -429,7 +433,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 		// Jump to the end of the video when a cuepoint end event is encountered
 		// The video end event can then be handled however the user sees fit
-		tempPlayer.on(flowplayer.events.CUEPOINT_END, handleCuepointEnd);
+		tempPlayer.on(flowplayerGlobal.events.CUEPOINT_END, handleCuepointEnd);
 
 		tempPlayer.on('error', (err: any) => {
 			console.error(err);
@@ -562,7 +566,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		(itemIndex: number): void => {
 			setActiveItemIndex(itemIndex);
 			player.current.playlist?.play(itemIndex);
-			player.current.emit(flowplayer.events.CUEPOINTS, {
+			player.current.emit(flowplayerGlobal.events.CUEPOINTS, {
 				cuepoints: (src as FlowplayerSourceListSchema).items[itemIndex].cuepoints,
 			});
 
