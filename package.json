@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,7 +21,6 @@
     "dist"
   ],
   "scripts": {
-    "prepare": "husky install",
     "build": "vite build",
     "copy-to-avo-client": "rimraf ../avo2-client/node_modules/@meemoo/react-components/dist ../avo2-client/node_modules/.cache ../avo2-client/node_modules/.vite  && cp -r dist package.json ../avo2-client/node_modules/@meemoo/react-components",
     "copy-to-hetarchief-client": "rimraf ../hetarchief-client/node_modules/@meemoo/react-components/dist ../hetarchief-client/node_modules/.cache ../hetarchief-client/node_modules/.vite ../hetarchief-client/.next && cp -r dist package.json ../hetarchief-client/node_modules/@meemoo/react-components",
@@ -33,7 +32,7 @@
     "build-storybook:with-sourcemaps": "cross-env GENERATE_SOURCEMAP=true storybook build",
     "lint": "npm run lint:ts && npm run lint:scss",
     "lint:ts": "biome lint --write src",
-    "lint:scss": "stylelint 'src/**/*.{css,scss}' --allow-empty-input",
+    "lint:scss": "stylelint 'src/**/*.{css,scss}' --allow-empty-input --fix",
     "format": "biome format --write src",
     "dev": "storybook dev -p 3020",
     "test": "jest --cache",
@@ -42,6 +41,7 @@
     "type-check": "tsc --noEmit",
     "licenses": "license-checker --csv --out licenses.csv",
     "snyk-protect": "snyk protect",
+    "prepare": "husky install",
     "bump": "bump-package-versions --part=patch --strategy=highest ./package.json"
   },
   "peerDependencies": {
@@ -102,9 +102,8 @@
     "sass": "1.93.3",
     "snyk": "^1.1300.2",
     "storybook": "10.0.6",
-    "stylelint": "15.10.3",
-    "stylelint-config-prettier": "9.0.5",
-    "stylelint-config-standard-scss": "11.0.0",
+    "stylelint": "16.25.0",
+    "stylelint-config-standard-scss": "16.0.0",
     "ts-jest": "29.1.1",
     "tslib": "2.8.1",
     "typescript": "5.9.3",
@@ -124,7 +123,6 @@
     "react-dom": "18.3.1",
     "@types/react": "18.3.18",
     "@types/react-dom": "18.3.5",
-    "stylelint": "15.10.3",
     "@emotion/react": "11.11.1"
   },
   "browserslist": {
