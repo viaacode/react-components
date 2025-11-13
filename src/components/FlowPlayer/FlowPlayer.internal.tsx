@@ -10,32 +10,29 @@ import subtitlesPlugin from '@flowplayer/player/plugins/subtitles';
 import clsx from 'clsx';
 import { type FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { keysEnter, keysSpacebar, onKey } from '../../utils/index.js';
+import { isNil } from '../../utils/is-nil';
+import { keysEnter, keysSpacebar, onKey } from '../../utils/key-up';
+import { noop } from '../../utils/noop';
 
-import { isNil } from '../../utils/is-nil.js';
-import { noop } from '../../utils/noop.js';
-
-import { registerCommands } from './FlowPlayer.commands.js';
+import { registerCommands } from './FlowPlayer.commands';
 import {
 	ALL_FLOWPLAYER_PLUGINS,
 	DELAY_BETWEEN_PLAYLIST_VIDEOS,
 	dutchFlowplayerTranslations,
-} from './FlowPlayer.consts.js';
-import { convertGAEventsArrayToObject } from './FlowPlayer.helpers.js';
+} from './FlowPlayer.consts';
+import { convertGAEventsArrayToObject } from './FlowPlayer.helpers';
 import type {
 	FlowPlayerProps,
 	FlowplayerConfigWithPlugins,
 	FlowplayerSourceItem,
 	FlowplayerSourceList,
 	FlowplayerSourceListSchema,
-} from './FlowPlayer.types.js';
-import { drawPeak } from './Peak/draw-peak.js';
+} from './FlowPlayer.types';
+import { drawPeak } from './Peak/draw-peak';
 
 import './FlowPlayer.scss';
 
-const PerfectScrollbarGlobal = PerfectScrollbar as unknown as typeof PerfectScrollbar.default;
-
-const flowplayerWithPlugins = (flowplayer as unknown as typeof flowplayer.default)(
+const flowplayerWithPlugins = flowplayer(
 	subtitlesPlugin,
 	hlsPlugin,
 	cuepointsPlugin,
@@ -246,7 +243,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 			if (playlistItem) {
 				// Update cuepoint
-				player.current.emit(flowplayer.default.events.CUEPOINTS, {
+				player.current.emit(flowplayer.events.CUEPOINTS, {
 					cuepoints: playlistItem.cuepoints,
 				});
 
@@ -670,9 +667,9 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				{playlistItems && (
 					<div className="c-video-player__playlist__wrapper">
 						{playlistScrollable && (
-							<PerfectScrollbarGlobal className="c-video-player__playlist__scrollable">
+							<PerfectScrollbar className="c-video-player__playlist__scrollable">
 								{renderPlaylistItems(playlistItems)}
-							</PerfectScrollbarGlobal>
+							</PerfectScrollbar>
 						)}
 						{!playlistScrollable && renderPlaylistItems(playlistItems)}
 					</div>

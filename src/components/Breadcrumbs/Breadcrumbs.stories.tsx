@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import Breadcrumbs from './Breadcrumbs.js';
-import { MOCK_BREADCRUMBS } from './Breadcrumbs.mock.js';
+import Breadcrumbs from './Breadcrumbs';
+import { MOCK_BREADCRUMBS } from './Breadcrumbs.mock';
 
 const meta: Meta<typeof Breadcrumbs> = {
 	title: 'Components/Breadcrumbs',

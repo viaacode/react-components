@@ -1,5 +1,5 @@
 import { Avo } from '@viaa/avo2-types';
-import type { FlowPlayerProps, FlowplayerSourceList } from './FlowPlayer.types.js';
+import type { FlowPlayerProps, FlowplayerSourceList } from './FlowPlayer.types';
 
 export const MOCK_FLOW_PLAYER_PROPS: FlowPlayerProps = {
 	src: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',

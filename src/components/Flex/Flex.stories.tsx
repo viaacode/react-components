@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { loremIpsum } from 'lorem-ipsum';
 
-import { Flex } from './Flex.js';
-import { FlexItem } from './FlexItem/FlexItem.js';
+import { Flex } from './Flex';
+import { FlexItem } from './FlexItem/FlexItem';
 
 const content1 = loremIpsum({ count: 1 });
 const content2 = loremIpsum({ count: 4 });

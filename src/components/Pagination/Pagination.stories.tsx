@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 
-import Pagination from './Pagination.js';
+import Pagination from './Pagination';
 
 const PaginationStoryComponent = ({
 	children,

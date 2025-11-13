@@ -1,3 +1,3 @@
-export { default as TagList } from './TagList.js';
-export * from './Tag/index.js';
-export * from './TagList.types.js';
+export * from './Tag/index';
+export { default as TagList } from './TagList';
+export * from './TagList.types';

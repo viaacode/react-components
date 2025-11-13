@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 
-import type { DefaultComponentProps } from '../../types/index.js';
-import type { PaginationProps } from '../Pagination/index.js';
-import type { PaginationProgressProps } from '../PaginationProgress/index.js';
+import type { DefaultComponentProps } from '../../types/index';
+import type { PaginationProps } from '../Pagination/index';
+import type { PaginationProgressProps } from '../PaginationProgress/index';
 
 export interface PaginationBarProps
 	extends DefaultComponentProps,

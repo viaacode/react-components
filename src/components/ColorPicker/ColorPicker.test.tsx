@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
 
-import ColorPicker from './ColorPicker.js';
-import type { ColorPickerProps } from './ColorPicker.types.js';
+import ColorPicker from './ColorPicker';
+import type { ColorPickerProps } from './ColorPicker.types';
 
 const mockColor = '#00c8aa';
 const mockOnChange = () => {

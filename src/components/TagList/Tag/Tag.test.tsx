@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
 
-import Tag from './Tag.js';
-import type { TagProps } from './Tag.types.js';
+import Tag from './Tag';
+import type { TagProps } from './Tag.types';
 
 const tagId = 'tag-id';
 const tagText = 'Tag label';

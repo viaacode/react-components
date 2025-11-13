@@ -1,13 +1,13 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 
-import { bemCls, getVariantClasses } from '../../../utils/index.js';
-import { MenuContent } from '../MenuContent/index.js';
+import { bemCls, getVariantClasses } from '../../../utils/index';
+import { MenuContent } from '../MenuContent/index';
 
 import type {
 	MenuSearchResultContentProps,
 	MenuSearchResultItemInfo,
-} from './MenuSearchResultContent.types.js';
+} from './MenuSearchResultContent.types';
 
 const MenuSearchResultContent: FC<MenuSearchResultContentProps> = ({
 	className,

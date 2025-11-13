@@ -1,4 +1,4 @@
-import type { TableSortingIcons } from './Table.types.js';
+import type { TableSortingIcons } from './Table.types';
 
 export const defaultPropGetter = () => ({});
 

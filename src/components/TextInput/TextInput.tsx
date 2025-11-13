@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { type FC, forwardRef, type ReactNode } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils/index.js';
-import { isFunction } from '../../utils/is-function.js';
+import { bemCls, getVariantClasses } from '../../utils/index';
+import { isFunction } from '../../utils/is-function';
 
-import type { TextInputProps } from './TextInput.types.js';
+import type { TextInputProps } from './TextInput.types';
 
 export const TextInputDefaults = {
 	disabled: false,

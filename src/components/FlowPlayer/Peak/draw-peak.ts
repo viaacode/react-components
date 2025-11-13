@@ -1,4 +1,4 @@
-import { FALLBACK_VALUES } from './fallback-peak-values.js';
+import { FALLBACK_VALUES } from './fallback-peak-values';
 
 function add(accumulator: number, a: number) {
 	return accumulator + a;

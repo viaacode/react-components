@@ -1,2 +1,2 @@
-export { default as Avatar } from './Avatar.js';
-export * from './Avatar.types.js';
+export { default as Avatar } from './Avatar';
+export * from './Avatar.types';

@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 
-import type { RefTypes } from '../../types/index.js';
+import type { RefTypes } from '../../types/index';
 
-import { mergeRefs } from './merge-refs.js';
+import { mergeRefs } from './merge-refs';
 
 const mockText = 'Hello World';
 const ComponentWithRefs = ({ refs }: { refs: RefTypes<HTMLDivElement | null>[] }) => {

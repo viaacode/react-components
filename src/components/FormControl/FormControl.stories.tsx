@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { TextInput } from '../TextInput/index.js';
-import FormControl from './FormControl.js';
+import { TextInput } from '../TextInput/index';
+import FormControl from './FormControl';
 
 const meta: Meta<typeof FormControl> = {
 	title: 'Components/FormControl',

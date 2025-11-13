@@ -1,3 +1,3 @@
-export { default as Tabs } from './Tabs.js';
-export * from './Tab/index.js';
-export * from './Tabs.types.js';
+export * from './Tab/index';
+export { default as Tabs } from './Tabs';
+export * from './Tabs.types';

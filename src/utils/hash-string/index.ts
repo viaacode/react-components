@@ -1,1 +1,1 @@
-export * from './hash-string.js';
+export * from './hash-string';

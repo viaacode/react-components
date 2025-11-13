@@ -1,6 +1,6 @@
 import { type RenderResult, render, screen } from '@testing-library/react'; //eslint-disable-line
-import { cardImageMock, cardTitleMock } from './__mocks__/card.js';
-import { Card } from './Card.js';
+import { cardImageMock, cardTitleMock } from './__mocks__/card';
+import { Card } from './Card';
 
 const subtitle = '(1 Dec. 2021)';
 const toolbar = 'Toolbar content';

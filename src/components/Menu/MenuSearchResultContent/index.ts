@@ -1,2 +1,2 @@
-export { default as MenuSearchResultContent } from './MenuSearchResultContent.js';
-export * from './MenuSearchResultContent.types.js';
+export { default as MenuSearchResultContent } from './MenuSearchResultContent';
+export * from './MenuSearchResultContent.types';

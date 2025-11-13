@@ -6,9 +6,9 @@ import {
 	menuItemsWithDivider,
 	menuItemsWithIcons,
 	menuItemsWithSearch,
-} from './__mocks__/menu.js';
-import Menu from './Menu.js';
-import MenuSearchResultContent from './MenuSearchResultContent/MenuSearchResultContent.js';
+} from './__mocks__/menu';
+import Menu from './Menu';
+import MenuSearchResultContent from './MenuSearchResultContent/MenuSearchResultContent';
 
 const meta: Meta<typeof Menu> = {
 	title: 'Components/Menu',

@@ -1,2 +1,2 @@
-export { default as Modal } from './Modal.js';
-export * from './Modal.types.js';
+export { default as Modal } from './Modal';
+export * from './Modal.types';

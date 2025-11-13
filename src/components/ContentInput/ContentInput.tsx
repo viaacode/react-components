@@ -16,11 +16,11 @@ import {
 	keysEscape,
 	keysSpacebar,
 	onKey,
-} from '../../utils/index.js';
-import { isFunction } from '../../utils/is-function.js';
-import { TextInputDefaults } from '../TextInput/TextInput.js';
+} from '../../utils/index';
+import { isFunction } from '../../utils/is-function';
+import { TextInputDefaults } from '../TextInput/TextInput';
 
-import type { ContentInputProps, StopPropagationObject } from './ContentInput.types.js';
+import type { ContentInputProps, StopPropagationObject } from './ContentInput.types';
 
 const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, ContentInputProps>(
 	(

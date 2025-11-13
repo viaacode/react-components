@@ -1,5 +1,5 @@
-import type { MenuItemInfo } from '../MenuContent/MenuContent.types.js';
-import type { MenuSearchResultItemInfo } from '../MenuSearchResultContent/MenuSearchResultContent.types.js';
+import type { MenuItemInfo } from '../MenuContent/MenuContent.types';
+import type { MenuSearchResultItemInfo } from '../MenuSearchResultContent/MenuSearchResultContent.types';
 
 export const menuItems = [
 	{ label: 'Aluminium', id: 'aluminium' },

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import type { DefaultComponentProps, HTMLInputAttrs } from '../../types/index.js';
+import type { DefaultComponentProps, HTMLInputAttrs } from '../../types/index';
 
 export interface CheckboxProps extends DefaultComponentProps, HTMLInputAttrs {
 	children?: ReactNode;

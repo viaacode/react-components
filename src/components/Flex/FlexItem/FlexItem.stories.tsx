@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { FlexItem } from './FlexItem.js';
+import { FlexItem } from './FlexItem';
 
 const meta: Meta<typeof FlexItem> = {
 	title: 'Components/FlexItem',

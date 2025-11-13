@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import type { TextInputProps } from '../TextInput/index.js';
+import type { TextInputProps } from '../TextInput/index';
 
 export type StopPropagationObject = { stopPropagation: () => void };
 export type StopPropagationFunction = (evt: StopPropagationObject) => void;

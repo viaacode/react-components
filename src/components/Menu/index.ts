@@ -1,4 +1,4 @@
-export { default as Menu } from './Menu.js';
-export * from './Menu.types.js';
-export * from './MenuContent/index.js';
-export * from './MenuSearchResultContent/index.js';
+export { default as Menu } from './Menu';
+export * from './Menu.types';
+export * from './MenuContent/index';
+export * from './MenuSearchResultContent/index';

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 
-import type { SpinnerProps } from './Spinner.types.js';
+import type { SpinnerProps } from './Spinner.types';
 import './Spinner.scss';
 
 const Spinner: FC<SpinnerProps> = ({ className }) => {

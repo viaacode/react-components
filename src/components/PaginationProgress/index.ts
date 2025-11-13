@@ -1,2 +1,2 @@
-export { default as PaginationProgress } from './PaginationProgress.js';
-export * from './PaginationProgress.types.js';
+export { default as PaginationProgress } from './PaginationProgress';
+export * from './PaginationProgress.types';

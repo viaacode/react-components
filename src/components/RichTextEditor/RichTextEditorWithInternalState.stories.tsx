@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
-import { selectOptionsMock } from '../Select/__mocks__/select.js';
-import Select from '../Select/Select.js';
+import { selectOptionsMock } from '../Select/__mocks__/select';
+import Select from '../Select/Select';
 import type {
 	RichTextEditorControl,
 	RichTextEditorWithInternalStateProps,
-} from './RichTextEditor.types.js';
-import RichTextEditorWithInternalState from './RichTextEditorWithInternalState.js';
+} from './RichTextEditor.types';
+import RichTextEditorWithInternalState from './RichTextEditorWithInternalState';
 
 const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
 	'fullscreen',

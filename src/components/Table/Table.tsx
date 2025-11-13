@@ -2,9 +2,9 @@ import { Avo } from '@viaa/avo2-types';
 import clsx from 'clsx';
 import { useEffect, useMemo } from 'react';
 import { type HeaderGroup, usePagination, useSortBy, useTable } from 'react-table';
-import { bemCls, getVariantClasses } from '../../utils/index.js';
-import { defaultPropGetter, defaultSortingIcons } from './Table.const.js';
-import type { TableData, TableProps } from './Table.types.js';
+import { bemCls, getVariantClasses } from '../../utils/index';
+import { defaultPropGetter, defaultSortingIcons } from './Table.const';
+import type { TableData, TableProps } from './Table.types';
 
 const Table = <D extends TableData>({
 	className,

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import PaginationProgress from './PaginationProgress.js';
+import PaginationProgress from './PaginationProgress';
 
 const meta: Meta<typeof PaginationProgress> = {
 	title: 'Components/PaginationProgress',

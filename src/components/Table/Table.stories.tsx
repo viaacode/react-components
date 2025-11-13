@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { Column } from 'react-table';
 import { action } from 'storybook/actions';
-import { mockColumns, mockData } from './__mocks__/table.js';
-import { defaultSortingIcons } from './Table.const.js';
-import Table from './Table.js';
-import type { TableData } from './Table.types.js';
+import { mockColumns, mockData } from './__mocks__/table';
+import Table from './Table';
+import { defaultSortingIcons } from './Table.const';
+import type { TableData } from './Table.types';
 
 const meta: Meta<typeof Table> = {
 	title: 'Components/Table',

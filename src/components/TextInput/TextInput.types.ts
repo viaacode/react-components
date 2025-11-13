@@ -1,6 +1,6 @@
 import type { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 
-import type { DefaultComponentProps, HTMLInputAttrs } from '../../types/index.js';
+import type { DefaultComponentProps, HTMLInputAttrs } from '../../types/index';
 
 export interface TextInputProps extends DefaultComponentProps, HTMLInputAttrs {
 	children?: ReactNode;

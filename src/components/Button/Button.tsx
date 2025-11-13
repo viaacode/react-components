@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { type FC, forwardRef, type MouseEvent, type ReactNode } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils/index.js';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip/index.js';
+import { bemCls, getVariantClasses } from '../../utils/index';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip/index';
 
-import type { ButtonProps } from './Button.types.js';
+import type { ButtonProps } from './Button.types';
 
 const Button: FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>(
 	(

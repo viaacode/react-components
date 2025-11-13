@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 
-import { bemCls, getVariantClasses } from '../../../utils/index.js';
+import { bemCls, getVariantClasses } from '../../../utils/index';
 
 import './Tab.scss';
-import type { TabProps } from './Tab.types.js';
+import type { TabProps } from './Tab.types';
 
 const Tab: FC<TabProps> = ({
 	active,

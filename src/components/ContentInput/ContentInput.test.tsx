@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
-import ContentInput from './ContentInput.js';
-import type { ContentInputProps } from './ContentInput.types.js';
+import ContentInput from './ContentInput';
+import type { ContentInputProps } from './ContentInput.types';
 
 const mockValue = 'Text value';
 

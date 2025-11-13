@@ -1,2 +1,2 @@
-export { default as Tag } from './Tag.js';
-export * from './Tag.types.js';
+export { default as Tag } from './Tag';
+export * from './Tag.types';

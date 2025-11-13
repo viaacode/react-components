@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import type { GroupBase, Props as ReactSelectProps } from 'react-select';
 import type { CreatableProps } from 'react-select/creatable';
 
-import type { DefaultComponentProps } from '../../types/index.js';
+import type { DefaultComponentProps } from '../../types/index';
 
 export type TagsInputProps<
 	AllowMulti extends boolean = true,

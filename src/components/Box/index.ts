@@ -1,2 +1,2 @@
-export { default as Box } from './Box.js';
-export * from './Box.types.js';
+export { default as Box } from './Box';
+export * from './Box.types';

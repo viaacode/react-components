@@ -2,10 +2,10 @@ import autosize from 'autosize';
 import clsx from 'clsx';
 import { forwardRef, useEffect } from 'react';
 
-import { useCallbackRef } from '../../hooks/index.js';
-import { bemCls, getVariantClasses, mergeRefs } from '../../utils/index.js';
+import { useCallbackRef } from '../../hooks/index';
+import { bemCls, getVariantClasses, mergeRefs } from '../../utils/index';
 
-import type { TextAreaProps } from './TextArea.types.js';
+import type { TextAreaProps } from './TextArea.types';
 
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 	(

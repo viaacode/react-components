@@ -1,11 +1,11 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { PropsWithChildren } from 'react';
 
-import { Button } from '../Button/index.js';
+import { Button } from '../Button/index';
 
-import Dropdown from './Dropdown.js';
-import { DropdownButton, DropdownContent } from './Dropdown.slots.js';
-import type { DropdownProps } from './Dropdown.types.js';
+import Dropdown from './Dropdown';
+import { DropdownButton, DropdownContent } from './Dropdown.slots';
+import type { DropdownProps } from './Dropdown.types';
 
 const renderDropdown = ({ children, ...rest }: PropsWithChildren<DropdownProps>) => {
 	return render(<Dropdown {...rest}>{children}</Dropdown>);

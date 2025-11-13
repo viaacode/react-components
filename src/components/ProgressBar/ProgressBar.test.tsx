@@ -1,6 +1,6 @@
 import { getAllByText, render } from '@testing-library/react';
 
-import { ProgressBar } from './ProgressBar.js';
+import { ProgressBar } from './ProgressBar';
 
 describe('<ProgressBar />', () => {
 	it('Should render with 0 percentage', () => {

@@ -1,4 +1,4 @@
-import type { FlowplayerCommand } from './FlowPlayer.types.js';
+import type { FlowplayerCommand } from './FlowPlayer.types';
 
 const MESSAGE_TYPE = 'avo.videoplayer';
 

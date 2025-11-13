@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils/index.js';
+import { bemCls, getVariantClasses } from '../../utils/index';
 
-import type { FormControlProps } from './FormControl.types.js';
+import type { FormControlProps } from './FormControl.types';
 
 const FormControl: FC<FormControlProps> = ({
 	children,

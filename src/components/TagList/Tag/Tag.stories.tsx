@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { action } from 'storybook/actions';
 
-import Tag from './Tag.js';
+import Tag from './Tag';
 
 const meta: Meta<typeof Tag> = {
 	title: 'Components/Tag',

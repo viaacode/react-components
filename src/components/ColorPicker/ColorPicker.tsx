@@ -3,9 +3,9 @@ import { type FC, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 
 import './ColorPicker.scss';
-import { bemCls, getVariantClasses } from '../../utils/index.js';
+import { bemCls, getVariantClasses } from '../../utils/index';
 
-import type { ColorPickerProps } from './ColorPicker.types.js';
+import type { ColorPickerProps } from './ColorPicker.types';
 
 const ColorPicker: FC<ColorPickerProps> = ({
 	color,

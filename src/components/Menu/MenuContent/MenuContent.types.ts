@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import type { DefaultComponentProps } from '../../../types/index.js';
+import type { DefaultComponentProps } from '../../../types/index';
 
 export interface MenuItemInfo {
 	label: string;

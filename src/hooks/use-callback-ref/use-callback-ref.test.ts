@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { act } from 'react';
 
-import { useCallbackRef } from './index.js';
+import { useCallbackRef } from './index';
 
 describe('hooks/useCallbackRef', () => {
 	it('Should keep a ref to an element', () => {

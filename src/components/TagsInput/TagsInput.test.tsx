@@ -2,8 +2,8 @@ import { render } from '@testing-library/react';
 
 import selectEvent from 'react-select-event';
 
-import TagsInput from './TagsInput.js';
-import type { TagsInputProps } from './TagsInput.types.js';
+import TagsInput from './TagsInput';
+import type { TagsInputProps } from './TagsInput.types';
 
 const renderTagsInput = (props: TagsInputProps) => {
 	return render(<TagsInput {...props} />);

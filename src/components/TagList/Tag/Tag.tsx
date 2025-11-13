@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 
-import { bemCls, getVariantClasses } from '../../../utils/index.js';
+import { bemCls, getVariantClasses } from '../../../utils/index';
 
-import type { TagEvents, TagProps } from './Tag.types.js';
+import type { TagEvents, TagProps } from './Tag.types';
 
 const Tag: FC<TagProps> = ({
 	active,

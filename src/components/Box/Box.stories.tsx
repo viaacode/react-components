@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { loremIpsum } from 'lorem-ipsum';
 
-import Box from './Box.js';
+import Box from './Box';
 
 const content = loremIpsum({ count: 10 });
 

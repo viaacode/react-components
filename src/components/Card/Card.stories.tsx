@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CSSProperties } from 'react';
-import { cardImageMock, cardTitleMock } from './__mocks__/card.js';
-import { Card } from './Card.js';
+import { cardImageMock, cardTitleMock } from './__mocks__/card';
+import { Card } from './Card';
 
 const container: CSSProperties = {
 	display: 'flex',

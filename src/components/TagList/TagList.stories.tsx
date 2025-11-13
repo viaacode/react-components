@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { loremIpsum } from 'lorem-ipsum';
 import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
-import { tags } from './__mocks__/tag-list.js';
-import TagList from './TagList.js';
+import { tags } from './__mocks__/tag-list';
+import TagList from './TagList';
 
 const TagListStoryComponent = ({ children }: { children: ReactElement }) => {
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);

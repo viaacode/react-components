@@ -1,2 +1,2 @@
-export { default as FormControl } from './FormControl.js';
-export * from './FormControl.types.js';
+export { default as FormControl } from './FormControl';
+export * from './FormControl.types';

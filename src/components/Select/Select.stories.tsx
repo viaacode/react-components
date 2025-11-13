@@ -8,8 +8,8 @@ import {
 	useState,
 } from 'react';
 import { action } from 'storybook/actions';
-import { selectOptionsMock } from './__mocks__/select.js';
-import Select from './Select.js';
+import { selectOptionsMock } from './__mocks__/select';
+import Select from './Select';
 
 const meta: Meta<typeof Select> = {
 	title: 'Components/Select',

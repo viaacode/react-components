@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
-import Badge from './Badge.js';
-import type { BadgeProps } from './Badge.types.js';
+import Badge from './Badge';
+import type { BadgeProps } from './Badge.types';
 
 const renderBadge = ({ text = 'text', ...rest }: BadgeProps) => {
 	return render(<Badge text={text} {...rest} />);

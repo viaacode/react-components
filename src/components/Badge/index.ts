@@ -1,2 +1,2 @@
-export { default as Badge } from './Badge.js';
-export * from './Badge.types.js';
+export { default as Badge } from './Badge';
+export * from './Badge.types';

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import FormControl from './FormControl.js';
+import FormControl from './FormControl';
 
 describe('<FormControl />', () => {
 	it('Should be able to render children', () => {

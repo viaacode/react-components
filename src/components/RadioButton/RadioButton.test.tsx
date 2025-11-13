@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
 
-import RadioButton from './RadioButton.js';
-import type { RadioButtonProps } from './RadioButton.types.js';
+import RadioButton from './RadioButton';
+import type { RadioButtonProps } from './RadioButton.types';
 
 const mockLabel = ' Check me!';
 

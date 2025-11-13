@@ -1,4 +1,4 @@
-import type { VariantsProp } from '../../types/index.js';
+import type { VariantsProp } from '../../types/index';
 
 export const getVariantsArray = (variants?: VariantsProp): string[] => {
 	if (!variants) {

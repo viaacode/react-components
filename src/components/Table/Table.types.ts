@@ -10,7 +10,7 @@ import type {
 	TableRowProps,
 	UsePaginationInstanceProps,
 } from 'react-table';
-import type { DefaultComponentProps } from '../../types/index.js';
+import type { DefaultComponentProps } from '../../types/index';
 
 export type {
 	CellProps,

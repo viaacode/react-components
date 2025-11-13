@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 
-import { numberWithCommas } from '../../utils/numbers-with-commas.js';
-import type { PaginationProgressProps } from './PaginationProgress.types.js';
+import { numberWithCommas } from '../../utils/numbers-with-commas';
+import type { PaginationProgressProps } from './PaginationProgress.types';
 
 const PaginationProgress: FC<PaginationProgressProps> = ({
 	startItem,

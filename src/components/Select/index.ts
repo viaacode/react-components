@@ -1,3 +1,3 @@
-export { default as Select } from './Select.js';
-export * from './Select.types.js';
-export * from './ReactSelect/index.js';
+export * from './ReactSelect/index';
+export { default as Select } from './Select';
+export * from './Select.types';

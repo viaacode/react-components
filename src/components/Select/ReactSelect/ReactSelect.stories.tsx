@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { cloneElement, type FC, type ReactElement, type ReactNode, useState } from 'react';
 import type { ActionMeta, OnChangeValue } from 'react-select';
 import { action } from 'storybook/actions';
-import { selectOptionsMock } from '../__mocks__/select.js';
-import type { SelectOption } from '../Select.types.js';
+import { selectOptionsMock } from '../__mocks__/select';
+import type { SelectOption } from '../Select.types';
 
-import ReactSelect from './ReactSelect.js';
+import ReactSelect from './ReactSelect';
 
 const meta: Meta<typeof ReactSelect> = {
 	component: ReactSelect,

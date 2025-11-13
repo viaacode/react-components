@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import { type FC, type ReactNode, useMemo } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils/index.js';
+import { bemCls, getVariantClasses } from '../../utils/index';
 
-import type { Breadcrumb, BreadcrumbsProps } from './Breadcrumbs.types.js';
+import type { Breadcrumb, BreadcrumbsProps } from './Breadcrumbs.types';
 
 const Breadcrumbs: FC<BreadcrumbsProps> = ({
 	items,

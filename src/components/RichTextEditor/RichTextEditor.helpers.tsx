@@ -1,6 +1,6 @@
 import beautify from 'js-beautify';
 
-import { ALL_RICH_TEXT_HEADINGS, type Heading } from './RichTextEditor.types.js';
+import { ALL_RICH_TEXT_HEADINGS, type Heading } from './RichTextEditor.types';
 
 export function getHiddenHeadingClasses(enabledHeadings: Heading[]): string {
 	if (enabledHeadings.length === 0) {

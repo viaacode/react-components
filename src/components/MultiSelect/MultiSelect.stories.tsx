@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 
-import MultiSelect from './MultiSelect.js';
+import MultiSelect from './MultiSelect';
 
 const meta: Meta<typeof MultiSelect> = {
 	title: 'Components/MultiSelect',

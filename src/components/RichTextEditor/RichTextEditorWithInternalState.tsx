@@ -1,8 +1,8 @@
 import { type FunctionComponent, lazy, Suspense } from 'react';
 
-import { Flex } from '../Flex/Flex.js';
+import { Flex } from '../Flex/Flex';
 
-import type { RichTextEditorWithInternalStateProps } from './RichTextEditor.types.js';
+import type { RichTextEditorWithInternalStateProps } from './RichTextEditor.types';
 
 const RichTextEditorInternalWithInternalState = lazy(
 	() => import('./RichTextEditorInternalWithInternalState.js')

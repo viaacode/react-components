@@ -1,3 +1,3 @@
-export { FlowPlayer } from './FlowPlayer.js';
-export * from './FlowPlayer.types.js';
-export * from './FlowPlayer.helpers.js';
+export { FlowPlayer } from './FlowPlayer';
+export * from './FlowPlayer.helpers';
+export * from './FlowPlayer.types';

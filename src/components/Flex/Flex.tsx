@@ -1,6 +1,6 @@
 import type { FunctionComponent, ReactNode } from 'react';
 
-import type { DefaultComponentProps } from '../../types/index.js';
+import type { DefaultComponentProps } from '../../types/index';
 
 import './Flex.scss';
 

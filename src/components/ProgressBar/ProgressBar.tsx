@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 
-import { getVariantClasses } from '../../utils/index.js';
+import { getVariantClasses } from '../../utils/index';
 
-import type { ProgressBarProps } from './ProgressBar.types.js';
+import type { ProgressBarProps } from './ProgressBar.types';
 
 import './ProgressBar.scss';
 

@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import { type FC, forwardRef } from 'react';
 import Select from 'react-select';
 
-import { assignRef, getVariantClasses } from '../../../utils/index.js';
+import { assignRef, getVariantClasses } from '../../../utils/index';
 
-import type { ReactSelectProps } from './ReactSelect.types.js';
+import type { ReactSelectProps } from './ReactSelect.types';
 
 const ReactSelect: FC<ReactSelectProps> = forwardRef(
 	({ className, rootClassName: root = 'c-react-select', variants, ...reactSelectProps }, ref) => {

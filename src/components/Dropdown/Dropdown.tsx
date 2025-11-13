@@ -2,21 +2,14 @@ import clsx from 'clsx';
 import { type FC, useMemo, useState } from 'react';
 import { usePopper } from 'react-popper';
 
-import { useClickOutside, useKeyPress, useSlot } from '../../hooks/index.js';
-import {
-	bemCls,
-	getVariantClasses,
-	hash,
-	keysEnter,
-	keysSpacebar,
-	onKey,
-} from '../../utils/index.js';
-import { Button } from '../Button/index.js';
-import { Menu } from '../Menu/index.js';
+import { useClickOutside, useKeyPress, useSlot } from '../../hooks/index';
+import { bemCls, getVariantClasses, hash, keysEnter, keysSpacebar, onKey } from '../../utils/index';
+import { Button } from '../Button/index';
+import { Menu } from '../Menu/index';
 
 import './Dropdown.scss';
-import { DropdownButton, DropdownContent } from './Dropdown.slots.js';
-import type { DropdownProps } from './Dropdown.types.js';
+import { DropdownButton, DropdownContent } from './Dropdown.slots';
+import type { DropdownProps } from './Dropdown.types';
 
 /**
  * This component provides a button that can show a flyout with some children inside of it.

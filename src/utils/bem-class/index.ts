@@ -1,1 +1,1 @@
-export * from './bem-class.js';
+export * from './bem-class';

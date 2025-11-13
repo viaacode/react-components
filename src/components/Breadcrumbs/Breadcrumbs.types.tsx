@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from 'react';
 
-import type { DefaultComponentProps } from '../../types/index.js';
+import type { DefaultComponentProps } from '../../types/index';
 
 export interface BreadcrumbsProps extends DefaultComponentProps {
 	children?: React.ReactNode;
