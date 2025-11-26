@@ -1,5 +1,4 @@
 import { clsx } from 'clsx';
-import { clamp } from 'lodash-es';
 import { type FC, useEffect, useState } from 'react';
 import {
 	formatDurationHoursMinutesSeconds,
@@ -7,6 +6,7 @@ import {
 	parseDuration,
 	toSeconds,
 } from '../../utils';
+import { clamp } from '../../utils/clamp';
 import MultiRange from '../MultiRange/MultiRange';
 import { TextInput } from '../TextInput';
 import { TimeCropControlsErrors, type TimeCropControlsProps } from './TimeCropControls.types';
