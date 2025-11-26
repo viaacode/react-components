@@ -1,0 +1,17 @@
+export interface TimeCropControlsProps {
+	startTime: number;
+	endTime: number;
+	minTime: number;
+	maxTime: number;
+	disabled?: boolean;
+	onChange: (newStartTime: number, newEndTime: number) => void;
+	onError: (error: TimeCropControlsErrors) => void;
+	className?: string;
+	trackColor: string;
+	highlightColor: string;
+}
+
+export enum TimeCropControlsErrors {
+	WRONG_FORMAT_START_DATE = 'WRONG_FORMAT_START_DATE',
+	WRONG_FORMAT_END_DATE = 'WRONG_FORMAT_END_DATE',
+}
