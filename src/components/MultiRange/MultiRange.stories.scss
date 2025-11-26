@@ -1,0 +1,29 @@
+.c-input-range {
+	display: flex;
+	align-items: center;
+
+	&__track {
+		height: 36px;
+		display:flex;
+		width: 100%;
+	}
+
+	&__track-highlight {
+		height: 8px;
+		width: 100%;
+		border-radius: 4px;
+		align-self: center;
+	}
+
+	&__thumb {
+		height: 10px;
+		width: 10px;
+		background-color: black;
+		border-radius: 50%;
+	}
+
+	&--disabled {
+		pointer-events: none;
+		opacity: 0.5;
+	}
+}
