@@ -26,6 +26,7 @@
     "copy-to-admin-core": "rimraf ../react-admin-core-module/ui/node_modules/@meemoo/react-components/dist ../react-admin-core-module/ui/node_modules/.cache ../react-admin-core-module/ui/node_modules/.vite && cp -r dist package.json ../react-admin-core-module/ui/node_modules/@meemoo/react-components",
     "copy": "npm run build && npm run copy-to-avo-client && npm run copy-to-hetarchief-client && npm run copy-to-admin-core",
     "copy:avo": "npm run build && npm run copy-to-avo-client && npm run copy-to-admin-core",
+    "copy:hetarchief": "npm run build && npm run copy-to-hetarchief-client && npm run copy-to-admin-core",
     "build:analyze": "npm run build -- --config-analyze",
     "build-storybook": "storybook build",
     "build-storybook:with-sourcemaps": "cross-env GENERATE_SOURCEMAP=true storybook build",
