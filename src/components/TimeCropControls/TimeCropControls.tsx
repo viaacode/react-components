@@ -147,7 +147,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 			<TextInput
 				value={fragmentStartString}
 				disabled={disabled}
-				maxLength={skipHourFormatting ? 5 : 8}
+				maxLength={skipHourFormatting ? 'mm:ss'.length : 'HH:mm:ss'.length}
 				onBlur={() => updateStartAndEnd('start')}
 				onChange={(event) => updateStartAndEnd('start', event.target.value)}
 			/>
@@ -166,7 +166,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 			<TextInput
 				value={fragmentEndString}
 				disabled={disabled}
-				maxLength={skipHourFormatting ? 5 : 8}
+				maxLength={skipHourFormatting ? 'mm:ss'.length : 'HH:mm:ss'.length}
 				onBlur={() => updateStartAndEnd('end')}
 				onChange={(event) => updateStartAndEnd('end', event.target.value)}
 			/>

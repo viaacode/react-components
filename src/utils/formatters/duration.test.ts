@@ -12,6 +12,8 @@ describe('Formatters - duration', () => {
 		expect(formatDurationMinutesSeconds(121)).toEqual('02:01');
 		expect(formatDurationMinutesSeconds(3000)).toEqual('50:00');
 		expect(formatDurationMinutesSeconds(30000)).toEqual('500:00');
+		expect(formatDurationMinutesSeconds(30001.123456)).toEqual('500:01');
+		expect(formatDurationMinutesSeconds(30001.9523)).toEqual('500:02');
 	});
 
 	it('Should format as a duration in houres, monutes and seconds`', () => {
@@ -27,6 +29,6 @@ describe('Formatters - duration', () => {
 		expect(formatDurationHoursMinutesSeconds(30000)).toEqual('08:20:00');
 		expect(formatDurationHoursMinutesSeconds(30001)).toEqual('08:20:01');
 		expect(formatDurationHoursMinutesSeconds(30001.123456)).toEqual('08:20:01');
-		expect(formatDurationHoursMinutesSeconds(30001.9523)).toEqual('08:20:01');
+		expect(formatDurationHoursMinutesSeconds(30001.9523)).toEqual('08:20:02');
 	});
 });
