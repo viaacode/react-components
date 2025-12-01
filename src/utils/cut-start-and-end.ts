@@ -4,7 +4,8 @@ import { toSeconds } from './parsers/duration';
 export function getValidStartAndEnd(
 	start: number | null | undefined,
 	end: number | null | undefined,
-	duration: number | null | undefined
+	duration: number | null | undefined,
+	removeCutIfStartAndEndAreTheSame = true
 ): [number | null, number | null] {
 	const minTime = 0;
 	const maxTime: number = duration || 0;
@@ -16,7 +17,7 @@ export function getValidStartAndEnd(
 	const validEnd = clampDuration(Math.max(start || 0, end || maxTime || start || 0));
 
 	let startAndEndArray: [number | null, number | null];
-	if (validStart === validEnd) {
+	if (removeCutIfStartAndEndAreTheSame && validStart === validEnd) {
 		startAndEndArray = [0, duration || 0];
 	} else {
 		startAndEndArray = [validStart, validEnd];

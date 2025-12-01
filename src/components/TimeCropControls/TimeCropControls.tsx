@@ -1,10 +1,10 @@
 import { clsx } from 'clsx';
-import React, { type FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState, useCallback } from 'react';
 import {
 	formatDurationHoursMinutesSeconds,
+	formatDurationMinutesSeconds,
 	getValidStartAndEnd,
 	parseDuration,
-	toSeconds,
 } from '../../utils';
 import { clamp } from '../../utils/clamp';
 import MultiRange from '../MultiRange/MultiRange';
@@ -22,22 +22,38 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 	className,
 	trackColor,
 	highlightColor,
+	allowStartAndEndToBeTheSame,
+	skipHourFormatting,
+	correctWrongTimeInput,
 }) => {
-	const [fragmentStartString, setFragmentStartString] = useState<string>(
-		formatDurationHoursMinutesSeconds(startTime)
+	const formatDuration = useCallback(
+		(numSeconds: number | null | undefined) => {
+			if (skipHourFormatting) {
+				return formatDurationMinutesSeconds(numSeconds);
+			}
+			return formatDurationHoursMinutesSeconds(numSeconds);
+		},
+		[skipHourFormatting]
 	);
-	const [fragmentEndString, setFragmentEndString] = useState<string>(
-		formatDurationHoursMinutesSeconds(endTime)
+
+	const parseAndClampDuration = useCallback(
+		(duration: string) => {
+			return clampDuration(parseDuration(skipHourFormatting ? `00:${duration}` : duration));
+		},
+		[skipHourFormatting]
 	);
+
+	const [fragmentStartString, setFragmentStartString] = useState<string>(formatDuration(startTime));
+	const [fragmentEndString, setFragmentEndString] = useState<string>(formatDuration(endTime));
 
 	const clampDuration = (value: number): number => {
 		return clamp(value, minTime, maxTime);
 	};
 
 	useEffect(() => {
-		setFragmentStartString(formatDurationHoursMinutesSeconds(startTime));
-		setFragmentEndString(formatDurationHoursMinutesSeconds(endTime));
-	}, [startTime, endTime]);
+		setFragmentStartString(formatDuration(startTime));
+		setFragmentEndString(formatDuration(endTime));
+	}, [startTime, endTime, formatDuration]);
 
 	const onUpdateMultiRangeValues = (values: number[]) => {
 		onChange(values[0], values[1]);
@@ -50,10 +66,13 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 			} else {
 				setFragmentEndString(value);
 			}
-			if (/[0-9]{2}:[0-9]{2}:[0-9]{2}/.test(value)) {
+
+			const regex = skipHourFormatting ? /[0-9]{2}:[0-9]{2}/ : /[0-9]{2}:[0-9]{2}:[0-9]{2}/;
+
+			if (regex.test(value)) {
 				// full duration
 				if (type === 'start') {
-					const newStartTime = clampDuration(parseDuration(value));
+					const newStartTime = parseAndClampDuration(value);
 
 					if (newStartTime > (endTime || maxTime)) {
 						onChange(newStartTime, newStartTime);
@@ -61,7 +80,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 						onChange(newStartTime, endTime);
 					}
 				} else {
-					const newEndTime = clampDuration(parseDuration(value));
+					const newEndTime = parseAndClampDuration(value);
 
 					if (newEndTime < (startTime || minTime)) {
 						onChange(newEndTime, newEndTime);
@@ -73,9 +92,14 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 			// else do nothing yet, until the user finishes the time entry
 		} else {
 			// on blur event
+
+			const regex = skipHourFormatting
+				? /[0-9]{1,2}:[0-9]{1,2}/
+				: /[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}/;
+
 			if (type === 'start') {
-				if (/[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}/.test(fragmentStartString)) {
-					const newStartTime = clampDuration(parseDuration(fragmentStartString));
+				if (regex.test(fragmentStartString)) {
+					const newStartTime = parseAndClampDuration(fragmentStartString);
 
 					if (newStartTime > (endTime || maxTime)) {
 						onChange(newStartTime, newStartTime);
@@ -83,12 +107,16 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 						onChange(newStartTime, endTime);
 					}
 				} else {
-					onChange(0, endTime);
+					const newStartTime = 0;
+					onChange(newStartTime, endTime);
+					if (correctWrongTimeInput) {
+						setFragmentStartString(formatDuration(newStartTime));
+					}
 					onError(TimeCropControlsErrors.WRONG_FORMAT_START_DATE);
 				}
 			} else {
-				if (/[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}/.test(fragmentEndString)) {
-					const newEndTime = clampDuration(parseDuration(fragmentEndString));
+				if (regex.test(fragmentEndString)) {
+					const newEndTime = parseAndClampDuration(fragmentEndString);
 
 					if (newEndTime < (startTime || minTime)) {
 						onChange(newEndTime, newEndTime);
@@ -96,19 +124,30 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 						onChange(startTime, newEndTime);
 					}
 				} else {
-					onChange(startTime, toSeconds(endTime) || 0);
+					const newEndTime = 0;
+					onChange(startTime, newEndTime);
+					if (correctWrongTimeInput) {
+						setFragmentEndString(formatDuration(newEndTime));
+					}
 					onError(TimeCropControlsErrors.WRONG_FORMAT_END_DATE);
 				}
 			}
 		}
 	};
 
-	const [start, end] = getValidStartAndEnd(startTime || minTime, endTime || maxTime, maxTime);
+	const [start, end] = getValidStartAndEnd(
+		startTime || minTime,
+		endTime || maxTime,
+		maxTime,
+		!allowStartAndEndToBeTheSame
+	);
+
 	return (
 		<div className={clsx('c-time-crop-controls', className)}>
 			<TextInput
 				value={fragmentStartString}
 				disabled={disabled}
+				maxLength={skipHourFormatting ? 5 : 8}
 				onBlur={() => updateStartAndEnd('start')}
 				onChange={(event) => updateStartAndEnd('start', event.target.value)}
 			/>
@@ -125,8 +164,9 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 				/>
 			</div>
 			<TextInput
-				disabled={disabled}
 				value={fragmentEndString}
+				disabled={disabled}
+				maxLength={skipHourFormatting ? 5 : 8}
 				onBlur={() => updateStartAndEnd('end')}
 				onChange={(event) => updateStartAndEnd('end', event.target.value)}
 			/>
