@@ -116,6 +116,7 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	onPause?: () => void;
 	onEnded?: () => void;
 	onTimeUpdate?: (time: number) => void;
+	onMetadataLoaded?: (evt: Event) => void;
 	preload?: 'none' | 'auto' | 'metadata';
 	plugins?: FlowplayerPlugin[];
 	subtitles?: FlowplayerTrackSchema[];
