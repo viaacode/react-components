@@ -1,12 +1,24 @@
-export const clamp = (number: number, boundOne: number, boundTwo: number) => {
-	if (!boundTwo) {
-		return Math.max(number, boundOne) === boundOne ? number : boundOne;
+export const clamp = (
+	number: number,
+	boundOne: number | undefined,
+	boundTwo: number | undefined
+) => {
+	let usableBoundOne = boundOne;
+	let usableBoundTwo = boundTwo;
+
+	if (boundTwo === undefined) {
+		usableBoundTwo = usableBoundOne;
+		usableBoundOne = undefined;
 	}
-	if (Math.min(number, boundOne) === number) {
-		return boundOne;
+
+	let result = number;
+
+	if (usableBoundTwo !== undefined) {
+		result = number <= usableBoundTwo ? number : usableBoundTwo;
 	}
-	if (Math.max(number, boundTwo) === number) {
-		return boundTwo;
+	if (usableBoundOne !== undefined) {
+		result = number >= usableBoundOne ? number : usableBoundOne;
 	}
-	return number;
+
+	return result;
 };
