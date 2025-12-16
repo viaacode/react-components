@@ -72,7 +72,12 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 			if (regex.test(value)) {
 				// full duration
 				if (type === 'start') {
-					const newStartTime = parseAndClampDuration(value);
+					let newStartTime = parseAndClampDuration(value);
+
+					if (correctWrongTimeInput && newStartTime > maxTime) {
+						newStartTime = maxTime;
+						setFragmentStartString(formatDuration(newStartTime));
+					}
 
 					if (newStartTime > (endTime || maxTime)) {
 						onChange(newStartTime, newStartTime);
@@ -80,7 +85,12 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 						onChange(newStartTime, endTime);
 					}
 				} else {
-					const newEndTime = parseAndClampDuration(value);
+					let newEndTime = parseAndClampDuration(value);
+
+					if (correctWrongTimeInput && newEndTime > maxTime) {
+						newEndTime = maxTime;
+						setFragmentEndString(formatDuration(newEndTime));
+					}
 
 					if (newEndTime < (startTime || minTime)) {
 						onChange(newEndTime, newEndTime);
@@ -99,7 +109,12 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 
 			if (type === 'start') {
 				if (regex.test(fragmentStartString)) {
-					const newStartTime = parseAndClampDuration(fragmentStartString);
+					let newStartTime = parseAndClampDuration(fragmentStartString);
+
+					if (correctWrongTimeInput && newStartTime > maxTime) {
+						newStartTime = maxTime;
+						setFragmentStartString(formatDuration(newStartTime));
+					}
 
 					if (newStartTime > (endTime || maxTime)) {
 						onChange(newStartTime, newStartTime);
@@ -116,7 +131,12 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 				}
 			} else {
 				if (regex.test(fragmentEndString)) {
-					const newEndTime = parseAndClampDuration(fragmentEndString);
+					let newEndTime = parseAndClampDuration(fragmentEndString);
+
+					if (correctWrongTimeInput && newEndTime > maxTime) {
+						newEndTime = maxTime;
+						setFragmentEndString(formatDuration(newEndTime));
+					}
 
 					if (newEndTime < (startTime || minTime)) {
 						onChange(newEndTime, newEndTime);
