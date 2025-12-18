@@ -86,37 +86,39 @@ const MultiSelect: FC<MultiSelectProps> = ({
 				iconOpen={iconOpen}
 				iconClosed={iconClosed}
 			>
-				{checkboxHeader && <div className="c-multi-select__header">{checkboxHeader}</div>}
-				<CheckboxList
-					checkIcon={iconCheck}
-					className="c-multi-select__checkbox-list"
-					itemClassName="c-multi-select__checkbox-list-item"
-					items={checkedStates.map(({ id, label, checked }: MultiSelectOption) => ({
-						value: id,
-						label,
-						checked,
-					}))}
-					onItemClick={handleCheckboxToggled}
-				/>
-				{confirmOptions && (
-					<div className="c-multi-select__footer">
-						{resetOptions && (
+				<div className="c-multi-select__content-wrapper">
+					{checkboxHeader && <div className="c-multi-select__header">{checkboxHeader}</div>}
+					<CheckboxList
+						checkIcon={iconCheck}
+						className="c-multi-select__checkbox-list"
+						itemClassName="c-multi-select__checkbox-list-item"
+						items={checkedStates.map(({ id, label, checked }: MultiSelectOption) => ({
+							value: id,
+							label,
+							checked,
+						}))}
+						onItemClick={handleCheckboxToggled}
+					/>
+					{confirmOptions && (
+						<div className="c-multi-select__footer">
+							{resetOptions && (
+								<Button
+									className="c-multi-select__reset"
+									iconStart={resetOptions.icon}
+									label={resetOptions.label}
+									variants={resetOptions.variants}
+									onClick={resetInternalCheckboxStates}
+								/>
+							)}
 							<Button
-								className="c-multi-select__reset"
-								iconStart={resetOptions.icon}
-								label={resetOptions.label}
-								variants={resetOptions.variants}
-								onClick={resetInternalCheckboxStates}
+								className="c-multi-select__submit"
+								label={confirmOptions.label}
+								variants={confirmOptions.variants}
+								onClick={applyFilter}
 							/>
-						)}
-						<Button
-							className="c-multi-select__submit"
-							label={confirmOptions.label}
-							variants={confirmOptions.variants}
-							onClick={applyFilter}
-						/>
-					</div>
-				)}
+						</div>
+					)}
+				</div>
 			</Dropdown>
 		</div>
 	);
