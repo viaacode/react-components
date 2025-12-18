@@ -11,6 +11,7 @@ export interface MultiSelectProps extends DefaultComponentProps {
 	iconOpen: ReactNode;
 	iconClosed: ReactNode;
 	iconCheck: ReactNode;
+	checkboxHeader?: ReactNode;
 	confirmOptions?: MultiSelectConfirmationOption;
 	resetOptions?: MultiSelectConfirmationOption;
 }

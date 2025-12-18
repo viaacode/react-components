@@ -16,6 +16,7 @@ const MultiSelect: FC<MultiSelectProps> = ({
 	iconOpen,
 	iconClosed,
 	iconCheck,
+	checkboxHeader,
 	confirmOptions,
 	resetOptions,
 }): ReactElement => {
@@ -85,6 +86,7 @@ const MultiSelect: FC<MultiSelectProps> = ({
 				iconOpen={iconOpen}
 				iconClosed={iconClosed}
 			>
+				{checkboxHeader && <div className="c-multi-select__header">{checkboxHeader}</div>}
 				<CheckboxList
 					checkIcon={iconCheck}
 					className="c-multi-select__checkbox-list"
