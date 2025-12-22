@@ -245,3 +245,6 @@ yarn-error.log*
 # Generated outputs
 licenses.csv
 bundle-stats.html
+
+# precommit hooks husky
+/.husky
