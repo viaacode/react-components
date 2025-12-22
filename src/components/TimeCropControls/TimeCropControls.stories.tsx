@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
-
 import TimeCropControls from './TimeCropControls';
 
 const TimeCropControlsStoryComponent = ({ children }: { children: ReactElement }) => {
