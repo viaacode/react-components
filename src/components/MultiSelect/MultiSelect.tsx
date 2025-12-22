@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { type FC, type ReactElement, useState } from 'react';
+import { Button } from '../Button';
 
 import { CheckboxList } from '../CheckboxList/index';
 import { Dropdown } from '../Dropdown/index';
@@ -15,8 +16,12 @@ const MultiSelect: FC<MultiSelectProps> = ({
 	iconOpen,
 	iconClosed,
 	iconCheck,
+	checkboxHeader,
+	confirmOptions,
+	resetOptions,
 }): ReactElement => {
 	const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+	const [checkedStates, setCheckedStates] = useState(options);
 
 	const getLabel = () => {
 		const checkedOptions = options.filter((option) => option.checked).length;
@@ -27,6 +32,48 @@ const MultiSelect: FC<MultiSelectProps> = ({
 		return label;
 	};
 
+	// Map a list of MultiSelectOption to Ids, but keep only the checked options
+	const getCheckedIdList = (list: MultiSelectOption[]) => {
+		return list.filter((item) => item.checked).map((item) => item.id);
+	};
+
+	// Resetting the entire form to the initial options
+	const resetInternalCheckboxStates = () => {
+		setCheckedStates(options);
+		resetOptions?.onClick?.(getCheckedIdList(options));
+	};
+
+	// Open the dropdown and make sure the checkboxes are checked where expected
+	const openDropdown = () => {
+		resetInternalCheckboxStates();
+		setIsDropdownOpen(true);
+	};
+
+	const closeDropdown = () => {
+		setIsDropdownOpen(false);
+	};
+
+	const applyFilter = () => {
+		confirmOptions?.onClick?.(getCheckedIdList(checkedStates));
+	};
+
+	const handleCheckboxToggled = (checked: boolean, toggledCheckboxId: unknown) => {
+		// Set the internal state
+		setCheckedStates((prevState) => {
+			return prevState.map((item) => {
+				if (item.id === toggledCheckboxId) {
+					return { ...item, checked: !item.checked };
+				}
+				return item;
+			});
+		});
+
+		// Only when we are not using the confirm button, we expect the state to be updated immediately
+		if (!confirmOptions) {
+			onChange(checked, toggledCheckboxId as string);
+		}
+	};
+
 	return (
 		<div className={clsx(className, 'c-multi-select')}>
 			<Dropdown
@@ -34,22 +81,44 @@ const MultiSelect: FC<MultiSelectProps> = ({
 				className="c-multi-select__dropdown"
 				label={getLabel()}
 				isOpen={isDropdownOpen}
-				onOpen={() => setIsDropdownOpen(true)}
-				onClose={() => setIsDropdownOpen(false)}
+				onOpen={openDropdown}
+				onClose={closeDropdown}
 				iconOpen={iconOpen}
 				iconClosed={iconClosed}
 			>
-				<CheckboxList
-					checkIcon={iconCheck}
-					className={'c-multi-select__checkbox-list'}
-					itemClassName={'c-multi-select__checkbox-list-item'}
-					items={options.map(({ id, label, checked }: MultiSelectOption) => ({
-						value: id,
-						label,
-						checked,
-					}))}
-					onItemClick={(checked, value) => onChange(checked, value as string)}
-				/>
+				<div className="c-multi-select__content-wrapper">
+					{checkboxHeader && <div className="c-multi-select__header">{checkboxHeader}</div>}
+					<CheckboxList
+						checkIcon={iconCheck}
+						className="c-multi-select__checkbox-list"
+						itemClassName="c-multi-select__checkbox-list-item"
+						items={checkedStates.map(({ id, label, checked }: MultiSelectOption) => ({
+							value: id,
+							label,
+							checked,
+						}))}
+						onItemClick={handleCheckboxToggled}
+					/>
+					{confirmOptions && (
+						<div className="c-multi-select__footer">
+							{resetOptions && (
+								<Button
+									className="c-multi-select__reset"
+									iconStart={resetOptions.icon}
+									label={resetOptions.label}
+									variants={resetOptions.variants}
+									onClick={resetInternalCheckboxStates}
+								/>
+							)}
+							<Button
+								className="c-multi-select__submit"
+								label={confirmOptions.label}
+								variants={confirmOptions.variants}
+								onClick={applyFilter}
+							/>
+						</div>
+					)}
+				</div>
 			</Dropdown>
 		</div>
 	);

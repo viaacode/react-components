@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import type { DefaultComponentProps } from '../../types/index';
+import type { DefaultComponentProps, VariantsProp } from '../../types';
 
 export interface MultiSelectProps extends DefaultComponentProps {
 	children?: React.ReactNode;
@@ -11,10 +11,20 @@ export interface MultiSelectProps extends DefaultComponentProps {
 	iconOpen: ReactNode;
 	iconClosed: ReactNode;
 	iconCheck: ReactNode;
+	checkboxHeader?: ReactNode;
+	confirmOptions?: MultiSelectConfirmationOption;
+	resetOptions?: MultiSelectConfirmationOption;
 }
 
 export interface MultiSelectOption {
 	id: string;
 	label: string;
 	checked: boolean;
+}
+
+export interface MultiSelectConfirmationOption {
+	label?: string;
+	icon?: ReactNode;
+	onClick?: (checked: string[]) => void;
+	variants?: VariantsProp;
 }

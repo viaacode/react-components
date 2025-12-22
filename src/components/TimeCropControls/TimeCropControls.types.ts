@@ -9,6 +9,9 @@ export interface TimeCropControlsProps {
 	className?: string;
 	trackColor: string;
 	highlightColor: string;
+	allowStartAndEndToBeTheSame?: boolean;
+	correctWrongTimeInput?: boolean;
+	skipHourFormatting?: boolean;
 }
 
 export enum TimeCropControlsErrors {

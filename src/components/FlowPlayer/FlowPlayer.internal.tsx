@@ -82,6 +82,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	peakColorActive,
 	peakHeightFactor,
 	enableRestartCuePointsButton,
+	onMetadataLoaded,
 }) => {
 	const videoContainerRef = useRef<HTMLDivElement>(null);
 	const peakCanvas = useRef<HTMLCanvasElement>(null);
@@ -255,8 +256,9 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		[src]
 	);
 
-	const handleLoadedMetadata = () => {
+	const handleLoadedMetadata = (evt: Event) => {
 		updateCuepointPosition();
+		onMetadataLoaded?.(evt);
 	};
 
 	const handlePlaylistNext = (evt: Event & { detail: { next_index: number } }) => {

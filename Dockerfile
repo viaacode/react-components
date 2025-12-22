@@ -1,4 +1,4 @@
-FROM node:20.4-alpine
+FROM node:24-alpine
 
 # install dependencies first, in a different location for easier app bind mounting for local development
 RUN mkdir /opt/react-app

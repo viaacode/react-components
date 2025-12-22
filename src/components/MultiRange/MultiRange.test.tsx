@@ -1,5 +1,4 @@
 import { render } from '@testing-library/react';
-
 import MultiRange, { type MultiRangePropsSchema } from './MultiRange';
 
 const renderMultiRange = ({ ...rest }: Partial<MultiRangePropsSchema> = {}) => {

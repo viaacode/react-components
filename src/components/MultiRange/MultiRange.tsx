@@ -1,12 +1,10 @@
 import clsx from 'clsx';
 import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
-
-import { getTrackBackground, Range } from 'react-range';
+import { Range, getTrackBackground } from 'react-range';
 import type { DefaultComponentProps } from '../../types';
 import { bemCls } from '../../utils';
 import { noop } from '../../utils/noop';
-
 import { TextInput } from '../TextInput';
 
 export interface MultiRangePropsSchema extends DefaultComponentProps {
@@ -87,7 +85,6 @@ const MultiRange: FC<MultiRangePropsSchema> = ({
 					onChange(tempValues || values);
 				}}
 				renderTrack={({ props, children }) => (
-					// biome-ignore lint/a11y/noStaticElementInteractions: We need the events to interact with the track
 					<div
 						onMouseDown={props.onMouseDown}
 						onTouchStart={props.onTouchStart}

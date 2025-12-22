@@ -19,7 +19,7 @@ pipeline {
             tty: true
             imagePullPolicy: Always
           - name: npm
-            image: node:20.4-alpine
+            image: node:24-alpine
             command:
             - cat
             tty: true
@@ -40,7 +40,7 @@ pipeline {
 	}
 	environment {
 		OC_PROJECT = 'hetarchief'
-		BASE_IMG = 'node:20.4-alpine'
+		BASE_IMG = 'node:24-alpine'
 		OC_URL = 'https://c113-e.private.eu-de.containers.cloud.ibm.com:30227'
 		JIRA_URL = 'meemoo.atlassian.net'
 		APP_NAME = 'react-components'
@@ -140,7 +140,7 @@ pipeline {
 }
 
 String getImageFromDockerfile() {
-	return 'node:20.4-alpine'
+	return 'node:24-alpine'
 }
 
 void setGitHubBuildStatus(String message, String state) {

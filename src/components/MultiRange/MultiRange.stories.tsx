@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { cloneElement, type ReactElement, useState } from 'react';
+import { type ReactElement, cloneElement, useState } from 'react';
 import { action } from 'storybook/actions';
 
 import MultiRange from './MultiRange';
