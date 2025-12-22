@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "5.0.9",
+  "version": "5.0.10",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,9 @@
     "Bavo Vanderghote <bavo.vanderghote@studiohyperdrive.be>",
     "Bert Verhelst <bert.verhelst@studiohyperdrive.be>"
   ],
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build",
     "copy-to-avo-client": "rimraf ../avo2-client/node_modules/@meemoo/react-components/dist ../avo2-client/node_modules/.cache ../avo2-client/node_modules/.vite  && cp -r dist package.json ../avo2-client/node_modules/@meemoo/react-components",
@@ -125,7 +127,15 @@
     "@emotion/react": "11.11.1"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
-    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
