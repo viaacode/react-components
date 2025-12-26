@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { type FunctionComponent, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { usePopper } from 'react-popper';
 
-import { useSlot } from '../../hooks/use-slot/index';
+import { useSlot } from '../../hooks/use-slot';
 import { generateRandomId } from '../../utils/generate-random-id/generate-random-id';
 
 import './Tooltip.scss';

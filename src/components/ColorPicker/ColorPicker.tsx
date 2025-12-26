@@ -3,7 +3,7 @@ import { type FC, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 
 import './ColorPicker.scss';
-import { bemCls, getVariantClasses } from '../../utils/index';
+import { bemCls, getVariantClasses } from '../../utils';
 
 import type { ColorPickerProps } from './ColorPicker.types';
 

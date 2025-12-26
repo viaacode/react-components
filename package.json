@@ -48,7 +48,7 @@
   "peerDependencies": {
     "@flowplayer/player": "3.32.1",
     "@popperjs/core": "2.11.6",
-    "@viaa/avo2-types": "4.0.5",
+    "@viaa/avo2-types": "5.0.1",
     "autosize": "6.0.1",
     "clsx": "2.0.0",
     "date-fns": "3.6.0",

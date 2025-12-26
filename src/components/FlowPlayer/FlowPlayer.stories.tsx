@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 
-import { Button } from '../Button/index';
-import { Modal } from '../Modal/index';
+import { Button } from '../Button';
+import { Modal } from '../Modal';
 import { FlowPlayer } from './FlowPlayer';
 import { setPlayingVideoSeekTime } from './FlowPlayer.helpers';
 import { MOCK_FLOW_PLAYER_PROPS_FULL, MOCK_PLAYLIST_SOURCE } from './FlowPlayer.mock';

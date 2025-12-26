@@ -1,4 +1,4 @@
-import { getVariantsArray } from './index';
+import { getVariantsArray } from '.';
 import { getVariantClasses } from './variant-classes';
 
 const mockClass = 'my-class';

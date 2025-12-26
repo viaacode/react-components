@@ -1,9 +1,9 @@
 import type { FlowplayerCommand } from './FlowPlayer.types';
 
-const MESSAGE_TYPE = 'avo.videoplayer';
+const MESSAGE_TYPE = 'Avovideoplayer';
 
 /**
- * Send a message to the parent window.
+ * Send a message to the parent window
  */
 function sendMessage(message: FlowplayerCommand) {
 	window.parent.postMessage({ _type: MESSAGE_TYPE, ...message }, '*');

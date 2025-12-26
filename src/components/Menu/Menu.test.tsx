@@ -8,8 +8,8 @@ import {
 } from './__mocks__/menu';
 import Menu from './Menu';
 import type { MenuProps } from './Menu.types';
-import type { MenuItemInfo } from './MenuContent/index';
-import { MenuSearchResultContent } from './MenuSearchResultContent/index';
+import type { MenuItemInfo } from './MenuContent';
+import { MenuSearchResultContent } from './MenuSearchResultContent';
 
 const renderMenu = ({ children = null, ...args }: PropsWithChildren<MenuProps>) => {
 	return render(<Menu {...args}>{children}</Menu>);

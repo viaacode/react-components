@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { type FC, forwardRef } from 'react';
 import Select from 'react-select';
 
-import { assignRef, getVariantClasses } from '../../../utils/index';
+import { assignRef, getVariantClasses } from '../../../utils';
 
 import type { ReactSelectProps } from './ReactSelect.types';
 

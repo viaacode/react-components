@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { PropsWithChildren } from 'react';
 
-import { Button } from '../Button/index';
+import { Button } from '../Button';
 
 import Dropdown from './Dropdown';
 import { DropdownButton, DropdownContent } from './Dropdown.slots';

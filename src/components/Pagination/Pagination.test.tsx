@@ -1,6 +1,6 @@
 import { fireEvent, type RenderResult, render, screen } from '@testing-library/react';
 
-import { Button } from '../Button/index';
+import { Button } from '../Button';
 
 import Pagination from './Pagination';
 import type { PaginationProps } from './Pagination.types';

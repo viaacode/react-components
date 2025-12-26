@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { type FC, type ReactNode, useMemo } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils/index';
+import { bemCls, getVariantClasses } from '../../utils';
 
 import type { Breadcrumb, BreadcrumbsProps } from './Breadcrumbs.types';
 

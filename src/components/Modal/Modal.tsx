@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import { type FC, useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 
-import { bemCls, getVariantClasses } from '../../utils/index';
-import { Button } from '../Button/index';
+import { bemCls, getVariantClasses } from '../../utils';
+import { Button } from '../Button';
 
 import { MODAL_CLOSE_ICON } from './Modal.const';
 import type { ModalProps } from './Modal.types';

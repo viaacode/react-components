@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 
-import { bemCls, getVariantClasses } from '../../../utils/index';
+import { bemCls, getVariantClasses } from '../../../utils';
 
 import './Tab.scss';
 import type { TabProps } from './Tab.types';

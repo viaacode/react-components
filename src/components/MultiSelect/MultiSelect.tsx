@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import { type FC, type ReactElement, useState } from 'react';
 import { Button } from '../Button';
 
-import { CheckboxList } from '../CheckboxList/index';
-import { Dropdown } from '../Dropdown/index';
+import { CheckboxList } from '../CheckboxList';
+import { Dropdown } from '../Dropdown';
 
 import type { MultiSelectOption, MultiSelectProps } from './MultiSelect.types';
 

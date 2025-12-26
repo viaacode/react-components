@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 
-import { bemCls, getVariantClasses } from '../../../utils/index';
-import { MenuContent } from '../MenuContent/index';
+import { bemCls, getVariantClasses } from '../../../utils';
+import { MenuContent } from '../MenuContent';
 
 import type {
 	MenuSearchResultContentProps,

@@ -1,4 +1,4 @@
-import type { DefaultComponentProps } from '../../types/index';
+import type { DefaultComponentProps } from '../../types';
 
 export type ProgressBarProps = DefaultComponentProps & {
 	percentage: number;

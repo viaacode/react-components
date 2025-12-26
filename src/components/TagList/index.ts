@@ -1,3 +1,3 @@
-export * from './Tag/index';
+export * from './Tag';
 export { default as TagList } from './TagList';
 export * from './TagList.types';

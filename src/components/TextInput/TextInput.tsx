@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { type FC, forwardRef, type ReactNode } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils/index';
+import { bemCls, getVariantClasses } from '../../utils';
 import { isFunction } from '../../utils/is-function';
 
 import type { TextInputProps } from './TextInput.types';

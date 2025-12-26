@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import type { FC, ReactNode } from 'react';
 
-import { bemCls, getVariantClasses, keysEnter, keysSpacebar, onKey } from '../../utils/index';
+import { bemCls, getVariantClasses, keysEnter, keysSpacebar, onKey } from '../../utils';
 
 import type { CardProps } from './Card.types';
 

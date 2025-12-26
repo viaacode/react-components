@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { type FC, forwardRef } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils/index';
-import { Spinner } from '../Spinner/index';
+import { bemCls, getVariantClasses } from '../../utils';
+import { Spinner } from '../Spinner';
 
 import type { CheckboxProps } from './Checkbox.types';
 

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import type { DefaultComponentProps } from '../../types/index';
+import type { DefaultComponentProps } from '../../types';
 
 import type { MenuItemInfo } from './MenuContent/MenuContent.types';
 

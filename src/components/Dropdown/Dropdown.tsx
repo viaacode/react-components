@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import { type FC, useMemo, useState } from 'react';
 import { usePopper } from 'react-popper';
 
-import { useClickOutside, useKeyPress, useSlot } from '../../hooks/index';
-import { bemCls, getVariantClasses, hash, keysEnter, keysSpacebar, onKey } from '../../utils/index';
-import { Button } from '../Button/index';
+import { useClickOutside, useKeyPress, useSlot } from '../../hooks';
+import { bemCls, getVariantClasses, hash, keysEnter, keysSpacebar, onKey } from '../../utils';
+import { Button } from '../Button';
 import { Menu } from '../Menu/index';
 
 import './Dropdown.scss';

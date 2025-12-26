@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils/index';
+import { bemCls, getVariantClasses } from '../../utils';
 
 import type { FormControlProps } from './FormControl.types';
 

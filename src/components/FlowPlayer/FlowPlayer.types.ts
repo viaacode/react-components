@@ -1,8 +1,7 @@
 import type { Config } from '@flowplayer/player';
-import type { Avo } from '@viaa/avo2-types';
+import type { AvoContentTypeEnglish } from '@viaa/avo2-types';
 import type { ReactElement, ReactNode } from 'react';
-
-import type { DefaultComponentProps } from '../../types/index';
+import type { DefaultComponentProps } from '../../types';
 
 export type FlowplayerPlugin =
 	| 'subtitles'
@@ -74,7 +73,7 @@ export interface FlowplayerTrackSchema {
 export interface FlowplayerSourceItem {
 	src: string;
 	title: string;
-	category: Avo.ContentType.English;
+	category: AvoContentTypeEnglish;
 	provider: string;
 	poster: string;
 	cuepoints?: Cuepoints;

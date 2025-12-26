@@ -1,3 +1,3 @@
-import type { DefaultComponentProps } from '../../types/index';
+import type { DefaultComponentProps } from '../../types';
 
 export type BoxProps = DefaultComponentProps;

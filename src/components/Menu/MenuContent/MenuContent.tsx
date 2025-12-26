@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { type FC, Fragment, type ReactNode } from 'react';
 
-import { bemCls, getVariantClasses } from '../../../utils/index';
+import { bemCls, getVariantClasses } from '../../../utils';
 
 import type { MenuContentProps, MenuItemInfo } from './MenuContent.types';
 

@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 
-import { bemCls, getVariantClasses, getVariantsArray } from '../../utils/index';
+import { bemCls, getVariantClasses, getVariantsArray } from '../../utils';
 
-import { Tab } from './Tab/index';
+import { Tab } from './Tab';
 import type { TabsProps } from './Tabs.types';
 
 const Tabs: FC<TabsProps> = ({

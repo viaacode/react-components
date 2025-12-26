@@ -3,7 +3,7 @@ import type { ReactElement } from 'react';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
-import { bemCls, getVariantClasses } from '../../utils/index';
+import { bemCls, getVariantClasses } from '../../utils';
 
 import type { TagsInputGroup, TagsInputProps } from './TagsInput.types';
 

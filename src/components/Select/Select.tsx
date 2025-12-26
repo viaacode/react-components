@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { forwardRef, type ReactNode } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils/index';
+import { bemCls, getVariantClasses } from '../../utils';
 
 import type { SelectProps } from './Select.types';
 

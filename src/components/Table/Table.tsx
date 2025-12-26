@@ -1,8 +1,8 @@
-import { Avo } from '@viaa/avo2-types';
+import { AvoSearchOrderDirection } from '@viaa/avo2-types';
 import clsx from 'clsx';
 import { useEffect, useMemo } from 'react';
 import { type HeaderGroup, usePagination, useSortBy, useTable } from 'react-table';
-import { bemCls, getVariantClasses } from '../../utils/index';
+import { bemCls, getVariantClasses } from '../../utils';
 import { defaultPropGetter, defaultSortingIcons } from './Table.const';
 import type { TableData, TableProps } from './Table.types';
 
@@ -54,12 +54,12 @@ const Table = <D extends TableData>({
 
 	useEffect(() => {
 		const orderProp = sortBy[0]?.id || undefined;
-		let orderDirection: Avo.Search.OrderDirection | undefined;
+		let orderDirection: AvoSearchOrderDirection | undefined;
 		if (sortBy[0]) {
 			if (sortBy[0].desc) {
-				orderDirection = Avo.Search.OrderDirection.DESC;
+				orderDirection = AvoSearchOrderDirection.DESC;
 			} else {
-				orderDirection = Avo.Search.OrderDirection.ASC;
+				orderDirection = AvoSearchOrderDirection.ASC;
 			}
 		} else {
 			orderDirection = undefined;

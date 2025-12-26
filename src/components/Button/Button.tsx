@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { type FC, forwardRef, type MouseEvent, type ReactNode } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils/index';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip/index';
+import { bemCls, getVariantClasses } from '../../utils';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip';
 
 import type { ButtonProps } from './Button.types';
 

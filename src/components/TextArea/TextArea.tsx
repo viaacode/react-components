@@ -2,8 +2,8 @@ import autosize from 'autosize';
 import clsx from 'clsx';
 import { forwardRef, useEffect } from 'react';
 
-import { useCallbackRef } from '../../hooks/index';
-import { bemCls, getVariantClasses, mergeRefs } from '../../utils/index';
+import { useCallbackRef } from '../../hooks';
+import { bemCls, getVariantClasses, mergeRefs } from '../../utils';
 
 import type { TextAreaProps } from './TextArea.types';
 

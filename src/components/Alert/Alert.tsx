@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils/index';
-import { Button } from '../Button/index';
+import { bemCls, getVariantClasses } from '../../utils';
+import { Button } from '../Button';
 
 import type { AlertProps } from './Alert.types';
 

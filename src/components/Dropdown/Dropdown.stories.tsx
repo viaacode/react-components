@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { cloneElement, type ReactElement, useEffect, useState } from 'react';
 import { action } from 'storybook/actions';
 
-import { MenuContent } from '../Menu/MenuContent/index';
+import { MenuContent } from '../Menu/MenuContent';
 import { menuItems, menuItemsWithIcons } from './__mocks__/dropdown';
 import Dropdown from './Dropdown';
 import { DropdownContent } from './Dropdown.slots';
