@@ -20,6 +20,8 @@ import './RichTextEditor.scss';
 const BraftEditorAny: any =
 	(BraftEditor as any).default?.default ?? (BraftEditor as any).default ?? BraftEditor;
 
+const BraftTable: any = (Table as any).default?.default ?? (Table as any).default ?? Table;
+
 const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	braft,
 	className,
@@ -83,7 +85,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 		withDropdown: true, //  Whether a drop-down menu pops up before inserting a table
 	};
 
-	BraftEditorAny.use(Table(tableOptions));
+	BraftEditorAny.use(BraftTable(tableOptions));
 
 	const newControls = controls
 		? [
@@ -117,7 +119,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 			})}
 			id={id}
 		>
-			<BraftEditor
+			<BraftEditorAny
 				{...braft}
 				controls={newControls as ExtendControlType[]}
 				id={id}

@@ -6,7 +6,6 @@ import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import dts from 'vite-plugin-dts';
 import {externalizeDeps} from 'vite-plugin-externalize-deps';
 import svgrPlugin from 'vite-plugin-svgr';
-import viteTsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -29,16 +28,19 @@ export default defineConfig({
 		},
 		sourcemap: true,
 	},
+	resolve: {
+		dedupe: [
+			'react',
+			'react-dom',
+			'react/jsx-runtime',
+			'react/jsx-dev-runtime',
+		],
+	},
 	plugins: [
 		react(),
-		viteTsconfigPaths(),
 		svgrPlugin(),
 		dts(),
-		externalizeDeps({
-			deps: false,
-			peerDeps: true,
-			devDeps: false,
-		}),
+		externalizeDeps(),
 		cssInjectedByJsPlugin(),
 	],
 	define: {
