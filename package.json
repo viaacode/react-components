@@ -1,12 +1,13 @@
 {
   "name": "@meemoo/react-components",
-  "version": "5.0.21",
+  "version": "5.0.22",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
-    "./index.js": "./dist/index.js"
+    "./index.js": "./dist/index.js",
+    "./style.css": "./dist/style.css"
   },
   "repository": "github:viaacode/react-components",
   "homepage": "https://github.com/viaacode/react-components#readme",
