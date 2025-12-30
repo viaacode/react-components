@@ -13,6 +13,13 @@ import { ALL_RICH_TEXT_HEADINGS, type RichTextEditorProps } from './RichTextEdit
 
 import './RichTextEditor.scss';
 
+// normalize CJS/ESM interop:
+// - sometimes the usable thing is mod.default
+// - sometimes it's mod.default.default (double default)
+// - sometimes it's the module itself
+const BraftEditorAny: any =
+	(BraftEditor as any).default?.default ?? (BraftEditor as any).default ?? BraftEditor;
+
 const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 	braft,
 	className,
@@ -76,7 +83,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 		withDropdown: true, //  Whether a drop-down menu pops up before inserting a table
 	};
 
-	BraftEditor.use(Table(tableOptions));
+	BraftEditorAny.use(Table(tableOptions));
 
 	const newControls = controls
 		? [
@@ -92,7 +99,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 								className: `html-edit-button ${isHtmlView ? 'active' : ''}`,
 								onClick: () => {
 									if (isHtmlView) {
-										onChange?.(BraftEditor.createEditorState(html || ''));
+										onChange?.(BraftEditorAny.createEditorState(html || ''));
 									}
 									setIsHtmlView((prev) => !prev);
 								},
@@ -124,7 +131,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorProps> = ({
 				onTab={onTab}
 				placeholder={placeholder}
 				readOnly={disabled}
-				value={state || BraftEditor.createEditorState(initialHtml || '')}
+				value={state || BraftEditorAny.createEditorState(initialHtml || '')}
 			/>
 			{isHtmlView ? (
 				<pre
