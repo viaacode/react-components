@@ -1,12 +1,16 @@
-import { type FunctionComponent, lazy, Suspense } from 'react';
-
+import { type FC, type FunctionComponent, lazy, Suspense } from 'react';
+import { isServerSideRendering } from '../../utils/is-server-side-rendering';
 import { Flex } from '../Flex/Flex';
-
 import type { RichTextEditorWithInternalStateProps } from './RichTextEditor.types';
 
-const RichTextEditorInternalWithInternalState = lazy(
-	() => import('./RichTextEditorInternalWithInternalState.js')
-);
+let RichTextEditorInternalWithInternalState: FC<RichTextEditorWithInternalStateProps> | null = null;
+if (!isServerSideRendering()) {
+	// Do not load the rich text editor during server side rendering
+	// Since it causes ESM/CcommonJS issues with braft-editor and doesn't add much to the server side rendering anyway
+	RichTextEditorInternalWithInternalState = lazy(
+		() => import('./RichTextEditorInternalWithInternalState.js')
+	);
+}
 
 const RichTextEditorWithInternalState: FunctionComponent<RichTextEditorWithInternalStateProps> = (
 	props
@@ -19,7 +23,9 @@ const RichTextEditorWithInternalState: FunctionComponent<RichTextEditorWithInter
 				</Flex>
 			}
 		>
-			<RichTextEditorInternalWithInternalState {...props} />
+			{!!RichTextEditorInternalWithInternalState && (
+				<RichTextEditorInternalWithInternalState {...props} />
+			)}
 		</Suspense>
 	);
 };
