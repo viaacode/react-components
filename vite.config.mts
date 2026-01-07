@@ -2,15 +2,13 @@ import {resolve} from 'node:path';
 
 import react from '@vitejs/plugin-react';
 import {defineConfig} from 'vite';
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import dts from 'vite-plugin-dts';
-import {externalizeDeps} from 'vite-plugin-externalize-deps';
 import svgrPlugin from 'vite-plugin-svgr';
 import pkg from './package.json';
 
 const peerDependencies: string[] = Object.keys(pkg.peerDependencies);
 
-const dedupe = [
+const external = [
 	...peerDependencies,
 	'react/jsx-runtime',
 	'react/jsx-dev-runtime',
@@ -31,21 +29,17 @@ export default defineConfig({
 			formats: ['es'],
 		},
 		rollupOptions: {
+			external,
 			output: {
 				preserveModules: true,
 			},
 		},
 		sourcemap: true,
 	},
-	resolve: {
-		dedupe
-	},
 	plugins: [
 		react(),
 		svgrPlugin(),
 		dts(),
-		externalizeDeps(),
-		cssInjectedByJsPlugin(),
 	],
 	define: {
 		// By default, Vite doesn't include shims for Node.js
