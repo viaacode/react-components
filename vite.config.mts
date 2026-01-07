@@ -33,6 +33,9 @@ export default defineConfig({
 		},
 		sourcemap: true,
 	},
+	resolve: {
+		dedupe: external
+	},
 	plugins: [
 		react(),
 		svgrPlugin(),
