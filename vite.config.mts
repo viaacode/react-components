@@ -30,9 +30,6 @@ export default defineConfig({
 		},
 		rollupOptions: {
 			external,
-			output: {
-				preserveModules: true,
-			},
 		},
 		sourcemap: true,
 	},
