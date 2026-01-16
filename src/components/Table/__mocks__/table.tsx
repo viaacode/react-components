@@ -1,7 +1,7 @@
 import type { CellProps, Column } from 'react-table';
 
 export interface MockTableData {
-	id: number;
+	id: string;
 	name: string;
 	created_at: number;
 	child: { id: number };
@@ -9,7 +9,7 @@ export interface MockTableData {
 
 export const mockData: MockTableData[] = [1, 2, 3, 4, 5, 6].map((data) => {
 	return {
-		id: data,
+		id: data.toString(),
 		name: ['John', 'Jim', 'Bob', 'Susan', 'Sally', 'Delilah'][data - 1],
 		created_at: new Date().setFullYear(new Date().getFullYear() - data),
 		child: {
