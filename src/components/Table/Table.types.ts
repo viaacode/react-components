@@ -38,9 +38,9 @@ export interface TableProps<T extends TableData> extends DefaultComponentProps {
 	pagination?: (instance: UsePaginationInstanceProps<T>) => ReactNode;
 	sortingIcons?: TableSortingIcons;
 	/**
-	 * We need the possibility to hide the table itself but keep the useTable logic itself in order to maintain the highlighted row
+	 * We need the possibility to hide the table itself but keep the useTable logic itself in order to maintain the focused row
 	 */
-	hideTable?: boolean;
+	showTable?: boolean;
 	enableRowFocusOnClick?: boolean;
 }
 

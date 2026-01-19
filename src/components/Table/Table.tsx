@@ -21,7 +21,7 @@ const Table = <RowDataType extends TableData>({
 	sortingIcons = defaultSortingIcons,
 	style,
 	variants,
-	hideTable = false,
+	showTable = true,
 	enableRowFocusOnClick = false,
 }: TableProps<RowDataType>) => {
 	const [focusedRowId, setFocusedRowId] = useState<string | null>(null);
@@ -110,7 +110,7 @@ const Table = <RowDataType extends TableData>({
 	};
 
 	return (
-		!hideTable && (
+		showTable && (
 			<>
 				<div className={clsx(bem('scroller'), enableRowFocusOnClick && bem('with-row-focus'))}>
 					<table {...getTableProps()} className={rootCls} style={style}>
