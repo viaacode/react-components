@@ -42,7 +42,7 @@ const Table = <RowDataType extends TableData>({
 
 	const instance = useTable(
 		{
-			getRowId: (row) => row.id,
+			getRowId: (row) => row.id?.toString(),
 			...options,
 			manualSortBy: true,
 			disableMultiSort: true,
@@ -123,7 +123,11 @@ const Table = <RowDataType extends TableData>({
 									className={clsx(bem('row'), bem('row', 'header'))}
 								>
 									{enableRowFocusOnClick && (
-										<th role="columnheader" className={clsx(thClass(false), focusedTdClass(false))}>
+										<th
+											role="columnheader"
+											aria-hidden={true}
+											className={clsx(thClass(false), focusedTdClass(false))}
+										>
 											&nbsp;
 										</th>
 									)}
@@ -161,7 +165,11 @@ const Table = <RowDataType extends TableData>({
 										key={row.id}
 									>
 										{enableRowFocusOnClick && (
-											<td role="cell" className={focusedTdClass(row.id === focusedRowId)}>
+											<td
+												role="cell"
+												aria-hidden={true}
+												className={focusedTdClass(row.id === focusedRowId)}
+											>
 												&nbsp;
 											</td>
 										)}
