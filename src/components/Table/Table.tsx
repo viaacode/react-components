@@ -42,7 +42,7 @@ const Table = <RowDataType extends TableData>({
 
 	const instance = useTable(
 		{
-			getRowId: (row) => row.id,
+			getRowId: (row) => row.id?.toString(),
 			...options,
 			manualSortBy: true,
 			disableMultiSort: true,

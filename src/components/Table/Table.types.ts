@@ -44,7 +44,7 @@ export interface TableProps<T extends TableData> extends DefaultComponentProps {
 	enableRowFocusOnClick?: boolean;
 }
 
-export type TableData = Record<'id', string> & Record<string, any>;
+export type TableData = Record<'id', string | number> & Record<string, any>;
 
 export interface TableSortingIcons {
 	asc?: ReactNode;
