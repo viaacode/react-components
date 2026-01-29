@@ -55,6 +55,7 @@ const MultiSelect: FC<MultiSelectProps> = ({
 
 	const applyFilter = () => {
 		confirmOptions?.onClick?.(getCheckedIdList(checkedStates));
+		closeDropdown();
 	};
 
 	const handleCheckboxToggled = (checked: boolean, toggledCheckboxId: unknown) => {
