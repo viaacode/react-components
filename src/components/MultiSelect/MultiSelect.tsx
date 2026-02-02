@@ -53,8 +53,13 @@ const MultiSelect: FC<MultiSelectProps> = ({
 		setIsDropdownOpen(false);
 	};
 
+	const resetFilter = () => {
+		setCheckedStates(options.map((option) => ({ ...option, checked: false })));
+	};
+
 	const applyFilter = () => {
 		confirmOptions?.onClick?.(getCheckedIdList(checkedStates));
+		closeDropdown();
 	};
 
 	const handleCheckboxToggled = (checked: boolean, toggledCheckboxId: unknown) => {
@@ -107,7 +112,7 @@ const MultiSelect: FC<MultiSelectProps> = ({
 									iconStart={resetOptions.icon}
 									label={resetOptions.label}
 									variants={resetOptions.variants}
-									onClick={resetInternalCheckboxStates}
+									onClick={resetFilter}
 								/>
 							)}
 							<Button
