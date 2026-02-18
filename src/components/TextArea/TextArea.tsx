@@ -11,13 +11,20 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 	(
 		{
 			autoHeight = false,
+			rows,
 			className,
 			disabled = false,
 			rootClassName: root = 'c-input',
 			value = '',
 			variants,
 			onChange = () => null,
-			...textAreaProps
+			id,
+			name,
+			ariaLabel,
+			onBlur,
+			onClick,
+			placeholder,
+			maxLength,
 		},
 		ref
 	) => {
@@ -35,12 +42,19 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 		return (
 			<div className={rootCls}>
 				<textarea
-					{...textAreaProps}
+					id={id}
+					name={name}
+					aria-label={ariaLabel}
+					onBlur={onBlur}
+					onClick={onClick}
+					placeholder={placeholder}
+					maxLength={maxLength}
 					ref={mergeRefs([ref, textAreaRef])}
 					className={bem('field')}
 					disabled={disabled}
 					value={value}
 					onChange={onChange}
+					rows={rows}
 				/>
 			</div>
 		);

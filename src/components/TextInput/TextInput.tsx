@@ -3,7 +3,7 @@ import { type FC, forwardRef, type KeyboardEvent, type ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 import { isFunction } from '../../utils/is-function';
-
+import { isNil } from '../../utils/is-nil';
 import type { TextInputProps } from './TextInput.types';
 
 export const TextInputDefaults = {
@@ -26,12 +26,22 @@ export const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextIn
 			rootClassName: root = TextInputDefaults.rootClassName,
 			type = TextInputDefaults.type,
 			variants,
+			id,
+			name,
 			value = TextInputDefaults.value,
 			onChange = TextInputDefaults.onChange,
 			onClick,
 			onEnter,
+			onBlur,
 			ariaLabel,
-			...inputProps
+			placeholder,
+			maxLength,
+			pattern,
+			step,
+			autoCapitalize,
+			autoComplete,
+			autoCorrect,
+			spellCheck,
 		},
 		ref
 	) => {
@@ -72,7 +82,6 @@ export const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextIn
 						'start'
 					)}
 				<input
-					{...inputProps}
 					className={bem('field')}
 					disabled={disabled}
 					ref={ref}
@@ -83,7 +92,18 @@ export const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextIn
 					tabIndex={hasContainerEvents ? 0 : undefined}
 					onClick={onClick}
 					onKeyUp={handleOnKeyUp}
+					onBlur={onBlur}
 					aria-label={ariaLabel}
+					placeholder={placeholder}
+					id={id}
+					name={name}
+					maxLength={maxLength}
+					pattern={pattern}
+					step={step}
+					autoCapitalize={autoCapitalize}
+					autoComplete={autoComplete}
+					autoCorrect={autoCorrect}
+					spellCheck={spellCheck}
 				/>
 				{iconEnd &&
 					renderIcon(

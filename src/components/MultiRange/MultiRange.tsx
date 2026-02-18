@@ -116,6 +116,7 @@ const MultiRange: FC<MultiRangePropsSchema> = ({
 			/>
 			{showNumber && (
 				<TextInput
+					id={`multi-range--${id}`}
 					className={bem('number-input')}
 					value={inputText}
 					onChange={handleInputChanged}

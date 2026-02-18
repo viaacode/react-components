@@ -12,6 +12,7 @@ import { TextInput } from '../TextInput';
 import { TimeCropControlsErrors, type TimeCropControlsProps } from './TimeCropControls.types';
 
 const TimeCropControls: FC<TimeCropControlsProps> = ({
+	id,
 	startTime,
 	endTime,
 	minTime,
@@ -167,6 +168,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 	return (
 		<div className={clsx('c-time-crop-controls', className)}>
 			<TextInput
+				id={`time-crop-controls--${id}__start-time-input`}
 				value={fragmentStartString}
 				disabled={disabled}
 				maxLength={skipHourFormatting ? 'mm:ss'.length : 'HH:mm:ss'.length}
@@ -188,6 +190,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 				/>
 			</div>
 			<TextInput
+				id={`time-crop-controls--${id}__end-time-input`}
 				value={fragmentEndString}
 				disabled={disabled}
 				maxLength={skipHourFormatting ? 'mm:ss'.length : 'HH:mm:ss'.length}

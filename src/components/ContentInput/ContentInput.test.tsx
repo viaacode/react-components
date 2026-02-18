@@ -7,17 +7,18 @@ import type { ContentInputProps } from './ContentInput.types';
 const mockValue = 'Text value';
 
 const renderContentInput = (
-	{ value = mockValue, ...rest }: ContentInputProps = { ariaLabel: 'test' }
+	{ value = mockValue, ...rest }: Partial<ContentInputProps> = { ariaLabel: 'test' }
 ) => {
-	return render(<ContentInput {...rest} value={value} />);
+	return render(<ContentInput {...(rest as ContentInputProps)} value={value} />);
 };
 
 describe('components/<ContentInput />', () => {
 	it('Should set the correct className', () => {
+		const ariaLabel = 'label';
 		const rootClassName = 'root-class';
 		const className = 'custom-class';
 		const variants = ['large', 'rounded'];
-		renderContentInput({ className, rootClassName, variants, ariaLabel: 'test' });
+		renderContentInput({ className, rootClassName, variants, ariaLabel });
 
 		const input = screen.getByDisplayValue(mockValue);
 		const inputContainer = input.parentElement;
@@ -33,7 +34,7 @@ describe('components/<ContentInput />', () => {
 		const id = 'input-id';
 		const placeholder = 'placeholder';
 		const type = 'tel';
-		renderContentInput({ 'aria-label': ariaLabel, id, placeholder, type, ariaLabel: 'test' });
+		renderContentInput({ ariaLabel, id, placeholder, type });
 
 		const input = screen.queryByDisplayValue(mockValue);
 		expect(input).toHaveAttribute('aria-label', ariaLabel);

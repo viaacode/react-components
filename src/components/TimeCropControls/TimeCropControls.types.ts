@@ -1,4 +1,5 @@
 export interface TimeCropControlsProps {
+	id: string;
 	startTime: number;
 	endTime: number;
 	minTime: number;

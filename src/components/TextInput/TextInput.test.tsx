@@ -7,9 +7,9 @@ import type { TextInputProps } from './TextInput.types';
 const mockValue = 'Text value';
 
 const renderTextInput = (
-	{ value = mockValue, onChange, ...rest }: TextInputProps = { ariaLabel: 'test' }
+	{ value = mockValue, onChange, ...rest }: Partial<TextInputProps> = { ariaLabel: 'test' }
 ) => {
-	return render(<TextInput {...rest} value={value} onChange={onChange} />);
+	return render(<TextInput {...(rest as TextInputProps)} value={value} onChange={onChange} />);
 };
 
 describe('components/<TextInput />', () => {
@@ -33,7 +33,7 @@ describe('components/<TextInput />', () => {
 		const id = 'input-id';
 		const placeholder = 'placeholder';
 		const type = 'tel';
-		renderTextInput({ 'aria-label': ariaLabel, id, placeholder, type, ariaLabel: 'test' });
+		renderTextInput({ ariaLabel, id, placeholder, type });
 
 		const input = screen.queryByDisplayValue(mockValue);
 		expect(input).toHaveAttribute('aria-label', ariaLabel);
@@ -43,9 +43,10 @@ describe('components/<TextInput />', () => {
 	});
 
 	it('Should call the onChange handler on every input', async () => {
+		const ariaLabel = 'label';
 		const inputValue = 'My value';
 		const onChange = jest.fn();
-		renderTextInput({ onChange, ariaLabel: 'test' });
+		renderTextInput({ onChange, ariaLabel });
 
 		const input = screen.getByDisplayValue(mockValue);
 		await userEvent.type(input, inputValue);

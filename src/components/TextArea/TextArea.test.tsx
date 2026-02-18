@@ -6,16 +6,19 @@ import type { TextAreaProps } from './TextArea.types';
 
 const mockValue = 'Text value';
 
-const renderTextArea = ({ value = mockValue, ...rest }: TextAreaProps = { ariaLabel: 'test' }) => {
-	return render(<TextArea {...rest} value={value} />);
+const renderTextArea = (
+	{ value = mockValue, ...rest }: Partial<TextAreaProps> = { ariaLabel: 'test' }
+) => {
+	return render(<TextArea {...(rest as TextAreaProps)} value={value} />);
 };
 
 describe('components/<TextArea />', () => {
 	it('Should set the correct className', () => {
+		const ariaLabel = 'label';
 		const rootClassName = 'root-class';
 		const className = 'custom-class';
 		const variants = ['large', 'rounded'];
-		renderTextArea({ className, rootClassName, variants, ariaLabel: 'test' });
+		renderTextArea({ className, rootClassName, variants, ariaLabel });
 
 		const input = screen.getByDisplayValue(mockValue);
 		const inputContainer = input.parentElement;
