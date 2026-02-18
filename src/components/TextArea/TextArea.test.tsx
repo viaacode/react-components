@@ -6,7 +6,7 @@ import type { TextAreaProps } from './TextArea.types';
 
 const mockValue = 'Text value';
 
-const renderTextArea = ({ value = mockValue, ...rest }: TextAreaProps = {}) => {
+const renderTextArea = ({ value = mockValue, ...rest }: TextAreaProps = { ariaLabel: 'test' }) => {
 	return render(<TextArea {...rest} value={value} />);
 };
 
@@ -15,7 +15,7 @@ describe('components/<TextArea />', () => {
 		const rootClassName = 'root-class';
 		const className = 'custom-class';
 		const variants = ['large', 'rounded'];
-		renderTextArea({ className, rootClassName, variants });
+		renderTextArea({ className, rootClassName, variants, ariaLabel: 'test' });
 
 		const input = screen.getByDisplayValue(mockValue);
 		const inputContainer = input.parentElement;
@@ -30,7 +30,7 @@ describe('components/<TextArea />', () => {
 		const id = 'input-id';
 		const rows = 10;
 		const placeholder = 'placeholder';
-		renderTextArea({ id, placeholder, rows });
+		renderTextArea({ id, placeholder, rows, ariaLabel: 'test' });
 
 		const textarea = screen.queryByDisplayValue(mockValue);
 		expect(textarea).toHaveAttribute('id', id);
@@ -41,7 +41,7 @@ describe('components/<TextArea />', () => {
 	it('Should call the onChange handler on every input', async () => {
 		const inputValue = 'My value';
 		const onChange = jest.fn();
-		renderTextArea({ onChange });
+		renderTextArea({ onChange, ariaLabel: 'test' });
 
 		const textarea = screen.getByDisplayValue(mockValue);
 		await userEvent.type(textarea, inputValue);

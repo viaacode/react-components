@@ -1,10 +1,11 @@
-import type { TextareaHTMLAttributes } from 'react';
+import type { ReactNode, TextareaHTMLAttributes } from 'react';
 
 import type { DefaultComponentProps } from '../../types';
 
 export type HTMLTextAreaAttrs = TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export interface TextAreaProps extends DefaultComponentProps, HTMLTextAreaAttrs {
-	children?: React.ReactNode;
+	children?: ReactNode;
 	autoHeight?: boolean;
+	ariaLabel: string;
 }
