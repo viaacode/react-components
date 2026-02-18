@@ -14,7 +14,7 @@ const name = 'name';
 
 export const Basic: Story = {
 	args: {
-		children: <TextInput id={name} />,
+		children: <TextInput id={name} ariaLabel="name" />,
 	},
 };
 

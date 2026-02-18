@@ -6,7 +6,9 @@ import type { ContentInputProps } from './ContentInput.types';
 
 const mockValue = 'Text value';
 
-const renderContentInput = ({ value = mockValue, ...rest }: ContentInputProps = {}) => {
+const renderContentInput = (
+	{ value = mockValue, ...rest }: ContentInputProps = { ariaLabel: 'test' }
+) => {
 	return render(<ContentInput {...rest} value={value} />);
 };
 
@@ -15,7 +17,7 @@ describe('components/<ContentInput />', () => {
 		const rootClassName = 'root-class';
 		const className = 'custom-class';
 		const variants = ['large', 'rounded'];
-		renderContentInput({ className, rootClassName, variants });
+		renderContentInput({ className, rootClassName, variants, ariaLabel: 'test' });
 
 		const input = screen.getByDisplayValue(mockValue);
 		const inputContainer = input.parentElement;
@@ -31,7 +33,7 @@ describe('components/<ContentInput />', () => {
 		const id = 'input-id';
 		const placeholder = 'placeholder';
 		const type = 'tel';
-		renderContentInput({ 'aria-label': ariaLabel, id, placeholder, type });
+		renderContentInput({ 'aria-label': ariaLabel, id, placeholder, type, ariaLabel: 'test' });
 
 		const input = screen.queryByDisplayValue(mockValue);
 		expect(input).toHaveAttribute('aria-label', ariaLabel);
@@ -43,7 +45,7 @@ describe('components/<ContentInput />', () => {
 	it('Should call the onChange handler on every input', async () => {
 		const inputValue = 'My value';
 		const onChange = jest.fn();
-		renderContentInput({ onChange });
+		renderContentInput({ onChange, ariaLabel: 'test' });
 
 		const input = screen.getByDisplayValue(mockValue);
 		await userEvent.type(input, inputValue);

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { type FC, forwardRef, type ReactNode } from 'react';
+import { type FC, forwardRef, type KeyboardEvent, type ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 import { isFunction } from '../../utils/is-function';
@@ -29,7 +29,8 @@ export const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextIn
 			value = TextInputDefaults.value,
 			onChange = TextInputDefaults.onChange,
 			onClick,
-			onKeyUp,
+			onEnter,
+			ariaLabel,
 			...inputProps
 		},
 		ref
@@ -41,7 +42,13 @@ export const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextIn
 			[bem('', 'icon-end')]: !!iconEnd,
 		});
 
-		const hasContainerEvents = !!onClick || !!onKeyUp;
+		const hasContainerEvents = !!onClick || !!onEnter;
+
+		const handleOnKeyUp = (evt: KeyboardEvent) => {
+			if (evt.key === 'Enter') {
+				onEnter?.(evt);
+			}
+		};
 
 		/**
 		 * Render
@@ -75,7 +82,8 @@ export const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextIn
 					role={hasContainerEvents ? 'button' : undefined}
 					tabIndex={hasContainerEvents ? 0 : undefined}
 					onClick={onClick}
-					onKeyUp={onKeyUp}
+					onKeyUp={handleOnKeyUp}
+					aria-label={ariaLabel}
 				/>
 				{iconEnd &&
 					renderIcon(

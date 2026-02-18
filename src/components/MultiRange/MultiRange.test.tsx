@@ -2,7 +2,9 @@ import { render } from '@testing-library/react';
 import MultiRange, { type MultiRangePropsSchema } from './MultiRange';
 
 const renderMultiRange = ({ ...rest }: Partial<MultiRangePropsSchema> = {}) => {
-	return render(<MultiRange {...rest} highlightColor="#f00" trackColor="#000" />);
+	return render(
+		<MultiRange {...rest} highlightColor="#f00" trackColor="#000" numberInputAriaLabel="test" />
+	);
 };
 
 describe('<MultiRange />', () => {

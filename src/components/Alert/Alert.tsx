@@ -13,6 +13,7 @@ const Alert: FC<AlertProps> = ({
 	content,
 	closeIcon,
 	onClose,
+	closeButtonLabel,
 	className,
 	rootClassName: root = 'c-Alert',
 	variants,
@@ -28,7 +29,12 @@ const Alert: FC<AlertProps> = ({
 				<div className={bem('content')}>{content}</div>
 			</div>
 			{closeIcon && (
-				<Button variants="text" className={bem('close-icon')} onClick={() => onClose?.(id)}>
+				<Button
+					variants="text"
+					className={bem('close-icon')}
+					onClick={() => onClose?.(id)}
+					ariaLabel={closeButtonLabel}
+				>
 					{closeIcon}
 				</Button>
 			)}

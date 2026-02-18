@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { type FC, useEffect, useState, useCallback } from 'react';
+import { type FC, useCallback, useEffect, useState } from 'react';
 import {
 	formatDurationHoursMinutesSeconds,
 	formatDurationMinutesSeconds,
@@ -25,6 +25,8 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 	allowStartAndEndToBeTheSame,
 	skipHourFormatting,
 	correctWrongTimeInput,
+	startInputAriaLabel,
+	endInputAriaLabel,
 }) => {
 	const formatDuration = useCallback(
 		(numSeconds: number | null | undefined) => {
@@ -38,17 +40,17 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 
 	const parseAndClampDuration = useCallback(
 		(duration: string) => {
-			return clampDuration(parseDuration(skipHourFormatting ? `00:${duration}` : duration));
+			return clamp(
+				parseDuration(skipHourFormatting ? `00:${duration}` : duration),
+				minTime,
+				maxTime
+			);
 		},
-		[skipHourFormatting]
+		[skipHourFormatting, minTime, maxTime]
 	);
 
 	const [fragmentStartString, setFragmentStartString] = useState<string>(formatDuration(startTime));
 	const [fragmentEndString, setFragmentEndString] = useState<string>(formatDuration(endTime));
-
-	const clampDuration = (value: number): number => {
-		return clamp(value, minTime, maxTime);
-	};
 
 	useEffect(() => {
 		setFragmentStartString(formatDuration(startTime));
@@ -170,6 +172,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 				maxLength={skipHourFormatting ? 'mm:ss'.length : 'HH:mm:ss'.length}
 				onBlur={() => updateStartAndEnd('start')}
 				onChange={(event) => updateStartAndEnd('start', event.target.value)}
+				ariaLabel={startInputAriaLabel}
 			/>
 			<div className="m-multi-range-wrapper">
 				<MultiRange
@@ -181,6 +184,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 					min={minTime}
 					max={Math.max(maxTime, minTime + 1)} // Avoid issues with min === 0 and max === 0 with Range library
 					step={1}
+					numberInputAriaLabel=""
 				/>
 			</div>
 			<TextInput
@@ -189,6 +193,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 				maxLength={skipHourFormatting ? 'mm:ss'.length : 'HH:mm:ss'.length}
 				onBlur={() => updateStartAndEnd('end')}
 				onChange={(event) => updateStartAndEnd('end', event.target.value)}
+				ariaLabel={endInputAriaLabel}
 			/>
 		</div>
 	);

@@ -21,7 +21,7 @@ describe('<Alert />', () => {
 		const title = 'Alert-title';
 		const contentText = 'Alert-content';
 		const content = <p>{contentText}</p>;
-		const { getByText } = renderAlert({ title, content });
+		const { getByText } = renderAlert({ title, content, id: 'alert-1', closeButtonLabel: '' });
 
 		const AlertTitle = getByText(title);
 		const AlertContent = getByText(contentText);
@@ -35,7 +35,7 @@ describe('<Alert />', () => {
 		const mockContent = 'content';
 		const mockClass = 'class';
 		const content = <div className={mockClass}>{mockContent}</div>;
-		const { getByText } = renderAlert({ title, content });
+		const { getByText } = renderAlert({ title, content, id: 'alert-1', closeButtonLabel: '' });
 
 		const component = getByText(mockContent);
 
@@ -48,7 +48,14 @@ describe('<Alert />', () => {
 		const rootClassName = 'c-Alert';
 		const className = 'c-Alert-custom';
 		const content = <div>content</div>;
-		const { container } = renderAlert({ title, content, className, rootClassName });
+		const { container } = renderAlert({
+			title,
+			content,
+			className,
+			id: 'alert-1',
+			closeButtonLabel: '',
+			rootClassName,
+		});
 
 		expect(container.firstChild).toHaveClass(rootClassName);
 		expect(container.firstChild).toHaveClass(className);
@@ -58,7 +65,13 @@ describe('<Alert />', () => {
 		const title = 'Alert-title';
 		const className = 'c-Alert-custom';
 		const content = <div>content</div>;
-		const { container } = renderAlert({ title, content, className });
+		const { container } = renderAlert({
+			title,
+			content,
+			className,
+			id: 'alert-1',
+			closeButtonLabel: '',
+		});
 
 		const iconContainer = container.querySelectorAll('.c-Alert__icon');
 

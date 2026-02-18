@@ -12,6 +12,8 @@ export interface TimeCropControlsProps {
 	allowStartAndEndToBeTheSame?: boolean;
 	correctWrongTimeInput?: boolean;
 	skipHourFormatting?: boolean;
+	startInputAriaLabel: string;
+	endInputAriaLabel: string;
 }
 
 export enum TimeCropControlsErrors {

@@ -10,4 +10,5 @@ export interface AlertProps extends DefaultComponentProps {
 	icon?: ReactNode;
 	closeIcon?: ReactNode;
 	onClose?: (id?: string) => void;
+	closeButtonLabel: string;
 }

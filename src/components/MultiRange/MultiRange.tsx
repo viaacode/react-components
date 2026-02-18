@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
-import { Range, getTrackBackground } from 'react-range';
+import { getTrackBackground, Range } from 'react-range';
 import type { DefaultComponentProps } from '../../types';
 import { bemCls } from '../../utils';
 import { noop } from '../../utils/noop';
@@ -19,6 +19,7 @@ export interface MultiRangePropsSchema extends DefaultComponentProps {
 	trackColor: string;
 	highlightColor: string;
 	onChange?: (values: number[]) => void;
+	numberInputAriaLabel: string;
 }
 
 const MultiRange: FC<MultiRangePropsSchema> = ({
@@ -35,6 +36,7 @@ const MultiRange: FC<MultiRangePropsSchema> = ({
 	trackColor,
 	highlightColor,
 	onChange = noop,
+	numberInputAriaLabel,
 }) => {
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, {
@@ -85,6 +87,7 @@ const MultiRange: FC<MultiRangePropsSchema> = ({
 					onChange(tempValues || values);
 				}}
 				renderTrack={({ props, children }) => (
+					// biome-ignore lint/a11y/noStaticElementInteractions: button would need too much restyling
 					<div
 						onMouseDown={props.onMouseDown}
 						onTouchStart={props.onTouchStart}
@@ -116,6 +119,7 @@ const MultiRange: FC<MultiRangePropsSchema> = ({
 					className={bem('number-input')}
 					value={inputText}
 					onChange={handleInputChanged}
+					ariaLabel={numberInputAriaLabel}
 				/>
 			)}
 		</div>

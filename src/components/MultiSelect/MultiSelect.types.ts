@@ -14,6 +14,7 @@ export interface MultiSelectProps extends DefaultComponentProps {
 	checkboxHeader?: ReactNode;
 	confirmOptions?: MultiSelectConfirmationOption;
 	resetOptions?: MultiSelectConfirmationOption;
+	id: string;
 }
 
 export interface MultiSelectOption {

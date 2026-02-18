@@ -17,7 +17,7 @@ describe('<Dropdown />', () => {
 		const isOpen = true;
 		const childLabel = 'Content item';
 		const children = <div>{childLabel}</div>;
-		renderDropdown({ children, label, isOpen });
+		renderDropdown({ children, label, isOpen, id: 'test-id-3' });
 
 		const dropdownLabel = await waitFor(() => screen.getByText(label));
 		const dropdownContent = await waitFor(() => screen.getByText(childLabel));
@@ -29,7 +29,7 @@ describe('<Dropdown />', () => {
 		const label = 'Show options';
 		const isOpen = false;
 		const children = <div>content item</div>;
-		const { container } = renderDropdown({ children, label, isOpen });
+		const { container } = renderDropdown({ children, label, isOpen, id: 'test-id-3' });
 
 		const dropdownContent = await waitFor(() =>
 			container.querySelector('.c-menu--visible--default')
@@ -41,7 +41,7 @@ describe('<Dropdown />', () => {
 		const label = 'Show options';
 		const isOpen = true;
 		const children = <div>content item</div>;
-		const { container } = renderDropdown({ children, label, isOpen });
+		const { container } = renderDropdown({ children, label, isOpen, id: 'test-id-3' });
 
 		const dropdownContent = await waitFor(() => container.querySelector('.c-menu--default'));
 		const dropdownContentvisible = await waitFor(() =>
@@ -57,7 +57,7 @@ describe('<Dropdown />', () => {
 		const label = 'Show options';
 		const isOpen = false;
 		const children = <div>content item</div>;
-		const { getByText } = renderDropdown({ children, label, isOpen, onOpen });
+		const { getByText } = renderDropdown({ children, label, isOpen, onOpen, id: 'test-id-3' });
 
 		const button = await waitFor(() => getByText(label));
 		fireEvent.click(button);
@@ -71,7 +71,7 @@ describe('<Dropdown />', () => {
 		const label = 'Show options';
 		const isOpen = true;
 		const children = <div>content item</div>;
-		const { getByText } = renderDropdown({ children, label, isOpen, onClose });
+		const { getByText } = renderDropdown({ children, label, isOpen, onClose, id: 'test-id-3' });
 
 		const button = await waitFor(() => getByText(label));
 		fireEvent.click(button);
@@ -91,6 +91,7 @@ describe('<Dropdown />', () => {
 			label,
 			className: customClass,
 			variants: customVariants,
+			id: 'test-id-4',
 		});
 
 		const dropdownRoot = await waitFor(() => container.querySelector('.c-dropdown'));
@@ -104,7 +105,7 @@ describe('<Dropdown />', () => {
 		const label = 'Show options';
 		const isOpen = true;
 		const children = <div>content item</div>;
-		const { container } = renderDropdown({ children, label, isOpen });
+		const { container } = renderDropdown({ children, label, isOpen, id: 'test-id-3' });
 
 		const button = await waitFor(() => container.querySelector('.c-button'));
 
@@ -129,7 +130,7 @@ describe('<Dropdown />', () => {
 				;
 			</>
 		);
-		const { container } = renderDropdown({ children, isOpen });
+		const { container } = renderDropdown({ children, isOpen, id: 'test-id-3' });
 
 		const button = await waitFor(() => screen.getByText(label));
 		const content = await waitFor(() => container.querySelector('.firstItem'));
@@ -149,12 +150,14 @@ describe('<Dropdown />', () => {
 			label,
 			isOpen,
 			triggerWidth: triggerWidthFullWidth,
+			id: 'test-id-1',
 		});
 		const dropdownFitContent = renderDropdown({
 			children,
 			label,
 			isOpen,
 			triggerWidth: triggerWidthFitContent,
+			id: 'test-id-2',
 		});
 
 		const dropdownFullWidthRoot = await waitFor(() =>

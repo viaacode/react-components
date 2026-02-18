@@ -69,7 +69,7 @@ const PaginationBar: FC<PaginationBarProps> = ({
 				disabled={disabled}
 				label={showButtonLabels ? previousLabel : undefined}
 				iconStart={previousIcon}
-				aria-label={previousLabel}
+				ariaLabel={previousLabel}
 				onClick={onClick}
 			/>
 		);
@@ -81,7 +81,7 @@ const PaginationBar: FC<PaginationBarProps> = ({
 				disabled={disabled}
 				label={showButtonLabels ? nextLabel : undefined}
 				iconEnd={nextIcon}
-				aria-label={nextLabel}
+				ariaLabel={nextLabel}
 				onClick={onClick}
 			/>
 		);
@@ -96,7 +96,7 @@ const PaginationBar: FC<PaginationBarProps> = ({
 				disabled={disabled}
 				label={showButtonLabels ? firstLabel : undefined}
 				iconStart={firstIcon}
-				aria-label={firstLabel}
+				ariaLabel={firstLabel}
 				onClick={onClick}
 			/>
 		);
@@ -111,7 +111,7 @@ const PaginationBar: FC<PaginationBarProps> = ({
 				disabled={disabled}
 				label={showButtonLabels ? lastLabel : undefined}
 				iconEnd={lastIcon}
-				aria-label={lastLabel}
+				ariaLabel={lastLabel}
 				onClick={onClick}
 			/>
 		);

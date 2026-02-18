@@ -16,4 +16,5 @@ export interface ContentInputProps extends TextInputProps {
 	onOpen?: () => void;
 	iconEnd?: ReactNode | ((onClickIcon?: StopPropagationFunction) => ReactNode) | null;
 	iconStart?: ReactNode | ((onClickIcon?: StopPropagationFunction) => ReactNode) | null;
+	ariaLabel: string;
 }

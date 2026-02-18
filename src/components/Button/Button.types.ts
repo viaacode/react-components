@@ -17,4 +17,5 @@ export interface ButtonProps
 	buttonRef?: RefObject<HTMLButtonElement>;
 	tooltipText?: string;
 	tooltipPosition?: 'top' | 'right' | 'bottom' | 'left';
+	ariaLabel?: string;
 }

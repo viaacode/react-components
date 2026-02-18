@@ -1,9 +1,17 @@
 import clsx from 'clsx';
-import { type FC, useMemo, useState } from 'react';
+import {
+	cloneElement,
+	type FC,
+	isValidElement,
+	type MouseEvent,
+	type ReactElement,
+	type ReactNode,
+	useState,
+} from 'react';
 import { usePopper } from 'react-popper';
 
 import { useClickOutside, useKeyPress, useSlot } from '../../hooks';
-import { bemCls, getVariantClasses, hash, keysEnter, keysSpacebar, onKey } from '../../utils';
+import { bemCls, getVariantClasses, keysEnter, keysSpacebar, onKey } from '../../utils';
 import { Button } from '../Button';
 import { Menu } from '../Menu/index';
 
@@ -28,6 +36,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		iconClosed,
 		isOpen,
 		label = '',
+		id,
 		flyoutClassName,
 		menuClassName,
 		menuRootClassName,
@@ -46,22 +55,6 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		popper,
 		isDisabled,
 	} = props;
-
-	const id = useMemo(
-		() =>
-			`dropdown--${hash(
-				JSON.stringify({
-					className,
-					label,
-					placement,
-					flyoutClassName,
-					menuClassName,
-					menuRootClassName,
-					root,
-				})
-			)}`,
-		[className, flyoutClassName, label, menuClassName, menuRootClassName, placement, root]
-	);
 	const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
 	const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
@@ -91,31 +84,43 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 	const toggleClosed = () => toggle(false);
 
 	useKeyPress('Escape', toggleClosed);
-	useClickOutside(popperElement as Element, toggleClosed, [referenceElement as Element]);
+	useClickOutside(
+		popperElement as Element,
+		toggleClosed,
+		referenceElement ? [referenceElement as Element] : []
+	);
 
+	const triggerButton: ReactNode = dropdownButtonSlot || (
+		<Button
+			disabled={isDisabled}
+			iconStart={icon}
+			label={label}
+			iconEnd={isOpen ? iconOpen : iconClosed}
+		/>
+	);
+
+	let triggerWithProps: ReactNode;
+	if (isValidElement(triggerButton)) {
+		triggerWithProps = cloneElement(triggerButton as ReactElement, {
+			className: clsx(rootCls, (triggerButton as ReactElement).props.className),
+			onClick: (e: MouseEvent) => {
+				(triggerButton as ReactElement).props.onClick?.(e);
+				toggle();
+			},
+			onKeyUp: (e: KeyboardEvent) => {
+				(triggerButton as ReactElement).props.onKeyUp?.(e);
+				onKey(e, [...keysEnter, ...keysSpacebar], toggle);
+			},
+			ref: setReferenceElement,
+			'aria-controls': id,
+			'aria-expanded': isOpen,
+		});
+	} else {
+		triggerWithProps = triggerButton;
+	}
 	return (
 		<>
-			{
-				// Wrapper element should not be tabbable
-				// But it should handle onKeyUp events bubbling up
-				// biome-ignore lint/a11y/noStaticElementInteractions: TODO fix
-				<div
-					className={rootCls}
-					onClick={() => toggle()}
-					onKeyUp={(e) => onKey(e, [...keysEnter, ...keysSpacebar], toggle)}
-					ref={setReferenceElement}
-					aria-controls={id}
-				>
-					{dropdownButtonSlot || (
-						<Button
-							disabled={isDisabled}
-							iconStart={icon}
-							label={label}
-							iconEnd={isOpen ? iconOpen : iconClosed}
-						/>
-					)}
-				</div>
-			}
+			{triggerWithProps}
 			<div
 				ref={setPopperElement}
 				style={{

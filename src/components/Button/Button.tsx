@@ -21,6 +21,7 @@ const Button: FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>(
 			title,
 			tooltipText,
 			tooltipPosition,
+			ariaLabel,
 			type = 'button',
 			variants,
 			onClick,
@@ -71,6 +72,9 @@ const Button: FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>(
 				onClick={onButtonClick}
 				disabled={disabled}
 				ref={ref}
+				aria-label={
+					ariaLabel || title || tooltipText || (typeof label === 'string' ? label : undefined)
+				}
 			>
 				<div className={bem('content')}>
 					{icon ? (
