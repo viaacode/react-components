@@ -21,7 +21,7 @@ describe('<Alert />', () => {
 		const title = 'Alert-title';
 		const contentText = 'Alert-content';
 		const content = <p>{contentText}</p>;
-		const { getByText } = renderAlert({ title, content, id: 'alert-1', closeButtonLabel: '' });
+		const { getByText } = renderAlert({ title, content, id: 'alert-1' });
 
 		const AlertTitle = getByText(title);
 		const AlertContent = getByText(contentText);
@@ -35,7 +35,7 @@ describe('<Alert />', () => {
 		const mockContent = 'content';
 		const mockClass = 'class';
 		const content = <div className={mockClass}>{mockContent}</div>;
-		const { getByText } = renderAlert({ title, content, id: 'alert-1', closeButtonLabel: '' });
+		const { getByText } = renderAlert({ title, content, id: 'alert-1' });
 
 		const component = getByText(mockContent);
 
@@ -53,7 +53,6 @@ describe('<Alert />', () => {
 			content,
 			className,
 			id: 'alert-1',
-			closeButtonLabel: '',
 			rootClassName,
 		});
 
@@ -70,7 +69,6 @@ describe('<Alert />', () => {
 			content,
 			className,
 			id: 'alert-1',
-			closeButtonLabel: '',
 		});
 
 		const iconContainer = container.querySelectorAll('.c-Alert__icon');
