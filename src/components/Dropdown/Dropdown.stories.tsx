@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { cloneElement, type ReactElement, useEffect, useState } from 'react';
+import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 
 import { MenuContent } from '../Menu/MenuContent';
@@ -37,31 +37,19 @@ type Story = StoryObj<typeof Dropdown>;
 const DefaultTemplate = (args: any) => (
 	<DropdownStoryComponent>
 		<Dropdown {...args}>
-			<MenuContent menuItems={menuItems} />
+			<MenuContent menuItems={menuItems} style={{ border: '1px solid red' }} />
 		</Dropdown>
 	</DropdownStoryComponent>
 );
 
 const TemplateWithIcons = (args: any) => {
-	const [multiChildren, setMulti] = useState(args.children);
-	useEffect(() => {
-		const t = setTimeout(() => {
-			setMulti(
-				<>
-					{args.children}
-					{args.children}
-				</>
-			);
-			clearTimeout(t);
-		}, 1000);
-		// eslint-disable-next-line
-		return () => {};
-	}, [args.children]);
 	return (
-		<div style={{ paddingTop: '200px' }}>
+		<div style={{ paddingTop: '200px', paddingLeft: '200px' }}>
 			<DropdownStoryComponent>
 				<Dropdown {...args}>
-					{multiChildren || <MenuContent menuItems={menuItemsWithIcons} />}
+					{args.children || (
+						<MenuContent menuItems={menuItemsWithIcons} style={{ border: '1px solid red' }} />
+					)}
 				</Dropdown>
 			</DropdownStoryComponent>
 		</div>

@@ -1,30 +1,18 @@
+import { autoUpdate, offset, useDismiss, useFloating, useInteractions } from '@floating-ui/react';
 import clsx from 'clsx';
-import {
-	cloneElement,
-	type FC,
-	isValidElement,
-	type MouseEvent,
-	type ReactElement,
-	type ReactNode,
-	useState,
-} from 'react';
-import { usePopper } from 'react-popper';
-
-import { useClickOutside, useKeyPress, useSlot } from '../../hooks';
-import { bemCls, getVariantClasses, keysEnter, keysSpacebar, onKey } from '../../utils';
-import { Button } from '../Button';
-import { Menu } from '../Menu/index';
-
-import './Dropdown.scss';
+import type { FC, ReactNode } from 'react';
 import { DropdownButton, DropdownContent } from './Dropdown.slots';
 import type { DropdownProps } from './Dropdown.types';
 
+import './Dropdown.scss';
+import { Button, bemCls, getVariantClasses, Menu, useSlot } from '@meemoo/react-components';
+
 /**
- * This component provides a button that can show a flyout with some children inside of it.
+ * This component provides a button that can show a flyout with some children inside it.
  * The PopperJS library is used to provide the positioning logic for the flyout element.
  *
  * The nomenclature within this library is as follows:
- * - The button with down arrow is called the "reference"
+ * - The button with down-arrow is called the "reference"
  * - The flyout element that contains the children is called the "popper"
  */
 
@@ -40,9 +28,6 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		flyoutClassName,
 		menuClassName,
 		menuRootClassName,
-		// FIXED re-enable this without causing an infinite render loop
-		// https://github.com/popperjs/popper-core/issues/794#issuecomment-736727000
-		// SOLUTION https://github.com/floating-ui/floating-ui/issues/794#issuecomment-822432452
 		menuWidth = 'fit-trigger',
 		onClose = () => null,
 		onOpen = () => null,
@@ -52,43 +37,29 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		triggerWidth = 'fit-content',
 		rootClassName: root = 'c-dropdown',
 		variants,
-		popper,
 		isDisabled,
 	} = props;
-	const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
-	const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
+	const { refs, floatingStyles, context } = useFloating({
+		placement,
+		open: isOpen,
+		onOpenChange: (open) => {
+			console.log('on open changed');
+			open ? onOpen() : onClose();
+		},
+		whileElementsMounted: autoUpdate,
+		middleware: [offset(10)],
+	});
+
+	const dismiss = useDismiss(context);
+	const { getFloatingProps, getReferenceProps } = useInteractions([dismiss]);
 
 	const dropdownButtonSlot = useSlot(DropdownButton, children);
 	const dropdownContentSlot = useSlot(DropdownContent, children);
-
-	const { styles, attributes, update } = usePopper(referenceElement, popperElement, {
-		...popper,
-		placement,
-	});
 
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, triggerClassName, root, getVariantClasses(root, variants), {
 		[bem('trigger')]: triggerWidth === 'fit-content',
 	});
-
-	const toggle = (openState = !isOpen) => {
-		if (isDisabled) {
-			return;
-		}
-
-		if (openState !== isOpen) {
-			openState ? update?.().then(onOpen) : onClose();
-		}
-	};
-
-	const toggleClosed = () => toggle(false);
-
-	useKeyPress('Escape', toggleClosed);
-	useClickOutside(
-		popperElement as Element,
-		toggleClosed,
-		referenceElement ? [referenceElement as Element] : []
-	);
 
 	const triggerButton: ReactNode = dropdownButtonSlot || (
 		<Button
@@ -99,40 +70,35 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		/>
 	);
 
-	let triggerWithProps: ReactNode;
-	if (isValidElement(triggerButton)) {
-		triggerWithProps = cloneElement(triggerButton as ReactElement, {
-			className: clsx(rootCls, (triggerButton as ReactElement).props.className),
-			onClick: (e: MouseEvent) => {
-				(triggerButton as ReactElement).props.onClick?.(e);
-				toggle();
-			},
-			onKeyUp: (e: KeyboardEvent) => {
-				(triggerButton as ReactElement).props.onKeyUp?.(e);
-				onKey(e, [...keysEnter, ...keysSpacebar], toggle);
-			},
-			ref: setReferenceElement,
-			'aria-controls': id,
-			'aria-expanded': isOpen,
-		});
-	} else {
-		triggerWithProps = triggerButton;
-	}
+	const referenceProps = { ...getReferenceProps() };
+	console.log('reference props: ', referenceProps);
+
 	return (
 		<>
-			{triggerWithProps}
+			<span
+				ref={refs.setReference}
+				style={{ display: 'inline-block' }}
+				{...referenceProps}
+				className={rootCls}
+			>
+				{triggerButton}
+			</span>
 			<div
-				ref={setPopperElement}
+				ref={refs.setFloating}
 				style={{
-					...styles.popper,
-					minWidth: menuWidth === 'fit-trigger' ? referenceElement?.scrollWidth : 0,
+					...floatingStyles,
+					minWidth:
+						menuWidth === 'fit-trigger'
+							? refs.reference?.current?.getBoundingClientRect().width
+							: 0,
 				}}
-				{...attributes.popper}
 				className={clsx(
+					'c-dropdown',
 					flyoutClassName,
 					isOpen ? 'c-dropdown__content-open' : 'c-dropdown__content-closed'
 				)}
 				id={id}
+				{...getFloatingProps()}
 			>
 				<Menu
 					className={menuClassName}

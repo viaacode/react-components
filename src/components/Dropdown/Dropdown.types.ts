@@ -1,4 +1,4 @@
-import type { Options, Placement } from '@popperjs/core';
+import type { Placement } from '@floating-ui/react';
 import type { ReactNode } from 'react';
 
 import type { DefaultComponentProps } from '../../types';
@@ -21,6 +21,5 @@ export interface DropdownProps extends DefaultComponentProps {
 	searchMenu?: boolean;
 	triggerClassName?: string;
 	triggerWidth?: 'fit-content' | 'full-width';
-	popper?: Partial<Options>;
 	isDisabled?: boolean;
 }

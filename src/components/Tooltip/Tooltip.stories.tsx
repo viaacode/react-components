@@ -12,7 +12,7 @@ type Story = StoryObj<typeof Tooltip>;
 
 export const TooltipTop: Story = {
 	render: () => (
-		<div className="u-text-center" style={{ paddingTop: '80px' }}>
+		<div className="u-text-center" style={{ paddingTop: '200px', paddingLeft: '200px' }}>
 			<Tooltip position="top">
 				<TooltipTrigger>
 					<span>Hover me!</span>
@@ -27,7 +27,7 @@ export const TooltipTop: Story = {
 
 export const TooltipRight: Story = {
 	render: () => (
-		<div className="u-text-center">
+		<div className="u-text-center" style={{ paddingTop: '200px', paddingLeft: '200px' }}>
 			<Tooltip position="right">
 				<TooltipTrigger>
 					<span>Hover me!</span>
@@ -42,7 +42,7 @@ export const TooltipRight: Story = {
 
 export const TooltipBottom: Story = {
 	render: () => (
-		<div className="u-text-center">
+		<div className="u-text-center" style={{ paddingTop: '200px', paddingLeft: '200px' }}>
 			<Tooltip position="bottom">
 				<TooltipTrigger>
 					<span>Hover me!</span>
@@ -57,7 +57,7 @@ export const TooltipBottom: Story = {
 
 export const TooltipLeft: Story = {
 	render: () => (
-		<div className="u-text-center" style={{ paddingLeft: '180px' }}>
+		<div className="u-text-center" style={{ paddingTop: '200px', paddingLeft: '200px' }}>
 			<Tooltip position="left">
 				<TooltipTrigger>
 					<span>Hover me!</span>
@@ -73,7 +73,7 @@ export const TooltipLeft: Story = {
 export const TooltipOffset: Story = {
 	render: () => (
 		<>
-			<div className="u-text-center">
+			<div className="u-text-center" style={{ paddingTop: '200px', paddingLeft: '200px' }}>
 				<Tooltip position="right">
 					<TooltipTrigger>
 						<span>Hover me!</span>
@@ -83,7 +83,7 @@ export const TooltipOffset: Story = {
 					</TooltipContent>
 				</Tooltip>
 			</div>
-			<div className="u-text-center">
+			<div className="u-text-center" style={{ paddingTop: '20px', paddingLeft: '200px' }}>
 				<Tooltip position="right" offset={60}>
 					<TooltipTrigger>
 						<span>Hover me!</span>
@@ -100,7 +100,7 @@ export const TooltipOffset: Story = {
 export const TooltipMultiple: Story = {
 	render: () => (
 		<>
-			<div className="u-text-center">
+			<div className="u-text-center" style={{ paddingTop: '200px', paddingLeft: '200px' }}>
 				<Tooltip position="right">
 					<TooltipTrigger>
 						<span>Foo</span>
@@ -110,7 +110,7 @@ export const TooltipMultiple: Story = {
 					</TooltipContent>
 				</Tooltip>
 			</div>
-			<div className="u-text-center">
+			<div className="u-text-center" style={{ paddingTop: '20px', paddingLeft: '200px' }}>
 				<Tooltip position="right">
 					<TooltipTrigger>
 						<span>Marco</span>
@@ -132,7 +132,11 @@ export const TooltipDynamicPosition: Story = {
 				onClick={() => {
 					const trigger = document.getElementsByClassName('c-tooltip-component-trigger')?.[0];
 					if (trigger) {
-						(trigger as HTMLElement).style.marginLeft = '400px';
+						if ((trigger as HTMLElement)?.style?.marginLeft === '400px') {
+							(trigger as HTMLElement).style.marginLeft = '0';
+						} else {
+							(trigger as HTMLElement).style.marginLeft = '400px';
+						}
 					}
 				}}
 			>

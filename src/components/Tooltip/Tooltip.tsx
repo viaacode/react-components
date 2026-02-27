@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import { type FunctionComponent, type ReactNode, useCallback, useEffect, useState } from 'react';
-import { usePopper } from 'react-popper';
 
 import { useSlot } from '../../hooks/use-slot';
 import { generateRandomId } from '../../utils/generate-random-id/generate-random-id';
 
 import './Tooltip.scss';
+import { autoUpdate, offset as floatingOffset, useFloating } from '@floating-ui/react';
 import { TooltipContent, TooltipTrigger } from './Tooltip.slots';
 
 export interface TooltipPropsSchema {
@@ -21,29 +21,16 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	offset,
 	contentClassName,
 }) => {
-	const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
-	const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
-
 	const [show, setShow] = useState(false);
 	const [id] = useState(generateRandomId());
 
 	const tooltipSlot = useSlot(TooltipContent, children);
 	const triggerSlot = useSlot(TooltipTrigger, children);
 
-	const {
-		styles,
-		attributes,
-		update: updatePopperPosition,
-	} = usePopper(referenceElement, popperElement, {
+	const { refs, floatingStyles } = useFloating({
 		placement: position,
-		modifiers: [
-			{
-				name: 'offset',
-				options: {
-					offset: [0, offset || 10],
-				},
-			},
-		],
+		middleware: [floatingOffset({ mainAxis: offset })],
+		whileElementsMounted: autoUpdate,
 	});
 
 	const handleMouseMove = useCallback(
@@ -62,12 +49,6 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	);
 
 	useEffect(() => {
-		if (show) {
-			updatePopperPosition?.();
-		}
-	}, [show, updatePopperPosition]);
-
-	useEffect(() => {
 		document.body.addEventListener('mousemove', handleMouseMove);
 		document.body.addEventListener('touch', handleMouseMove);
 
@@ -79,11 +60,7 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 
 	return tooltipSlot && triggerSlot ? (
 		<>
-			<div
-				className="c-tooltip-component-trigger"
-				data-id={id}
-				ref={(el) => setReferenceElement(el)}
-			>
+			<div className="c-tooltip-component-trigger" data-id={id} ref={refs.setReference}>
 				{triggerSlot}
 			</div>
 
@@ -96,9 +73,8 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 						'c-tooltip-component--show': show,
 					}
 				)}
-				ref={(el) => setPopperElement(el)}
-				style={styles.popper}
-				{...attributes.popper}
+				ref={refs.setFloating}
+				style={floatingStyles}
 			>
 				{tooltipSlot}
 				<div className="c-tooltip-component__arrow" data-popper-arrow />

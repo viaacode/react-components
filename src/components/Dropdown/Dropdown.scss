@@ -2,19 +2,8 @@
    Component: Dropdown
    ========================================================================== */
 
-.c-dropdown__trigger {
-	display: inline-block;
-}
-
-.c-dropdown__content-closed {
-	visibility: hidden;
-	opacity: 0;
-	pointer-events: none;
-}
-
 .c-dropdown__content-open {
-	visibility: visible;
-	opacity: 1;
-	pointer-events: auto;
-	z-index: 2;
+	// No padding or margin on the dropdown content, since this should be managed by floating-ui library
+	padding: 0 !important;
+	margin: 0 !important;
 }

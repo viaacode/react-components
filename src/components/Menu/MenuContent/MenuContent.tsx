@@ -9,6 +9,7 @@ import './MenuContent.scss';
 
 const MenuContent: FC<MenuContentProps> = ({
 	className,
+	style,
 	menuItems,
 	renderItem,
 	noResultsLabel,
@@ -21,7 +22,8 @@ const MenuContent: FC<MenuContentProps> = ({
 		className,
 		bem('item'),
 		getVariantClasses(root, variants),
-		'c-menu-content-item'
+		'c-dropdown__menu',
+		'c-menu'
 	);
 
 	const renderMenuItem = (menuItemInfo: MenuItemInfo, index: number) => {
@@ -31,7 +33,8 @@ const MenuContent: FC<MenuContentProps> = ({
 		return (
 			<button
 				type="button"
-				className={rootCls}
+				className="c-menu__item "
+				style={style}
 				onClick={() => onClick(menuItemInfo.id)}
 				tabIndex={0}
 				key={`menu-item-${menuItemInfo.key ?? menuItemInfo.id ?? index}`}
@@ -54,7 +57,7 @@ const MenuContent: FC<MenuContentProps> = ({
 			if (Array.isArray(menuItemArrays[0])) {
 				// Array of arrays with dividers in between
 				return (
-					<Fragment>
+					<div className={rootCls}>
 						{(menuItemArrays as MenuItemInfo[][]).map((menuItems, index) => {
 							if (index < menuItemArrays.length - 1) {
 								return (
@@ -78,20 +81,25 @@ const MenuContent: FC<MenuContentProps> = ({
 								</Fragment>
 							);
 						})}
-					</Fragment>
+					</div>
 				);
 			}
 			// Regular list of menuItems
 			return (
-				<Fragment key={(menuItemArrays as MenuItemInfo[]).map((mi) => mi.id).join('-')}>
+				<div
+					className={rootCls}
+					key={(menuItemArrays as MenuItemInfo[]).map((mi) => mi.id).join('-')}
+				>
 					{renderMenuItems(menuItems as MenuItemInfo[])}
-				</Fragment>
+				</div>
 			);
 		}
 		if (noResultsLabel) {
 			return (
-				<div className={bem('item')} key="menu-item-no-results">
-					<div className={bem('label')}>{noResultsLabel}</div>
+				<div className={rootCls}>
+					<div className={bem('item')} key="menu-item-no-results">
+						<div className={bem('label')}>{noResultsLabel}</div>
+					</div>
 				</div>
 			);
 		}
