@@ -5,7 +5,10 @@ import { DropdownButton, DropdownContent } from './Dropdown.slots';
 import type { DropdownProps } from './Dropdown.types';
 
 import './Dropdown.scss';
-import { Button, bemCls, getVariantClasses, Menu, useSlot } from '@meemoo/react-components';
+import { useSlot } from '../../hooks';
+import { bemCls, getVariantClasses } from '../../utils';
+import { Button } from '../Button';
+import { Menu } from '../Menu';
 
 /**
  * This component provides a button that can show a flyout with some children inside it.
