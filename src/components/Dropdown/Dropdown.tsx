@@ -1,4 +1,11 @@
-import { autoUpdate, offset, useDismiss, useFloating, useInteractions } from '@floating-ui/react';
+import {
+	autoUpdate,
+	offset,
+	useClick,
+	useDismiss,
+	useFloating,
+	useInteractions,
+} from '@floating-ui/react';
 import clsx from 'clsx';
 import type { FC, ReactNode } from 'react';
 import { DropdownButton, DropdownContent } from './Dropdown.slots';
@@ -53,8 +60,9 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		middleware: [offset(10)],
 	});
 
+	const click = useClick(context);
 	const dismiss = useDismiss(context);
-	const { getFloatingProps, getReferenceProps } = useInteractions([dismiss]);
+	const { getFloatingProps, getReferenceProps } = useInteractions([click, dismiss]);
 
 	const dropdownButtonSlot = useSlot(DropdownButton, children);
 	const dropdownContentSlot = useSlot(DropdownContent, children);
@@ -73,15 +81,12 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		/>
 	);
 
-	const referenceProps = { ...getReferenceProps() };
-	console.log('reference props: ', referenceProps);
-
 	return (
-		<>
+		<div className={clsx(menuClassName, menuRootClassName)}>
 			<span
 				ref={refs.setReference}
 				style={{ display: 'inline-block' }}
-				{...referenceProps}
+				{...getReferenceProps()}
 				className={rootCls}
 			>
 				{triggerButton}
@@ -89,6 +94,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 			<div
 				ref={refs.setFloating}
 				style={{
+					display: 'inline-block',
 					...floatingStyles,
 					minWidth:
 						menuWidth === 'fit-trigger'
@@ -103,16 +109,11 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 				id={id}
 				{...getFloatingProps()}
 			>
-				<Menu
-					className={menuClassName}
-					rootClassName={menuRootClassName}
-					isOpen={isOpen}
-					search={searchMenu}
-				>
+				<Menu isOpen={isOpen} search={searchMenu}>
 					{dropdownContentSlot || children}
 				</Menu>
 			</div>
-		</>
+		</div>
 	);
 };
 

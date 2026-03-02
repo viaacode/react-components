@@ -5,7 +5,14 @@ import { useSlot } from '../../hooks/use-slot';
 import { generateRandomId } from '../../utils/generate-random-id/generate-random-id';
 
 import './Tooltip.scss';
-import { autoUpdate, offset as floatingOffset, useFloating } from '@floating-ui/react';
+import {
+	autoUpdate,
+	offset as floatingOffset,
+	useFloating,
+	useFocus,
+	useHover,
+	useInteractions,
+} from '@floating-ui/react';
 import { TooltipContent, TooltipTrigger } from './Tooltip.slots';
 
 export interface TooltipPropsSchema {
@@ -27,11 +34,15 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	const tooltipSlot = useSlot(TooltipContent, children);
 	const triggerSlot = useSlot(TooltipTrigger, children);
 
-	const { refs, floatingStyles } = useFloating({
+	const { refs, floatingStyles, context } = useFloating({
 		placement: position,
 		middleware: [floatingOffset({ mainAxis: offset })],
 		whileElementsMounted: autoUpdate,
 	});
+
+	const hover = useHover(context);
+	const focus = useFocus(context);
+	const { getFloatingProps, getReferenceProps } = useInteractions([hover, focus]);
 
 	const handleMouseMove = useCallback(
 		async (evt: Event) => {
@@ -60,7 +71,12 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 
 	return tooltipSlot && triggerSlot ? (
 		<>
-			<div className="c-tooltip-component-trigger" data-id={id} ref={refs.setReference}>
+			<div
+				className="c-tooltip-component-trigger"
+				data-id={id}
+				ref={refs.setReference}
+				{...getReferenceProps()}
+			>
 				{triggerSlot}
 			</div>
 
@@ -75,6 +91,7 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 				)}
 				ref={refs.setFloating}
 				style={floatingStyles}
+				{...getFloatingProps()}
 			>
 				{tooltipSlot}
 				<div className="c-tooltip-component__arrow" data-popper-arrow />

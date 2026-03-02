@@ -48,6 +48,7 @@
   },
   "peerDependencies": {
     "@emotion/react": "11.11.1",
+    "@floating-ui/react": "0.27.18",
     "@flowplayer/player": "3.32.1",
     "@popperjs/core": "2.11.6",
     "@viaa/avo2-types": "5.0.10",
@@ -133,8 +134,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "dependencies": {
-    "@floating-ui/react": "0.27.18"
   }
 }

@@ -5,7 +5,7 @@ import { action } from 'storybook/actions';
 import { MenuContent } from '../Menu/MenuContent';
 import { menuItems, menuItemsWithIcons } from './__mocks__/dropdown';
 import Dropdown from './Dropdown';
-import { DropdownContent } from './Dropdown.slots';
+import { DropdownButton, DropdownContent } from './Dropdown.slots';
 
 const DropdownStoryComponent = ({ children }: { children: ReactElement }) => {
 	const [isOpen, setOpen] = useState(false);
@@ -34,10 +34,23 @@ const meta: Meta<typeof Dropdown> = {
 export default meta;
 type Story = StoryObj<typeof Dropdown>;
 
+const defaultStyles = {
+	border: '1px solid red',
+	maxHeight: '300px',
+	display: 'flex',
+	flexDirection: 'column' as const,
+	width: '200px',
+};
+
 const DefaultTemplate = (args: any) => (
 	<DropdownStoryComponent>
 		<Dropdown {...args}>
-			<MenuContent menuItems={menuItems} style={{ border: '1px solid red' }} />
+			<DropdownButton>
+				<button type="button">Show Options</button>
+			</DropdownButton>
+			<DropdownContent>
+				<MenuContent menuItems={menuItems} style={defaultStyles} />
+			</DropdownContent>
 		</Dropdown>
 	</DropdownStoryComponent>
 );
@@ -47,9 +60,12 @@ const TemplateWithIcons = (args: any) => {
 		<div style={{ paddingTop: '200px', paddingLeft: '200px' }}>
 			<DropdownStoryComponent>
 				<Dropdown {...args}>
-					{args.children || (
-						<MenuContent menuItems={menuItemsWithIcons} style={{ border: '1px solid red' }} />
-					)}
+					<DropdownButton>
+						<button type="button">Show Options</button>
+					</DropdownButton>
+					<DropdownContent>
+						{args.children || <MenuContent menuItems={menuItemsWithIcons} style={defaultStyles} />}
+					</DropdownContent>
 				</Dropdown>
 			</DropdownStoryComponent>
 		</div>
