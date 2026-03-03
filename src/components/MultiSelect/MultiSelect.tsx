@@ -96,6 +96,7 @@ const MultiSelect: FC<MultiSelectProps> = ({
 				<div className="c-multi-select__content-wrapper">
 					{checkboxHeader && <div className="c-multi-select__header">{checkboxHeader}</div>}
 					<CheckboxList
+						id={`multiselect--${id}__checkbox`}
 						checkIcon={iconCheck}
 						className="c-multi-select__checkbox-list"
 						itemClassName="c-multi-select__checkbox-list-item"

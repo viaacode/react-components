@@ -1,4 +1,4 @@
 export * from './use-callback-ref';
-export * from './use-click-outside/index';
-export * from './use-key-press/index';
-export * from './use-slot/index';
+export * from './use-click-outside';
+export * from './use-key-press';
+export * from './use-slot';

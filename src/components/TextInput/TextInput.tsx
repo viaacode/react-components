@@ -87,7 +87,6 @@ export const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextIn
 					type={type}
 					value={value}
 					onChange={onChange}
-					role={hasContainerEvents ? 'button' : undefined}
 					tabIndex={hasContainerEvents ? 0 : undefined}
 					onClick={onClick}
 					onKeyUp={handleOnKeyUp}

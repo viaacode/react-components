@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react';
 
-import type { DefaultComponentProps } from '../../types/index';
+import type { DefaultComponentProps } from '../../types';
 
 export interface CheckboxListProps<T> extends DefaultComponentProps {
-	children?: React.ReactNode;
+	id: string;
+	children?: ReactNode;
 	items: Array<T & { label: string; value: unknown; checked?: boolean }>;
 	onItemClick: (checked: boolean, value: unknown) => void;
 	itemClassName?: string;

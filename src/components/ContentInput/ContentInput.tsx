@@ -9,14 +9,8 @@ import {
 	useState,
 } from 'react';
 
-import {
-	bemCls,
-	getVariantClasses,
-	keysEnter,
-	keysEscape,
-	keysSpacebar,
-	onKey,
-} from '../../utils/index';
+import { bemCls, getVariantClasses, keysEnter, keysEscape, keysSpacebar, onKey } from '../../utils';
+
 import { isFunction } from '../../utils/is-function';
 import { TextInputDefaults } from '../TextInput/TextInput';
 

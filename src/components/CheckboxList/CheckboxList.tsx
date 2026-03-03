@@ -1,13 +1,14 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 
-import { keysEnter, keysSpacebar, onKey } from '../../utils/index';
+import { keysEnter, keysSpacebar, onKey } from '../../utils';
 import Checkbox from '../Checkbox/Checkbox';
 
 import './CheckboxList.scss';
 import type { CheckboxListProps } from './CheckboxList.types';
 
 const CheckboxList: FC<CheckboxListProps<unknown>> = ({
+	id,
 	items,
 	className,
 	itemClassName,
@@ -39,8 +40,13 @@ const CheckboxList: FC<CheckboxListProps<unknown>> = ({
 						}
 						onClick={() => onItemClick(isChecked, value)}
 					>
-						<Checkbox checked={isChecked} tabIndex={-1} checkIcon={checkIcon} />
-						<span>{item.label}</span>
+						<Checkbox
+							checked={isChecked}
+							tabIndex={-1}
+							checkIcon={checkIcon}
+							label={item.label}
+							id={`checkbox--${id}__item--${value}`}
+						/>
 					</li>
 				);
 			})}
