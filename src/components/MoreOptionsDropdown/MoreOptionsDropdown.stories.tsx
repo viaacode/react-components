@@ -36,7 +36,7 @@ export const Default: Story = {
 		<MoreOptionsDropdownStory>
 			<MoreOptionsDropdown
 				id="test-id"
-				onOptionClicked={() => console.log('clicked menu item')}
+				onOptionClicked={() => console.info('clicked menu item')}
 				menuItems={menuItems}
 				isOpen={false}
 				onOpen={() => {}}

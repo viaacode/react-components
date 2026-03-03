@@ -53,7 +53,6 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		placement,
 		open: isOpen,
 		onOpenChange: (open) => {
-			console.log('on open changed');
 			open ? onOpen() : onClose();
 		},
 		whileElementsMounted: autoUpdate,
