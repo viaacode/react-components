@@ -22,4 +22,5 @@ export interface DropdownProps extends DefaultComponentProps {
 	triggerClassName?: string;
 	triggerWidth?: 'fit-content' | 'full-width';
 	isDisabled?: boolean;
+	offset?: number;
 }

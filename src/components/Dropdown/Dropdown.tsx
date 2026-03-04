@@ -1,6 +1,6 @@
 import {
 	autoUpdate,
-	offset,
+	offset as offsetHelper,
 	useClick,
 	useDismiss,
 	useFloating,
@@ -48,6 +48,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		rootClassName: root = 'c-dropdown',
 		variants,
 		isDisabled,
+		offset = 10,
 	} = props;
 	const { refs, floatingStyles, context } = useFloating({
 		placement,
@@ -56,7 +57,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 			open ? onOpen() : onClose();
 		},
 		whileElementsMounted: autoUpdate,
-		middleware: [offset(10)],
+		middleware: [offsetHelper(offset)],
 	});
 
 	const click = useClick(context);
