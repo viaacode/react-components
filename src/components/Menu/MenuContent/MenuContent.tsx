@@ -18,13 +18,7 @@ const MenuContent: FC<MenuContentProps> = ({
 	variants,
 }) => {
 	const bem = bemCls.bind(root);
-	const rootCls = clsx(
-		className,
-		bem('item'),
-		getVariantClasses(root, variants),
-		'c-dropdown__menu',
-		'c-menu'
-	);
+	const rootCls = clsx(className, getVariantClasses(root, variants), 'c-dropdown__menu', 'c-menu');
 
 	const renderMenuItem = (menuItemInfo: MenuItemInfo, index: number) => {
 		if (renderItem) {
@@ -33,7 +27,7 @@ const MenuContent: FC<MenuContentProps> = ({
 		return (
 			<button
 				type="button"
-				className="c-menu__item "
+				className="c-menu__item"
 				style={style}
 				onClick={() => onClick(menuItemInfo.id)}
 				tabIndex={0}
