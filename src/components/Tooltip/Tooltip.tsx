@@ -8,6 +8,7 @@ import './Tooltip.scss';
 import {
 	autoUpdate,
 	offset as floatingOffset,
+	type Placement,
 	useFloating,
 	useFocus,
 	useHover,
@@ -17,14 +18,14 @@ import { TooltipContent, TooltipTrigger } from './Tooltip.slots';
 
 export interface TooltipPropsSchema {
 	children: ReactNode;
-	position: 'top' | 'right' | 'bottom' | 'left';
+	position: Placement;
 	offset?: number;
 	contentClassName?: string;
 }
 
 const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	children,
-	position = 'bottom',
+	position = 'top',
 	offset,
 	contentClassName,
 }) => {
