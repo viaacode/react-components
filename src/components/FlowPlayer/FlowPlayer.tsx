@@ -1,5 +1,4 @@
-import { type FunctionComponent, lazy, type ReactNode, Suspense } from 'react';
-import { isServerSideRendering } from '../../utils/is-server-side-rendering';
+import { type FunctionComponent, lazy, type ReactNode, Suspense, useEffect, useState } from 'react';
 import { Flex } from '../Flex/Flex';
 import type { FlowPlayerProps } from './FlowPlayer.types';
 
@@ -8,22 +7,31 @@ const FlowplayerInternal = lazy(() => import('./FlowPlayer.internal.js'));
 export const FlowPlayer: FunctionComponent<
 	FlowPlayerProps & { renderLoader?: () => ReactNode }
 > = ({ renderLoader, ...props }) => {
-	if (isServerSideRendering()) {
-		// Can't render Flowplayer during server side rendering since it requires the browser window / document
-		return null;
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		// Ensure flowplayer only renders on the client and not during server side rendering
+		// Since the flowplayer library uses the browser window / document
+		setMounted(true);
+	}, []);
+
+	const renderSpinner = () => {
+		if (renderLoader) {
+			return renderLoader();
+		}
+
+		return (
+			<Flex orientation="horizontal" center>
+				Laden ...
+			</Flex>
+		);
+	};
+
+	if (!mounted) {
+		return renderSpinner();
 	}
 	return (
-		<Suspense
-			fallback={
-				renderLoader ? (
-					renderLoader()
-				) : (
-					<Flex orientation="horizontal" center>
-						Laden ...
-					</Flex>
-				)
-			}
-		>
+		<Suspense fallback={renderSpinner()}>
 			<FlowplayerInternal {...props} />
 		</Suspense>
 	);

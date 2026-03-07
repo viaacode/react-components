@@ -1,4 +1,4 @@
-import { type FC, type FunctionComponent, lazy, Suspense } from 'react';
+import { type FC, type FunctionComponent, lazy, Suspense, useEffect, useState } from 'react';
 import { isServerSideRendering } from '../../utils/is-server-side-rendering';
 import { Flex } from '../Flex/Flex';
 import type { RichTextEditorProps } from './RichTextEditor.types';
@@ -17,14 +17,21 @@ if (!isServerSideRendering()) {
  * @deprecated Use RichTextEditorWithInternalState instead since the full editor state isn't exposed, which should be more performant
  */
 const RichTextEditor: FunctionComponent<RichTextEditorProps> = (props) => {
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	const renderSpinner = () => (
+		<Flex orientation="horizontal" center>
+			<p>Laden...</p>
+		</Flex>
+	);
+
+	if (!mounted) return renderSpinner();
 	return (
-		<Suspense
-			fallback={
-				<Flex orientation="horizontal" center>
-					<p>Laden...</p>
-				</Flex>
-			}
-		>
+		<Suspense fallback={renderSpinner()}>
 			{RichTextEditorInternal && <RichTextEditorInternal {...props} />}
 		</Suspense>
 	);

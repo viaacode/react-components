@@ -1,4 +1,4 @@
-import { type FC, type FunctionComponent, lazy, Suspense } from 'react';
+import { type FC, type FunctionComponent, lazy, Suspense, useEffect, useState } from 'react';
 import { isServerSideRendering } from '../../utils/is-server-side-rendering';
 import { Flex } from '../Flex/Flex';
 import type { RichTextEditorWithInternalStateProps } from './RichTextEditor.types';
@@ -15,14 +15,21 @@ if (!isServerSideRendering()) {
 const RichTextEditorWithInternalState: FunctionComponent<RichTextEditorWithInternalStateProps> = (
 	props
 ) => {
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	const renderSpinner = () => (
+		<Flex orientation="horizontal" center>
+			<p>Laden...</p>
+		</Flex>
+	);
+
+	if (!mounted) return renderSpinner();
 	return (
-		<Suspense
-			fallback={
-				<Flex orientation="horizontal" center>
-					<p>Laden...</p>
-				</Flex>
-			}
-		>
+		<Suspense fallback={renderSpinner()}>
 			{!!RichTextEditorInternalWithInternalState && (
 				<RichTextEditorInternalWithInternalState {...props} />
 			)}
