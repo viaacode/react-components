@@ -303,6 +303,13 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 		height: 100%;
 		width: 100%;
 
+		.fp-right {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: flex-end;
+		}
+
 		.fp-cast-button,
 		.fp-fullscreen,
 		.fp-fullscreen-exit {
@@ -313,15 +320,24 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 		}
 	}
 
-	&:not(.is-starting) {
-		.c-logo-overlay {
-			display: block;
+	.fp-header {
+		display: flex;
+		flex-direction: row;
+
+		.fp-left {
+			display: none;
+		}
+
+		.fp-right {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
 		}
 	}
 
-	&.is-hovered,
-	&.is-paused {
-		.fp-header {
+	&:not(.is-starting) {
+		.c-logo-overlay {
 			display: block;
 		}
 	}
