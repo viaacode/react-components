@@ -167,10 +167,20 @@ const Table = <RowDataType extends TableData>({
 										{enableRowFocusOnClick && (
 											<td
 												role="cell"
-												aria-hidden={true}
 												className={focusedTdClass(row.id === focusedRowId)}
 											>
-												&nbsp;
+												<button
+													type="button"
+													aria-label="Focus row"
+													className={bem('focus-button')}
+													onClick={(e) => {
+														e.stopPropagation();
+														handleRowClick(e as unknown as MouseEvent<HTMLTableRowElement>, row);
+													}}
+													onFocus={() => setFocusedRowId(row.id)}
+												>
+													&nbsp;
+												</button>
 											</td>
 										)}
 										{row.cells.map((cell, j) => {
