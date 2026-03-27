@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "5.1.25",
+  "version": "5.1.26",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -51,7 +51,7 @@
     "@floating-ui/react": "0.27.18",
     "@flowplayer/player": "3.32.1",
     "@popperjs/core": "2.11.6",
-    "@viaa/avo2-types": "5.0.12",
+    "@viaa/avo2-types": "5.0.13",
     "autosize": "6.0.1",
     "braft-editor": "^2.3.9",
     "braft-extensions": "0.1.1",
