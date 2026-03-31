@@ -320,19 +320,23 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 		}
 	}
 
-	.fp-header {
-		display: flex;
-		flex-direction: row;
 
-		.fp-left {
-			display: none;
-		}
-
-		.fp-right {
+	&.is-hovered,
+	&.is-paused {
+		.fp-header {
 			display: flex;
 			flex-direction: row;
-			align-items: center;
-			justify-content: center;
+
+			.fp-left {
+				display: none;
+			}
+
+			.fp-right {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: center;
+			}
 		}
 	}
 
