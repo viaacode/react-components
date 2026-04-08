@@ -28,7 +28,7 @@ export default defineConfig({
 			},
 			formats: ['es'],
 		},
-		rollupOptions: {
+		rolldownOptions: {
 			external,
 		},
 		sourcemap: true,
