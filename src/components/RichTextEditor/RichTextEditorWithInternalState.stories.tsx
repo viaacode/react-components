@@ -35,7 +35,7 @@ const RichTextEditorWithInternalStateStoryComponent = ({
 	children,
 	...props
 }: {
-	children: ReactElement;
+	children: ReactElement<any>;
 } & RichTextEditorWithInternalStateProps) => {
 	const [value, setValue] = useState<string>(props.value || '');
 

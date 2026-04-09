@@ -7,7 +7,7 @@ import { MoreOptionsDropdown } from './MoreOptionsDropdown';
 const MoreOptionsDropdownStory = ({
 	children,
 }: {
-	children: ReactElement;
+	children: ReactElement<any>;
 	defaultValue?: string;
 }) => {
 	const [isOpen, setIsOpen] = useState(false);

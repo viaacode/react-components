@@ -29,7 +29,7 @@ const MOCK_RICH_TEXT_EDITOR_PROPS = {
 	initialHtml: '<h2>Welcome!</h2><p>This prefilled content is all <strong>editable</strong>.</p>',
 };
 
-const RichTextEditorStoryComponent = ({ children }: { children: ReactElement }) => {
+const RichTextEditorStoryComponent = ({ children }: { children: ReactElement<any> }) => {
 	const [state, setState] = useState(null);
 
 	return cloneElement(children, {

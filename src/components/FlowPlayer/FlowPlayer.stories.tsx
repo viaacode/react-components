@@ -9,7 +9,7 @@ import { setPlayingVideoSeekTime } from './FlowPlayer.helpers';
 import { MOCK_FLOW_PLAYER_PROPS_FULL, MOCK_PLAYLIST_SOURCE } from './FlowPlayer.mock';
 import peakJson from './Peak/__mock__/peak.json' with { type: 'json' };
 
-const FlowPlayerStoryComponentSetTimeButtons = ({ children }: { children: ReactElement }) => (
+const FlowPlayerStoryComponentSetTimeButtons = ({ children }: { children: ReactElement<any> }) => (
 	<>
 		{cloneElement(children)}
 		<br />
@@ -23,7 +23,7 @@ const FlowPlayerStoryComponentSetTimeButtons = ({ children }: { children: ReactE
 	</>
 );
 
-const FlowPlayerStoryComponentOpenInModal = ({ children }: { children: ReactElement }) => {
+const FlowPlayerStoryComponentOpenInModal = ({ children }: { children: ReactElement<any> }) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	return (
 		<>
@@ -35,7 +35,11 @@ const FlowPlayerStoryComponentOpenInModal = ({ children }: { children: ReactElem
 	);
 };
 
-const FlowPlayerStoryComponentExternalControls = ({ children }: { children: ReactElement }) => {
+const FlowPlayerStoryComponentExternalControls = ({
+	children,
+}: {
+	children: ReactElement<any>;
+}) => {
 	const [fullscreen, setFullscreen] = useState(false);
 	const [pause, setPause] = useState(true);
 	return (

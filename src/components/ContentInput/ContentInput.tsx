@@ -4,6 +4,7 @@ import {
 	forwardRef,
 	type KeyboardEvent,
 	type MouseEvent,
+	type ReactElement,
 	type ReactNode,
 	useCallback,
 	useState,
@@ -105,7 +106,7 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		 */
 
 		const isSingleElement = (node: ReactNode) => {
-			const el = node as JSX.Element;
+			const el = node as ReactElement<any>;
 			return !(el?.props?.children && el.props.children.length > 1);
 		};
 
@@ -204,7 +205,11 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					}}
 					ref={(element) => {
 						setInstance(element);
-						return ref;
+						if (typeof ref === 'function') {
+							ref(element);
+						} else if (ref) {
+							ref.current = element;
+						}
 					}}
 					type={type}
 					value={value}

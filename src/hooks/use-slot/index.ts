@@ -1,8 +1,10 @@
-import type { ReactElement, ReactNode, ReactNodeArray } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 
 export function useSlot<T>(type: T, children: ReactNode): ReactNode {
-	const slots: ReactNodeArray = Array.isArray(children) ? children : [children];
-	const element: ReactElement = slots.find((c: any) => c && c.type === type) as ReactElement;
+	const slots: ReactNode[] = Array.isArray(children) ? children : [children];
+	const element: ReactElement<any> = slots.find(
+		(c: any) => c && c.type === type
+	) as ReactElement<any>;
 
 	if (element?.props.children) {
 		return element.props.children;

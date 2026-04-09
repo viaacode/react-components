@@ -26,7 +26,7 @@ const CheckboxListStoryComponent: FC<{ children?: ReactNode }> = ({ children }) 
 		});
 	};
 
-	return cloneElement(children as ReactElement, {
+	return cloneElement(children as ReactElement<any>, {
 		items,
 		onItemClick,
 	});

@@ -8,7 +8,7 @@ const PaginationStoryComponent = ({
 	children,
 	initialPageIndex = 0,
 }: {
-	children: ReactElement;
+	children: ReactElement<any>;
 	initialPageIndex?: number;
 }) => {
 	const [currentPage, setCurrentPage] = useState(initialPageIndex);

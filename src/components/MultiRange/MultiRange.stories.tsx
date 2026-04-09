@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { type ReactElement, cloneElement, useState } from 'react';
+import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 
 import MultiRange from './MultiRange';
 import './MultiRange.stories.scss';
 
-const MultiRangeStoryComponent = ({ children }: { children: ReactElement }) => {
+const MultiRangeStoryComponent = ({ children }: { children: ReactElement<any> }) => {
 	const [values, setValues] = useState<number[] | undefined>(undefined);
 
 	return cloneElement(children, {

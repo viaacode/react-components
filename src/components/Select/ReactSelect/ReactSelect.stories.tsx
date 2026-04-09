@@ -22,7 +22,7 @@ const ReactSelectStoryComponent: FC<{ children?: ReactNode }> = ({ children }) =
 		setValue(value);
 	};
 
-	return cloneElement(children as ReactElement, {
+	return cloneElement(children as ReactElement<any>, {
 		value,
 		onChange,
 	});

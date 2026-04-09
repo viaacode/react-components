@@ -5,7 +5,7 @@ import { action } from 'storybook/actions';
 import { tags } from './__mocks__/tag-list';
 import TagList from './TagList';
 
-const TagListStoryComponent = ({ children }: { children: ReactElement }) => {
+const TagListStoryComponent = ({ children }: { children: ReactElement<any> }) => {
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
 	return cloneElement(children, {
