@@ -9,7 +9,7 @@ import type { RichTextEditorProps } from './RichTextEditor.types';
 let RichTextEditorInternal: FC<RichTextEditorProps> | null = null;
 if (!isServerSideRendering()) {
 	// Do not load the rich text editor during server side rendering
-	// Since it causes ESM/CcommonJS issues with braft-editor and doesn't add much to the server side rendering anyway
+	// Since quill is browser-only and doesn't add much to server side rendering anyway
 	RichTextEditorInternal = lazy(() => import('./RichTextEditorInternal.js'));
 }
 

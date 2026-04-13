@@ -1,1 +1,4 @@
-@import "braft-editor/dist/output.css";
+@import "quill/dist/quill.snow.css";
+@import "quill-table-better/dist/quill-table-better.css";
+@import "quill2-emoji/dist/style.css";
+

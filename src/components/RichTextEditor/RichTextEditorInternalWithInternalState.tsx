@@ -1,163 +1,218 @@
-import BraftEditor, {
-	type ControlType,
-	type EditorState,
-	type ExtendControlType,
-	type MediaType,
-} from 'braft-editor';
-import Table from 'braft-extensions/dist/table';
 import clsx from 'clsx';
-import { type FunctionComponent, useEffect, useLayoutEffect, useRef, useState } from 'react';
-
-import { getLanguage } from './RichTextEditor.consts';
+import QuillTableBetter from 'quill-table-better';
+import { type FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import ReactQuill from 'react-quill-new';
+import { setupQuill } from './quill-setup';
+import { buildQuillToolbar } from './RichTextEditor.consts';
 import { getHiddenHeadingClasses, prettifyHtml } from './RichTextEditor.helpers';
 import {
 	ALL_RICH_TEXT_HEADINGS,
-	type RichEditorState,
 	type RichTextEditorWithInternalStateProps,
 } from './RichTextEditor.types';
 
 import './RichTextEditor.scss';
 
-// normalize CJS/ESM interop:
-// - sometimes the usable thing is mod.default
-// - sometimes it's mod.default.default (double default)
-// - sometimes it's the module itself
-const BraftEditorAny: any =
-	(BraftEditor as any).default?.default ?? (BraftEditor as any).default ?? BraftEditor;
+setupQuill();
 
-const BraftTable: any = (Table as any).default?.default ?? (Table as any).default ?? Table;
-
-const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateProps> = ({
-	braft,
+const RichTextEditorInternalWithInternalState: FunctionComponent<
+	RichTextEditorWithInternalStateProps
+> = ({
+	quill: quillOverrides,
 	className,
 	controls,
 	disabled,
 	id,
 	value,
-	media,
 	onBlur,
 	onChange,
-	onDelete,
 	onFocus,
 	onSave,
-	onTab,
 	placeholder,
 	enabledHeadings = ALL_RICH_TEXT_HEADINGS,
 	rootClassName: root = 'c-rich-text-editor',
 }) => {
 	const [isHtmlView, setIsHtmlView] = useState(false);
 	const [toolbarHeight, setToolbarHeight] = useState(0);
-	const [prettyHtml, setPrettyHtml] = useState(prettifyHtml(value || ''));
+	const [prettyHtml, setPrettyHtml] = useState(prettifyHtml(value ?? ''));
+	const quillRef = useRef<ReactQuill>(null);
 	const htmlEditRef = useRef<HTMLTextAreaElement | null>(null);
-	const [richTextEditorState, setRichTextEditorState] = useState<EditorState>(
-		BraftEditorAny.createEditorState(value || '')
-	);
+	// Tracks current Quill content without making it a controlled prop
+	const currentHtmlRef = useRef<string>(value ?? '');
 
-	useLayoutEffect(() => {
-		const toolbarElement = document.querySelector('.bf-controlbar');
-		if (!toolbarElement) return;
-		const height = toolbarElement.getBoundingClientRect().height;
-		setToolbarHeight(height);
+	const safeGetEditor = useCallback(() => {
+		try {
+			return quillRef.current?.getEditor() ?? null;
+		} catch {
+			return null;
+		}
 	}, []);
 
+	// Read toolbar height once the editor mounts
 	useEffect(() => {
-		const controlItems = document.querySelectorAll(
-			'.control-item:not(.html-edit-button)'
-		) as NodeListOf<HTMLElement>;
-		if (isHtmlView) {
-			for (const item of controlItems) {
-				item.style.opacity = '0.5';
-				item.style.pointerEvents = 'none';
+		const toolbar = document.querySelector('.ql-toolbar');
+		if (!toolbar) return;
+		setToolbarHeight(toolbar.getBoundingClientRect().height);
+	}, []);
+
+	// Load the initial value after mount using rAF so quill-table-better's clipboard
+	// matchers are registered before we paste. defaultValue is processed at Quill
+	// construction time (before the table module is ready) so tables would be stripped.
+	const initializedRef = useRef(false);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: intentionally runs once on mount only
+	useEffect(() => {
+		if (initializedRef.current) return;
+		const html = value ?? '';
+		if (!html) return;
+		initializedRef.current = true;
+		// quill-table-better README: "setContents causes the table to not display
+		// properly, replace with updateContents". dangerouslyPasteHTML uses setContents
+		// internally, so we must use clipboard.convert() + updateContents instead.
+		// We retry via rAF until the editor ref is available.
+		const tryPaste = () => {
+			const editor = safeGetEditor();
+			if (editor) {
+				const delta = editor.clipboard.convert({ html, text: '' });
+				editor.updateContents(delta, 'api');
+				editor.setSelection(null as any, 'silent');
+				currentHtmlRef.current = html;
+			} else {
+				requestAnimationFrame(tryPaste);
 			}
-		} else {
-			for (const item of controlItems) {
-				item.style.opacity = '1';
-				item.style.pointerEvents = 'auto';
-			}
+		};
+		requestAnimationFrame(tryPaste);
+	}, []);
+
+	// Sync editor when value prop changes externally (e.g. parent resets content).
+	// Skip when it matches what Quill already has to avoid clobbering focus/selection.
+	useEffect(() => {
+		if (!initializedRef.current) return; // still in initial rAF — skip
+		const newHtml = value ?? '';
+		if (newHtml === currentHtmlRef.current) return;
+		const editor = safeGetEditor();
+		if (editor) {
+			const delta = editor.clipboard.convert({ html: newHtml, text: '' });
+			editor.setContents(delta, 'api');
 		}
-	}, [isHtmlView]);
+		currentHtmlRef.current = newHtml;
+		setPrettyHtml(prettifyHtml(newHtml));
+	}, [value, safeGetEditor]);
 
-	const tableOptions = {
-		columnResizable: false, //  Whether to allow drag to adjust the column width, default false
-		defaultColumns: 3, //  default number of columns
-		defaultRows: 3, //  default number of rows
-		exportAttrString: 'class="c-editor-table"', //  Specify the attribute string attached to the table tag when outputting HTML
-		withDropdown: true, //  Whether a drop-down menu pops up before inserting a table
-	};
+	const handleQuillChange = useCallback(
+		(newHtml: string, _delta: unknown, source: string) => {
+			// Ignore 'api' and 'silent' events fired by quill-table-up's internal
+			// layout/normalization passes — only propagate genuine user edits.
+			if (source !== 'user') return;
+			currentHtmlRef.current = newHtml;
+			onChange?.(newHtml);
+		},
+		[onChange]
+	);
 
-	BraftEditorAny.use(BraftTable(tableOptions));
+	const handleSave = useCallback(() => {
+		if (currentHtmlRef.current) onSave?.();
+	}, [onSave]);
 
-	const newControls: ControlType[] | undefined = controls
-		? ([
-				...(controls || [].filter((control: string) => control !== 'editHtml')),
-				...(controls?.includes('editHtml')
-					? [
-							{
-								key: 'editHtml',
-								type: 'button',
-								title: 'HTML',
-								html: 'HTML',
-								text: 'HTML',
-								className: `html-edit-button ${isHtmlView ? 'active' : ''}`,
-								onClick: () => {
-									if (isHtmlView) {
-										setRichTextEditorState(BraftEditorAny.createEditorState(prettyHtml || ''));
+	// Build modules config — memoized so the object reference is stable across renders.
+	// ReactQuill treats `modules` as a "dirty prop": any reference change tears down and
+	// re-creates the entire Quill instance, which loses focus and clears content.
+	const hasTable = controls?.includes('table');
+	const hasEmoji = controls?.includes('emoji');
+	const modules = useMemo<Record<string, unknown>>(
+		() => ({
+			toolbar: controls
+				? {
+						container: buildQuillToolbar(controls),
+						handlers: {
+							undo() {
+								safeGetEditor()?.history.undo();
+							},
+							redo() {
+								safeGetEditor()?.history.redo();
+							},
+							divider() {
+								const editor = safeGetEditor();
+								if (!editor) return;
+								const range = editor.getSelection(true);
+								editor.insertEmbed(range.index, 'divider', true, 'user');
+								editor.setSelection(range.index + 1, 0, 'silent');
+							},
+							fullscreen() {
+								const wrapper = document.getElementById(id ?? '');
+								wrapper?.classList.toggle(`${root}--fullscreen`);
+							},
+							editHtml() {
+								setIsHtmlView((prev) => {
+									const next = !prev;
+									if (!next) {
+										// Exiting HTML view — flush scratch HTML back into editor
+										const editor = safeGetEditor();
+										if (editor) {
+											editor.clipboard.dangerouslyPasteHTML(currentHtmlRef.current ?? '');
+										}
 									}
-									setIsHtmlView((prev) => !prev);
-								},
-								disabled: false,
-							} as ExtendControlType,
-						]
-					: []),
-			] as (ControlType | ExtendControlType)[])
-		: undefined;
+									return next;
+								});
+							},
+						},
+					}
+				: false,
+			history: { delay: 1000, maxStack: 100, userOnly: true },
+			...(hasTable
+				? {
+						table: false,
+						'table-better': {
+							language: 'en_US',
+							menus: ['column', 'row', 'merge', 'table', 'cell', 'wrap', 'delete'],
+							toolbarTable: true,
+						},
+						keyboard: { bindings: QuillTableBetter.keyboardBindings },
+					}
+				: {}),
+			...(hasEmoji ? { 'emoji-toolbar': true } : {}),
+		}),
+		[controls, hasTable, hasEmoji, id, root, safeGetEditor]
+	);
 
 	return (
 		<div
 			className={clsx(root, className, getHiddenHeadingClasses(enabledHeadings), 'c-content', {
 				disabled,
+				[`${root}--html-view`]: isHtmlView,
 			})}
 			id={id}
 		>
-			<BraftEditorAny
-				{...braft}
-				controls={newControls}
-				id={id}
-				language={getLanguage}
-				media={media as unknown as MediaType}
-				onBlur={() => onBlur?.()}
-				onChange={(newEditorState: RichEditorState) => {
-					setRichTextEditorState(newEditorState);
-					const newhtml = newEditorState.toHTML();
-					onChange?.(newhtml);
-					setPrettyHtml(prettifyHtml(newhtml));
-				}}
-				onDelete={onDelete}
-				onFocus={onFocus}
-				onSave={() => richTextEditorState && onSave?.()}
-				onTab={onTab}
+			<ReactQuill
+				{...quillOverrides}
+				ref={quillRef}
+				theme="snow"
+				defaultValue=""
 				placeholder={placeholder}
 				readOnly={disabled}
-				value={richTextEditorState}
+				modules={modules}
+				onBlur={() => {
+					onBlur?.();
+					handleSave();
+				}}
+				onChange={handleQuillChange}
+				onFocus={() => onFocus?.()}
+				formats={undefined} // allow all formats
 			/>
 			{isHtmlView ? (
 				<textarea
 					ref={htmlEditRef}
 					style={{
 						top: `${toolbarHeight}px`,
+						height: `calc(100% - ${toolbarHeight}px)`,
 					}}
 					className={`${root}__html-view`}
-					onBlur={() => {
-						setRichTextEditorState(BraftEditorAny.createEditorState(prettyHtml || ''));
+					defaultValue={prettyHtml}
+					onInput={(e) => {
+						currentHtmlRef.current = e.currentTarget.value ?? '';
 					}}
-					onChange={(evt) => {
-						setPrettyHtml(evt.target.value);
-					}}
-					value={prettyHtml}
 				/>
 			) : null}
 		</div>
 	);
 };
 
-export default RichTextEditorInternal;
+export default RichTextEditorInternalWithInternalState;

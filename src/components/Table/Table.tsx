@@ -1,8 +1,18 @@
+import {
+	type Column,
+	type ColumnDef,
+	flexRender,
+	getCoreRowModel,
+	getPaginationRowModel,
+	getSortedRowModel,
+	type Row,
+	type SortingState,
+	useReactTable,
+} from '@tanstack/react-table';
 import { AvoSearchOrderDirection } from '@viaa/avo2-types';
 import clsx from 'clsx';
-import { useEffect, useMemo, useState } from 'react';
 import type { MouseEvent } from 'react';
-import { type HeaderGroup, type Row, usePagination, useSortBy, useTable } from 'react-table';
+import { useEffect, useMemo, useState } from 'react';
 import { bemCls, getVariantClasses } from '../../utils';
 import { defaultPropGetter, defaultSortingIcons } from './Table.const';
 import type { TableData, TableProps } from './Table.types';
@@ -25,6 +35,7 @@ const Table = <RowDataType extends TableData>({
 	enableRowFocusOnClick = false,
 }: TableProps<RowDataType>) => {
 	const [focusedRowId, setFocusedRowId] = useState<string | null>(null);
+	const [sorting, setSorting] = useState<SortingState>([]);
 
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants));
@@ -35,36 +46,22 @@ const Table = <RowDataType extends TableData>({
 	const focusedTdClass = (isFocused: boolean) =>
 		clsx(bem('focus-cell'), isFocused && bem('focus-cell', 'active'));
 
-	// State
-
 	const data = useMemo(() => options.data, [options.data]);
-	const columns = useMemo(() => options.columns, [options.columns]);
+	const columns = useMemo(() => options.columns as ColumnDef<RowDataType>[], [options.columns]);
 
-	const instance = useTable(
-		{
-			getRowId: (row) => row.id?.toString(),
-			...options,
-			manualSortBy: true,
-			disableMultiSort: true,
-			autoResetRowState: false,
-			columns,
-			data,
-		},
-		useSortBy,
-		usePagination
-	);
-
-	// Destructuring
-
-	const {
-		getTableBodyProps,
-		getTableProps,
-		headerGroups,
-		page,
-		prepareRow,
-		rowsById,
-		state: { sortBy },
-	} = instance;
+	const table = useReactTable<RowDataType>({
+		data,
+		columns,
+		getRowId: (row) => row.id?.toString() ?? '',
+		state: { sorting },
+		onSortingChange: setSorting,
+		manualSorting: true,
+		enableMultiSort: false,
+		autoResetPageIndex: false,
+		getCoreRowModel: getCoreRowModel(),
+		getSortedRowModel: getSortedRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+	});
 
 	const handleRowClick = (event: MouseEvent<HTMLTableRowElement>, row: Row<RowDataType>) => {
 		if (enableRowFocusOnClick) {
@@ -76,36 +73,30 @@ const Table = <RowDataType extends TableData>({
 	// Effects
 
 	useEffect(() => {
-		const orderProp = sortBy[0]?.id || undefined;
+		const orderProp = sorting[0]?.id || undefined;
 		let orderDirection: AvoSearchOrderDirection | undefined;
-		if (sortBy[0]) {
-			if (sortBy[0].desc) {
-				orderDirection = AvoSearchOrderDirection.DESC;
-			} else {
-				orderDirection = AvoSearchOrderDirection.ASC;
-			}
+		if (sorting[0]) {
+			orderDirection = sorting[0].desc ? AvoSearchOrderDirection.DESC : AvoSearchOrderDirection.ASC;
 		} else {
 			orderDirection = undefined;
 		}
 		onSortChange?.(orderProp, orderDirection);
-	}, [sortBy, onSortChange]);
+	}, [sorting, onSortChange]);
 
 	useEffect(() => {
-		// We have row focus enabled, have a focused row but the data changed and the row is not available anymore
-		if (enableRowFocusOnClick && focusedRowId && !rowsById[focusedRowId]) {
+		if (enableRowFocusOnClick && focusedRowId && !table.getRowModel().rowsById[focusedRowId]) {
 			setFocusedRowId(null);
 		}
-	}, [enableRowFocusOnClick, rowsById]);
+	}, [enableRowFocusOnClick, table, focusedRowId]);
 
 	// Render
 
-	const renderSortingIndicator = (column: HeaderGroup<RowDataType>) => {
-		if (!column.canSort || column.disableSortBy) return null;
+	const renderSortingIndicator = (column: Column<RowDataType, unknown>) => {
+		if (!column.getCanSort()) return null;
 
-		if (column.isSorted) {
-			return column.isSortedDesc ? sortingIcons.desc : sortingIcons.asc;
-		}
-
+		const sorted = column.getIsSorted();
+		if (sorted === 'desc') return sortingIcons.desc;
+		if (sorted === 'asc') return sortingIcons.asc;
 		return sortingIcons.default;
 	};
 
@@ -113,99 +104,80 @@ const Table = <RowDataType extends TableData>({
 		showTable && (
 			<>
 				<div className={clsx(bem('scroller'), enableRowFocusOnClick && bem('with-row-focus'))}>
-					<table {...getTableProps()} className={rootCls} style={style}>
+					<table className={rootCls} style={style}>
 						<thead className={clsx(bem('wrapper'), bem('wrapper', 'header'))}>
-							{headerGroups.map((group, i) => (
+							{table.getHeaderGroups().map((headerGroup, i) => (
 								<tr
-									{...group.getHeaderGroupProps()}
 									// biome-ignore lint/suspicious/noArrayIndexKey: TODO fix
 									key={i}
 									className={clsx(bem('row'), bem('row', 'header'))}
 								>
 									{enableRowFocusOnClick && (
-										<th
-											role="columnheader"
-											aria-hidden={true}
-											className={clsx(thClass(false), focusedTdClass(false))}
-										>
+										<th role="columnheader" className={clsx(thClass(false), focusedTdClass(false))}>
 											&nbsp;
 										</th>
 									)}
-									{group.headers.map((column, j) => (
+									{headerGroup.headers.map((header, j) => (
 										<th
-											{...column.getHeaderProps([
-												{ className: thClass(column.isSorted) },
-												column.getSortByToggleProps(),
-												getColumnProps(column),
-												getHeaderProps(column),
-											])}
 											// biome-ignore lint/suspicious/noArrayIndexKey: TODO fix
 											key={`${i}-${j}`}
+											className={thClass(header.column.getIsSorted() !== false)}
+											onClick={header.column.getToggleSortingHandler()}
+											{...getColumnProps(header.column)}
+											{...getHeaderProps(header)}
 										>
-											{column.render('Header')}
-
-											{renderSortingIndicator(column)}
+											{header.isPlaceholder
+												? null
+												: flexRender(header.column.columnDef.header, header.getContext())}
+											{renderSortingIndicator(header.column)}
 										</th>
 									))}
 								</tr>
 							))}
 						</thead>
 
-						<tbody
-							className={clsx(bem('wrapper'), bem('wrapper', 'body'))}
-							{...getTableBodyProps()}
-						>
-							{page.map((row, i) => {
-								prepareRow(row);
-
-								return (
-									<tr
-										onClick={(e) => handleRowClick(e, row)}
-										{...row.getRowProps([{ className: trBodyClass }, getRowProps(row)])}
-										key={row.id}
-									>
-										{enableRowFocusOnClick && (
-											<td
-												role="cell"
-												className={focusedTdClass(row.id === focusedRowId)}
+						<tbody className={clsx(bem('wrapper'), bem('wrapper', 'body'))}>
+							{table.getRowModel().rows.map((row, i) => (
+								<tr
+									key={row.id}
+									onClick={(e) => handleRowClick(e, row)}
+									className={trBodyClass}
+									{...getRowProps(row)}
+								>
+									{enableRowFocusOnClick && (
+										<td className={focusedTdClass(row.id === focusedRowId)}>
+											<button
+												type="button"
+												aria-label="Focus row"
+												className={bem('focus-button')}
+												onClick={(e) => {
+													e.stopPropagation();
+													handleRowClick(e as unknown as MouseEvent<HTMLTableRowElement>, row);
+												}}
+												onFocus={() => setFocusedRowId(row.id)}
 											>
-												<button
-													type="button"
-													aria-label="Focus row"
-													className={bem('focus-button')}
-													onClick={(e) => {
-														e.stopPropagation();
-														handleRowClick(e as unknown as MouseEvent<HTMLTableRowElement>, row);
-													}}
-													onFocus={() => setFocusedRowId(row.id)}
-												>
-													&nbsp;
-												</button>
-											</td>
-										)}
-										{row.cells.map((cell, j) => {
-											return (
-												<td
-													{...cell.getCellProps([
-														{ className: tdClass },
-														getColumnProps(cell.column),
-														getCellProps(cell.column),
-													])}
-													// biome-ignore lint/suspicious/noArrayIndexKey: TODO fix
-													key={`${i}-${j}`}
-												>
-													{cell.render('Cell')}
-												</td>
-											);
-										})}
-									</tr>
-								);
-							})}
+												&nbsp;
+											</button>
+										</td>
+									)}
+									{row.getVisibleCells().map((cell, j) => (
+										<td
+											// biome-ignore lint/suspicious/noArrayIndexKey: TODO fix
+											key={`${i}-${j}`}
+											className={tdClass}
+											{...getColumnProps(cell.column)}
+											{...getCellProps(cell)}
+										>
+											{flexRender(cell.column.columnDef.cell, cell.getContext())}
+										</td>
+									))}
+								</tr>
+							))}
 						</tbody>
 					</table>
 				</div>
 
-				{pagination && <div className={clsx(bem('footer'))}>{pagination(instance)}</div>}
+				{pagination && <div className={clsx(bem('footer'))}>{pagination(table)}</div>}
 			</>
 		)
 	);

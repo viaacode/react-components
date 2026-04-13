@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { Column } from 'react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 import { action } from 'storybook/actions';
 import { mockColumns, mockData } from './__mocks__/table';
 import Table from './Table';
@@ -16,7 +16,7 @@ type Story = StoryObj<typeof Table>;
 export const Default: Story = {
 	args: {
 		options: {
-			columns: mockColumns as Column<TableData>[],
+			columns: mockColumns as ColumnDef<TableData>[],
 			data: mockData,
 		},
 		sortingIcons: {

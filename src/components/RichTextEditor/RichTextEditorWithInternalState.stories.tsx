@@ -10,10 +10,6 @@ import type {
 import RichTextEditorWithInternalState from './RichTextEditorWithInternalState';
 
 const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
-	'fullscreen',
-	'separator',
-	'undo',
-	'redo',
 	'separator',
 	'headings',
 	'separator',
@@ -54,7 +50,6 @@ const meta: Meta<typeof RichTextEditorWithInternalState> = {
 };
 export default meta;
 type Story = StoryObj<typeof RichTextEditorWithInternalState>;
-
 const Template = (args: any) => (
 	<RichTextEditorWithInternalStateStoryComponent {...args}>
 		<RichTextEditorWithInternalState {...args} />
