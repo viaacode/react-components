@@ -14,15 +14,93 @@ const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
 	'redo',
 	'separator',
 	'headings',
+	'font-size',
+	'separator',
+	'bold',
+	'underline',
+	'italic',
+	'strike-through',
+	'separator',
+	'subscript',
+	'superscript',
+	'separator',
+	'text-transform',
+	'separator',
+	'text-color',
+	'separator',
+	'line-height',
+	'letter-spacing',
+	'separator',
+	'text-align',
+	'text-indent',
+	'separator',
+	'list-ul',
+	'list-ol',
+	'separator',
+	'link',
+	'separator',
+	'emoji',
+	'separator',
+	'remove-styles',
+];
+const DEFAULT_RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
+	'undo',
+	'redo',
+	'separator',
+	'font-size',
+	'line-height',
+	'letter-spacing',
+	'separator',
+	'text-color',
+	'bold',
+	'underline',
+	'italic',
+	'strike-through',
+	'separator',
+	'subscript',
+	'superscript',
+	'text-transform',
+	'remove-styles',
+	'emoji',
+	'separator',
+	'text-align',
+	'text-indent',
+	'separator',
+	'headings',
+	'list-ul',
+	'list-ol',
+	'blockquote',
+	'code',
+	'separator',
+	// media
+	'link',
+	'unlink',
+	'table',
+	'hr',
+	'separator',
+	'clear',
+	'separator',
+	'fullscreen',
+];
+const BASE_RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
+	'fullscreen',
+	'separator',
+	'undo',
+	'redo',
+	'separator',
+	'headings',
+	'font-size',
 	'separator',
 	'bold',
 	'underline',
 	'italic',
 	'separator',
 	'link',
+	'unlink',
 	'separator',
 	'list-ul',
 	'list-ol',
+	'separator',
 ];
 
 const MOCK_RICH_TEXT_EDITOR_PROPS = {
@@ -66,13 +144,17 @@ const TemplateWithSelect = (args: any) => (
 );
 
 export const Default: Story = {
-	args: MOCK_RICH_TEXT_EDITOR_PROPS,
+	args: {
+		...MOCK_RICH_TEXT_EDITOR_PROPS,
+		controls: DEFAULT_RICH_TEXT_EDITOR_OPTIONS,
+	},
 	render: Template,
 };
 
 export const Placeholder: Story = {
 	args: {
 		placeholder: 'Start typing here...',
+		controls: DEFAULT_RICH_TEXT_EDITOR_OPTIONS,
 	},
 	render: Template,
 };
@@ -88,7 +170,7 @@ export const Disabled: Story = {
 export const WithLimitedButtons: Story = {
 	args: {
 		...MOCK_RICH_TEXT_EDITOR_PROPS,
-		controls: RICH_TEXT_EDITOR_OPTIONS,
+		controls: BASE_RICH_TEXT_EDITOR_OPTIONS,
 	},
 	render: Template,
 };
@@ -96,7 +178,7 @@ export const WithLimitedButtons: Story = {
 export const WithTableButton: Story = {
 	args: {
 		...MOCK_RICH_TEXT_EDITOR_PROPS,
-		controls: [...RICH_TEXT_EDITOR_OPTIONS, 'separator', 'table'],
+		controls: [...BASE_RICH_TEXT_EDITOR_OPTIONS, 'table'],
 	},
 	render: Template,
 };

@@ -1,14 +1,23 @@
-.c-color-picker--controls {
+.c-color-picker {
 	position: relative;
+	display: inline-block;
 }
 
 .c-color-picker--trigger {
-	width: 3rem;
-	height: 3rem;
-	background-color: transparent;
-	border: 0;
-	border-radius: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
 	padding: 0;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	cursor: pointer;
+	transition: border-color 0.15s;
+
+	&:hover:not(:disabled) {
+		border-color: #999;
+	}
 }
 
 .c-color-picker--disabled {
@@ -16,20 +25,81 @@
 	opacity: 0.5;
 }
 
-.c-color-picker--picker {
-	z-index: 3;
-	position: absolute;
-	top: 5rem;
-	left: 0;
+// Full-screen underlay to catch outside clicks
+.c-color-picker--underlay {
+	position: fixed;
+	inset: 0;
+	z-index: 99;
+	background: transparent;
+	border: 0;
+	padding: 0;
+	cursor: default;
 }
 
-.c-color-picker--underlay {
+// Floating modal panel
+.c-color-picker--modal {
 	position: absolute;
-	width: auto;
-	height: auto;
-	inset: 0;
-	background-color: transparent;
-	border: 0;
-	border-radius: 0;
-	padding: 0;
+	top: calc(100% + 4px);
+	left: 0;
+	z-index: 100;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+	padding: 8px;
+	min-width: 220px;
+}
+
+// Tabs
+.c-color-picker--tabs {
+	display: flex;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 8px;
+}
+
+.c-color-picker--tab {
+	flex: 1;
+	padding: 4px 8px;
+	font-size: 12px;
+	background: none;
+	border: none;
+	border-bottom: 2px solid transparent;
+	cursor: pointer;
+	color: #555;
+	margin-bottom: -1px;
+
+	&--active {
+		color: #0070cc;
+		border-bottom-color: #0070cc;
+		font-weight: 600;
+	}
+
+	&:hover:not(.c-color-picker--tab--active) {
+		background: #f5f5f5;
+	}
+}
+
+// HexColorPicker wrapper — make it fill the panel width
+.c-color-picker--picker {
+	.react-colorful {
+		width: 100%;
+	}
+}
+
+// Submit button
+.c-color-picker--submit {
+	display: block;
+	width: 100%;
+	margin-top: 8px;
+	padding: 5px 0;
+	background: #0070cc;
+	color: #fff;
+	border: none;
+	border-radius: 2px;
+	font-size: 12px;
+	cursor: pointer;
+
+	&:hover {
+		background: #005aa0;
+	}
 }

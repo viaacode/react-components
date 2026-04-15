@@ -10,17 +10,38 @@ import type {
 import RichTextEditorWithInternalState from './RichTextEditorWithInternalState';
 
 const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
+	'undo',
+	'redo',
 	'separator',
 	'headings',
+	'font-size',
 	'separator',
 	'bold',
 	'underline',
 	'italic',
+	'strike-through',
 	'separator',
-	'link',
+	'subscript',
+	'superscript',
+	'separator',
+	'text-transform',
+	'separator',
+	'text-color',
+	'separator',
+	'line-height',
+	'letter-spacing',
+	'separator',
+	'text-align',
+	'text-indent',
 	'separator',
 	'list-ul',
 	'list-ol',
+	'separator',
+	'link',
+	'separator',
+	'emoji',
+	'separator',
+	'remove-styles',
 ];
 
 const MOCK_RICH_TEXT_EDITOR_PROPS = {
@@ -68,7 +89,10 @@ const TemplateWithSelect = (args: any) => (
 );
 
 export const Default: Story = {
-	args: MOCK_RICH_TEXT_EDITOR_PROPS,
+	args: {
+		...MOCK_RICH_TEXT_EDITOR_PROPS,
+		controls: RICH_TEXT_EDITOR_OPTIONS,
+	},
 	render: Template,
 };
 

@@ -1,3 +1,4 @@
+// Language helpers (kept for backward compatibility — previously used by the braft-editor integration)
 export function getLanguage(languages: any, context: string): any {
 	if (context === 'braft-table') {
 		return {
@@ -119,89 +120,4 @@ export function getLanguage(languages: any, context: string): any {
 		};
 	}
 	return languages.nl || languages.en;
-}
-
-import type { RichTextEditorControl } from './RichTextEditor.types';
-
-function controlToFormat(control: RichTextEditorControl): unknown {
-	switch (control) {
-		case 'bold':
-			return 'bold';
-		case 'italic':
-			return 'italic';
-		case 'underline':
-			return 'underline';
-		case 'strike-through':
-			return 'strike';
-		case 'superscript':
-			return { script: 'super' };
-		case 'subscript':
-			return { script: 'sub' };
-		case 'remove-styles':
-		case 'clear':
-			return 'clean';
-		case 'text-align':
-			return { align: [] };
-		case 'headings':
-			return { header: [1, 2, 3, 4, 5, 6, false] };
-		case 'list-ul':
-			return { list: 'bullet' };
-		case 'list-ol':
-			return { list: 'ordered' };
-		case 'blockquote':
-			return 'blockquote';
-		case 'code':
-			return 'code-block';
-		case 'link':
-			return 'link';
-		case 'font-size':
-			return { size: [] };
-		case 'font-family':
-			return { font: [] };
-		case 'text-color':
-			return [{ color: [] }, { background: [] }];
-		case 'text-indent':
-			return [{ indent: '-1' }, { indent: '+1' }];
-		case 'line-height':
-			return { lineheight: [] };
-		case 'letter-spacing':
-			return { letterspacing: [] };
-		case 'media':
-			return ['image', 'video'];
-		case 'emoji':
-			return 'emoji';
-		case 'hr':
-			return 'divider';
-		case 'editHtml':
-			return 'editHtml';
-		case 'table':
-			return 'table-better';
-		default:
-			return null;
-	}
-}
-
-export function buildQuillToolbar(controls: RichTextEditorControl[]): unknown[][] {
-	const groups: unknown[][] = [];
-	let current: unknown[] = [];
-	for (const control of controls) {
-		if (control === 'separator') {
-			if (current.length > 0) {
-				groups.push(current);
-				current = [];
-			}
-			continue;
-		}
-		const fmt = controlToFormat(control);
-		if (fmt === null) continue;
-		if (Array.isArray(fmt)) {
-			current.push(...fmt);
-		} else {
-			current.push(fmt);
-		}
-	}
-	if (current.length > 0) {
-		groups.push(current);
-	}
-	return groups;
 }

@@ -1,66 +1,424 @@
-@use "quill/dist/quill.snow";
-@use "quill2-emoji/dist/style";
-@import "quill-table-better/dist/quill-table-better.css";
+// =============================================================================
+// Rich Text Editor — Lexical-based
+// =============================================================================
 
 .c-rich-text-editor {
 	position: relative;
+	display: flex;
+	flex-direction: column;
+	border: 1px solid #ccc;
+	border-radius: 2px;
 
-	pre,
-	textarea {
+	// ── Toolbar ──────────────────────────────────────────────────────────────
+	.c-rte-toolbar {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 2px;
+		padding: 4px 8px;
+		background: #f8f8f8;
+		border-bottom: 1px solid #ddd;
+	}
+
+	.c-rte-toolbar__btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 28px;
+		height: 28px;
+		padding: 0 6px;
+		background: transparent;
+		border: 1px solid transparent;
+		border-radius: 2px;
+		cursor: pointer;
+		font-size: 13px;
+		line-height: 1;
+		color: #333;
+		transition: background 0.15s, border-color 0.15s;
+
+		&:hover:not(:disabled) {
+			background: #e8e8e8;
+			border-color: #ccc;
+		}
+
+		&--active {
+			background: #d0e4ff;
+			border-color: #99c0f0;
+			color: #0050a0;
+		}
+
+		&:disabled {
+			opacity: 0.4;
+			cursor: not-allowed;
+		}
+	}
+
+	.c-rte-toolbar__separator {
+		display: inline-block;
+		width: 1px;
+		height: 20px;
+		background: #ddd;
+		margin: 0 4px;
+	}
+
+	.c-rte-toolbar__group {
+		display: inline-flex;
+		gap: 2px;
+	}
+
+	.c-rte-toolbar__select {
+		height: 28px;
+		padding: 0 4px;
+		border: 1px solid #ccc;
+		border-radius: 2px;
+		font-size: 13px;
+		background: #fff;
+		cursor: pointer;
+
+		&--sm {
+			width: 56px;
+		}
+	}
+
+	.c-rte-toolbar__color-group {
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+	}
+
+	.c-rte-toolbar__color-label {
+		font-size: 13px;
+		font-weight: bold;
+		padding: 0 2px;
+
+		&--bg {
+			text-decoration: underline;
+		}
+	}
+
+	.c-rte-toolbar__emoji-picker-wrapper {
+		position: relative;
+	}
+
+	.c-rte-toolbar__emoji-picker {
 		position: absolute;
-		bottom: 0;
+		top: 100%;
 		left: 0;
-		right: 0;
-		width: auto;
-		height: auto;
-		margin: 0;
-		background-color: white;
-		z-index: 1;
+		z-index: 100;
+		background: #fff;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		padding: 6px;
+		display: grid;
+		grid-template-columns: repeat(10, 1fr);
+		gap: 2px;
+		width: 300px;
+		box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+		max-height: 200px;
+		overflow-y: auto;
+	}
+
+	.c-rte-toolbar__emoji-btn {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 2px;
+		font-size: 18px;
+		line-height: 1;
+		border-radius: 3px;
+
+		&:hover {
+			background: #f0f0f0;
+		}
+	}
+
+	// ── Link dialog ───────────────────────────────────────────────────────────
+	.c-rte-link-dialog {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+		padding: 6px 10px;
+		background: #f8f8f8;
+		border-bottom: 1px solid #ddd;
+
+		&__row {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+		}
+
+		&__label {
+			font-size: 12px;
+			color: #555;
+			white-space: nowrap;
+
+			&--inline {
+				display: flex;
+				align-items: center;
+				gap: 4px;
+				cursor: pointer;
+				user-select: none;
+			}
+		}
+
+		&__input {
+			height: 26px;
+			padding: 0 6px;
+			border: 1px solid #ccc;
+			border-radius: 2px;
+			font-size: 13px;
+			min-width: 180px;
+
+			&--sm {
+				min-width: 64px;
+				width: 64px;
+			}
+
+			&:focus {
+				outline: 2px solid #99c0f0;
+				border-color: #99c0f0;
+			}
+		}
+
+		&__actions {
+			display: flex;
+			gap: 4px;
+			margin-left: auto;
+		}
+
+		&__btn {
+			height: 26px;
+			padding: 0 10px;
+			border-radius: 2px;
+			font-size: 12px;
+			cursor: pointer;
+			border: 1px solid;
+			line-height: 1;
+
+			&--cancel {
+				background: #fff;
+				border-color: #ccc;
+				color: #555;
+
+				&:hover { background: #f0f0f0; }
+			}
+
+			&--confirm {
+				background: #0070cc;
+				border-color: #0070cc;
+				color: #fff;
+
+				&:hover { background: #005aa0; }
+			}
+		}
+	}
+
+	// ── Editor content area ───────────────────────────────────────────────────
+	&__editor-wrapper {
+		position: relative;
+		flex: 1;
+		overflow: hidden;
+	}
+
+	&__input {
+		min-height: 150px;
+		padding: 12px 16px;
 		outline: none;
-		border: 0;
-		padding: 1.5rem;
-	}
-
-	.ql-editor {
 		word-break: normal;
+		font-size: 14px;
+		line-height: 1.6;
+
+		// Lexical sets contenteditable to the element — prevent browser default outline
+		&:focus {
+			outline: none;
+		}
+
+		// Headings
+		h1 {
+			font-size: 2em;
+			font-weight: bold;
+			margin: 0.67em 0;
+		}
+
+		h2 {
+			font-size: 1.5em;
+			font-weight: bold;
+			margin: 0.75em 0;
+		}
+
+		h3 {
+			font-size: 1.17em;
+			font-weight: bold;
+			margin: 0.83em 0;
+		}
+
+		h4 {
+			font-size: 1em;
+			font-weight: bold;
+			margin: 1.12em 0;
+		}
+
+		h5 {
+			font-size: 0.83em;
+			font-weight: bold;
+			margin: 1.5em 0;
+		}
+
+		h6 {
+			font-size: 0.75em;
+			font-weight: bold;
+			margin: 1.67em 0;
+		}
+
+		// Lists
+		ul,
+		ol {
+			padding-left: 1.5em;
+			margin: 0.5em 0;
+		}
+
+		li { margin: 0.25em 0; }
+
+		// Blockquote
+		blockquote {
+			margin: 0.5em 0;
+			padding: 0.5em 1em;
+			border-left: 3px solid #ccc;
+			color: #555;
+			font-style: italic;
+		}
+
+		// Code
+		code, pre {
+			font-family: 'Courier New', monospace;
+			background: #f4f4f4;
+			border-radius: 3px;
+		}
+
+		code {
+			padding: 1px 4px;
+			font-size: 0.9em;
+		}
+
+		pre {
+			padding: 12px;
+			white-space: pre-wrap;
+			margin: 0.5em 0;
+		}
+
+		// Links
+		a {
+			color: #0070cc;
+			text-decoration: underline;
+			cursor: pointer;
+		}
+
+		// Tables
+		table {
+			border-collapse: collapse;
+			table-layout: fixed;
+			width: 100%;
+			margin: 0.5em 0;
+		}
+
+		td, th {
+			border: 1px solid #ccc;
+			padding: 6px 8px;
+			vertical-align: top;
+			min-width: 50px;
+		}
+
+		th {
+			background: #f0f0f0;
+			font-weight: bold;
+		}
+
+		// Horizontal rule
+		hr {
+			margin: 1em 0;
+			border: none;
+			border-top: 2px solid #ccc;
+		}
 	}
 
-	&.c-rich-text-editor--hide-h1 .ql-header .ql-picker-options .ql-picker-item[data-value="1"] {
-		display: none;
+	&__placeholder {
+		position: absolute;
+		top: 12px;
+		left: 16px;
+		color: #999;
+		pointer-events: none;
+		font-size: 14px;
 	}
 
-	&.c-rich-text-editor--hide-h2 .ql-header .ql-picker-options .ql-picker-item[data-value="2"] {
-		display: none;
+	// ── HTML view ─────────────────────────────────────────────────────────────
+	&__html-view {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		width: 100%;
+		height: 100%;
+		resize: none;
+		margin: 0;
+		padding: 12px 16px;
+		background: #fff;
+		border: 0;
+		outline: none;
+		font-family: 'Courier New', monospace;
+		font-size: 13px;
+		line-height: 1.5;
+		box-sizing: border-box;
 	}
 
-	&.c-rich-text-editor--hide-h3 .ql-header .ql-picker-options .ql-picker-item[data-value="3"] {
-		display: none;
-	}
-
-	&.c-rich-text-editor--hide-h4 .ql-header .ql-picker-options .ql-picker-item[data-value="4"] {
-		display: none;
-	}
-
-	&.c-rich-text-editor--hide-h5 .ql-header .ql-picker-options .ql-picker-item[data-value="5"] {
-		display: none;
-	}
-
-	&.c-rich-text-editor--hide-h6 .ql-header .ql-picker-options .ql-picker-item[data-value="6"] {
-		display: none;
-	}
-
-	&.c-rich-text-editor--hide-normal .ql-header .ql-picker-options .ql-picker-item[data-value=""] {
-		display: none;
-	}
-
+	// ── Fullscreen ────────────────────────────────────────────────────────────
 	&--fullscreen {
 		position: fixed;
 		inset: 0;
 		z-index: 9999;
-		background: white;
-
-		.ql-container {
-			height: calc(100% - 42px); // 42px = default quill toolbar height
-		}
+		background: #fff;
 	}
+
+	// ── Disabled state ────────────────────────────────────────────────────────
+	&.disabled {
+		opacity: 0.6;
+		pointer-events: none;
+	}
+
+	// ── Hidden headings ───────────────────────────────────────────────────────
+	&.c-rich-text-editor--hide-h1 .c-rte-toolbar__select option[value='h1'] { display: none; }
+	&.c-rich-text-editor--hide-h2 .c-rte-toolbar__select option[value='h2'] { display: none; }
+	&.c-rich-text-editor--hide-h3 .c-rte-toolbar__select option[value='h3'] { display: none; }
+	&.c-rich-text-editor--hide-h4 .c-rte-toolbar__select option[value='h4'] { display: none; }
+	&.c-rich-text-editor--hide-h5 .c-rte-toolbar__select option[value='h5'] { display: none; }
+	&.c-rich-text-editor--hide-h6 .c-rte-toolbar__select option[value='h6'] { display: none; }
+	&.c-rich-text-editor--hide-normal .c-rte-toolbar__select option[value='paragraph'] { display: none; }
+}
+
+// Lexical text format classes (applied via the theme)
+.c-rte__text--bold { font-weight: bold; }
+.c-rte__text--italic { font-style: italic; }
+.c-rte__text--underline { text-decoration: underline; }
+.c-rte__text--strikethrough { text-decoration: line-through; }
+.c-rte__text--underline-strikethrough { text-decoration: underline line-through; }
+
+.c-rte__text--subscript {
+	font-size: 0.8em;
+	vertical-align: sub;
+}
+
+.c-rte__text--superscript {
+	font-size: 0.8em;
+	vertical-align: super;
+}
+
+.c-rte__text--code {
+	font-family: 'Courier New', monospace;
+	background: #f4f4f4;
+	padding: 1px 4px;
+	border-radius: 3px;
+}
+
+// Table selection highlight
+.c-rte__table-selection {
+	background: rgb(0 112 204 / 15%);
 }

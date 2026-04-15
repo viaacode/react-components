@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
-import type ReactQuillDefault from 'react-quill-new';
 
 export type RichTextEditorControl =
 	| 'font-size' // Text size selector
 	| 'font-family' // Text font selector
 	| 'line-height' // Text line height selector
 	| 'letter-spacing' // Text pitch selector
+	| 'text-transform' // Text case transformation (uppercase, lowercase, capitalize)
 	| 'text-color' // Text color selector, including text background color settings
 	| 'bold' // Set text bold
 	| 'italic' // Italicize text
@@ -18,6 +18,7 @@ export type RichTextEditorControl =
 	| 'text-align' // Text alignment tool, you can use the textAligns property to specify which alignment can be used
 	| 'text-indent' // Paragraph indent tool, indent up to 6 levels
 	| 'link' // Link insertion tool
+	| 'unlink' // Remove link from current selection
 	| 'headings' // Paragraph type (Title 1-6, General)
 	| 'list-ul' // Unordered list
 	| 'list-ol' // Ordered list
@@ -58,7 +59,6 @@ export interface RichTextEditorProps {
 	onDelete?: () => void;
 	onSave?: () => void;
 	enabledHeadings?: Heading[];
-	quill?: Partial<ReactQuillDefault.ReactQuillProps>;
 }
 
 export interface RichTextEditorWithInternalStateProps {
@@ -78,13 +78,11 @@ export interface RichTextEditorWithInternalStateProps {
 	onDelete?: () => void;
 	onSave?: () => void;
 	enabledHeadings?: Heading[];
-	quill?: Partial<ReactQuillDefault.ReactQuillProps>;
 }
 
 export interface RichEditorState {
 	toHTML: () => string;
 }
-
 export interface RichTextEditorUploadInfo {
 	file: File;
 	progress: (progress: number) => void;
