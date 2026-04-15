@@ -18,7 +18,7 @@ describe('<Table />', () => {
 		});
 
 		for (const col of mockColumns) {
-			const text = typeof col.header === 'string' ? col.header : undefined;
+			const text = col.Header as string;
 
 			if (text) {
 				expect(screen.getByText(new RegExp(text))).toBeDefined();
@@ -73,8 +73,8 @@ describe('<Table />', () => {
 		});
 
 		const filterableCols = mockColumns.filter((col) => {
-			const header = typeof col.header === 'string' ? col.header : undefined;
-			return col.enableSorting !== false && header;
+			const { Header, disableSortBy } = col;
+			return !disableSortBy && Header;
 		});
 
 		expect(screen.getAllByText(new RegExp(defaultSortingIcons.default as string)).length).toEqual(
@@ -96,12 +96,10 @@ describe('<Table />', () => {
 		// Initial output
 		expect(onSortChange).toHaveBeenCalledTimes(1);
 
-		const filterableCol = mockColumns.find(
-			(col) => col.enableSorting !== false && typeof col.header === 'string'
-		);
+		const filterableCol = mockColumns.find(({ Header, disableSortBy }) => !disableSortBy && Header);
 
 		if (filterableCol) {
-			const header = screen.getByText(new RegExp(filterableCol.header as string));
+			const header = screen.getByText(new RegExp(filterableCol.Header as string));
 
 			fireEvent.click(header);
 
@@ -122,12 +120,10 @@ describe('<Table />', () => {
 			onSortChange,
 		});
 
-		const filterableCol = mockColumns.find(
-			(col) => col.enableSorting !== false && typeof col.header === 'string'
-		);
+		const filterableCol = mockColumns.find(({ Header, disableSortBy }) => !disableSortBy && Header);
 
 		if (filterableCol) {
-			const text = filterableCol.header as string;
+			const text = filterableCol.Header as string;
 			const header = screen.getByText(new RegExp(text));
 
 			fireEvent.click(header); // 1 ASC
@@ -177,7 +173,7 @@ describe('<Table />', () => {
 			getCellProps: () => ({ className: cellClass }),
 		});
 
-		const header = screen.getByText(mockColumns[0].header as string);
+		const header = screen.getByText(mockColumns[0].Header as string);
 		const cell = screen.getByText(mockData[0].name);
 		const row = cell.parentElement;
 

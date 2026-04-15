@@ -6,7 +6,7 @@ import type { RichTextEditorWithInternalStateProps } from './RichTextEditor.type
 let RichTextEditorInternalWithInternalState: FC<RichTextEditorWithInternalStateProps> | null = null;
 if (!isServerSideRendering()) {
 	// Do not load the rich text editor during server side rendering
-	// Since quill is browser-only and doesn't add much to server side rendering anyway
+	// Since it causes ESM/CcommonJS issues with braft-editor and doesn't add much to the server side rendering anyway
 	RichTextEditorInternalWithInternalState = lazy(
 		() => import('./RichTextEditorInternalWithInternalState.js')
 	);

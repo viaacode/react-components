@@ -1,5 +1,5 @@
+import type { BraftEditorProps } from 'braft-editor';
 import type { ReactNode } from 'react';
-import type ReactQuillDefault from 'react-quill-new';
 
 export type RichTextEditorControl =
 	| 'font-size' // Text size selector
@@ -58,7 +58,7 @@ export interface RichTextEditorProps {
 	onDelete?: () => void;
 	onSave?: () => void;
 	enabledHeadings?: Heading[];
-	quill?: Partial<ReactQuillDefault.ReactQuillProps>;
+	braft?: Partial<BraftEditorProps>; // TODO: remove 1:1 mapped properties above
 }
 
 export interface RichTextEditorWithInternalStateProps {
@@ -78,7 +78,7 @@ export interface RichTextEditorWithInternalStateProps {
 	onDelete?: () => void;
 	onSave?: () => void;
 	enabledHeadings?: Heading[];
-	quill?: Partial<ReactQuillDefault.ReactQuillProps>;
+	braft?: Partial<BraftEditorProps>; // TODO: remove 1:1 mapped properties above
 }
 
 export interface RichEditorState {

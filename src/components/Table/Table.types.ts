@@ -1,41 +1,41 @@
-import type {
-	Cell,
-	Column,
-	ColumnDef,
-	Header,
-	Row,
-	Table as TanStackTableInstance,
-} from '@tanstack/react-table';
 import type { AvoSearchOrderDirection } from '@viaa/avo2-types';
 import type { MouseEvent, ReactNode } from 'react';
+import type {
+	ColumnInstance,
+	HeaderGroup,
+	Row,
+	TableCellProps,
+	TableHeaderProps,
+	TableOptions,
+	TableRowProps,
+	UsePaginationInstanceProps,
+} from 'react-table';
 import type { DefaultComponentProps } from '../../types';
 
 export type {
-	CellContext as CellProps,
-	ColumnDef as Column,
-	ColumnSort as SortingRule,
+	CellProps,
+	Column,
 	Row,
-	Table as UsePaginationInstanceProps,
-} from '@tanstack/react-table';
-
-export interface TableOptions<T extends TableData> {
-	columns: ColumnDef<T>[];
-	data: T[];
-}
+	SortingRule,
+	TableOptions,
+	UsePaginationInstanceProps,
+} from 'react-table';
 
 export interface TableProps<T extends TableData> extends DefaultComponentProps {
 	children?: React.ReactNode;
-	getCellProps?: (cell: Cell<T, unknown>) => React.HTMLAttributes<HTMLTableCellElement>;
-	getColumnProps?: (column: Column<T, unknown>) => React.HTMLAttributes<HTMLElement>;
-	getHeaderProps?: (header: Header<T, unknown>) => React.HTMLAttributes<HTMLTableCellElement>;
-	getRowProps?: (row: Row<T>) => React.HTMLAttributes<HTMLTableRowElement>;
+	getCellProps?: (column: ColumnInstance<T>) => Partial<TableCellProps>;
+	getColumnProps?: (
+		column: HeaderGroup<T> | ColumnInstance<T>
+	) => Partial<TableHeaderProps> | Partial<TableCellProps>;
+	getHeaderProps?: (column: HeaderGroup<T>) => Partial<TableHeaderProps>;
+	getRowProps?: (row: Row<T>) => Partial<TableRowProps>;
 	onRowClick?: (event: MouseEvent<HTMLTableRowElement>, row: Row<T>) => void;
 	onSortChange?: (
 		sortProp: string | undefined,
 		sortDirection: AvoSearchOrderDirection | undefined
 	) => void;
 	options: TableOptions<T>;
-	pagination?: (table: TanStackTableInstance<T>) => ReactNode;
+	pagination?: (instance: UsePaginationInstanceProps<T>) => ReactNode;
 	sortingIcons?: TableSortingIcons;
 	/**
 	 * We need the possibility to hide the table itself but keep the useTable logic itself in order to maintain the focused row

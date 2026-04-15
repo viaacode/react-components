@@ -1,6 +1,5 @@
-@use "quill/dist/quill.snow";
-@use "quill2-emoji/dist/style";
-@import "quill-table-better/dist/quill-table-better.css";
+@use "braft-editor/dist/index";
+@use "braft-extensions/dist/table";
 
 .c-rich-text-editor {
 	position: relative;
@@ -21,46 +20,35 @@
 		padding: 1.5rem;
 	}
 
-	.ql-editor {
+	.public-DraftEditor-content {
 		word-break: normal;
 	}
 
-	&.c-rich-text-editor--hide-h1 .ql-header .ql-picker-options .ql-picker-item[data-value="1"] {
+	&.c-rich-text-editor--hide-h1 .headings-dropdown .menu li:nth-child(1) {
 		display: none;
 	}
 
-	&.c-rich-text-editor--hide-h2 .ql-header .ql-picker-options .ql-picker-item[data-value="2"] {
+	&.c-rich-text-editor--hide-h2 .headings-dropdown .menu li:nth-child(2) {
 		display: none;
 	}
 
-	&.c-rich-text-editor--hide-h3 .ql-header .ql-picker-options .ql-picker-item[data-value="3"] {
+	&.c-rich-text-editor--hide-h3 .headings-dropdown .menu li:nth-child(3) {
 		display: none;
 	}
 
-	&.c-rich-text-editor--hide-h4 .ql-header .ql-picker-options .ql-picker-item[data-value="4"] {
+	&.c-rich-text-editor--hide-h4 .headings-dropdown .menu li:nth-child(4) {
 		display: none;
 	}
 
-	&.c-rich-text-editor--hide-h5 .ql-header .ql-picker-options .ql-picker-item[data-value="5"] {
+	&.c-rich-text-editor--hide-h5 .headings-dropdown .menu li:nth-child(5) {
 		display: none;
 	}
 
-	&.c-rich-text-editor--hide-h6 .ql-header .ql-picker-options .ql-picker-item[data-value="6"] {
+	&.c-rich-text-editor--hide-h6 .headings-dropdown .menu li:nth-child(6) {
 		display: none;
 	}
 
-	&.c-rich-text-editor--hide-normal .ql-header .ql-picker-options .ql-picker-item[data-value=""] {
+	&.c-rich-text-editor--hide-normal .headings-dropdown .menu li:nth-child(7) {
 		display: none;
-	}
-
-	&--fullscreen {
-		position: fixed;
-		inset: 0;
-		z-index: 9999;
-		background: white;
-
-		.ql-container {
-			height: calc(100% - 42px); // 42px = default quill toolbar height
-		}
 	}
 }
