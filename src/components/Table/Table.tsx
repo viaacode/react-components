@@ -1,8 +1,17 @@
+import {
+	flexRender,
+	getCoreRowModel,
+	getPaginationRowModel,
+	getSortedRowModel,
+	type Header,
+	type Row,
+	type SortingState,
+	useReactTable,
+} from '@tanstack/react-table';
 import { AvoSearchOrderDirection } from '@viaa/avo2-types';
 import clsx from 'clsx';
-import { useEffect, useMemo, useState } from 'react';
 import type { MouseEvent } from 'react';
-import { type HeaderGroup, type Row, usePagination, useSortBy, useTable } from 'react-table';
+import { useEffect, useMemo, useState } from 'react';
 import { bemCls, getVariantClasses } from '../../utils';
 import { defaultPropGetter, defaultSortingIcons } from './Table.const';
 import type { TableData, TableProps } from './Table.types';
@@ -25,6 +34,7 @@ const Table = <RowDataType extends TableData>({
 	enableRowFocusOnClick = false,
 }: TableProps<RowDataType>) => {
 	const [focusedRowId, setFocusedRowId] = useState<string | null>(null);
+	const [sorting, setSorting] = useState<SortingState>([]);
 
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants));
@@ -35,36 +45,25 @@ const Table = <RowDataType extends TableData>({
 	const focusedTdClass = (isFocused: boolean) =>
 		clsx(bem('focus-cell'), isFocused && bem('focus-cell', 'active'));
 
-	// State
-
 	const data = useMemo(() => options.data, [options.data]);
 	const columns = useMemo(() => options.columns, [options.columns]);
 
-	const instance = useTable(
-		{
-			getRowId: (row) => row.id?.toString(),
-			...options,
-			manualSortBy: true,
-			disableMultiSort: true,
-			autoResetRowState: false,
-			columns,
-			data,
-		},
-		useSortBy,
-		usePagination
-	);
+	const table = useReactTable<RowDataType>({
+		data,
+		columns,
+		state: { sorting },
+		onSortingChange: setSorting,
+		getCoreRowModel: getCoreRowModel(),
+		getSortedRowModel: getSortedRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+		manualSorting: true,
+		enableMultiSort: false,
+		getRowId: (row) => row.id?.toString(),
+	});
 
-	// Destructuring
-
-	const {
-		getTableBodyProps,
-		getTableProps,
-		headerGroups,
-		page,
-		prepareRow,
-		rowsById,
-		state: { sortBy },
-	} = instance;
+	const headerGroups = table.getHeaderGroups();
+	const rows = table.getPaginationRowModel().rows;
+	const rowsById = table.getRowModel().rowsById;
 
 	const handleRowClick = (event: MouseEvent<HTMLTableRowElement>, row: Row<RowDataType>) => {
 		if (enableRowFocusOnClick) {
@@ -73,39 +72,31 @@ const Table = <RowDataType extends TableData>({
 		onRowClick?.(event, row);
 	};
 
-	// Effects
-
 	useEffect(() => {
-		const orderProp = sortBy[0]?.id || undefined;
+		const orderProp = sorting[0]?.id || undefined;
 		let orderDirection: AvoSearchOrderDirection | undefined;
-		if (sortBy[0]) {
-			if (sortBy[0].desc) {
-				orderDirection = AvoSearchOrderDirection.DESC;
-			} else {
-				orderDirection = AvoSearchOrderDirection.ASC;
-			}
+		if (sorting[0]) {
+			orderDirection = sorting[0].desc ? AvoSearchOrderDirection.DESC : AvoSearchOrderDirection.ASC;
 		} else {
 			orderDirection = undefined;
 		}
 		onSortChange?.(orderProp, orderDirection);
-	}, [sortBy, onSortChange]);
+	}, [sorting, onSortChange]);
 
 	useEffect(() => {
 		// We have row focus enabled, have a focused row but the data changed and the row is not available anymore
 		if (enableRowFocusOnClick && focusedRowId && !rowsById[focusedRowId]) {
 			setFocusedRowId(null);
 		}
-	}, [enableRowFocusOnClick, rowsById]);
+	}, [enableRowFocusOnClick, rowsById, focusedRowId]);
 
 	// Render
 
-	const renderSortingIndicator = (column: HeaderGroup<RowDataType>) => {
-		if (!column.canSort || column.disableSortBy) return null;
-
-		if (column.isSorted) {
-			return column.isSortedDesc ? sortingIcons.desc : sortingIcons.asc;
-		}
-
+	const renderSortingIndicator = (header: Header<RowDataType, unknown>) => {
+		if (!header.column.getCanSort()) return null;
+		const sortDir = header.column.getIsSorted();
+		if (sortDir === 'asc') return sortingIcons.asc;
+		if (sortDir === 'desc') return sortingIcons.desc;
 		return sortingIcons.default;
 	};
 
@@ -113,62 +104,69 @@ const Table = <RowDataType extends TableData>({
 		showTable && (
 			<>
 				<div className={clsx(bem('scroller'), enableRowFocusOnClick && bem('with-row-focus'))}>
-					<table {...getTableProps()} className={rootCls} style={style}>
+					<table className={rootCls} style={style}>
 						<thead className={clsx(bem('wrapper'), bem('wrapper', 'header'))}>
 							{headerGroups.map((group, i) => (
 								<tr
-									{...group.getHeaderGroupProps()}
 									// biome-ignore lint/suspicious/noArrayIndexKey: TODO fix
 									key={i}
 									className={clsx(bem('row'), bem('row', 'header'))}
 								>
 									{enableRowFocusOnClick && (
-										<th
-											role="columnheader"
-											aria-hidden={true}
-											className={clsx(thClass(false), focusedTdClass(false))}
-										>
+										<td role="presentation" className={clsx(thClass(false), focusedTdClass(false))}>
 											&nbsp;
-										</th>
+										</td>
 									)}
-									{group.headers.map((column, j) => (
-										<th
-											{...column.getHeaderProps([
-												{ className: thClass(column.isSorted) },
-												column.getSortByToggleProps(),
-												getColumnProps(column),
-												getHeaderProps(column),
-											])}
-											// biome-ignore lint/suspicious/noArrayIndexKey: TODO fix
-											key={`${i}-${j}`}
-										>
-											{column.render('Header')}
+									{group.headers.map((header) => {
+										const column = header.column;
+										const isSorted = column.getIsSorted() !== false;
 
-											{renderSortingIndicator(column)}
-										</th>
-									))}
+										const columnProps = getColumnProps(column);
+										const headerProps = getHeaderProps(header);
+
+										const sortingHandler = column.getCanSort()
+											? column.getToggleSortingHandler()
+											: undefined;
+
+										return (
+											<th
+												key={header.id}
+												onClick={sortingHandler}
+												className={clsx(
+													thClass(isSorted),
+													columnProps?.className,
+													headerProps?.className
+												)}
+												style={{
+													...columnProps?.style,
+													...headerProps?.style,
+												}}
+												{...columnProps}
+												{...headerProps}
+											>
+												{flexRender(column.columnDef.header, header.getContext())}
+												{renderSortingIndicator(header)}
+											</th>
+										);
+									})}
 								</tr>
 							))}
 						</thead>
 
-						<tbody
-							className={clsx(bem('wrapper'), bem('wrapper', 'body'))}
-							{...getTableBodyProps()}
-						>
-							{page.map((row, i) => {
-								prepareRow(row);
+						<tbody className={clsx(bem('wrapper'), bem('wrapper', 'body'))}>
+							{rows.map((row) => {
+								const rowProps = getRowProps(row);
 
 								return (
 									<tr
-										onClick={(e) => handleRowClick(e, row)}
-										{...row.getRowProps([{ className: trBodyClass }, getRowProps(row)])}
 										key={row.id}
+										onClick={(e) => handleRowClick(e, row)}
+										className={clsx(trBodyClass, rowProps?.className)}
+										style={rowProps?.style}
+										{...rowProps}
 									>
 										{enableRowFocusOnClick && (
-											<td
-												role="cell"
-												className={focusedTdClass(row.id === focusedRowId)}
-											>
+											<td className={focusedTdClass(row.id === focusedRowId)}>
 												<button
 													type="button"
 													aria-label="Focus row"
@@ -183,18 +181,22 @@ const Table = <RowDataType extends TableData>({
 												</button>
 											</td>
 										)}
-										{row.cells.map((cell, j) => {
+										{row.getVisibleCells().map((cell) => {
+											const columnProps = getColumnProps(cell.column);
+											const cellProps = getCellProps(cell.column);
+
 											return (
 												<td
-													{...cell.getCellProps([
-														{ className: tdClass },
-														getColumnProps(cell.column),
-														getCellProps(cell.column),
-													])}
-													// biome-ignore lint/suspicious/noArrayIndexKey: TODO fix
-													key={`${i}-${j}`}
+													key={cell.id}
+													className={clsx(tdClass, columnProps?.className, cellProps?.className)}
+													style={{
+														...columnProps?.style,
+														...cellProps?.style,
+													}}
+													{...columnProps}
+													{...cellProps}
 												>
-													{cell.render('Cell')}
+													{flexRender(cell.column.columnDef.cell, cell.getContext())}
 												</td>
 											);
 										})}
@@ -205,7 +207,7 @@ const Table = <RowDataType extends TableData>({
 					</table>
 				</div>
 
-				{pagination && <div className={clsx(bem('footer'))}>{pagination(instance)}</div>}
+				{pagination && <div className={clsx(bem('footer'))}>{pagination(table)}</div>}
 			</>
 		)
 	);

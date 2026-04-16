@@ -18,7 +18,7 @@ describe('<Table />', () => {
 		});
 
 		for (const col of mockColumns) {
-			const text = col.Header as string;
+			const text = col.header as string;
 
 			if (text) {
 				expect(screen.getByText(new RegExp(text))).toBeDefined();
@@ -72,10 +72,7 @@ describe('<Table />', () => {
 			},
 		});
 
-		const filterableCols = mockColumns.filter((col) => {
-			const { Header, disableSortBy } = col;
-			return !disableSortBy && Header;
-		});
+		const filterableCols = mockColumns.filter((col) => col.enableSorting !== false && col.header);
 
 		expect(screen.getAllByText(new RegExp(defaultSortingIcons.default as string)).length).toEqual(
 			filterableCols.length
@@ -96,10 +93,12 @@ describe('<Table />', () => {
 		// Initial output
 		expect(onSortChange).toHaveBeenCalledTimes(1);
 
-		const filterableCol = mockColumns.find(({ Header, disableSortBy }) => !disableSortBy && Header);
+		const filterableCol = mockColumns.find(
+			({ header, enableSorting }) => enableSorting !== false && header
+		);
 
 		if (filterableCol) {
-			const header = screen.getByText(new RegExp(filterableCol.Header as string));
+			const header = screen.getByText(new RegExp(filterableCol.header as string));
 
 			fireEvent.click(header);
 
@@ -120,10 +119,12 @@ describe('<Table />', () => {
 			onSortChange,
 		});
 
-		const filterableCol = mockColumns.find(({ Header, disableSortBy }) => !disableSortBy && Header);
+		const filterableCol = mockColumns.find(
+			({ header, enableSorting }) => enableSorting !== false && header
+		);
 
 		if (filterableCol) {
-			const text = filterableCol.Header as string;
+			const text = filterableCol.header as string;
 			const header = screen.getByText(new RegExp(text));
 
 			fireEvent.click(header); // 1 ASC
@@ -173,7 +174,7 @@ describe('<Table />', () => {
 			getCellProps: () => ({ className: cellClass }),
 		});
 
-		const header = screen.getByText(mockColumns[0].Header as string);
+		const header = screen.getByText(mockColumns[0].header as string);
 		const cell = screen.getByText(mockData[0].name);
 		const row = cell.parentElement;
 

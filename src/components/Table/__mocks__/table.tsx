@@ -1,4 +1,4 @@
-import type { CellProps, Column } from 'react-table';
+import type { CellContext, ColumnDef } from '@tanstack/react-table';
 
 export interface MockTableData {
 	id: string;
@@ -18,25 +18,25 @@ export const mockData: MockTableData[] = [1, 2, 3, 4, 5, 6].map((data) => {
 	};
 });
 
-export const mockColumns: Column<MockTableData>[] = [
+export const mockColumns: ColumnDef<MockTableData>[] = [
 	{
-		Header: 'Id',
-		accessor: 'id', // accessor is the "key" in the data
-		disableSortBy: true,
+		header: 'Id',
+		accessorKey: 'id',
+		enableSorting: false,
 	},
 	{
-		Header: 'Name',
-		accessor: 'name',
+		header: 'Name',
+		accessorKey: 'name',
 	},
 	{
-		Header: 'Created at',
-		accessor: 'created_at',
-		Cell: ({ cell }: CellProps<MockTableData, MockTableData['created_at']>) => {
-			return new Date(cell.value).toLocaleDateString();
+		header: 'Created at',
+		accessorKey: 'created_at',
+		cell: ({ cell }: CellContext<MockTableData, MockTableData['created_at']>) => {
+			return new Date(cell.getValue()).toLocaleDateString();
 		},
 	},
 	{
-		id: 'Actions',
-		Cell: <button type="button">More</button>,
+		id: 'actions',
+		cell: () => <button type="button">More</button>,
 	},
 ];
