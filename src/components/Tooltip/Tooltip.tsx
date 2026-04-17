@@ -1,8 +1,7 @@
 import clsx from 'clsx';
-import { type FunctionComponent, type ReactNode, useCallback, useEffect, useState } from 'react';
+import { type FunctionComponent, type ReactNode, useState } from 'react';
 
 import { useSlot } from '../../hooks/use-slot';
-import { generateRandomId } from '../../utils/generate-random-id/generate-random-id';
 
 import './Tooltip.scss';
 import {
@@ -30,12 +29,13 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	contentClassName,
 }) => {
 	const [show, setShow] = useState(false);
-	const [id] = useState(generateRandomId());
 
 	const tooltipSlot = useSlot(TooltipContent, children);
 	const triggerSlot = useSlot(TooltipTrigger, children);
 
 	const { refs, floatingStyles, context } = useFloating({
+		open: show,
+		onOpenChange: setShow,
 		placement: position,
 		middleware: [floatingOffset({ mainAxis: offset })],
 		whileElementsMounted: autoUpdate,
@@ -45,39 +45,9 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	const focus = useFocus(context);
 	const { getFloatingProps, getReferenceProps } = useInteractions([hover, focus]);
 
-	const handleMouseMove = useCallback(
-		async (evt: Event) => {
-			const elem = evt.target as HTMLElement;
-			let tooltipElem: HTMLElement | null = null;
-			if (elem.classList.contains('c-tooltip-component-trigger')) {
-				tooltipElem = elem;
-			} else if (elem.closest('.c-tooltip-component-trigger')) {
-				tooltipElem = elem.closest('.c-tooltip-component-trigger');
-			}
-
-			setShow(!!tooltipElem && tooltipElem.getAttribute('data-id') === id);
-		},
-		[id]
-	);
-
-	useEffect(() => {
-		document.body.addEventListener('mousemove', handleMouseMove);
-		document.body.addEventListener('touch', handleMouseMove);
-
-		return () => {
-			document.body.removeEventListener('mousemove', handleMouseMove);
-			document.body.removeEventListener('touch', handleMouseMove);
-		};
-	}, [handleMouseMove]);
-
 	return tooltipSlot && triggerSlot ? (
 		<>
-			<div
-				className="c-tooltip-component-trigger"
-				data-id={id}
-				ref={refs.setReference}
-				{...getReferenceProps()}
-			>
+			<div className="c-tooltip-component-trigger" ref={refs.setReference} {...getReferenceProps()}>
 				{triggerSlot}
 			</div>
 
