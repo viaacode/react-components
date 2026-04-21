@@ -20,6 +20,10 @@ export interface MultiRangePropsSchema extends DefaultComponentProps {
 	highlightColor: string;
 	onChange?: (values: number[]) => void;
 	numberInputAriaLabel: string;
+	startSliderAriaLabel?: string;
+	endSliderAriaLabel?: string;
+	startSliderId?: string;
+	endSliderId?: string;
 }
 
 const MultiRange: FC<MultiRangePropsSchema> = ({
@@ -37,6 +41,10 @@ const MultiRange: FC<MultiRangePropsSchema> = ({
 	highlightColor,
 	onChange = noop,
 	numberInputAriaLabel,
+	startSliderAriaLabel,
+	endSliderAriaLabel,
+	startSliderId,
+	endSliderId,
 }) => {
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, {
@@ -112,7 +120,20 @@ const MultiRange: FC<MultiRangePropsSchema> = ({
 						</div>
 					</div>
 				)}
-				renderThumb={({ props }) => <div {...props} key={props.key} className={bem('thumb')} />}
+				renderThumb={({ props, index }) => {
+					const ariaLabel = index === 0 ? startSliderAriaLabel : index === 1 ? endSliderAriaLabel : undefined;
+					const sliderId = index === 0 ? startSliderId : index === 1 ? endSliderId : undefined;
+
+					return (
+						<div
+							{...props}
+							key={props.key}
+							id={sliderId}
+							className={bem('thumb')}
+							aria-label={ariaLabel}
+						/>
+					);
+				}}
 			/>
 			{showNumber && (
 				<TextInput

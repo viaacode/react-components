@@ -15,6 +15,10 @@ export interface TimeCropControlsProps {
 	skipHourFormatting?: boolean;
 	startInputAriaLabel: string;
 	endInputAriaLabel: string;
+	startSliderAriaLabel?: string;
+	endSliderAriaLabel?: string;
+	startSliderId?: string;
+	endSliderId?: string;
 }
 
 export enum TimeCropControlsErrors {
