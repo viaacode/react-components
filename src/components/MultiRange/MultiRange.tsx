@@ -121,8 +121,8 @@ const MultiRange: FC<MultiRangePropsSchema> = ({
 					</div>
 				)}
 				renderThumb={({ props, index }) => {
-					const ariaLabel = index === 0 ? startSliderAriaLabel : index === 1 ? endSliderAriaLabel : undefined;
-					const sliderId = index === 0 ? startSliderId : index === 1 ? endSliderId : undefined;
+					const ariaLabel = index === 0 ? startSliderAriaLabel : endSliderAriaLabel;
+					const sliderId = index === 0 ? startSliderId : endSliderId;
 
 					return (
 						<div
