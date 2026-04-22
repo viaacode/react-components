@@ -20,10 +20,10 @@ export interface MultiRangePropsSchema extends DefaultComponentProps {
 	highlightColor: string;
 	onChange?: (values: number[]) => void;
 	numberInputAriaLabel: string;
-	startSliderAriaLabel?: string;
-	endSliderAriaLabel?: string;
-	startSliderId?: string;
-	endSliderId?: string;
+	startSliderAriaLabel: string;
+	endSliderAriaLabel: string;
+	startSliderId: string;
+	endSliderId: string;
 }
 
 const MultiRange: FC<MultiRangePropsSchema> = ({
