@@ -28,10 +28,6 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 	correctWrongTimeInput,
 	startInputAriaLabel,
 	endInputAriaLabel,
-	startSliderAriaLabel,
-	endSliderAriaLabel,
-	startSliderId,
-	endSliderId,
 }) => {
 	const formatDuration = useCallback(
 		(numSeconds: number | null | undefined) => {
@@ -191,10 +187,6 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 					max={Math.max(maxTime, minTime + 1)} // Avoid issues with min === 0 and max === 0 with Range library
 					step={1}
 					numberInputAriaLabel=""
-					startSliderAriaLabel={startSliderAriaLabel}
-					endSliderAriaLabel={endSliderAriaLabel}
-					startSliderId={startSliderId}
-					endSliderId={endSliderId}
 				/>
 			</div>
 			<TextInput
