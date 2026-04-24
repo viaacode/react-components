@@ -20,6 +20,7 @@ const MultiSelect: FC<MultiSelectProps> = ({
 	confirmOptions,
 	resetOptions,
 	id,
+	isDisabled = false,
 }): ReactElement => {
 	const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 	const [checkedStates, setCheckedStates] = useState(options);
@@ -92,6 +93,7 @@ const MultiSelect: FC<MultiSelectProps> = ({
 				iconOpen={iconOpen}
 				iconClosed={iconClosed}
 				id={id}
+				isDisabled={isDisabled}
 			>
 				<div className="c-multi-select__content-wrapper">
 					{checkboxHeader && <div className="c-multi-select__header">{checkboxHeader}</div>}

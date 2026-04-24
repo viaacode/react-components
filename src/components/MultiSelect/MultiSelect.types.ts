@@ -15,6 +15,7 @@ export interface MultiSelectProps extends DefaultComponentProps {
 	confirmOptions?: MultiSelectConfirmationOption;
 	resetOptions?: MultiSelectConfirmationOption;
 	id: string;
+	isDisabled?: boolean;
 }
 
 export interface MultiSelectOption {
