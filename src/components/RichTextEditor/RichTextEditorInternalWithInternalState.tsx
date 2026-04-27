@@ -137,18 +137,6 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 		} as ExtendControlType;
 	});
 
-	useEffect(() => {
-		console.log('value', value);
-	}, [value]);
-
-	useEffect(() => {
-		console.log('prettyHtml', prettyHtml);
-	}, [prettyHtml]);
-
-	useEffect(() => {
-		console.log('richTextEditorState', richTextEditorState);
-	}, [richTextEditorState]);
-
 	return (
 		<div
 			className={clsx(root, className, getHiddenHeadingClasses(enabledHeadings), 'c-content', {
