@@ -6,7 +6,14 @@ import BraftEditor, {
 } from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
 import clsx from 'clsx';
-import { type FunctionComponent, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+	type FunctionComponent,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 
 import { getLanguage } from './RichTextEditor.consts';
 import { getHiddenHeadingClasses, prettifyHtml } from './RichTextEditor.helpers';
@@ -53,6 +60,14 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 	const [richTextEditorState, setRichTextEditorState] = useState<EditorState>(
 		BraftEditorAny.createEditorState(value || '')
 	);
+
+	const resolvedPlaceholder = useMemo(() => {
+		if (value?.includes('ol') || value?.includes('ul')) {
+			return undefined;
+		}
+
+		return placeholder;
+	}, [value, placeholder]);
 
 	useLayoutEffect(() => {
 		const toolbarElement = document.querySelector('.bf-controlbar');
@@ -146,7 +161,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 				onFocus={onFocus}
 				onSave={() => richTextEditorState && onSave?.()}
 				onTab={onTab}
-				placeholder={placeholder}
+				placeholder={resolvedPlaceholder}
 				readOnly={disabled}
 				value={richTextEditorState}
 			/>
