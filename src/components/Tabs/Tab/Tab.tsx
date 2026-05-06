@@ -10,6 +10,7 @@ const Tab: FC<TabProps> = ({
 	active,
 	className,
 	label,
+	ariaLabel,
 	icon,
 	id,
 	rootClassName: root = 'c-tab',
@@ -29,6 +30,7 @@ const Tab: FC<TabProps> = ({
 			tabIndex={0}
 			onClick={onClick}
 			onKeyPress={onKeyPress}
+			aria-label={ariaLabel}
 		>
 			{icon && <span className={bem('icon')}>{icon}</span>}
 			<span className={bem('label')}>{label}</span>
