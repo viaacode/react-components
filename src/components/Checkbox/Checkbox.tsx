@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import { type FC, forwardRef } from 'react';
 
-import { bemCls, getVariantClasses, keysEnter, onKey } from '../../utils';
+import { useEnterKeyClick } from '../../hooks';
+import { bemCls, getVariantClasses } from '../../utils';
 import { Spinner } from '../Spinner';
 
 import type { CheckboxProps } from './Checkbox.types';
@@ -29,15 +30,6 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 			[bem('', 'disabled')]: disabled,
 		});
 
-		const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-			onKey(e, keysEnter, () => {
-				if (!disabled) {
-					e.preventDefault();
-					e.currentTarget.click();
-				}
-			});
-		};
-
 		return (
 			<label className={rootCls}>
 				<input
@@ -49,7 +41,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 					type="checkbox"
 					value={value}
 					onChange={onChange}
-					onKeyDown={handleKeyDown}
+					onKeyDown={useEnterKeyClick({ disabled })}
 				/>
 				{showSpinner && <Spinner />}
 				{!showSpinner && <span className={bem('check-icon')}>{checkIcon}</span>}

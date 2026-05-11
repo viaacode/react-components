@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import { forwardRef } from 'react';
 
-import { bemCls, getVariantClasses, keysEnter, onKey } from '../../utils';
+import { useEnterKeyClick } from '../../hooks';
+import { bemCls, getVariantClasses } from '../../utils';
 
 import type { RadioButtonProps } from './RadioButton.types';
 
@@ -26,15 +27,6 @@ const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
 			[bem('', 'disabled')]: disabled,
 		});
 
-		const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-			onKey(e, keysEnter, () => {
-				if (!disabled && !checked) {
-					e.preventDefault();
-					e.currentTarget.click();
-				}
-			});
-		};
-
 		return (
 			<label className={rootCls}>
 				<input
@@ -46,7 +38,11 @@ const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
 					type="radio"
 					value={value}
 					onChange={onChange}
-					onKeyDown={handleKeyDown}
+					onKeyDown={useEnterKeyClick({
+						disabled,
+						preventWhenChecked: true,
+						checked,
+					})}
 				/>
 				<span className={bem('check-icon')} />
 				{label && <span className={bem('label')}>{label}</span>}
