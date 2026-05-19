@@ -51,7 +51,7 @@
     "@floating-ui/react": "0.27.18",
     "@flowplayer/player": "3.32.1",
     "@popperjs/core": "2.11.6",
-    "@viaa/avo2-types": "5.0.14",
+    "@viaa/avo2-types": "5.0.15",
     "autosize": "6.0.1",
     "braft-editor": "^2.3.9",
     "braft-extensions": "0.1.1",
