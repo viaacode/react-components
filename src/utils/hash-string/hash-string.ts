@@ -1,5 +1,5 @@
 // src: https://stackoverflow.com/a/52171480
-export const cyrb53 = (str: string, seed = 0) => {
+const cyrb53 = (str: string, seed = 0) => {
 	let h1 = 0xdeadbeef ^ seed;
 	let h2 = 0x41c6ce57 ^ seed;
 	for (let i = 0, ch: number; i < str.length; i++) {

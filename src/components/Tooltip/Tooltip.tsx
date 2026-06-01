@@ -25,7 +25,7 @@ import {
 } from '@floating-ui/react';
 import { TooltipContent, TooltipTrigger } from './Tooltip.slots';
 
-export interface TooltipPropsSchema {
+interface TooltipPropsSchema {
 	children: ReactNode;
 	position: Placement;
 	offset?: number;
