@@ -248,3 +248,5 @@ bundle-stats.html
 
 # precommit hooks husky
 /.husky
+
+stats.html

@@ -5,7 +5,7 @@ import { bemCls, getVariantClasses, keysEnter, keysSpacebar, onKey } from '../..
 
 import type { CardProps } from './Card.types';
 
-export const cardDefaultProps: CardProps = {
+const cardDefaultProps: CardProps = {
 	edge: 'zinc',
 	mode: 'light',
 	orientation: 'vertical',

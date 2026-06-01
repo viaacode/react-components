@@ -4,7 +4,7 @@ import type { DefaultComponentProps } from '../../types';
 
 import './Flex.scss';
 
-export type Orientation = 'horizontal' | 'vertical';
+type Orientation = 'horizontal' | 'vertical';
 
 export interface FlexProps extends DefaultComponentProps {
 	align?: 'start' | 'baseline';
