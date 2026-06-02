@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "5.1.26",
+  "version": "5.1.35",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -44,6 +44,7 @@
     "licenses": "license-checker --csv --out licenses.csv",
     "snyk-protect": "snyk protect",
     "prepare": "husky install",
+    "dead-code-elimination": "cross-env NODE_OPTIONS=--max-old-space-size=8192 knip",
     "bump": "bump-package-versions --part=patch --strategy=highest ./package.json"
   },
   "peerDependencies": {
@@ -51,7 +52,7 @@
     "@floating-ui/react": "0.27.18",
     "@flowplayer/player": "3.32.1",
     "@popperjs/core": "2.11.6",
-    "@viaa/avo2-types": "5.0.13",
+    "@viaa/avo2-types": "5.0.16",
     "autosize": "6.0.1",
     "braft-editor": "^2.3.9",
     "braft-extensions": "0.1.1",
@@ -73,7 +74,8 @@
     "@biomejs/biome": "2.3.4",
     "@commitlint/cli": "17.7.1",
     "@commitlint/config-conventional": "17.7.0",
-    "@storybook/react-vite": "10.3.5",
+    "@storybook/react-vite": "10.4.1",
+    "@storybook/react": "10.4.1",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@testing-library/user-event": "14.6.1",
@@ -101,7 +103,7 @@
     "rimraf": "3.0.2",
     "sass": "1.93.3",
     "snyk": "^1.1300.2",
-    "storybook": "10.3.5",
+    "storybook": "10.4.1",
     "stylelint": "16.25.0",
     "stylelint-config-standard-scss": "16.0.0",
     "ts-jest": "29.1.1",
@@ -147,5 +149,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "resolutions": {
+    "react": "19.2.5",
+    "react-dom": "19.2.5"
   }
 }

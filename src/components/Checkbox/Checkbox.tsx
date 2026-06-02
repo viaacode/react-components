@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { type FC, forwardRef } from 'react';
 
+import { useEnterKeyClick } from '../../hooks';
 import { bemCls, getVariantClasses } from '../../utils';
 import { Spinner } from '../Spinner';
 
@@ -40,6 +41,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 					type="checkbox"
 					value={value}
 					onChange={onChange}
+					onKeyDown={useEnterKeyClick({ disabled })}
 				/>
 				{showSpinner && <Spinner />}
 				{!showSpinner && <span className={bem('check-icon')}>{checkIcon}</span>}

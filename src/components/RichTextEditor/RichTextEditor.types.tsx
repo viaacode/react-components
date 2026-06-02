@@ -1,6 +1,11 @@
 import type { BraftEditorProps } from 'braft-editor';
 import type { ReactNode } from 'react';
 
+export interface CustomRichTextEditorButton {
+	type: 'customButton';
+	component: ReactNode;
+}
+
 export type RichTextEditorControl =
 	| 'font-size' // Text size selector
 	| 'font-family' // Text font selector
@@ -31,7 +36,8 @@ export type RichTextEditorControl =
 	| 'table' // Table
 	| 'fullscreen' // Make editor fullscreen
 	| 'separator' // Split line, continuous multiple separators will only be displayed as 1
-	| 'editHtml'; // Provides a separate HTML view to edit the HTML content of the editor
+	| 'editHtml' // Provides a separate HTML view to edit the HTML content of the editor
+	| CustomRichTextEditorButton; // Provides the possibility to add a custom button
 
 export type Heading = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
 

@@ -5,9 +5,15 @@ import type { TabProps } from './Tab.types';
 
 const mockId = 'tab-id';
 const mockLabel = 'Tab me!';
+const mockAriaLabel = 'Tab my aria label!';
 
-const renderTab = ({ id = mockId, label = mockLabel, ...rest }: Partial<TabProps> = {}) => {
-	return render(<Tab {...rest} id={id} label={label} />);
+const renderTab = ({
+	id = mockId,
+	label = mockLabel,
+	ariaLabel = mockAriaLabel,
+	...rest
+}: Partial<TabProps> = {}) => {
+	return render(<Tab {...rest} id={id} label={label} ariaLabel={ariaLabel} />);
 };
 
 describe('<Tab />', () => {

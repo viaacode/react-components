@@ -6,12 +6,20 @@ import BraftEditor, {
 } from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
 import clsx from 'clsx';
-import { type FunctionComponent, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+	type FunctionComponent,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 
 import { getLanguage } from './RichTextEditor.consts';
 import { getHiddenHeadingClasses, prettifyHtml } from './RichTextEditor.helpers';
 import {
 	ALL_RICH_TEXT_HEADINGS,
+	type CustomRichTextEditorButton,
 	type RichEditorState,
 	type RichTextEditorWithInternalStateProps,
 } from './RichTextEditor.types';
@@ -53,6 +61,14 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 		BraftEditorAny.createEditorState(value || '')
 	);
 
+	const resolvedPlaceholder = useMemo(() => {
+		if (value?.includes('ol') || value?.includes('ul')) {
+			return undefined;
+		}
+
+		return placeholder;
+	}, [value, placeholder]);
+
 	useLayoutEffect(() => {
 		const toolbarElement = document.querySelector('.bf-controlbar');
 		if (!toolbarElement) return;
@@ -87,30 +103,39 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 
 	BraftEditorAny.use(BraftTable(tableOptions));
 
-	const newControls: ControlType[] | undefined = controls
-		? ([
-				...(controls || [].filter((control: string) => control !== 'editHtml')),
-				...(controls?.includes('editHtml')
-					? [
-							{
-								key: 'editHtml',
-								type: 'button',
-								title: 'HTML',
-								html: 'HTML',
-								text: 'HTML',
-								className: `html-edit-button ${isHtmlView ? 'active' : ''}`,
-								onClick: () => {
-									if (isHtmlView) {
-										setRichTextEditorState(BraftEditorAny.createEditorState(prettyHtml || ''));
-									}
-									setIsHtmlView((prev) => !prev);
-								},
-								disabled: false,
-							} as ExtendControlType,
-						]
-					: []),
-			] as (ControlType | ExtendControlType)[])
-		: undefined;
+	const customButtonControl = controls?.find(
+		(control) => typeof control !== 'string' && control.type === 'customButton'
+	) as CustomRichTextEditorButton;
+
+	const newControls: ControlType[] | undefined = controls?.map((control) => {
+		if (typeof control === 'string') {
+			if (control !== 'editHtml') {
+				return control;
+			}
+			return {
+				key: 'editHtml',
+				type: 'button',
+				title: 'HTML',
+				html: 'HTML',
+				text: 'HTML',
+				className: `html-edit-button ${isHtmlView ? 'active' : ''}`,
+				onClick: () => {
+					if (isHtmlView) {
+						setRichTextEditorState(BraftEditorAny.createEditorState(prettyHtml || ''));
+					}
+					setIsHtmlView((prev) => !prev);
+				},
+				disabled: false,
+			} as ExtendControlType;
+		}
+
+		return {
+			key: 'customButton',
+			type: 'component',
+			className: 'custom-button',
+			component: customButtonControl.component,
+		} as ExtendControlType;
+	});
 
 	return (
 		<div
@@ -136,7 +161,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorWithInternalStateP
 				onFocus={onFocus}
 				onSave={() => richTextEditorState && onSave?.()}
 				onTab={onTab}
-				placeholder={placeholder}
+				placeholder={resolvedPlaceholder}
 				readOnly={disabled}
 				value={richTextEditorState}
 			/>

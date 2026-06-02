@@ -1,11 +1,18 @@
 import clsx from 'clsx';
-import { type FunctionComponent, type ReactNode, useState } from 'react';
+import {
+	type FunctionComponent,
+	type ReactNode,
+	useRef,
+	useState,
+} from 'react';
 
 import { useSlot } from '../../hooks/use-slot';
 
 import './Tooltip.scss';
 import {
+	arrow,
 	autoUpdate,
+	FloatingArrow,
 	offset as floatingOffset,
 	type Placement,
 	useFloating,
@@ -15,7 +22,7 @@ import {
 } from '@floating-ui/react';
 import { TooltipContent, TooltipTrigger } from './Tooltip.slots';
 
-export interface TooltipPropsSchema {
+interface TooltipPropsSchema {
 	children: ReactNode;
 	position: Placement;
 	offset?: number;
@@ -25,19 +32,25 @@ export interface TooltipPropsSchema {
 const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	children,
 	position = 'top',
-	offset,
+	offset = 10,
 	contentClassName,
 }) => {
 	const [show, setShow] = useState(false);
 
 	const tooltipSlot = useSlot(TooltipContent, children);
 	const triggerSlot = useSlot(TooltipTrigger, children);
+	const arrowRef = useRef(null);
 
 	const { refs, floatingStyles, context } = useFloating({
 		open: show,
 		onOpenChange: setShow,
 		placement: position,
-		middleware: [floatingOffset({ mainAxis: offset })],
+		middleware: [
+			floatingOffset({ mainAxis: offset }),
+			arrow({
+				element: arrowRef,
+			}),
+		],
 		whileElementsMounted: autoUpdate,
 	});
 
@@ -65,7 +78,13 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 				{...getFloatingProps()}
 			>
 				{tooltipSlot}
-				<div className="c-tooltip-component__arrow" data-popper-arrow />
+				<FloatingArrow
+					ref={arrowRef}
+					context={context}
+					className="c-tooltip-component__arrow"
+					fill="green"
+					stroke="red"
+				/>
 			</div>
 		</>
 	) : null;
