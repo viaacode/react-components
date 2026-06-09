@@ -1,12 +1,5 @@
 import clsx from 'clsx';
-import {
-	type FunctionComponent,
-	type ReactNode,
-	useCallback,
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import { type FunctionComponent, type ReactNode, useRef, useState } from 'react';
 
 import { useSlot } from '../../hooks/use-slot';
 import { generateRandomId } from '../../utils/generate-random-id/generate-random-id';
@@ -18,6 +11,7 @@ import {
 	FloatingArrow,
 	offset as floatingOffset,
 	type Placement,
+	safePolygon,
 	useFloating,
 	useFocus,
 	useHover,
@@ -46,6 +40,8 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	const arrowRef = useRef(null);
 
 	const { refs, floatingStyles, context } = useFloating({
+		open: show,
+		onOpenChange: setShow,
 		placement: position,
 		middleware: [
 			floatingOffset({ mainAxis: offset }),
@@ -56,34 +52,14 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 		whileElementsMounted: autoUpdate,
 	});
 
-	const hover = useHover(context);
+	const hover = useHover(context, {
+		handleClose: safePolygon({
+			requireIntent: false,
+			buffer: offset,
+		}),
+	});
 	const focus = useFocus(context);
 	const { getFloatingProps, getReferenceProps } = useInteractions([hover, focus]);
-
-	const handleMouseMove = useCallback(
-		async (evt: Event) => {
-			const elem = evt.target as HTMLElement;
-			let tooltipElem: HTMLElement | null = null;
-			if (elem.classList.contains('c-tooltip-component-trigger')) {
-				tooltipElem = elem;
-			} else if (elem.closest('.c-tooltip-component-trigger')) {
-				tooltipElem = elem.closest('.c-tooltip-component-trigger');
-			}
-
-			setShow(!!tooltipElem && tooltipElem.getAttribute('data-id') === id);
-		},
-		[id]
-	);
-
-	useEffect(() => {
-		document.body.addEventListener('mousemove', handleMouseMove);
-		document.body.addEventListener('touch', handleMouseMove);
-
-		return () => {
-			document.body.removeEventListener('mousemove', handleMouseMove);
-			document.body.removeEventListener('touch', handleMouseMove);
-		};
-	}, [handleMouseMove]);
 
 	return tooltipSlot && triggerSlot ? (
 		<>
