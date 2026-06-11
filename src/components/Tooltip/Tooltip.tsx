@@ -12,6 +12,8 @@ import {
 	offset as floatingOffset,
 	type Placement,
 	safePolygon,
+	useClick,
+	useDismiss,
 	useFloating,
 	useFocus,
 	useHover,
@@ -59,7 +61,14 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 		}),
 	});
 	const focus = useFocus(context);
-	const { getFloatingProps, getReferenceProps } = useInteractions([hover, focus]);
+	const click = useClick(context);
+	const dismiss = useDismiss(context);
+	const { getFloatingProps, getReferenceProps } = useInteractions([
+		hover,
+		focus,
+		click,
+		dismiss,
+	]);
 
 	return tooltipSlot && triggerSlot ? (
 		<>
