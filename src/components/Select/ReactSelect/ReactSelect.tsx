@@ -13,6 +13,9 @@ const ReactSelect: FC<ReactSelectProps> = forwardRef(
 		// For multi select check out the TagsInput component
 		return (
 			<Select
+				// Render the select menu on the body, so it is never clipped by an overflow:hidden parent container
+				menuPortalTarget={typeof document !== 'undefined' ? document.body : undefined}
+				styles={{ menuPortal: (base) => ({ ...base, zIndex: 10 }) }}
 				{...reactSelectProps}
 				className={rootCls}
 				classNamePrefix={root}
