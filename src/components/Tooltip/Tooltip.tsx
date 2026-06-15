@@ -1,5 +1,11 @@
 import clsx from 'clsx';
-import { type FunctionComponent, type ReactNode, useRef, useState } from 'react';
+import {
+	type CSSProperties,
+	type FunctionComponent,
+	type ReactNode,
+	useRef,
+	useState,
+} from 'react';
 
 import { useSlot } from '../../hooks/use-slot';
 import { generateRandomId } from '../../utils/generate-random-id/generate-random-id';
@@ -26,6 +32,10 @@ interface TooltipPropsSchema {
 	position: Placement;
 	offset?: number;
 	contentClassName?: string;
+	style?: CSSProperties;
+	arrowFillColor?: string; // https://floating-ui.com/docs/floatingarrow#fill
+	arrowStrokeColor?: string; // https://floating-ui.com/docs/floatingarrow#stroke
+	arrowStrokeWidth?: number; // https://floating-ui.com/docs/FloatingArrow#strokewidth
 }
 
 const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
@@ -33,12 +43,16 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	position = 'top',
 	offset = 10,
 	contentClassName,
+	style,
+	arrowFillColor = '#FFF',
+	arrowStrokeColor,
+	arrowStrokeWidth = 0,
 }) => {
 	const [show, setShow] = useState(false);
 	const [id] = useState(generateRandomId());
 
-	const tooltipSlot = useSlot(TooltipContent, children);
-	const triggerSlot = useSlot(TooltipTrigger, children);
+	const triggerElement = useSlot(TooltipTrigger, children);
+	const contentElement = useSlot(TooltipContent, children);
 	const arrowRef = useRef(null);
 
 	const { refs, floatingStyles, context } = useFloating({
@@ -63,14 +77,9 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	const focus = useFocus(context);
 	const click = useClick(context);
 	const dismiss = useDismiss(context);
-	const { getFloatingProps, getReferenceProps } = useInteractions([
-		hover,
-		focus,
-		click,
-		dismiss,
-	]);
+	const { getFloatingProps, getReferenceProps } = useInteractions([hover, focus, click, dismiss]);
 
-	return tooltipSlot && triggerSlot ? (
+	return contentElement && triggerElement ? (
 		<>
 			<div
 				className="c-tooltip-component-trigger"
@@ -78,31 +87,34 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 				ref={refs.setReference}
 				{...getReferenceProps()}
 			>
-				{triggerSlot}
+				{triggerElement}
 			</div>
 
-			<div
-				className={clsx(
-					contentClassName,
-					'c-tooltip-component',
-					`c-tooltip-component--${position}`,
-					{
-						'c-tooltip-component--show': show,
-					}
-				)}
-				ref={refs.setFloating}
-				style={floatingStyles}
-				{...getFloatingProps()}
-			>
-				{tooltipSlot}
-				<FloatingArrow
-					ref={arrowRef}
-					context={context}
-					className="c-tooltip-component__arrow"
-					fill="green"
-					stroke="red"
-				/>
-			</div>
+			{show && (
+				<div
+					className={clsx(
+						contentClassName,
+						'c-tooltip-component',
+						`c-tooltip-component--${position}`,
+						{
+							'c-tooltip-component--show': show,
+						}
+					)}
+					ref={refs.setFloating}
+					style={{ ...floatingStyles, ...style }}
+					{...getFloatingProps()}
+				>
+					{contentElement}
+					<FloatingArrow
+						ref={arrowRef}
+						context={context}
+						className="c-tooltip-component__arrow"
+						fill={arrowFillColor}
+						stroke={arrowStrokeColor}
+						strokeWidth={arrowStrokeWidth}
+					/>
+				</div>
+			)}
 		</>
 	) : null;
 };

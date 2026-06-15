@@ -165,10 +165,7 @@ const Table = <RowDataType extends TableData>({
 										key={row.id}
 									>
 										{enableRowFocusOnClick && (
-											<td
-												role="cell"
-												className={focusedTdClass(row.id === focusedRowId)}
-											>
+											<td role="cell" className={focusedTdClass(row.id === focusedRowId)}>
 												<button
 													type="button"
 													aria-label="Focus row"
