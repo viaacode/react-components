@@ -95,10 +95,7 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 					className={clsx(
 						contentClassName,
 						'c-tooltip-component',
-						`c-tooltip-component--${position}`,
-						{
-							'c-tooltip-component--show': show,
-						}
+						`c-tooltip-component--${position}`
 					)}
 					ref={refs.setFloating}
 					style={{ ...floatingStyles, ...style }}
