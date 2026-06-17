@@ -18,7 +18,9 @@ const RichTextEditor: FunctionComponent<RichTextEditorProps> = (props) => {
 	useEffect(() => {
 		// Do not load the rich text editor during server side rendering
 		// Since it causes ESM/CommonJS issues with braft-editor and doesn't add much to the server side rendering anyway
-		if (isServerSideRendering()) return;
+		if (isServerSideRendering()) {
+			return;
+		}
 
 		let isMounted = true;
 		import('./RichTextEditorInternal.js').then((module) => {
@@ -38,7 +40,9 @@ const RichTextEditor: FunctionComponent<RichTextEditorProps> = (props) => {
 		</Flex>
 	);
 
-	if (!RichTextEditorInternal) return renderSpinner();
+	if (!RichTextEditorInternal) {
+		return renderSpinner();
+	}
 	return <RichTextEditorInternal {...props} />;
 };
 
