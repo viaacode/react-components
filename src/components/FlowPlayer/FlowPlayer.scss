@@ -601,7 +601,7 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 	pointer-events: none;
 }
 
-.c-video-player-inner.c-video-player-inner--enable-restart-cue-points-button + .c-video-player-inner-overlay{
+.c-video-player-inner--enable-restart-cue-points-button .c-video-player-inner-overlay {
 	position: absolute;
 	width: 100%;
 	height: calc(100% - $fp-controls-height);
@@ -610,6 +610,7 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 	display: inline-flex;
 	justify-content: center;
 	gap: math.div($player-play-button-dimensions, 2) * 3;
+	z-index: 2;
 
 	.fp-replay,
 	.fp-custom-play {
@@ -628,8 +629,8 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 	}
 }
 
-.c-video-player-inner.c-video-player-inner--enable-restart-cue-points-button.is-paused + .c-video-player-inner-overlay,
-.c-video-player-inner.c-video-player-inner--enable-restart-cue-points-button.is-ended + .c-video-player-inner-overlay{
+.c-video-player-inner.c-video-player-inner--enable-restart-cue-points-button.is-paused .c-video-player-inner-overlay,
+.c-video-player-inner.c-video-player-inner--enable-restart-cue-points-button.is-ended .c-video-player-inner-overlay {
 	.fp-replay,
 	.fp-custom-play {
 		display: block;
