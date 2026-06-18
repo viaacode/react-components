@@ -26,17 +26,23 @@ const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
 ];
 
 const MOCK_RICH_TEXT_EDITOR_PROPS = {
-	initialHtml: '<h2>Welcome!</h2><p>This prefilled content is all <strong>editable</strong>.</p>',
+	value: '<h2>Welcome!</h2><p>This prefilled content is all <strong>editable</strong>.</p>',
 };
 
-const RichTextEditorStoryComponent = ({ children }: { children: ReactElement }) => {
-	const [state, setState] = useState(null);
+const RichTextEditorStoryComponent = ({
+	children,
+	initialValue = '',
+}: {
+	children: ReactElement;
+	initialValue?: string;
+}) => {
+	const [value, setValue] = useState(initialValue);
 
 	return cloneElement(children, {
-		state,
-		onChange: (newState: any) => {
-			action('onChange')(newState.toHTML());
-			setState(newState);
+		value,
+		onChange: (newValue: string) => {
+			action('onChange')(newValue);
+			setValue(newValue);
 		},
 	});
 };
@@ -49,7 +55,7 @@ export default meta;
 type Story = StoryObj<typeof RichTextEditor>;
 
 const Template = (args: any) => (
-	<RichTextEditorStoryComponent>
+	<RichTextEditorStoryComponent initialValue={args.value}>
 		<RichTextEditor {...args} />
 	</RichTextEditorStoryComponent>
 );
@@ -59,7 +65,7 @@ const TemplateWithSelect = (args: any) => (
 		<div style={{ marginBottom: '5px' }}>
 			<Select options={selectOptionsMock} />
 		</div>
-		<RichTextEditorStoryComponent>
+		<RichTextEditorStoryComponent initialValue={args.value}>
 			<RichTextEditor {...args} />
 		</RichTextEditorStoryComponent>
 	</>
@@ -105,7 +111,7 @@ export const WithInitialTable: Story = {
 	args: {
 		...MOCK_RICH_TEXT_EDITOR_PROPS,
 		controls: [...RICH_TEXT_EDITOR_OPTIONS, 'separator', 'table'],
-		initialHtml:
+		value:
 			'<p></p><p></p><table class="c-editor-table"><tr><td colSpan="1" rowSpan="1"><u>dit is een test</u></td><td colSpan="1" rowSpan="1"><u>dit ook</u></td><td colSpan="1" rowSpan="1"><u>ook dit</u></td></tr><tr><td colSpan="1" rowSpan="1">test</td><td colSpan="1" rowSpan="1"><strong>test</strong></td><td colSpan="1" rowSpan="1">test</td></tr><tr><td colSpan="1" rowSpan="1"></td><td colSpan="1" rowSpan="1"></td><td colSpan="1" rowSpan="1"></td></tr></table><p></p>',
 	},
 	render: Template,

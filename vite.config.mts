@@ -41,11 +41,4 @@ export default defineConfig({
 		svgrPlugin(),
 		dts(),
 	],
-	define: {
-		// By default, Vite doesn't include shims for Node.js
-		// necessary for rich text editor to work
-		// https://github.com/vitejs/vite/discussions/5912#discussioncomment-5569850
-		// TODO replace braft-editor at some point, since it is no longer maintained and neither is the underlying draftjs package
-		global: 'globalThis',
-	},
 });
