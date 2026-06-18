@@ -1,3 +1,7 @@
+$button-hover-bg: #0000000d;
+$button-color: #6a6f7b;
+$button-color-active: #3498db;
+
 .c-rich-text-editor {
 	position: relative;
 	border: 1px solid #bac7d1;
@@ -17,7 +21,7 @@
 		pointer-events: none;
 	}
 
-	&__toolbar {
+	.c-rich-text-editor__toolbar {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
@@ -36,13 +40,13 @@
 			margin-left: 3px;
 
 			&:hover {
-				background: #e1e3e6;
+				background-color: $button-hover-bg;
 			}
 
 			&.is-active {
 				span,
 				svg {
-					color: #3498db;
+					color: $button-color-active;
 				}
 			}
 
@@ -54,12 +58,12 @@
 			span {
 				line-height: 22px;
 				display: inline-block;
-				color: #6a6f7b;
+				color: $button-color;
 			}
 
 			svg {
 				width: 20px;
-				color: #6a6f7b;
+				color: $button-color;
 			}
 		}
 
@@ -68,14 +72,14 @@
 			cursor: pointer;
 			background: transparent;
 			border: 1px solid transparent;
-			color: #6a6f7b;
+			color: $button-color;
 			display: inline-flex;
 			align-items: center;
 			gap: 6px;
 			white-space: nowrap;
 
 			&:hover {
-				background: #e1e3e6;
+				background: $button-hover-bg;
 			}
 
 			&.is-active {
@@ -94,16 +98,17 @@
 		}
 	}
 
-	&__separator {
+	.c-rich-text-editor__separator {
 		width: 1px;
 		height: 20px;
 		background: #ccc;
 		margin: 0 2px;
 	}
 
-	&__content {
+	.c-rich-text-editor__content {
 		padding: 12px;
 		min-height: 200px;
+		height: 500px;
 		outline: none;
 
 		.ProseMirror {
@@ -168,7 +173,7 @@
 		}
 	}
 
-	&__html-view {
+	.c-rich-text-editor__html-view {
 		position: absolute;
 		inset: 0;
 		top: 0;
@@ -185,7 +190,7 @@
 		box-sizing: border-box;
 	}
 
-	&__custom-button {
+	.c-rich-text-editor__custom-button {
 		display: contents;
 	}
 }

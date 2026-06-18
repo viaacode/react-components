@@ -386,21 +386,22 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				});
 			case 'link':
 				return (
-					<RichTextEditorLinkDropdown
-						key={`link-${index}`}
-						editor={editor}
-						root={root}
-						isDisabled={areToolbarActionsDisabled}
-					/>
+					<>
+						<RichTextEditorLinkDropdown
+							key={`link-${index}`}
+							editor={editor}
+							root={root}
+							isDisabled={areToolbarActionsDisabled}
+						/>
+						{renderButton({
+							key: `unlink-${index}`,
+							label: <UnlinkIcon />,
+							title: 'Link verwijderen',
+							onClick: () => editor?.chain().focus().unsetLink().run(),
+							isDisabled: areToolbarActionsDisabled || !editor?.isActive('link'),
+						})}
+					</>
 				);
-			case 'unlink':
-				return renderButton({
-					key: `unlink-${index}`,
-					label: <UnlinkIcon />,
-					title: 'Link verwijderen',
-					onClick: () => editor?.chain().focus().unsetLink().run(),
-					isDisabled: areToolbarActionsDisabled || !editor?.isActive('link'),
-				});
 			case 'media':
 				return renderButton({
 					key: `media-${index}`,

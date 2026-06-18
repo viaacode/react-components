@@ -24,7 +24,6 @@ export const DEFAULT_CONTROLS: RichTextEditorControl[] = [
 	'hr',
 	'separator',
 	'link',
-	'unlink',
 	'separator',
 	'table',
 	'media',
