@@ -88,6 +88,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 	const resolvedControls = controls ?? DEFAULT_CONTROLS;
 	const resolvedHeadings =
 		enabledHeadings && enabledHeadings.length > 0 ? enabledHeadings : ALL_RICH_TEXT_HEADINGS;
+	const [, setEditorSelection] = useState<{ from: number; to: number }>({ from: 0, to: 0 });
 	const [isHtmlView, setIsHtmlView] = useState(false);
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [prettyHtml, setPrettyHtml] = useState(prettifyHtml(value || ''));
@@ -139,6 +140,10 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 			const html = editor.getHTML();
 			onChange?.(html);
 			setPrettyHtml(prettifyHtml(html));
+		},
+		onSelectionUpdate: ({ editor }) => {
+			const { from, to } = editor.state.selection;
+			setEditorSelection({ from, to });
 		},
 		onBlur: () => onBlur?.(),
 		onFocus: () => onFocus?.(),
