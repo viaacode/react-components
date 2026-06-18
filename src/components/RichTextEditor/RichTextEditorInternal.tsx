@@ -15,6 +15,9 @@ import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
 import type { ChangeEvent, FunctionComponent, ReactNode } from 'react';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { RichTextEditorHeadingsDropdown } from './components/RichTextEditorHeadingsDropdown/RichTextEditorHeadingsDropdown';
+import { RichTextEditorLinkDropdown } from './components/RichTextEditorLinkDropdown/RichTextEditorLinkDropdown';
+import { RichTextEditorTableDropdown } from './components/RichTextEditorTableDropdown/RichTextEditorTableDropdown';
 import AlignCenterIcon from './icons/align-center.svg?react';
 import AlignJustifyIcon from './icons/align-justify.svg?react';
 import AlignLeftIcon from './icons/align-left.svg?react';
@@ -35,6 +38,7 @@ import SuperscriptIcon from './icons/superscript.svg?react';
 import UnderlineIcon from './icons/underline.svg?react';
 import UndoIcon from './icons/undo.svg?react';
 import UnlinkIcon from './icons/unlink.svg?react';
+import { DEFAULT_CONTROLS } from './RichTextEditor.const';
 import { prettifyHtml } from './RichTextEditor.helpers';
 import {
 	ALL_RICH_TEXT_HEADINGS,
@@ -43,44 +47,7 @@ import {
 	type RichTextEditorMedia,
 	type RichTextEditorUploadInfo,
 } from './RichTextEditor.types';
-
 import './RichTextEditor.scss';
-import { RichTextEditorHeadingsDropdown } from './components/RichTextEditorHeadingsDropdown/RichTextEditorHeadingsDropdown';
-import { RichTextEditorTableDropdown } from './components/RichTextEditorTableDropdown/RichTextEditorTableDropdown';
-import { RichTextEditorLinkDropdown } from './components/RichTextEditorLinkDropdown/RichTextEditorLinkDropdown';
-
-const DEFAULT_CONTROLS: RichTextEditorControl[] = [
-	'fullscreen',
-	'separator',
-	'undo',
-	'redo',
-	'separator',
-	'headings',
-	'separator',
-	'bold',
-	'italic',
-	'strike-through',
-	'underline',
-	'separator',
-	'text-align',
-	'separator',
-	'list-ul',
-	'list-ol',
-	'separator',
-	'subscript',
-	'superscript',
-	'separator',
-	'hr',
-	'separator',
-	'link',
-	'unlink',
-	'separator',
-	'table',
-	'media',
-	'separator',
-	'remove-styles',
-	'edit-html',
-];
 
 interface RichTextEditorInternalProps {
 	children?: ReactNode;
