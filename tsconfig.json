@@ -20,5 +20,8 @@
     "allowJs": true,
     "isolatedModules": true
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "node_modules/storybook/dist/manager/runtime.js"
+  ]
 }

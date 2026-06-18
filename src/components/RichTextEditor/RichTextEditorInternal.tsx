@@ -13,12 +13,7 @@ import Underline from '@tiptap/extension-underline';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
-import type {
-	ChangeEvent,
-	FunctionComponent,
-	KeyboardEvent as ReactKeyboardEvent,
-	ReactNode,
-} from 'react';
+import type { ChangeEvent, FunctionComponent, ReactNode } from 'react';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import AlignCenterIcon from './icons/align-center.svg?react';
 import AlignJustifyIcon from './icons/align-justify.svg?react';
@@ -30,7 +25,6 @@ import FullscreenCloseIcon from './icons/fullscreen-close.svg?react';
 import HrIcon from './icons/hr.svg?react';
 import ImageIcon from './icons/image.svg?react';
 import ItalicIcon from './icons/italic.svg?react';
-import LinkIcon from './icons/link.svg?react';
 import ListNumericIcon from './icons/list-numeric.svg?react';
 import ListUnorderedIcon from './icons/list-unordered.svg?react';
 import RedoIcon from './icons/redo.svg?react';
@@ -41,6 +35,7 @@ import SuperscriptIcon from './icons/superscript.svg?react';
 import TableIcon from './icons/table.svg?react';
 import UnderlineIcon from './icons/underline.svg?react';
 import UndoIcon from './icons/undo.svg?react';
+import UnlinkIcon from './icons/unlink.svg?react';
 import { prettifyHtml } from './RichTextEditor.helpers';
 import {
 	ALL_RICH_TEXT_HEADINGS,
@@ -51,6 +46,7 @@ import {
 } from './RichTextEditor.types';
 
 import './RichTextEditor.scss';
+import { RichTextEditorLinkDropdown } from './components/LinkControl/RichTextEditorLinkDropdown';
 
 const DEFAULT_CONTROLS: RichTextEditorControl[] = [
 	'fullscreen',
@@ -76,6 +72,7 @@ const DEFAULT_CONTROLS: RichTextEditorControl[] = [
 	'hr',
 	'separator',
 	'link',
+	'unlink',
 	'separator',
 	'table',
 	'separator',
@@ -125,12 +122,9 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 	const [isHtmlView, setIsHtmlView] = useState(false);
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [prettyHtml, setPrettyHtml] = useState(prettifyHtml(value || ''));
-	const [showLinkInput, setShowLinkInput] = useState(false);
-	const [linkUrl, setLinkUrl] = useState('');
 	const [overlayTop, setOverlayTop] = useState(0);
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
 	const toolbarRef = useRef<HTMLDivElement | null>(null);
-	const linkInputRef = useRef<HTMLDivElement | null>(null);
 
 	const editor = useEditor({
 		extensions: [
@@ -200,10 +194,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 	useLayoutEffect(() => {
 		const updateOverlayTop = () => {
 			const toolbarHeight = toolbarRef.current?.getBoundingClientRect().height || 0;
-			const linkHeight = showLinkInput
-				? linkInputRef.current?.getBoundingClientRect().height || 0
-				: 0;
-			setOverlayTop(toolbarHeight + linkHeight);
+			setOverlayTop(toolbarHeight);
 		};
 
 		updateOverlayTop();
@@ -216,12 +207,9 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 		if (toolbarRef.current) {
 			observer.observe(toolbarRef.current);
 		}
-		if (linkInputRef.current) {
-			observer.observe(linkInputRef.current);
-		}
 
 		return () => observer.disconnect();
-	}, [showLinkInput]);
+	}, []);
 
 	const accept = useMemo(() => {
 		const accepts = Object.values(media?.accepts || {})
@@ -267,36 +255,6 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 			setPrettyHtml(prettifyHtml(editor?.getHTML() || value || ''));
 		}
 		setIsHtmlView((prev) => !prev);
-	};
-
-	const openLinkInput = () => {
-		setLinkUrl((editor?.getAttributes('link').href as string) || '');
-		setShowLinkInput(true);
-	};
-
-	const applyLink = () => {
-		if (!editor) {
-			return;
-		}
-
-		const href = linkUrl.trim();
-		if (!href) {
-			editor.chain().focus().unsetLink().run();
-		} else {
-			editor.chain().focus().extendMarkRange('link').setLink({ href, target: '_blank' }).run();
-		}
-		setShowLinkInput(false);
-	};
-
-	const handleLinkInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
-		if (event.key === 'Enter') {
-			event.preventDefault();
-			applyLink();
-		}
-		if (event.key === 'Escape') {
-			event.preventDefault();
-			setShowLinkInput(false);
-		}
 	};
 
 	const handleFileSelect = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -475,12 +433,21 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 					onClick: () => editor?.chain().focus().setHorizontalRule().run(),
 				});
 			case 'link':
+				return (
+					<RichTextEditorLinkDropdown
+						key={`link-${index}`}
+						editor={editor}
+						root={root}
+						isDisabled={areToolbarActionsDisabled}
+					/>
+				);
+			case 'unlink':
 				return renderButton({
-					key: `link-${index}`,
-					label: <LinkIcon />,
-					title: 'Link invoegen',
-					onClick: openLinkInput,
-					isActive: !!editor?.isActive('link') || showLinkInput,
+					key: `unlink-${index}`,
+					label: <UnlinkIcon />,
+					title: 'Link verwijderen',
+					onClick: () => editor?.chain().focus().unsetLink().run(),
+					isDisabled: areToolbarActionsDisabled || !editor?.isActive('link'),
 				});
 			case 'media':
 				return renderButton({
@@ -629,23 +596,6 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 					</>
 				) : null}
 			</div>
-			{showLinkInput && (
-				<div className={`${root}__link-input`} ref={linkInputRef}>
-					<input
-						type="url"
-						value={linkUrl}
-						onChange={(event) => setLinkUrl(event.target.value)}
-						onKeyDown={handleLinkInputKeyDown}
-						placeholder="https://voorbeeld.be"
-					/>
-					<button type="button" onClick={applyLink}>
-						OK
-					</button>
-					<button type="button" onClick={() => setShowLinkInput(false)}>
-						Annuleer
-					</button>
-				</div>
-			)}
 			<EditorContent editor={editor} className={`${root}__content`} />
 			{isHtmlView && (
 				<textarea

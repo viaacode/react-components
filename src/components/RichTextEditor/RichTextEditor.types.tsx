@@ -22,6 +22,7 @@ export type RichTextEditorControl =
 	| 'text-align'
 	| 'text-indent'
 	| 'link'
+	| 'unlink'
 	| 'headings'
 	| 'list-ul'
 	| 'list-ol'
