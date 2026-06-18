@@ -4,7 +4,7 @@ import { action } from 'storybook/actions';
 import { selectOptionsMock } from '../Select/__mocks__/select';
 import Select from '../Select/Select';
 
-import RichTextEditor from './RichTextEditor';
+import { RichTextEditor } from './RichTextEditor';
 import type { RichTextEditorControl } from './RichTextEditor.types';
 
 const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [

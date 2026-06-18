@@ -9,7 +9,7 @@ import type { RichTextEditorProps } from './RichTextEditor.types';
  * suspends as a direct result of a discrete user interaction (e.g. clicking inside the editor)
  * triggers React error #426 ("A component suspended while responding to synchronous input").
  */
-const RichTextEditor: FunctionComponent<RichTextEditorProps> = (props) => {
+export const RichTextEditor: FunctionComponent<RichTextEditorProps> = (props) => {
 	const [RichTextEditorInternal, setRichTextEditorInternal] =
 		useState<FC<RichTextEditorProps> | null>(null);
 
@@ -34,5 +34,3 @@ const RichTextEditor: FunctionComponent<RichTextEditorProps> = (props) => {
 
 	return <RichTextEditorInternal {...props} />;
 };
-
-export default RichTextEditor;

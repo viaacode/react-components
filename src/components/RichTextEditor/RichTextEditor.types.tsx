@@ -61,9 +61,6 @@ export interface RichTextEditorProps {
 	enabledHeadings?: Heading[];
 }
 
-/** @deprecated Use RichTextEditorProps instead */
-export type RichTextEditorWithInternalStateProps = RichTextEditorProps;
-
 export interface RichTextEditorUploadInfo {
 	file: File;
 	progress: (progress: number) => void;
