@@ -1,4 +1,3 @@
-import type { BraftEditorProps } from 'braft-editor';
 import type { ReactNode } from 'react';
 
 export interface CustomRichTextEditorButton {
@@ -7,67 +6,43 @@ export interface CustomRichTextEditorButton {
 }
 
 export type RichTextEditorControl =
-	| 'font-size' // Text size selector
-	| 'font-family' // Text font selector
-	| 'line-height' // Text line height selector
-	| 'letter-spacing' // Text pitch selector
-	| 'text-color' // Text color selector, including text background color settings
-	| 'bold' // Set text bold
-	| 'italic' // Italicize text
-	| 'underline' // Underline text
-	| 'strike-through' // Set Strikethrough
-	| 'superscript' // Set text as superscript
-	| 'subscript' // Set text as subscript
-	| 'remove-styles' // Clear text style
-	| 'emoji' // Emoji emoticon selector
-	| 'text-align' // Text alignment tool, you can use the textAligns property to specify which alignment can be used
-	| 'text-indent' // Paragraph indent tool, indent up to 6 levels
-	| 'link' // Link insertion tool
-	| 'headings' // Paragraph type (Title 1-6, General)
-	| 'list-ul' // Unordered list
-	| 'list-ol' // Ordered list
-	| 'blockquote' // Quoted paragraph
-	| 'code' // Code block
-	| 'hr' // Horizontal line tool
-	| 'media' // Multimedia insertion tool
-	| 'clear' // Content removal tool
-	| 'undo' // Undo operation
-	| 'redo' // Redo operation
-	| 'table' // Table
-	| 'fullscreen' // Make editor fullscreen
-	| 'separator' // Split line, continuous multiple separators will only be displayed as 1
-	| 'editHtml' // Provides a separate HTML view to edit the HTML content of the editor
-	| CustomRichTextEditorButton; // Provides the possibility to add a custom button
+	| 'font-size'
+	| 'font-family'
+	| 'line-height'
+	| 'letter-spacing'
+	| 'text-color'
+	| 'bold'
+	| 'italic'
+	| 'underline'
+	| 'strike-through'
+	| 'superscript'
+	| 'subscript'
+	| 'remove-styles'
+	| 'emoji'
+	| 'text-align'
+	| 'text-indent'
+	| 'link'
+	| 'headings'
+	| 'list-ul'
+	| 'list-ol'
+	| 'blockquote'
+	| 'code'
+	| 'hr'
+	| 'media'
+	| 'clear'
+	| 'undo'
+	| 'redo'
+	| 'table'
+	| 'fullscreen'
+	| 'separator'
+	| 'editHtml'
+	| CustomRichTextEditorButton;
 
 export type Heading = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
 
 export const ALL_RICH_TEXT_HEADINGS: Heading[] = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'normal'];
 
-/**
- * @deprecated Use RichTextEditorWithInternalStateProps instead since the full editor state isn't exposed, which should be more performant
- */
 export interface RichTextEditorProps {
-	children?: ReactNode;
-	className?: string;
-	rootClassName?: string;
-	id?: string;
-	initialHtml?: string;
-	state?: RichEditorState;
-	placeholder?: string;
-	controls?: RichTextEditorControl[];
-	disabled?: boolean;
-	media?: RichTextEditorMedia;
-	onFocus?: () => void;
-	onBlur?: () => void;
-	onChange?: (editorState: RichEditorState) => void;
-	onTab?: () => void;
-	onDelete?: () => void;
-	onSave?: () => void;
-	enabledHeadings?: Heading[];
-	braft?: Partial<BraftEditorProps>; // TODO: remove 1:1 mapped properties above
-}
-
-export interface RichTextEditorWithInternalStateProps {
 	children?: ReactNode;
 	className?: string;
 	rootClassName?: string;
@@ -79,17 +54,15 @@ export interface RichTextEditorWithInternalStateProps {
 	media?: RichTextEditorMedia;
 	onFocus?: () => void;
 	onBlur?: () => void;
-	onChange?: (newValue: string) => void;
+	onChange?: (html: string) => void;
 	onTab?: () => void;
 	onDelete?: () => void;
 	onSave?: () => void;
 	enabledHeadings?: Heading[];
-	braft?: Partial<BraftEditorProps>; // TODO: remove 1:1 mapped properties above
 }
 
-export interface RichEditorState {
-	toHTML: () => string;
-}
+/** @deprecated Use RichTextEditorProps instead */
+export type RichTextEditorWithInternalStateProps = RichTextEditorProps;
 
 export interface RichTextEditorUploadInfo {
 	file: File;

@@ -7,7 +7,7 @@ import type {
 	RichTextEditorControl,
 	RichTextEditorWithInternalStateProps,
 } from './RichTextEditor.types';
-import RichTextEditorWithInternalState from './RichTextEditorWithInternalState';
+import RichTextEditor from './RichTextEditor';
 
 const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
 	'fullscreen',
@@ -48,16 +48,16 @@ const RichTextEditorWithInternalStateStoryComponent = ({
 	});
 };
 
-const meta: Meta<typeof RichTextEditorWithInternalState> = {
+const meta: Meta<typeof RichTextEditor> = {
 	title: 'Components/RichTextEditorWithInternalState',
-	component: RichTextEditorWithInternalState,
+	component: RichTextEditor,
 };
 export default meta;
-type Story = StoryObj<typeof RichTextEditorWithInternalState>;
+type Story = StoryObj<typeof RichTextEditor>;
 
 const Template = (args: any) => (
 	<RichTextEditorWithInternalStateStoryComponent {...args}>
-		<RichTextEditorWithInternalState {...args} />
+		<RichTextEditor {...args} />
 	</RichTextEditorWithInternalStateStoryComponent>
 );
 
@@ -67,7 +67,7 @@ const TemplateWithSelect = (args: any) => (
 			<Select options={selectOptionsMock} />
 		</div>
 		<RichTextEditorWithInternalStateStoryComponent {...args}>
-			<RichTextEditorWithInternalState {...args} />
+			<RichTextEditor {...args} />
 		</RichTextEditorWithInternalStateStoryComponent>
 	</>
 );

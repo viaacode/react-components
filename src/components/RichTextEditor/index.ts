@@ -1,3 +1,4 @@
 export { default as RichTextEditor } from './RichTextEditor';
 export * from './RichTextEditor.types';
-export { default as RichTextEditorWithInternalState } from './RichTextEditorWithInternalState';
+// Backward compat alias — consumers that imported RichTextEditorWithInternalState get RichTextEditor
+export { default as RichTextEditorWithInternalState } from './RichTextEditor';
