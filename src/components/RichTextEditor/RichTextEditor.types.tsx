@@ -36,7 +36,7 @@ export type RichTextEditorControl =
 	| 'table'
 	| 'fullscreen'
 	| 'separator'
-	| 'editHtml'
+	| 'edit-html'
 	| CustomRichTextEditorButton;
 
 export type Heading = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';

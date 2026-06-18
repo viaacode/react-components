@@ -110,16 +110,18 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 							placeholder="Link URL invoeren"
 							onKeyDown={handleKeyDown}
 						/>
-						<div className={`${root}__link-popup-toggle`}>
+						<div
+							className={`${root}__link-popup-toggle`}
+							onClick={() => setOpenInNewTab((prev) => !prev)}
+							onKeyDown={(e) => {
+								if (e.key === ' ' || e.key === 'Enter') setOpenInNewTab((prev) => !prev);
+							}}
+							role="switch"
+							aria-checked={openInNewTab}
+							tabIndex={0}
+						>
 							<span
 								className={clsx(`${root}__link-popup-switch`, { 'is-on': openInNewTab })}
-								onClick={() => setOpenInNewTab((prev) => !prev)}
-								role="switch"
-								aria-checked={openInNewTab}
-								tabIndex={0}
-								onKeyDown={(e) => {
-									if (e.key === ' ' || e.key === 'Enter') setOpenInNewTab((prev) => !prev);
-								}}
 							/>
 							Openen in een nieuw venster
 						</div>

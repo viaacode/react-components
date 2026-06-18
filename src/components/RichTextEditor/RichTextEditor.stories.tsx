@@ -134,7 +134,7 @@ export const WithLimitedHeadings: Story = {
 export const WithHtmlView: Story = {
 	args: {
 		...MOCK_RICH_TEXT_EDITOR_PROPS,
-		controls: [...RICH_TEXT_EDITOR_OPTIONS, 'separator', 'editHtml'],
+		controls: [...RICH_TEXT_EDITOR_OPTIONS, 'separator', 'edit-html'],
 	},
 	render: Template,
 };

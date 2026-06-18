@@ -32,7 +32,6 @@ import RemoveStylesIcon from './icons/remove-styles.svg?react';
 import StrikeThroughIcon from './icons/strike-through.svg?react';
 import SubscriptIcon from './icons/subscript.svg?react';
 import SuperscriptIcon from './icons/superscript.svg?react';
-import TableIcon from './icons/table.svg?react';
 import UnderlineIcon from './icons/underline.svg?react';
 import UndoIcon from './icons/undo.svg?react';
 import UnlinkIcon from './icons/unlink.svg?react';
@@ -46,7 +45,9 @@ import {
 } from './RichTextEditor.types';
 
 import './RichTextEditor.scss';
-import { RichTextEditorLinkDropdown } from './components/LinkControl/RichTextEditorLinkDropdown';
+import { RichTextEditorHeadingsDropdown } from './components/RichTextEditorHeadingsDropdown/RichTextEditorHeadingsDropdown';
+import { RichTextEditorTableDropdown } from './components/RichTextEditorTableDropdown/RichTextEditorTableDropdown';
+import { RichTextEditorLinkDropdown } from './components/RichTextEditorLinkDropdown/RichTextEditorLinkDropdown';
 
 const DEFAULT_CONTROLS: RichTextEditorControl[] = [
 	'fullscreen',
@@ -75,9 +76,10 @@ const DEFAULT_CONTROLS: RichTextEditorControl[] = [
 	'unlink',
 	'separator',
 	'table',
+	'media',
 	'separator',
 	'remove-styles',
-	'media',
+	'edit-html',
 ];
 
 interface RichTextEditorInternalProps {
@@ -378,36 +380,14 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				});
 			case 'headings':
 				return (
-					<select
+					<RichTextEditorHeadingsDropdown
 						key={`headings-${index}`}
-						onChange={(event) => {
-							const nextHeading = event.target.value;
-							if (!editor) {
-								return;
-							}
-							if (nextHeading === 'normal') {
-								editor.chain().focus().setParagraph().run();
-								return;
-							}
-							editor
-								.chain()
-								.focus()
-								.setHeading({
-									level: Number.parseInt(nextHeading.replace('h', ''), 10) as 1 | 2 | 3 | 4 | 5 | 6,
-								})
-								.run();
-						}}
-						value={getActiveHeading()}
-						disabled={areToolbarActionsDisabled}
-					>
-						{resolvedHeadings.includes('h1') && <option value="h1">Koptekst 1</option>}
-						{resolvedHeadings.includes('h2') && <option value="h2">Koptekst 2</option>}
-						{resolvedHeadings.includes('h3') && <option value="h3">Koptekst 3</option>}
-						{resolvedHeadings.includes('h4') && <option value="h4">Koptekst 4</option>}
-						{resolvedHeadings.includes('h5') && <option value="h5">Koptekst 5</option>}
-						{resolvedHeadings.includes('h6') && <option value="h6">Koptekst 6</option>}
-						{resolvedHeadings.includes('normal') && <option value="normal">Normaal</option>}
-					</select>
+						editor={editor}
+						root={root}
+						isDisabled={areToolbarActionsDisabled}
+						resolvedHeadings={resolvedHeadings}
+						activeHeading={getActiveHeading()}
+					/>
 				);
 			case 'list-ul':
 				return renderButton({
@@ -458,14 +438,14 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 					isDisabled: areToolbarActionsDisabled || !media,
 				});
 			case 'table':
-				return renderButton({
-					key: `table-${index}`,
-					label: <TableIcon />,
-					title: 'Tabel invoegen',
-					onClick: () =>
-						editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
-					isActive: !!editor?.isActive('table'),
-				});
+				return (
+					<RichTextEditorTableDropdown
+						key={`table-${index}`}
+						editor={editor}
+						root={root}
+						isDisabled={areToolbarActionsDisabled}
+					/>
+				);
 			case 'text-align':
 				return [
 					renderButton({
@@ -522,10 +502,10 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 					isActive: isFullscreen,
 					isDisabled: !isEditorReady,
 				});
-			case 'editHtml':
+			case 'edit-html':
 				return renderButton({
 					key: `edit-html-${index}`,
-					label: 'HTML',
+					label: <span>HTML</span>,
 					title: 'HTML bewerken',
 					onClick: toggleHtmlView,
 					isActive: isHtmlView,
@@ -560,41 +540,6 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 		>
 			<div className={`${root}__toolbar`} ref={toolbarRef}>
 				{resolvedControls.map((control, index) => renderControl(control, index))}
-				{resolvedControls.includes('table') && editor?.isActive('table') ? (
-					<>
-						<div className={`${root}__separator`} />
-						{renderButton({
-							key: 'table-add-row',
-							label: 'Voeg rij in',
-							title: 'Voeg rij in',
-							onClick: () => editor.chain().focus().addRowAfter().run(),
-						})}
-						{renderButton({
-							key: 'table-delete-row',
-							label: 'Verwijder rij',
-							title: 'Verwijder rij',
-							onClick: () => editor.chain().focus().deleteRow().run(),
-						})}
-						{renderButton({
-							key: 'table-add-column',
-							label: 'Voeg kolom in',
-							title: 'Voeg kolom in',
-							onClick: () => editor.chain().focus().addColumnAfter().run(),
-						})}
-						{renderButton({
-							key: 'table-delete-column',
-							label: 'Verwijder kolom',
-							title: 'Verwijder kolom',
-							onClick: () => editor.chain().focus().deleteColumn().run(),
-						})}
-						{renderButton({
-							key: 'table-delete',
-							label: 'Verwijder tabel',
-							title: 'Verwijder tabel',
-							onClick: () => editor.chain().focus().deleteTable().run(),
-						})}
-					</>
-				) : null}
 			</div>
 			<EditorContent editor={editor} className={`${root}__content`} />
 			{isHtmlView && (
