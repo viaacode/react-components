@@ -8,7 +8,6 @@ import {
 } from 'react';
 
 import { useSlot } from '../../hooks/use-slot';
-import { generateRandomId } from '../../utils/generate-random-id/generate-random-id';
 
 import './Tooltip.scss';
 import {
@@ -48,7 +47,6 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	arrowStrokeWidth = 0,
 }) => {
 	const [show, setShow] = useState(false);
-	const [id] = useState(generateRandomId());
 
 	const triggerElement = useSlot(TooltipTrigger, children);
 	const contentElement = useSlot(TooltipContent, children);
@@ -74,21 +72,12 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 		}),
 	});
 	const focus = useFocus(context);
-	const click = useClick(context, {keyboardHandlers: false });
-	const { getFloatingProps, getReferenceProps } = useInteractions([
-		hover,
-		focus,
-		click,
-	]);
+	const click = useClick(context, { keyboardHandlers: false });
+	const { getFloatingProps, getReferenceProps } = useInteractions([hover, focus, click]);
 
 	return contentElement && triggerElement ? (
 		<>
-			<div
-				className="c-tooltip-component-trigger"
-				data-id={id}
-				ref={refs.setReference}
-				{...getReferenceProps()}
-			>
+			<div className="c-tooltip-component-trigger" ref={refs.setReference} {...getReferenceProps()}>
 				{triggerElement}
 			</div>
 

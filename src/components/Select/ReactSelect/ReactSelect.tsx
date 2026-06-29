@@ -20,7 +20,7 @@ const ReactSelect: FC<ReactSelectProps> = forwardRef(
 				className={rootCls}
 				classNamePrefix={root}
 				isMulti={false}
-				ref={(innerRef) => assignRef(ref, innerRef)}
+				ref={(innerRef) => void assignRef(ref, innerRef)}
 			/>
 		);
 	}

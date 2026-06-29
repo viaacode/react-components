@@ -3,12 +3,13 @@ import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 
 import Pagination from './Pagination';
+import type { PaginationProps } from './Pagination.types';
 
 const PaginationStoryComponent = ({
 	children,
 	initialPageIndex = 0,
 }: {
-	children: ReactElement;
+	children: ReactElement<PaginationProps>;
 	initialPageIndex?: number;
 }) => {
 	const [currentPage, setCurrentPage] = useState(initialPageIndex);

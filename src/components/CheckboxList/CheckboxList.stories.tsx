@@ -3,6 +3,7 @@ import { cloneElement, type FC, type ReactElement, type ReactNode, useState } fr
 import { action } from 'storybook/actions';
 
 import CheckboxList from './CheckboxList';
+import type { CheckboxListProps } from './CheckboxList.types';
 
 const DEFAULT_ITEMS: { label: string; value: unknown; checked?: boolean }[] = [
 	{ label: 'item A', value: 'itemA' },
@@ -14,7 +15,7 @@ const CheckboxListStoryComponent: FC<{ children?: ReactNode }> = ({ children }) 
 	const [items, setItems] =
 		useState<{ label: string; value: unknown; checked?: boolean }[]>(DEFAULT_ITEMS);
 
-	const onItemClick = (checked: boolean, value: string) => {
+	const onItemClick = (checked: boolean, value: unknown) => {
 		action(`onChange: checked: ${checked}, value: ${value}`)();
 		setItems((oldItems) => {
 			const newItems = [...oldItems];
@@ -26,7 +27,7 @@ const CheckboxListStoryComponent: FC<{ children?: ReactNode }> = ({ children }) 
 		});
 	};
 
-	return cloneElement(children as ReactElement, {
+	return cloneElement(children as ReactElement<CheckboxListProps<unknown>>, {
 		items,
 		onItemClick,
 	});

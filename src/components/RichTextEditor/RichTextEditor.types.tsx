@@ -1,9 +1,13 @@
-import type { BraftEditorProps } from 'braft-editor';
 import type { ReactNode } from 'react';
 
 export interface CustomRichTextEditorButton {
 	type: 'customButton';
 	component: ReactNode;
+}
+
+export enum Locale {
+	nl = 'nl',
+	en = 'en',
 }
 
 export type RichTextEditorControl =
@@ -36,38 +40,14 @@ export type RichTextEditorControl =
 	| 'table' // Table
 	| 'fullscreen' // Make editor fullscreen
 	| 'separator' // Split line, continuous multiple separators will only be displayed as 1
-	| 'editHtml' // Provides a separate HTML view to edit the HTML content of the editor
+	| 'edit-html' // Provides a separate HTML view to edit the HTML content of the editor
 	| CustomRichTextEditorButton; // Provides the possibility to add a custom button
 
 export type Heading = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
 
 export const ALL_RICH_TEXT_HEADINGS: Heading[] = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'normal'];
 
-/**
- * @deprecated Use RichTextEditorWithInternalStateProps instead since the full editor state isn't exposed, which should be more performant
- */
 export interface RichTextEditorProps {
-	children?: ReactNode;
-	className?: string;
-	rootClassName?: string;
-	id?: string;
-	initialHtml?: string;
-	state?: RichEditorState;
-	placeholder?: string;
-	controls?: RichTextEditorControl[];
-	disabled?: boolean;
-	media?: RichTextEditorMedia;
-	onFocus?: () => void;
-	onBlur?: () => void;
-	onChange?: (editorState: RichEditorState) => void;
-	onTab?: () => void;
-	onDelete?: () => void;
-	onSave?: () => void;
-	enabledHeadings?: Heading[];
-	braft?: Partial<BraftEditorProps>; // TODO: remove 1:1 mapped properties above
-}
-
-export interface RichTextEditorWithInternalStateProps {
 	children?: ReactNode;
 	className?: string;
 	rootClassName?: string;
@@ -79,16 +59,12 @@ export interface RichTextEditorWithInternalStateProps {
 	media?: RichTextEditorMedia;
 	onFocus?: () => void;
 	onBlur?: () => void;
-	onChange?: (newValue: string) => void;
+	onChange?: (html: string) => void;
 	onTab?: () => void;
 	onDelete?: () => void;
 	onSave?: () => void;
 	enabledHeadings?: Heading[];
-	braft?: Partial<BraftEditorProps>; // TODO: remove 1:1 mapped properties above
-}
-
-export interface RichEditorState {
-	toHTML: () => string;
+	locale?: Locale;
 }
 
 export interface RichTextEditorUploadInfo {

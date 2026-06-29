@@ -3,11 +3,12 @@ import { cloneElement, type ReactElement, useState } from 'react';
 
 import { menuItems } from '../Menu/__mocks__/menu';
 import { MoreOptionsDropdown } from './MoreOptionsDropdown';
+import type { MoreOptionsDropdownPropsSchema } from './MoreOptionsDropdown.types';
 
 const MoreOptionsDropdownStory = ({
 	children,
 }: {
-	children: ReactElement;
+	children: ReactElement<MoreOptionsDropdownPropsSchema>;
 	defaultValue?: string;
 }) => {
 	const [isOpen, setIsOpen] = useState(false);

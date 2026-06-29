@@ -7,9 +7,14 @@ import { Modal } from '../Modal';
 import { FlowPlayer } from './FlowPlayer';
 import { setPlayingVideoSeekTime } from './FlowPlayer.helpers';
 import { MOCK_FLOW_PLAYER_PROPS_FULL, MOCK_PLAYLIST_SOURCE } from './FlowPlayer.mock';
+import type { FlowPlayerProps } from './FlowPlayer.types';
 import peakJson from './Peak/__mock__/peak.json' with { type: 'json' };
 
-const FlowPlayerStoryComponentSetTimeButtons = ({ children }: { children: ReactElement }) => (
+const FlowPlayerStoryComponentSetTimeButtons = ({
+	children,
+}: {
+	children: ReactElement<FlowPlayerProps>;
+}) => (
 	<>
 		{cloneElement(children)}
 		<br />
@@ -23,7 +28,11 @@ const FlowPlayerStoryComponentSetTimeButtons = ({ children }: { children: ReactE
 	</>
 );
 
-const FlowPlayerStoryComponentOpenInModal = ({ children }: { children: ReactElement }) => {
+const FlowPlayerStoryComponentOpenInModal = ({
+	children,
+}: {
+	children: ReactElement<FlowPlayerProps>;
+}) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	return (
 		<>
@@ -35,7 +44,11 @@ const FlowPlayerStoryComponentOpenInModal = ({ children }: { children: ReactElem
 	);
 };
 
-const FlowPlayerStoryComponentExternalControls = ({ children }: { children: ReactElement }) => {
+const FlowPlayerStoryComponentExternalControls = ({
+	children,
+}: {
+	children: ReactElement<FlowPlayerProps>;
+}) => {
 	const [fullscreen, setFullscreen] = useState(false);
 	const [pause, setPause] = useState(true);
 	return (
@@ -45,7 +58,6 @@ const FlowPlayerStoryComponentExternalControls = ({ children }: { children: Reac
 				fullscreen,
 				onPlay: () => setPause(false),
 				onPause: () => setPause(true),
-				onToggleFullscreen: (val: boolean) => setFullscreen(val),
 			})}
 			<br />
 			<Button label="play/pause" onClick={() => setPause(!pause)} />
@@ -61,13 +73,13 @@ const meta: Meta<typeof FlowPlayer> = {
 export default meta;
 type Story = StoryObj<typeof FlowPlayer>;
 
-const Template = (args: any) => (
+const Template = (args: FlowPlayerProps) => (
 	<div style={{ width: '50%' }}>
 		<FlowPlayer {...args} />
 	</div>
 );
 
-const TemplateSetTimeButtons = (args: any) => (
+const TemplateSetTimeButtons = (args: FlowPlayerProps) => (
 	<div style={{ width: '50%' }}>
 		<FlowPlayerStoryComponentSetTimeButtons>
 			<FlowPlayer {...args} />
@@ -75,7 +87,7 @@ const TemplateSetTimeButtons = (args: any) => (
 	</div>
 );
 
-const TemplatePlaylistInModal = (args: any) => (
+const TemplatePlaylistInModal = (args: FlowPlayerProps) => (
 	<div style={{ width: '50%' }}>
 		<FlowPlayerStoryComponentOpenInModal>
 			<FlowPlayer {...args} />
@@ -83,7 +95,7 @@ const TemplatePlaylistInModal = (args: any) => (
 	</div>
 );
 
-const TemplateExternalControls = (args: any) => (
+const TemplateExternalControls = (args: FlowPlayerProps) => (
 	<div style={{ width: '50%' }}>
 		<FlowPlayerStoryComponentExternalControls>
 			<FlowPlayer {...args} />

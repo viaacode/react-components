@@ -2,8 +2,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 import TimeCropControls from './TimeCropControls';
+import type { TimeCropControlsProps } from './TimeCropControls.types';
 
-const TimeCropControlsStoryComponent = ({ children }: { children: ReactElement }) => {
+const TimeCropControlsStoryComponent = ({
+	children,
+}: {
+	children: ReactElement<TimeCropControlsProps>;
+}) => {
 	const [startTime, setStartTime] = useState(0);
 	const [endTime, setEndTime] = useState(0);
 

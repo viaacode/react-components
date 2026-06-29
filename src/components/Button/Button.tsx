@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { type FC, forwardRef, type MouseEvent, type ReactNode } from 'react';
+import { type FC, forwardRef, type MouseEvent, type ReactElement, type ReactNode } from 'react';
 
 import { bemCls, getVariantClasses } from '../../utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip';
@@ -51,7 +51,7 @@ const Button: FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>(
 			</span>
 		);
 
-		const wrapInTooltip = (element: JSX.Element): JSX.Element => {
+		const wrapInTooltip = (element: ReactElement): ReactElement => {
 			return (
 				<Tooltip position={tooltipPosition || 'top'}>
 					<TooltipTrigger>{element}</TooltipTrigger>

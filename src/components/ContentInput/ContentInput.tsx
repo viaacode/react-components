@@ -2,8 +2,10 @@ import clsx from 'clsx';
 import {
 	type FC,
 	forwardRef,
+	isValidElement,
 	type KeyboardEvent,
 	type MouseEvent,
+	type ReactElement,
 	type ReactNode,
 	useCallback,
 	useState,
@@ -105,8 +107,16 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 		 */
 
 		const isSingleElement = (node: ReactNode) => {
-			const el = node as JSX.Element;
-			return !(el?.props?.children && el.props.children.length > 1);
+			if (!isValidElement(node)) {
+				return true;
+			}
+
+			const el = node as ReactElement<{ children?: ReactNode }>;
+			return !(
+				el?.props?.children &&
+				Array.isArray(el.props.children) &&
+				el.props.children.length > 1
+			);
 		};
 
 		const makeInteractionObject = (func: (e: MouseEvent | KeyboardEvent) => void) => {
@@ -204,7 +214,11 @@ const ContentInput: FC<ContentInputProps> = forwardRef<HTMLInputElement, Content
 					}}
 					ref={(element) => {
 						setInstance(element);
-						return ref;
+						if (typeof ref === 'function') {
+							ref(element);
+						} else if (ref) {
+							ref.current = element;
+						}
 					}}
 					type={type}
 					value={value}
