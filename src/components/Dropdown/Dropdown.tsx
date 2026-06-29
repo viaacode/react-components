@@ -19,7 +19,7 @@ import { Menu } from '../Menu';
 
 /**
  * This component provides a button that can show a flyout with some children inside it.
- * The PopperJS library is used to provide the positioning logic for the flyout element.
+ * The @floating-ui/react library is used to provide the positioning logic for the flyout element.
  *
  * The nomenclature within this library is as follows:
  * - The button with down-arrow is called the "reference"

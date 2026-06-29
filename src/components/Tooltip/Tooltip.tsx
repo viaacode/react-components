@@ -83,7 +83,6 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 		<>
 			<div
 				className="c-tooltip-component-trigger"
-				data-id={id}
 				ref={refs.setReference}
 				{...getReferenceProps()}
 			>
