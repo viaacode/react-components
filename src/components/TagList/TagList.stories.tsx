@@ -4,8 +4,9 @@ import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 import { tags } from './__mocks__/tag-list';
 import TagList from './TagList';
+import type { TagListProps } from './TagList.types';
 
-const TagListStoryComponent = ({ children }: { children: ReactElement<any> }) => {
+const TagListStoryComponent = ({ children }: { children: ReactElement<TagListProps> }) => {
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
 	return cloneElement(children, {
@@ -23,7 +24,7 @@ const TagListStoryComponent = ({ children }: { children: ReactElement<any> }) =>
 				setSelectedTags([...selectedTags, tagId]);
 			}
 		},
-	});
+	} as any);
 };
 
 const meta: Meta<typeof TagList> = {

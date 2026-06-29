@@ -6,8 +6,9 @@ import { MenuContent } from '../Menu/MenuContent';
 import { menuItems, menuItemsWithIcons } from './__mocks__/dropdown';
 import Dropdown from './Dropdown';
 import { DropdownButton, DropdownContent } from './Dropdown.slots';
+import type { DropdownProps } from './Dropdown.types';
 
-const DropdownStoryComponent = ({ children }: { children: ReactElement<any> }) => {
+const DropdownStoryComponent = ({ children }: { children: ReactElement<DropdownProps> }) => {
 	const [isOpen, setOpen] = useState(false);
 
 	const open = () => {

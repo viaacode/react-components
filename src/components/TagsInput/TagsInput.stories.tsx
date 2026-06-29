@@ -3,9 +3,9 @@ import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 import { tagsInputOptionsMock } from './__mocks__/tags-input';
 import TagsInput from './TagsInput';
-import type { TagInfo } from './TagsInput.types';
+import type { TagInfo, TagsInputProps } from './TagsInput.types';
 
-const TagsInputStoryComponent = ({ children }: { children: ReactElement<any> }) => {
+const TagsInputStoryComponent = ({ children }: { children: ReactElement<TagsInputProps> }) => {
 	const [value, setValue] = useState<TagInfo[]>([]);
 
 	return cloneElement(children, {
@@ -18,7 +18,7 @@ const TagsInputStoryComponent = ({ children }: { children: ReactElement<any> }) 
 			action('Created Tag')(tagToBeCreated);
 			setValue([...value, { label: tagToBeCreated, value: tagToBeCreated }]);
 		},
-	});
+	} as any);
 };
 
 const meta: Meta<typeof TagsInput> = {

@@ -6,6 +6,7 @@ import { selectOptionsMock } from '../__mocks__/select';
 import type { SelectOption } from '../Select.types';
 
 import ReactSelect from './ReactSelect';
+import type { ReactSelectProps } from './ReactSelect.types';
 
 const meta: Meta<typeof ReactSelect> = {
 	component: ReactSelect,
@@ -22,10 +23,13 @@ const ReactSelectStoryComponent: FC<{ children?: ReactNode }> = ({ children }) =
 		setValue(value);
 	};
 
-	return cloneElement(children as ReactElement<any>, {
-		value,
-		onChange,
-	});
+	return cloneElement(
+		children as ReactElement<ReactSelectProps>,
+		{
+			value,
+			onChange,
+		} as unknown as any
+	);
 };
 
 export const Default: Story = {

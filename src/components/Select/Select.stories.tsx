@@ -10,6 +10,7 @@ import {
 import { action } from 'storybook/actions';
 import { selectOptionsMock } from './__mocks__/select';
 import Select from './Select';
+import type { SelectProps } from './Select.types';
 
 const meta: Meta<typeof Select> = {
 	title: 'Components/Select',
@@ -26,7 +27,7 @@ const SelectStoryComponent: FC<{ children?: ReactNode }> = ({ children }) => {
 		setValue(e.target.value);
 	};
 
-	return cloneElement(children as ReactElement<any>, {
+	return cloneElement(children as ReactElement<SelectProps>, {
 		value,
 		onChange,
 	});
