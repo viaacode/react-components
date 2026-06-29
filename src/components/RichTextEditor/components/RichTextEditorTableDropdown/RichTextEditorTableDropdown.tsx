@@ -17,15 +17,17 @@ import TableColDeleteIcon from '../../icons/table-col-delete.svg?react';
 import TableDeleteIcon from '../../icons/table-delete.svg?react';
 import TableRowAddIcon from '../../icons/table-row-add.svg?react';
 import TableRowDeleteIcon from '../../icons/table-row-delete.svg?react';
+import { LabelKey, type RichTextEditorLabels } from '../../RichTextEditor.labels';
 
 interface RichTextEditorTableDropdownProps {
 	editor: Editor | null;
 	root: string;
 	isDisabled: boolean;
+	labels: RichTextEditorLabels;
 }
 
 interface TableAction {
-	label: string;
+	labelKey: LabelKey;
 	icon: ReactNode;
 	onClick: (editor: Editor) => void;
 	onlyWhenActive?: boolean;
@@ -33,37 +35,37 @@ interface TableAction {
 
 const TABLE_ACTIONS: TableAction[] = [
 	{
-		label: 'Tabel invoegen',
+		labelKey: LabelKey.Table_InsertTable,
 		icon: <TableIcon />,
 		onClick: (editor) =>
 			editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
 	},
 	{
-		label: 'Voeg rij in',
+		labelKey: LabelKey.Table_AddRow,
 		icon: <TableRowAddIcon />,
 		onClick: (editor) => editor.chain().focus().addRowAfter().run(),
 		onlyWhenActive: true,
 	},
 	{
-		label: 'Verwijder rij',
+		labelKey: LabelKey.Table_DeleteRow,
 		icon: <TableRowDeleteIcon />,
 		onClick: (editor) => editor.chain().focus().deleteRow().run(),
 		onlyWhenActive: true,
 	},
 	{
-		label: 'Voeg kolom in',
+		labelKey: LabelKey.Table_AddColumn,
 		icon: <TableColAddIcon />,
 		onClick: (editor) => editor.chain().focus().addColumnAfter().run(),
 		onlyWhenActive: true,
 	},
 	{
-		label: 'Verwijder kolom',
+		labelKey: LabelKey.Table_DeleteColumn,
 		icon: <TableColDeleteIcon />,
 		onClick: (editor) => editor.chain().focus().deleteColumn().run(),
 		onlyWhenActive: true,
 	},
 	{
-		label: 'Verwijder tabel',
+		labelKey: LabelKey.Table_DeleteTable,
 		icon: <TableDeleteIcon />,
 		onClick: (editor) => editor.chain().focus().deleteTable().run(),
 		onlyWhenActive: true,
@@ -74,6 +76,7 @@ export const RichTextEditorTableDropdown: FunctionComponent<RichTextEditorTableD
 	editor,
 	root,
 	isDisabled,
+	labels,
 }) => {
 	const [open, setOpen] = useState(false);
 
@@ -98,7 +101,7 @@ export const RichTextEditorTableDropdown: FunctionComponent<RichTextEditorTableD
 				ref={refs.setReference}
 				type="button"
 				className={isTableActive || open ? 'is-active' : undefined}
-				title="Tabel"
+				title={labels[LabelKey.Table_Table]}
 				disabled={isDisabled}
 				{...getReferenceProps()}
 			>
@@ -114,7 +117,7 @@ export const RichTextEditorTableDropdown: FunctionComponent<RichTextEditorTableD
 					>
 						{visibleActions.map((action) => (
 							<button
-								key={action.label}
+								key={action.labelKey}
 								type="button"
 								className={`${root}__table-option`}
 								onClick={() => {
@@ -124,10 +127,10 @@ export const RichTextEditorTableDropdown: FunctionComponent<RichTextEditorTableD
 									setOpen(false);
 								}}
 							>
-									<span className={`${root}__table-option-icon`}>{action.icon}</span>
-									{action.label}
-								</button>
-							))}
+								<span className={`${root}__table-option-icon`}>{action.icon}</span>
+								{labels[action.labelKey]}
+							</button>
+						))}
 					</div>
 				</FloatingPortal>
 			)}

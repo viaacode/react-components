@@ -144,12 +144,9 @@ $button-color-active: #3498db;
 				}
 
 				.selectedCell::after {
-					background: rgba(200, 200, 255, 0.4);
+					background: rgb(200 200 255 / 40%);
 					content: '';
-					left: 0;
-					right: 0;
-					top: 0;
-					bottom: 0;
+					inset: 0;
 					pointer-events: none;
 					position: absolute;
 					z-index: 2;
@@ -198,7 +195,7 @@ $button-color-active: #3498db;
 .c-rich-text-editor__table-popup {
 	background: #2e2e2e;
 	border-radius: 4px;
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+	box-shadow: 0 4px 16px rgb(0 0 0 / 40%);
 	z-index: 10000;
 	min-width: 160px;
 	overflow: hidden;
@@ -216,7 +213,7 @@ $button-color-active: #3498db;
 	background: transparent;
 	border: none;
 	border-bottom: 1px solid #3a3a3a;
-	color: #ffffff;
+	color: #fff;
 	text-align: left;
 	cursor: pointer;
 	font-family: inherit;
@@ -245,7 +242,7 @@ $button-color-active: #3498db;
 .c-rich-text-editor__headings-popup {
 	background: #2e2e2e;
 	border-radius: 4px;
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+	box-shadow: 0 4px 16px rgb(0 0 0 / 40%);
 	z-index: 10000;
 	min-width: 180px;
 	overflow: hidden;
@@ -261,7 +258,7 @@ $button-color-active: #3498db;
 	background: transparent;
 	border: none;
 	border-bottom: 1px solid #3a3a3a;
-	color: #ffffff;
+	color: #fff;
 	text-align: left;
 	cursor: pointer;
 	font-family: inherit;
@@ -279,13 +276,40 @@ $button-color-active: #3498db;
 		background: #3498db;
 	}
 
-	&--h1 { font-size: 2em; font-weight: bold; }
-	&--h2 { font-size: 1.6em; font-weight: bold; }
-	&--h3 { font-size: 1.3em; font-weight: bold; }
-	&--h4 { font-size: 1.1em; font-weight: bold; }
-	&--h5 { font-size: 1em; font-weight: bold; }
-	&--h6 { font-size: 0.85em; font-weight: bold; }
-	&--normal { font-size: 1em; font-weight: normal; }
+	&--h1 {
+		font-size: 2em;
+		font-weight: bold;
+	}
+
+	&--h2 {
+		font-size: 1.6em;
+		font-weight: bold;
+	}
+
+	&--h3 {
+		font-size: 1.3em;
+		font-weight: bold;
+	}
+
+	&--h4 {
+		font-size: 1.1em;
+		font-weight: bold;
+	}
+
+	&--h5 {
+		font-size: 1em;
+		font-weight: bold;
+	}
+
+	&--h6 {
+		font-size: 0.85em;
+		font-weight: bold;
+	}
+
+	&--normal {
+		font-size: 1em;
+		font-weight: normal;
+	}
 }
 
 .c-rich-text-editor__link-popup {
@@ -293,7 +317,7 @@ $button-color-active: #3498db;
 	border-radius: 4px;
 	padding: 12px;
 	min-width: 320px;
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+	box-shadow: 0 4px 16px rgb(0 0 0 / 40%);
 	z-index: 10000;
 	display: flex;
 	flex-direction: column;

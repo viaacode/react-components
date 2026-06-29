@@ -27,6 +27,9 @@
       },
       "performance": {
         "noDelete": "off"
+      },
+      "style": {
+        "useBlockStatements": "error"
       }
     }
   },

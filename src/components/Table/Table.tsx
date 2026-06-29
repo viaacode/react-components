@@ -93,10 +93,16 @@ const Table = <RowDataType extends TableData>({
 	// Render
 
 	const renderSortingIndicator = (header: Header<RowDataType, unknown>) => {
-		if (!header.column.getCanSort()) return null;
+		if (!header.column.getCanSort()) {
+			return null;
+		}
 		const sortDir = header.column.getIsSorted();
-		if (sortDir === 'asc') return sortingIcons.asc;
-		if (sortDir === 'desc') return sortingIcons.desc;
+		if (sortDir === 'asc') {
+			return sortingIcons.asc;
+		}
+		if (sortDir === 'desc') {
+			return sortingIcons.desc;
+		}
 		return sortingIcons.default;
 	};
 
@@ -113,7 +119,11 @@ const Table = <RowDataType extends TableData>({
 									className={clsx(bem('row'), bem('row', 'header'))}
 								>
 									{enableRowFocusOnClick && (
-										<td role="presentation" className={clsx(thClass(false), focusedTdClass(false))}>
+										<td
+											role="presentation"
+											aria-hidden={true}
+											className={clsx(thClass(false), focusedTdClass(false))}
+										>
 											&nbsp;
 										</td>
 									)}
@@ -166,7 +176,7 @@ const Table = <RowDataType extends TableData>({
 										{...rowProps}
 									>
 										{enableRowFocusOnClick && (
-											<td role="cell" className={focusedTdClass(row.id === focusedRowId)}>
+											<td className={focusedTdClass(row.id === focusedRowId)}>
 												<button
 													type="button"
 													aria-label="Focus row"

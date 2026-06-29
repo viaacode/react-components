@@ -13,17 +13,20 @@ import clsx from 'clsx';
 import { type FunctionComponent, type KeyboardEvent, useState } from 'react';
 import CrossIcon from '../../icons/cross.svg?react';
 import LinkIcon from '../../icons/link.svg?react';
+import { LabelKey, type RichTextEditorLabels } from '../../RichTextEditor.labels';
 
 interface RichTextEditorLinkDropdownProps {
 	editor: Editor | null;
 	root: string;
 	isDisabled: boolean;
+	labels: RichTextEditorLabels;
 }
 
 export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDropdownProps> = ({
 	editor,
 	root,
 	isDisabled,
+	labels,
 }) => {
 	const [open, setOpen] = useState(false);
 	const [linkUrl, setLinkUrl] = useState('');
@@ -50,7 +53,9 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 	const isActive = !!editor?.isActive('link');
 
 	const applyLink = () => {
-		if (!editor) return;
+		if (!editor) {
+			return;
+		}
 		const href = linkUrl.trim();
 		if (href) {
 			editor
@@ -74,8 +79,7 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 		if (e.key === 'Enter') {
 			e.preventDefault();
 			applyLink();
-		}
-		if (e.key === 'Escape') {
+		} else if (e.key === 'Escape') {
 			e.preventDefault();
 			setOpen(false);
 		}
@@ -87,7 +91,7 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 				ref={refs.setReference}
 				type="button"
 				className={isActive || open ? 'is-active' : undefined}
-				title="Link invoegen"
+				title={labels[LabelKey.Link_InsertLink]}
 				disabled={isDisabled}
 				{...getReferenceProps()}
 			>
@@ -102,40 +106,40 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 						{...getFloatingProps()}
 					>
 						<input
-							// biome-ignore lint/a11y/noAutofocus: handy to auto focus when dialog is opened
+							// biome-ignore lint/a11y/noAutofocus: handy to autofocus when dialog is opened
 							autoFocus
 							type="url"
 							value={linkUrl}
 							onChange={(e) => setLinkUrl(e.target.value)}
-							placeholder="Link URL invoeren"
+							placeholder={labels[LabelKey.Link_InsertLinkUrl]}
 							onKeyDown={handleKeyDown}
 						/>
 						<div
 							className={`${root}__link-popup-toggle`}
 							onClick={() => setOpenInNewTab((prev) => !prev)}
 							onKeyDown={(e) => {
-								if (e.key === ' ' || e.key === 'Enter') setOpenInNewTab((prev) => !prev);
+								if (e.key === ' ' || e.key === 'Enter') {
+									setOpenInNewTab((prev) => !prev);
+								}
 							}}
 							role="switch"
 							aria-checked={openInNewTab}
 							tabIndex={0}
 						>
-							<span
-								className={clsx(`${root}__link-popup-switch`, { 'is-on': openInNewTab })}
-							/>
-							Openen in een nieuw venster
+							<span className={clsx(`${root}__link-popup-switch`, { 'is-on': openInNewTab })} />
+							{labels[LabelKey.Link_OpenInNewWindow]}
 						</div>
 						<div className={`${root}__link-popup-footer`}>
 							<button type="button" className={`${root}__link-popup-delete`} onClick={removeLink}>
 								<CrossIcon />
-								Verwijder link
+								{labels[LabelKey.Link_DeleteLink]}
 							</button>
 							<div>
 								<button type="button" onClick={() => setOpen(false)}>
-									Annuleer
+									{labels[LabelKey.Link_Cancel]}
 								</button>
 								<button type="button" className={`${root}__link-popup-confirm`} onClick={applyLink}>
-									Bevestig
+									{labels[LabelKey.Link_Confirm]}
 								</button>
 							</div>
 						</div>

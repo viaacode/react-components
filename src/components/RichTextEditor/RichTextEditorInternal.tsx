@@ -1,5 +1,4 @@
 import Image from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
@@ -9,7 +8,6 @@ import TableHeader from '@tiptap/extension-table-header';
 import TableRow from '@tiptap/extension-table-row';
 import TextAlign from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
-import Underline from '@tiptap/extension-underline';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
@@ -40,9 +38,11 @@ import UndoIcon from './icons/undo.svg?react';
 import UnlinkIcon from './icons/unlink.svg?react';
 import { DEFAULT_CONTROLS } from './RichTextEditor.const';
 import { prettifyHtml } from './RichTextEditor.helpers';
+import { LabelKey, RICH_TEXT_EDITOR_LABELS } from './RichTextEditor.labels';
 import {
 	ALL_RICH_TEXT_HEADINGS,
 	type Heading,
+	Locale,
 	type RichTextEditorControl,
 	type RichTextEditorMedia,
 	type RichTextEditorUploadInfo,
@@ -66,6 +66,7 @@ interface RichTextEditorInternalProps {
 	onDelete?: () => void;
 	onSave?: () => void;
 	enabledHeadings?: Heading[];
+	locale?: Locale;
 }
 
 const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = ({
@@ -84,10 +85,12 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 	placeholder,
 	enabledHeadings,
 	rootClassName: root = 'c-rich-text-editor',
+	locale = Locale.nl,
 }: RichTextEditorInternalProps) => {
 	const resolvedControls = controls ?? DEFAULT_CONTROLS;
 	const resolvedHeadings =
 		enabledHeadings && enabledHeadings.length > 0 ? enabledHeadings : ALL_RICH_TEXT_HEADINGS;
+	const labels = RICH_TEXT_EDITOR_LABELS[locale];
 	const [, setEditorSelection] = useState<{ from: number; to: number }>({ from: 0, to: 0 });
 	const [isHtmlView, setIsHtmlView] = useState(false);
 	const [isFullscreen, setIsFullscreen] = useState(false);
@@ -98,9 +101,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 
 	const editor = useEditor({
 		extensions: [
-			StarterKit,
-			Underline,
-			Link.configure({ openOnClick: false }),
+			StarterKit, // Already includes link and underline functionality
 			Image.configure({ HTMLAttributes: { class: 'c-editor-image' } }),
 			Table.configure({
 				resizable: false,
@@ -122,13 +123,9 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 			handleKeyDown: (_view, event) => {
 				if (event.key === 'Tab') {
 					onTab?.();
-				}
-
-				if (event.key === 'Backspace' || event.key === 'Delete') {
+				} else if (event.key === 'Backspace' || event.key === 'Delete') {
 					onDelete?.();
-				}
-
-				if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
+				} else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
 					event.preventDefault();
 					onSave?.();
 				}
@@ -202,12 +199,24 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 	const canRedo = !!editor?.can().chain().focus().redo().run();
 
 	const getActiveHeading = (): Heading => {
-		if (editor?.isActive('heading', { level: 1 })) return 'h1';
-		if (editor?.isActive('heading', { level: 2 })) return 'h2';
-		if (editor?.isActive('heading', { level: 3 })) return 'h3';
-		if (editor?.isActive('heading', { level: 4 })) return 'h4';
-		if (editor?.isActive('heading', { level: 5 })) return 'h5';
-		if (editor?.isActive('heading', { level: 6 })) return 'h6';
+		if (editor?.isActive('heading', { level: 1 })) {
+			return 'h1';
+		}
+		if (editor?.isActive('heading', { level: 2 })) {
+			return 'h2';
+		}
+		if (editor?.isActive('heading', { level: 3 })) {
+			return 'h3';
+		}
+		if (editor?.isActive('heading', { level: 4 })) {
+			return 'h4';
+		}
+		if (editor?.isActive('heading', { level: 5 })) {
+			return 'h5';
+		}
+		if (editor?.isActive('heading', { level: 6 })) {
+			return 'h6';
+		}
 		return 'normal';
 	};
 
@@ -306,7 +315,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `bold-${index}`,
 					label: <BoldIcon />,
-					title: 'Vet',
+					title: labels[LabelKey.Bold],
 					onClick: () => editor?.chain().focus().toggleBold().run(),
 					isActive: !!editor?.isActive('bold'),
 				});
@@ -314,7 +323,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `italic-${index}`,
 					label: <ItalicIcon />,
-					title: 'Cursief',
+					title: labels[LabelKey.Italic],
 					onClick: () => editor?.chain().focus().toggleItalic().run(),
 					isActive: !!editor?.isActive('italic'),
 				});
@@ -322,7 +331,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `underline-${index}`,
 					label: <UnderlineIcon />,
-					title: 'Onderlijnen',
+					title: labels[LabelKey.Underline],
 					onClick: () => editor?.chain().focus().toggleUnderline().run(),
 					isActive: !!editor?.isActive('underline'),
 				});
@@ -330,7 +339,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `strike-${index}`,
 					label: <StrikeThroughIcon />,
-					title: 'Doorhalen',
+					title: labels[LabelKey.Strikethrough],
 					onClick: () => editor?.chain().focus().toggleStrike().run(),
 					isActive: !!editor?.isActive('strike'),
 				});
@@ -338,7 +347,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `subscript-${index}`,
 					label: <SubscriptIcon />,
-					title: 'Subscript',
+					title: labels[LabelKey.Subscript],
 					onClick: () => editor?.chain().focus().toggleSubscript().run(),
 					isActive: !!editor?.isActive('subscript'),
 				});
@@ -346,7 +355,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `superscript-${index}`,
 					label: <SuperscriptIcon />,
-					title: 'Superscript',
+					title: labels[LabelKey.Superscript],
 					onClick: () => editor?.chain().focus().toggleSuperscript().run(),
 					isActive: !!editor?.isActive('superscript'),
 				});
@@ -359,13 +368,14 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 						isDisabled={areToolbarActionsDisabled}
 						resolvedHeadings={resolvedHeadings}
 						activeHeading={getActiveHeading()}
+						labels={labels}
 					/>
 				);
 			case 'list-ul':
 				return renderButton({
 					key: `list-ul-${index}`,
 					label: <ListUnorderedIcon />,
-					title: 'Ongeordende lijst',
+					title: labels[LabelKey.UnorderedList],
 					onClick: () => editor?.chain().focus().toggleBulletList().run(),
 					isActive: !!editor?.isActive('bulletList'),
 				});
@@ -373,7 +383,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `list-ol-${index}`,
 					label: <ListNumericIcon />,
-					title: 'Geordende lijst',
+					title: labels[LabelKey.OrderedList],
 					onClick: () => editor?.chain().focus().toggleOrderedList().run(),
 					isActive: !!editor?.isActive('orderedList'),
 				});
@@ -381,32 +391,33 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `hr-${index}`,
 					label: <HrIcon />,
-					title: 'Horizontale lijn',
+					title: labels[LabelKey.HorizontalLine],
 					onClick: () => editor?.chain().focus().setHorizontalRule().run(),
 				});
 			case 'link':
 				return (
-					<>
+					<div key="rich-text-editor__link-dropdown">
 						<RichTextEditorLinkDropdown
 							key={`link-${index}`}
 							editor={editor}
 							root={root}
 							isDisabled={areToolbarActionsDisabled}
+							labels={labels}
 						/>
 						{renderButton({
 							key: `unlink-${index}`,
 							label: <UnlinkIcon />,
-							title: 'Link verwijderen',
+							title: labels[LabelKey.RemoveLink],
 							onClick: () => editor?.chain().focus().unsetLink().run(),
 							isDisabled: areToolbarActionsDisabled || !editor?.isActive('link'),
 						})}
-					</>
+					</div>
 				);
 			case 'media':
 				return renderButton({
 					key: `media-${index}`,
 					label: <ImageIcon />,
-					title: 'Afbeelding toevoegen',
+					title: labels[LabelKey.AddImage],
 					onClick: () => fileInputRef.current?.click(),
 					isDisabled: areToolbarActionsDisabled || !media,
 				});
@@ -417,6 +428,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 						editor={editor}
 						root={root}
 						isDisabled={areToolbarActionsDisabled}
+						labels={labels}
 					/>
 				);
 			case 'text-align':
@@ -424,28 +436,28 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 					renderButton({
 						key: `align-left-${index}`,
 						label: <AlignLeftIcon />,
-						title: 'Links uitlijnen',
+						title: labels[LabelKey.AlignLeft],
 						onClick: () => editor?.chain().focus().setTextAlign('left').run(),
 						isActive: isLeftAligned,
 					}),
 					renderButton({
 						key: `align-center-${index}`,
 						label: <AlignCenterIcon />,
-						title: 'Centreren',
+						title: labels[LabelKey.AlignCenter],
 						onClick: () => editor?.chain().focus().setTextAlign('center').run(),
 						isActive: isCentered,
 					}),
 					renderButton({
 						key: `align-right-${index}`,
 						label: <AlignRightIcon />,
-						title: 'Rechts uitlijnen',
+						title: labels[LabelKey.AlignRight],
 						onClick: () => editor?.chain().focus().setTextAlign('right').run(),
 						isActive: isRightAligned,
 					}),
 					renderButton({
 						key: `align-justify-${index}`,
 						label: <AlignJustifyIcon />,
-						title: 'Uitvullen',
+						title: labels[LabelKey.Justify],
 						onClick: () => editor?.chain().focus().setTextAlign('justify').run(),
 						isActive: isJustified,
 					}),
@@ -454,7 +466,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `undo-${index}`,
 					label: <UndoIcon />,
-					title: 'Ongedaan maken',
+					title: labels[LabelKey.Undo],
 					onClick: () => editor?.chain().focus().undo().run(),
 					isDisabled: areToolbarActionsDisabled || !canUndo,
 				});
@@ -462,7 +474,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `redo-${index}`,
 					label: <RedoIcon />,
-					title: 'Opnieuw uitvoeren',
+					title: labels[LabelKey.Redo],
 					onClick: () => editor?.chain().focus().redo().run(),
 					isDisabled: areToolbarActionsDisabled || !canRedo,
 				});
@@ -470,7 +482,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `fullscreen-${index}`,
 					label: isFullscreen ? <FullscreenCloseIcon /> : <FullscreenIcon />,
-					title: 'Volledig scherm',
+					title: labels[LabelKey.Fullscreen],
 					onClick: () => setIsFullscreen((prev) => !prev),
 					isActive: isFullscreen,
 					isDisabled: !isEditorReady,
@@ -479,7 +491,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `edit-html-${index}`,
 					label: <span>HTML</span>,
-					title: 'HTML bewerken',
+					title: labels[LabelKey.EditHtml],
 					onClick: toggleHtmlView,
 					isActive: isHtmlView,
 					isDisabled: !isEditorReady,
@@ -487,15 +499,15 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 			case 'clear':
 				return renderButton({
 					key: `clear-${index}`,
-					label: 'Wis',
-					title: 'Inhoud wissen',
+					label: labels[LabelKey.ClearLabel],
+					title: labels[LabelKey.Clear],
 					onClick: () => editor?.chain().focus().clearContent().run(),
 				});
 			case 'remove-styles':
 				return renderButton({
 					key: `remove-styles-${index}`,
 					label: <RemoveStylesIcon />,
-					title: 'Verwijder stijlen',
+					title: labels[LabelKey.RemoveStyles],
 					onClick: () => editor?.chain().focus().clearNodes().unsetAllMarks().run(),
 				});
 			default:

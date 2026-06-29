@@ -5,6 +5,7 @@ import { selectOptionsMock } from '../Select/__mocks__/select';
 import Select from '../Select/Select';
 
 import { RichTextEditor } from './RichTextEditor';
+import { Locale } from './RichTextEditor.types';
 import type { RichTextEditorControl } from './RichTextEditor.types';
 
 const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
@@ -44,7 +45,27 @@ const RichTextEditorStoryComponent = ({
 			action('onChange')(newValue);
 			setValue(newValue);
 		},
-	});
+	} as any);
+};
+
+const LocaleWrapper = ({ children }: { children: (locale: Locale) => ReactElement }) => {
+	const [locale, setLocale] = useState<Locale>(Locale.nl);
+
+	return (
+		<>
+			<div style={{ marginBottom: '8px' }}>
+				<Select
+					options={[
+						{ label: 'Nederlands', value: Locale.nl },
+						{ label: 'English', value: Locale.en },
+					]}
+					value={locale}
+					onChange={(e) => setLocale(e.target.value as Locale)}
+				/>
+			</div>
+			{children(locale)}
+		</>
+	);
 };
 
 const meta: Meta<typeof RichTextEditor> = {
@@ -55,20 +76,28 @@ export default meta;
 type Story = StoryObj<typeof RichTextEditor>;
 
 const Template = (args: any) => (
-	<RichTextEditorStoryComponent initialValue={args.value}>
-		<RichTextEditor {...args} />
-	</RichTextEditorStoryComponent>
+	<LocaleWrapper>
+		{(locale) => (
+			<RichTextEditorStoryComponent initialValue={args.value}>
+				<RichTextEditor {...args} locale={locale} />
+			</RichTextEditorStoryComponent>
+		)}
+	</LocaleWrapper>
 );
 
 const TemplateWithSelect = (args: any) => (
-	<>
-		<div style={{ marginBottom: '5px' }}>
-			<Select options={selectOptionsMock} />
-		</div>
-		<RichTextEditorStoryComponent initialValue={args.value}>
-			<RichTextEditor {...args} />
-		</RichTextEditorStoryComponent>
-	</>
+	<LocaleWrapper>
+		{(locale) => (
+			<>
+				<div style={{ marginBottom: '5px' }}>
+					<Select options={selectOptionsMock} />
+				</div>
+				<RichTextEditorStoryComponent initialValue={args.value}>
+					<RichTextEditor {...args} locale={locale} />
+				</RichTextEditorStoryComponent>
+			</>
+		)}
+	</LocaleWrapper>
 );
 
 export const Default: Story = {

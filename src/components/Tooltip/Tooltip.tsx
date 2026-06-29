@@ -72,20 +72,12 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 		}),
 	});
 	const focus = useFocus(context);
-	const click = useClick(context, {keyboardHandlers: false });
-	const { getFloatingProps, getReferenceProps } = useInteractions([
-		hover,
-		focus,
-		click,
-	]);
+	const click = useClick(context, { keyboardHandlers: false });
+	const { getFloatingProps, getReferenceProps } = useInteractions([hover, focus, click]);
 
 	return contentElement && triggerElement ? (
 		<>
-			<div
-				className="c-tooltip-component-trigger"
-				ref={refs.setReference}
-				{...getReferenceProps()}
-			>
+			<div className="c-tooltip-component-trigger" ref={refs.setReference} {...getReferenceProps()}>
 				{triggerElement}
 			</div>
 

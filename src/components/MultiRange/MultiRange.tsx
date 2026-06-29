@@ -7,6 +7,8 @@ import { bemCls } from '../../utils';
 import { noop } from '../../utils/noop';
 import { TextInput } from '../TextInput';
 
+import './MultiRange.scss';
+
 export interface MultiRangePropsSchema extends DefaultComponentProps {
 	id?: string;
 	disabled?: boolean;
@@ -125,7 +127,7 @@ const MultiRange: FC<MultiRangePropsSchema> = ({
 					const sliderId = index === 0 ? startSliderId : endSliderId;
 
 					return (
-						<div
+						<button
 							{...props}
 							key={props.key}
 							id={sliderId}

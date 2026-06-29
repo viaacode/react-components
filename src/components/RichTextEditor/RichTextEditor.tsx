@@ -14,23 +14,28 @@ export const RichTextEditor: FunctionComponent<RichTextEditorProps> = (props) =>
 		useState<FC<RichTextEditorProps> | null>(null);
 
 	useEffect(() => {
-		if (isServerSideRendering()) return;
+		if (isServerSideRendering()) {
+			return;
+		}
 
 		let isMounted = true;
 		import('./RichTextEditorInternal.js').then((module) => {
-			if (isMounted) setRichTextEditorInternal(() => module.default);
+			if (isMounted) {
+				setRichTextEditorInternal(() => module.default);
+			}
 		});
 		return () => {
 			isMounted = false;
 		};
 	}, []);
 
-	if (!RichTextEditorInternal)
+	if (!RichTextEditorInternal) {
 		return (
 			<Flex orientation="horizontal" center>
 				<p>Laden...</p>
 			</Flex>
 		);
+	}
 
 	return <RichTextEditorInternal {...props} />;
 };

@@ -9,8 +9,14 @@ import {
 	useInteractions,
 } from '@floating-ui/react';
 import type { Editor } from '@tiptap/react';
+import clsx from 'clsx';
 import type { FunctionComponent } from 'react';
 import { useState } from 'react';
+import {
+	HEADING_LABEL_KEYS,
+	LabelKey,
+	type RichTextEditorLabels,
+} from '../../RichTextEditor.labels';
 import type { Heading } from '../../RichTextEditor.types';
 
 interface RichTextEditorHeadingsDropdownProps {
@@ -19,21 +25,12 @@ interface RichTextEditorHeadingsDropdownProps {
 	isDisabled: boolean;
 	resolvedHeadings: Heading[];
 	activeHeading: Heading;
+	labels: RichTextEditorLabels;
 }
-
-const HEADING_LABELS: Record<Heading, string> = {
-	h1: 'Koptekst 1',
-	h2: 'Koptekst 2',
-	h3: 'Koptekst 3',
-	h4: 'Koptekst 4',
-	h5: 'Koptekst 5',
-	h6: 'Koptekst 6',
-	normal: 'Normaal',
-};
 
 export const RichTextEditorHeadingsDropdown: FunctionComponent<
 	RichTextEditorHeadingsDropdownProps
-> = ({ editor, root, isDisabled, resolvedHeadings, activeHeading }) => {
+> = ({ editor, root, isDisabled, resolvedHeadings, activeHeading, labels }) => {
 	const [open, setOpen] = useState(false);
 
 	const { refs, floatingStyles, context } = useFloating({
@@ -48,7 +45,9 @@ export const RichTextEditorHeadingsDropdown: FunctionComponent<
 	const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss]);
 
 	const handleSelect = (heading: Heading) => {
-		if (!editor) return;
+		if (!editor) {
+			return;
+		}
 		if (heading === 'normal') {
 			editor.chain().focus().setParagraph().run();
 		} else {
@@ -68,12 +67,12 @@ export const RichTextEditorHeadingsDropdown: FunctionComponent<
 			<button
 				ref={refs.setReference}
 				type="button"
-				className={`${root}__headings-trigger${open ? ' is-active' : ''}`}
+				className={clsx(`${root}__headings-trigger`, open && 'is-active')}
 				disabled={isDisabled}
-				title="Koptekst"
+				title={labels[LabelKey.Headings_HeadingsTrigger]}
 				{...getReferenceProps()}
 			>
-				{HEADING_LABELS[activeHeading]}
+				{labels[HEADING_LABEL_KEYS[activeHeading]]}
 				<span className={`${root}__headings-chevron`}>▾</span>
 			</button>
 			{open && (
@@ -88,10 +87,14 @@ export const RichTextEditorHeadingsDropdown: FunctionComponent<
 							<button
 								key={heading}
 								type="button"
-								className={`${root}__headings-option ${root}__headings-option--${heading}${activeHeading === heading ? ' is-active' : ''}`}
+								className={clsx(
+									`${root}__headings-option`,
+									`${root}__headings-option--${heading}`,
+									activeHeading === heading && 'is-active'
+								)}
 								onClick={() => handleSelect(heading)}
 							>
-								{HEADING_LABELS[heading]}
+								{labels[HEADING_LABEL_KEYS[heading]]}
 							</button>
 						))}
 					</div>

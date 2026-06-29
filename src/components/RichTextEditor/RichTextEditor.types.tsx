@@ -5,39 +5,43 @@ export interface CustomRichTextEditorButton {
 	component: ReactNode;
 }
 
+export enum Locale {
+	nl = 'nl',
+	en = 'en',
+}
+
 export type RichTextEditorControl =
-	| 'font-size'
-	| 'font-family'
-	| 'line-height'
-	| 'letter-spacing'
-	| 'text-color'
-	| 'bold'
-	| 'italic'
-	| 'underline'
-	| 'strike-through'
-	| 'superscript'
-	| 'subscript'
-	| 'remove-styles'
-	| 'emoji'
-	| 'text-align'
-	| 'text-indent'
-	| 'link'
-	| 'unlink'
-	| 'headings'
-	| 'list-ul'
-	| 'list-ol'
-	| 'blockquote'
-	| 'code'
-	| 'hr'
-	| 'media'
-	| 'clear'
-	| 'undo'
-	| 'redo'
-	| 'table'
-	| 'fullscreen'
-	| 'separator'
-	| 'edit-html'
-	| CustomRichTextEditorButton;
+	| 'font-size' // Text size selector
+	| 'font-family' // Text font selector
+	| 'line-height' // Text line height selector
+	| 'letter-spacing' // Text pitch selector
+	| 'text-color' // Text color selector, including text background color settings
+	| 'bold' // Set text bold
+	| 'italic' // Italicize text
+	| 'underline' // Underline text
+	| 'strike-through' // Set Strikethrough
+	| 'superscript' // Set text as superscript
+	| 'subscript' // Set text as subscript
+	| 'remove-styles' // Clear text style
+	| 'emoji' // Emoji emoticon selector
+	| 'text-align' // Text alignment tool, you can use the textAligns property to specify which alignment can be used
+	| 'text-indent' // Paragraph indent tool, indent up to 6 levels
+	| 'link' // Link insertion tool
+	| 'headings' // Paragraph type (Title 1-6, General)
+	| 'list-ul' // Unordered list
+	| 'list-ol' // Ordered list
+	| 'blockquote' // Quoted paragraph
+	| 'code' // Code block
+	| 'hr' // Horizontal line tool
+	| 'media' // Multimedia insertion tool
+	| 'clear' // Content removal tool
+	| 'undo' // Undo operation
+	| 'redo' // Redo operation
+	| 'table' // Table
+	| 'fullscreen' // Make editor fullscreen
+	| 'separator' // Split line, continuous multiple separators will only be displayed as 1
+	| 'edit-html' // Provides a separate HTML view to edit the HTML content of the editor
+	| CustomRichTextEditorButton; // Provides the possibility to add a custom button
 
 export type Heading = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
 
@@ -60,6 +64,7 @@ export interface RichTextEditorProps {
 	onDelete?: () => void;
 	onSave?: () => void;
 	enabledHeadings?: Heading[];
+	locale?: Locale;
 }
 
 export interface RichTextEditorUploadInfo {
