@@ -8,14 +8,3 @@
 	display: inline-block;
 }
 
-.c-tooltip-component {
-	position: absolute;
-	max-width: 48rem;
-	user-select: none;
-	visibility: hidden;
-	z-index: 75;
-}
-
-.c-tooltip-component--show {
-	visibility: visible;
-}

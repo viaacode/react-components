@@ -156,3 +156,24 @@ export const TooltipDynamicPosition: Story = {
 		</div>
 	),
 };
+
+export const TooltipStyling: Story = {
+	render: () => (
+		<div className="u-text-center" style={{ paddingTop: '200px', paddingLeft: '200px' }}>
+			<Tooltip
+				position="top"
+				arrowFillColor="yellow"
+				arrowStrokeColor="red"
+				arrowStrokeWidth={2}
+				style={{ backgroundColor: 'yellow', border: '2px solid red', padding: '10px' }}
+			>
+				<TooltipTrigger>
+					<span>Hover me!</span>
+				</TooltipTrigger>
+				<TooltipContent>
+					<span>This is a tooltip</span>
+				</TooltipContent>
+			</Tooltip>
+		</div>
+	),
+};

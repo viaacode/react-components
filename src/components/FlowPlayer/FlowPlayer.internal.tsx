@@ -624,34 +624,34 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				>
 					<canvas ref={peakCanvas} className="c-peak" width="1212" height="779" />
 					{customControls}
-				</div>
-				<div className="c-video-player-inner-overlay">
-					{/** biome-ignore lint/a11y/noStaticElementInteractions: TODO fix */}
-					<span
-						className="fp-icon fp-replay"
-						onClick={handleReplayClicked}
-						onKeyDown={(e) =>
-							onKey(e, [...keysEnter, ...keysSpacebar], () => {
-								if (keysSpacebar.includes(e.key)) {
-									e.preventDefault();
-								}
-								handleReplayClicked();
-							})
-						}
-					/>
-					{/** biome-ignore lint/a11y/noStaticElementInteractions: TODO fix */}
-					<span
-						className="fp-icon fp-custom-play"
-						onClick={handlePlayClicked}
-						onKeyDown={(e) =>
-							onKey(e, [...keysEnter, ...keysSpacebar], () => {
-								if (keysSpacebar.includes(e.key)) {
-									e.preventDefault();
-								}
-								handlePlayClicked();
-							})
-						}
-					/>
+					<div className="c-video-player-inner-overlay">
+						{/** biome-ignore lint/a11y/noStaticElementInteractions: TODO fix */}
+						<span
+							className="fp-icon fp-replay"
+							onClick={handleReplayClicked}
+							onKeyDown={(e) =>
+								onKey(e, [...keysEnter, ...keysSpacebar], () => {
+									if (keysSpacebar.includes(e.key)) {
+										e.preventDefault();
+									}
+									handleReplayClicked();
+								})
+							}
+						/>
+						{/** biome-ignore lint/a11y/noStaticElementInteractions: TODO fix */}
+						<span
+							className="fp-icon fp-custom-play"
+							onClick={handlePlayClicked}
+							onKeyDown={(e) =>
+								onKey(e, [...keysEnter, ...keysSpacebar], () => {
+									if (keysSpacebar.includes(e.key)) {
+										e.preventDefault();
+									}
+									handlePlayClicked();
+								})
+							}
+						/>
+					</div>
 				</div>
 			</>
 		),
