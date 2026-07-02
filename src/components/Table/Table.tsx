@@ -47,10 +47,12 @@ const Table = <RowDataType extends TableData>({
 
 	const data = useMemo(() => options.data, [options.data]);
 	const columns = useMemo(() => options.columns, [options.columns]);
+	const initialState = useMemo(() => options.initialState, [options.initialState]);
 
 	const table = useReactTable<RowDataType>({
 		data,
 		columns,
+		initialState,
 		state: { sorting },
 		onSortingChange: setSorting,
 		getCoreRowModel: getCoreRowModel(),
@@ -58,7 +60,7 @@ const Table = <RowDataType extends TableData>({
 		getPaginationRowModel: getPaginationRowModel(),
 		manualSorting: true,
 		enableMultiSort: false,
-		getRowId: (row) => row.id?.toString(),
+		getRowId: (row) => row.id?.toString() || '',
 	});
 
 	const headerGroups = table.getHeaderGroups();

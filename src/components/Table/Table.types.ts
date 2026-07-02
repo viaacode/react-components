@@ -1,4 +1,11 @@
-import type { Column, ColumnDef, Header, Table as ReactTable, Row } from '@tanstack/react-table';
+import type {
+	TableOptions as BaseTableOptions,
+	Column,
+	ColumnDef,
+	Header,
+	Table as ReactTable,
+	Row,
+} from '@tanstack/react-table';
 import type { AvoSearchOrderDirection } from '@viaa/avo2-types';
 import type { MouseEvent, ReactNode } from 'react';
 import type { DefaultComponentProps } from '../../types';
@@ -6,6 +13,7 @@ import type { DefaultComponentProps } from '../../types';
 export type TableOptions<T extends TableData> = {
 	data: T[];
 	columns: ColumnDef<T, unknown>[];
+	initialState?: BaseTableOptions<T>['initialState'];
 };
 
 export type {
@@ -37,7 +45,7 @@ export interface TableProps<T extends TableData> extends DefaultComponentProps {
 	enableRowFocusOnClick?: boolean;
 }
 
-export type TableData = Record<'id', string | number> & Record<string, any>;
+export type TableData = Record<'id', string | number | undefined> & Record<string, any>;
 
 export interface TableSortingIcons {
 	asc?: ReactNode;
