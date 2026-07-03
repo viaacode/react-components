@@ -95,6 +95,11 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		_setPlayer(newPlayer);
 	};
 
+	const onTimeUpdateRef = useRef(onTimeUpdate);
+	useEffect(() => {
+		onTimeUpdateRef.current = onTimeUpdate;
+	}, [onTimeUpdate]);
+
 	const [startedPlaying, setStartedPlaying] = useState<boolean>(false);
 	const [drawPeaksTimerId, setDrawPeaksTimerId] = useState<number | null>(null);
 	const [activeItemIndex, setActiveItemIndex] = useState<number>(0);
@@ -303,8 +308,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 	const handleTimeUpdate = () => {
 		(onTimeUpdate || noop)(
-			(videoContainerRef?.current as HTMLVideoElement | null)?.currentTime || 0
-		);
+		onTimeUpdateRef.current?.(player.current?.currentTime || 0);
 	};
 
 	const getPreload = () => {
@@ -469,7 +473,6 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		onEnded,
 		onPause,
 		onPlay,
-		onTimeUpdate,
 		player.current,
 		plugins,
 		poster,
