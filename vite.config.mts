@@ -19,7 +19,9 @@ const external = [
 	// consuming app's own dependency pre-bundler handle the CJS->ESM interop.
 	'use-sync-external-store',
 	'use-sync-external-store/shim',
+	'use-sync-external-store/shim/index.js',
 	'use-sync-external-store/shim/with-selector',
+	'use-sync-external-store/shim/with-selector.js',
 ];
 
 // https://vitejs.dev/config/
