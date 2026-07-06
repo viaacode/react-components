@@ -65,6 +65,9 @@
     "react-select": "5.10.2",
     "@tanstack/react-table": "8.21.3"
   },
+  "dependencies": {
+    "use-sync-external-store": "1.4.0"
+  },
   "devDependencies": {
     "@biomejs/biome": "2.3.4",
     "@commitlint/cli": "17.7.1",
@@ -157,5 +160,14 @@
   "resolutions": {
     "react": "19.2.5",
     "react-dom": "19.2.5"
+  },
+  "overrides": {
+    "@tiptap/core": "3.27.1"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.5.6": true,
+    "esbuild@0.27.7": true,
+    "fsevents@2.3.3": true,
+    "lefthook@1.11.13": true
   }
 }

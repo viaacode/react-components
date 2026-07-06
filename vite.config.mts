@@ -12,6 +12,14 @@ const external = [
 	...peerDependencies,
 	'react/jsx-runtime',
 	'react/jsx-dev-runtime',
+	// use-sync-external-store is a CJS-only package (pulled in transitively by
+	// @tiptap/react). Bundling it inlines its `require('react')` call, which
+	// rolldown converts into a CJS-interop shim that throws in the browser
+	// since `react` itself stays external. Externalizing it instead lets the
+	// consuming app's own dependency pre-bundler handle the CJS->ESM interop.
+	'use-sync-external-store',
+	'use-sync-external-store/shim',
+	'use-sync-external-store/shim/with-selector',
 ];
 
 // https://vitejs.dev/config/

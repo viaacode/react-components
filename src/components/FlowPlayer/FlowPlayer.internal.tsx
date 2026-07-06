@@ -307,7 +307,6 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	};
 
 	const handleTimeUpdate = () => {
-		(onTimeUpdate || noop)(
 		onTimeUpdateRef.current?.(player.current?.currentTime || 0);
 	};
 
