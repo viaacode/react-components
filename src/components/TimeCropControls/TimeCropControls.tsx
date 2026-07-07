@@ -129,9 +129,9 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 						onChange(newStartTime, endTime);
 					}
 				} else {
-					const newStartTime = 0;
-					onChange(newStartTime, endTime);
 					if (correctWrongTimeInput) {
+						const newStartTime = 0;
+						onChange(newStartTime, endTime);
 						setFragmentStartString(formatDuration(newStartTime));
 					}
 					onError(TimeCropControlsErrors.WRONG_FORMAT_START_DATE);
@@ -151,9 +151,9 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 						onChange(startTime, newEndTime);
 					}
 				} else {
-					const newEndTime = 0;
-					onChange(startTime, newEndTime);
 					if (correctWrongTimeInput) {
+						const newEndTime = 0;
+						onChange(startTime, newEndTime);
 						setFragmentEndString(formatDuration(newEndTime));
 					}
 					onError(TimeCropControlsErrors.WRONG_FORMAT_END_DATE);
