@@ -33,7 +33,7 @@ export function drawPeak(
 
 	// Convert the waveform amplitude to bar height
 	const scaleY = (amplitude: number, canvasHeight: number, minVal: number, maxVal: number) => {
-		return ((amplitude - minVal + 0.1) / maxVal / 2) * canvasHeight;
+		return ((amplitude - minVal + 0.1) / (maxVal - minVal) / 2) * canvasHeight;
 	};
 
 	// Reset the canvas
