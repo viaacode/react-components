@@ -157,6 +157,15 @@ export const AudioWithFallbackPeak: Story = {
 	render: Template,
 };
 
+export const MutedAutoplay: Story = {
+	args: {
+		...MOCK_FLOW_PLAYER_PROPS_FULL,
+		autoplay: true,
+		muted: true,
+	},
+	render: Template,
+};
+
 export const HlsSourceUrl: Story = {
 	args: {
 		...MOCK_FLOW_PLAYER_PROPS_FULL,

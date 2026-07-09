@@ -54,6 +54,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	speed,
 	dataPlayerId,
 	autoplay,
+	muted,
 	plugins = ALL_FLOWPLAYER_PLUGINS,
 	start,
 	end,
@@ -351,6 +352,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 			// CONFIGURATION
 			autoplay: autoplay ? flowplayerWithPlugins.autoplay.ON : flowplayerWithPlugins.autoplay.OFF,
+			muted,
 			multiplay: false,
 			ui:
 				ui ||

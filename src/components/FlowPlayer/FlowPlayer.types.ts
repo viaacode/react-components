@@ -109,6 +109,7 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	token?: string;
 	dataPlayerId?: string;
 	autoplay?: boolean;
+	muted?: boolean;
 	pause?: boolean;
 	fullscreen?: boolean;
 	onPlay?: (src: string) => void;
