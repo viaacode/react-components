@@ -66,7 +66,7 @@ interface RichTextEditorInternalProps {
 	onDelete?: () => void;
 	onSave?: () => void;
 	enabledHeadings?: Heading[];
-	locale?: Locale;
+	locale?: 'nl' | 'en';
 }
 
 const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = ({
@@ -119,6 +119,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 		content: value || '',
 		editable: !disabled,
 		immediatelyRender: false,
+		shouldRerenderOnTransaction: true,
 		editorProps: {
 			handleKeyDown: (_view, event) => {
 				if (event.key === 'Tab') {
@@ -482,7 +483,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `fullscreen-${index}`,
 					label: isFullscreen ? <FullscreenCloseIcon /> : <FullscreenIcon />,
-					title: labels[LabelKey.Fullscreen],
+					title: isFullscreen ? labels[LabelKey.FullscreenClose]:labels[LabelKey.Fullscreen],
 					onClick: () => setIsFullscreen((prev) => !prev),
 					isActive: isFullscreen,
 					isDisabled: !isEditorReady,

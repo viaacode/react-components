@@ -29,16 +29,34 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 	labels,
 }) => {
 	const [open, setOpen] = useState(false);
+	const [linkText, setLinkText] = useState('');
 	const [linkUrl, setLinkUrl] = useState('');
 	const [openInNewTab, setOpenInNewTab] = useState(false);
 
 	const { refs, floatingStyles, context } = useFloating({
 		open,
 		onOpenChange: (nextOpen) => {
+			const from = editor?.state.selection.from ?? 0;
+			const to = editor?.state.selection.to ?? 0;
+			const selectionText = editor?.state.doc.textBetween(from, to) || '';
+
 			if (nextOpen) {
-				setLinkUrl((editor?.getAttributes('link').href as string) || '');
+				const currentNode = editor?.state.doc.nodeAt(from);
+				const linkUrl = (editor?.getAttributes('link').href as string) || ''
+
+				setLinkUrl(linkUrl);
+
+				if(linkUrl) {
+					setLinkText(selectionText || currentNode?.textContent || '');
+				} else {
+					// When no url, there is no link component and thus no node content to select (otherwise we would take paragraphs, strong tags etc
+					setLinkText(selectionText);
+				}
+
 				const target = editor?.getAttributes('link').target as string | undefined;
 				setOpenInNewTab(target === '_blank');
+			} else {
+				setLinkText(selectionText);
 			}
 			setOpen(nextOpen);
 		},
@@ -58,10 +76,15 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 		}
 		const href = linkUrl.trim();
 		if (href) {
+			const from = editor.state.selection.from;
+			const to = editor.state.selection.to;
+			const text = linkText || editor.state.doc.textBetween(from, to) || href;
+
 			editor
 				.chain()
 				.focus()
 				.extendMarkRange('link')
+				.insertContentAt({ from, to }, `<a href="${href}">${text}</a>`)
 				.setLink({ href, target: openInNewTab ? '_blank' : '_self' })
 				.run();
 		} else {
@@ -108,6 +131,13 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 						<input
 							// biome-ignore lint/a11y/noAutofocus: handy to autofocus when dialog is opened
 							autoFocus
+							type="text"
+							value={linkText}
+							onChange={(e) => setLinkText(e.target.value)}
+							placeholder={labels[LabelKey.Link_InsertLinkText]}
+							onKeyDown={handleKeyDown}
+						/>
+						<input
 							type="url"
 							value={linkUrl}
 							onChange={(e) => setLinkUrl(e.target.value)}
