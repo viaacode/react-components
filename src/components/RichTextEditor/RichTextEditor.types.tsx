@@ -64,7 +64,7 @@ export interface RichTextEditorProps {
 	onDelete?: () => void;
 	onSave?: () => void;
 	enabledHeadings?: Heading[];
-	locale?: Locale;
+	locale?: 'nl' | 'en';
 }
 
 export interface RichTextEditorUploadInfo {
