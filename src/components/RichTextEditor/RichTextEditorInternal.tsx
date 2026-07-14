@@ -119,6 +119,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 		content: value || '',
 		editable: !disabled,
 		immediatelyRender: false,
+		shouldRerenderOnTransaction: true,
 		editorProps: {
 			handleKeyDown: (_view, event) => {
 				if (event.key === 'Tab') {
