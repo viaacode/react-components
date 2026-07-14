@@ -482,7 +482,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `fullscreen-${index}`,
 					label: isFullscreen ? <FullscreenCloseIcon /> : <FullscreenIcon />,
-					title: labels[LabelKey.Fullscreen],
+					title: isFullscreen ? labels[LabelKey.FullscreenClose]:labels[LabelKey.Fullscreen],
 					onClick: () => setIsFullscreen((prev) => !prev),
 					isActive: isFullscreen,
 					isDisabled: !isEditorReady,
