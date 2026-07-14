@@ -66,7 +66,7 @@ interface RichTextEditorInternalProps {
 	onDelete?: () => void;
 	onSave?: () => void;
 	enabledHeadings?: Heading[];
-	locale?: Locale;
+	locale?: 'nl' | 'en';
 }
 
 const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = ({
