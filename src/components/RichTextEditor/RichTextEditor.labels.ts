@@ -27,6 +27,7 @@ export enum LabelKey {
 	RemoveStyles = 'removeStyles',
 	// Link dropdown
 	Link_InsertLink = 'insertLink',
+	Link_InsertLinkText = 'insertLinkText',
 	Link_InsertLinkUrl = 'insertLinkUrl',
 	Link_OpenInNewWindow = 'openInNewWindow',
 	Link_DeleteLink = 'deleteLink',
@@ -90,6 +91,7 @@ export const RICH_TEXT_EDITOR_LABELS: Record<Locale, RichTextEditorLabels> = {
 		[LabelKey.ClearLabel]: 'Wis',
 		[LabelKey.RemoveStyles]: 'Verwijder stijlen',
 		[LabelKey.Link_InsertLink]: 'Link invoegen',
+		[LabelKey.Link_InsertLinkText]: 'Linktekst invoeren',
 		[LabelKey.Link_InsertLinkUrl]: 'Link URL invoeren',
 		[LabelKey.Link_OpenInNewWindow]: 'Openen in een nieuw venster',
 		[LabelKey.Link_DeleteLink]: 'Verwijder link',
@@ -137,6 +139,7 @@ export const RICH_TEXT_EDITOR_LABELS: Record<Locale, RichTextEditorLabels> = {
 		[LabelKey.ClearLabel]: 'Clear',
 		[LabelKey.RemoveStyles]: 'Clear formatting',
 		[LabelKey.Link_InsertLink]: 'Insert link',
+		[LabelKey.Link_InsertLinkText]: 'Insert link text',
 		[LabelKey.Link_InsertLinkUrl]: 'Insert link url',
 		[LabelKey.Link_OpenInNewWindow]: 'Open in a new window',
 		[LabelKey.Link_DeleteLink]: 'Remove link',
