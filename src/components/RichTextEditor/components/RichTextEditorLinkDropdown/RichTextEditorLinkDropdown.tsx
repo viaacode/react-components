@@ -36,19 +36,27 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 	const { refs, floatingStyles, context } = useFloating({
 		open,
 		onOpenChange: (nextOpen) => {
-				const from = editor?.state.selection.from ?? 0;
-				const to = editor?.state.selection.to ?? 0;
-				const selectionText = editor?.state.doc.textBetween(from, to) || '';
+			const from = editor?.state.selection.from ?? 0;
+			const to = editor?.state.selection.to ?? 0;
+			const selectionText = editor?.state.doc.textBetween(from, to) || '';
 
 			if (nextOpen) {
 				const currentNode = editor?.state.doc.nodeAt(from);
+				const linkUrl = (editor?.getAttributes('link').href as string) || ''
 
-				setLinkUrl((editor?.getAttributes('link').href as string) || '');
-				setLinkText(selectionText || currentNode?.textContent || '');
+				setLinkUrl(linkUrl);
+
+				if(linkUrl) {
+					setLinkText(selectionText || currentNode?.textContent || '');
+				} else {
+					// When no url, there is no link component and thus no node content to select (otherwise we would take paragraphs, strong tags etc
+					setLinkText(selectionText);
+				}
+
 				const target = editor?.getAttributes('link').target as string | undefined;
 				setOpenInNewTab(target === '_blank');
-			} else if (editor){
-				setLinkText(selectionText)
+			} else {
+				setLinkText(selectionText);
 			}
 			setOpen(nextOpen);
 		},
