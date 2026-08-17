@@ -65,6 +65,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	onPause,
 	onEnded,
 	onTimeUpdate,
+	onError,
 	canPlay,
 	className,
 	playlistScrollable = false,
@@ -445,6 +446,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 		tempPlayer.on('error', (err: any) => {
 			console.error(err);
+			onError?.();
 		});
 
 		if (plugins.includes('playlist')) {
