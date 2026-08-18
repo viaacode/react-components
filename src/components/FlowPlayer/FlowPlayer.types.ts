@@ -110,6 +110,7 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	dataPlayerId?: string;
 	autoplay?: boolean;
 	muted?: boolean;
+	onMutedChange?: (muted: boolean) => void;
 	pause?: boolean;
 	fullscreen?: boolean;
 	onPlay?: (src: string) => void;
@@ -117,6 +118,7 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	onEnded?: () => void;
 	onTimeUpdate?: (time: number) => void;
 	onMetadataLoaded?: (evt: Event) => void;
+	onError?: () => void;
 	preload?: 'none' | 'auto' | 'metadata';
 	plugins?: FlowplayerPlugin[];
 	subtitles?: FlowplayerTrackSchema[];

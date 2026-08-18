@@ -55,6 +55,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	dataPlayerId,
 	autoplay,
 	muted,
+	onMutedChange,
 	plugins = ALL_FLOWPLAYER_PLUGINS,
 	start,
 	end,
@@ -65,6 +66,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	onPause,
 	onEnded,
 	onTimeUpdate,
+	onError,
 	canPlay,
 	className,
 	playlistScrollable = false,
@@ -287,6 +289,10 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 	const handlePlayingOnce = () => {
 		jumpToFirstCuepoint(player.current);
+
+		if (muted !== undefined) {
+			player.current.setOpts({ muted });
+		}
 	};
 
 	const handlePlaying = () => {
@@ -445,6 +451,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 		tempPlayer.on('error', (err: any) => {
 			console.error(err);
+			onError?.();
 		});
 
 		if (plugins.includes('playlist')) {
@@ -460,6 +467,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		tempPlayer.on(playlistPlugin.events.PLAYLIST_NEXT, handlePlaylistNext);
 		tempPlayer.on('loadeddata', handleLoadedMetadata);
 		tempPlayer.on('timeupdate', handleTimeUpdate);
+		tempPlayer.on('volumechange', () => onMutedChange?.(tempPlayer.muted));
 
 		registerCommands(tempPlayer);
 
@@ -472,6 +480,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		googleAnalyticsTitle,
 		jumpToFirstCuepoint,
 		onEnded,
+		onMutedChange,
 		onPause,
 		onPlay,
 		player.current,
