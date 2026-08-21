@@ -21,7 +21,9 @@ export const FlowPlayer: FunctionComponent<
 		}
 
 		return (
-			<Flex orientation="horizontal" center>
+			// Fills the space the player will take up, so the loading message sits in the middle of
+			// it rather than at the top edge of whatever container the player was mounted in.
+			<Flex center style={{ flex: '1 1 auto', height: '100%', minHeight: '100%' }}>
 				Laden ...
 			</Flex>
 		);
