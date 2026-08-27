@@ -461,7 +461,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `fullscreen-${index}`,
 					label: isFullscreen ? <FullscreenCloseIcon /> : <FullscreenIcon />,
-					title: isFullscreen ? labels[LabelKey.FullscreenClose]:labels[LabelKey.Fullscreen],
+					title: isFullscreen ? labels[LabelKey.FullscreenClose] : labels[LabelKey.Fullscreen],
 					onClick: () => setIsFullscreen((prev) => !prev),
 					isActive: isFullscreen,
 					isDisabled: !isEditorReady,
@@ -505,12 +505,9 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 			<div className={`${root}__toolbar`}>
 				{resolvedControls.map((control, index) => renderControl(control, index))}
 			</div>
-			<EditorContent
-				editor={editor}
-				className={clsx(`${root}__content`, {
-					[`${root}__content--hidden`]: isHtmlView,
-				})}
-			/>
+			{/* Rendered before the editor content, so the html view takes the same */}
+			{/* position as the view it replaces, also when a consumer reverses the */}
+			{/* order of the toolbar and the content (mobile keyboard). */}
 			{isHtmlView && (
 				<textarea
 					className={clsx(`${root}__content`, `${root}__html-view`)}
@@ -519,6 +516,12 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 					onBlur={handleHtmlBlur}
 				/>
 			)}
+			<EditorContent
+				editor={editor}
+				className={clsx(`${root}__content`, {
+					[`${root}__content--hidden`]: isHtmlView,
+				})}
+			/>
 			{media ? (
 				<input
 					type="file"
