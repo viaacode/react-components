@@ -176,7 +176,7 @@ $button-color-active: #3498db;
 
 	// Shares the .c-rich-text-editor__content class, so it keeps the same box,
 	// border and size as the WYSIWYG view it replaces.
-	.c-rich-text-editor__html-view {
+	.c-rich-text-editor__content.c-rich-text-editor__html-view {
 		display: block;
 		width: 100%;
 		font-family: monospace;
