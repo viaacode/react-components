@@ -12,7 +12,7 @@ import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
 import type { ChangeEvent, FunctionComponent, ReactNode } from 'react';
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { RichTextEditorHeadingsDropdown } from './components/RichTextEditorHeadingsDropdown/RichTextEditorHeadingsDropdown';
 import { RichTextEditorLinkDropdown } from './components/RichTextEditorLinkDropdown/RichTextEditorLinkDropdown';
 import { RichTextEditorTableDropdown } from './components/RichTextEditorTableDropdown/RichTextEditorTableDropdown';
@@ -95,9 +95,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 	const [isHtmlView, setIsHtmlView] = useState(false);
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [prettyHtml, setPrettyHtml] = useState(prettifyHtml(value || ''));
-	const [overlayTop, setOverlayTop] = useState(0);
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
-	const toolbarRef = useRef<HTMLDivElement | null>(null);
 
 	const editor = useEditor({
 		extensions: [
@@ -162,26 +160,6 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 			editor.setEditable(!disabled);
 		}
 	}, [disabled, editor]);
-
-	useLayoutEffect(() => {
-		const updateOverlayTop = () => {
-			const toolbarHeight = toolbarRef.current?.getBoundingClientRect().height || 0;
-			setOverlayTop(toolbarHeight);
-		};
-
-		updateOverlayTop();
-
-		if (typeof ResizeObserver === 'undefined') {
-			return;
-		}
-
-		const observer = new ResizeObserver(updateOverlayTop);
-		if (toolbarRef.current) {
-			observer.observe(toolbarRef.current);
-		}
-
-		return () => observer.disconnect();
-	}, []);
 
 	const accept = useMemo(() => {
 		const accepts = Object.values(media?.accepts || {})
@@ -483,7 +461,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				return renderButton({
 					key: `fullscreen-${index}`,
 					label: isFullscreen ? <FullscreenCloseIcon /> : <FullscreenIcon />,
-					title: isFullscreen ? labels[LabelKey.FullscreenClose]:labels[LabelKey.Fullscreen],
+					title: isFullscreen ? labels[LabelKey.FullscreenClose] : labels[LabelKey.Fullscreen],
 					onClick: () => setIsFullscreen((prev) => !prev),
 					isActive: isFullscreen,
 					isDisabled: !isEditorReady,
@@ -524,22 +502,26 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 			})}
 			id={id}
 		>
-			<div className={`${root}__toolbar`} ref={toolbarRef}>
+			<div className={`${root}__toolbar`}>
 				{resolvedControls.map((control, index) => renderControl(control, index))}
 			</div>
-			<EditorContent editor={editor} className={`${root}__content`} />
+			{/* Rendered before the editor content, so the html view takes the same */}
+			{/* position as the view it replaces, also when a consumer reverses the */}
+			{/* order of the toolbar and the content (mobile keyboard). */}
 			{isHtmlView && (
 				<textarea
-					className={`${root}__html-view`}
-					style={{
-						top: `${overlayTop}px`,
-						height: `calc(100% - ${overlayTop}px)`,
-					}}
+					className={clsx(`${root}__content`, `${root}__html-view`)}
 					value={prettyHtml}
 					onChange={(event) => setPrettyHtml(event.target.value)}
 					onBlur={handleHtmlBlur}
 				/>
 			)}
+			<EditorContent
+				editor={editor}
+				className={clsx(`${root}__content`, {
+					[`${root}__content--hidden`]: isHtmlView,
+				})}
+			/>
 			{media ? (
 				<input
 					type="file"
