@@ -1,0 +1,118 @@
+import type { FC, SVGProps } from 'react';
+
+const baseProps: SVGProps<SVGSVGElement> = {
+	xmlns: 'http://www.w3.org/2000/svg',
+	focusable: false,
+};
+
+// The icons below are traced from meemoo's own icon set (the "meemoocons" webfont), not generic
+// Material glyphs - each rendered at its own natural size via a viewBox cropped tight to the
+// glyph's actual bounding box (the exported assets had a few px of one-sided padding baked into
+// their nominal viewBox, which would have thrown off flex-centering in a button same as the
+// generic icons did before). No forced uniform 24x24 grid - flex centering in
+// `.c-flowplayer-control-button` handles differently-sized icons correctly on its own.
+
+export const PlayIcon: FC = () => (
+	<svg {...baseProps} width="14.0859" height="15.375" viewBox="0 0 14.0859 15.375" aria-hidden="true">
+		<path d="M0 0L14.0859 7.6875L0 15.375V0Z" fill="currentColor" />
+	</svg>
+);
+
+export const PauseIcon: FC = () => (
+	<svg {...baseProps} width="9.98438" height="14.0156" viewBox="0 0 9.98438 14.0156" aria-hidden="true">
+		<path d="M0 0H3.98438V14.0156H0V0ZM6 0H9.98438V14.0156H6V0Z" fill="currentColor" />
+	</svg>
+);
+
+// Volume/mute each have two glyph variants, not just a recolor: the "regular" shape has a hollow
+// (outlined) speaker cone, the "highlighted" shape (shown while the trigger is open/active, where
+// the button gets an accent-colored background) has it filled solid. Which pair is shown is a
+// separate axis from muted/unmuted - see VolumeControl.tsx.
+
+export const VolumeIcon: FC = () => (
+	<svg {...baseProps} width="18" height="18.1406" viewBox="0 0 18 18.1406" aria-hidden="true">
+		<path
+			d="M0 5.0625H3.65625L10.0078 0V18.1406L3.65625 13.0781H0V5.0625ZM7.99219 4.14844L4.35938 7.07812H1.99219V11.0625H4.35938L7.99219 13.9922V4.14844ZM12.5391 5.53125V5.50781C13.0078 5.99219 13.3672 6.53906 13.6172 7.14844C13.8672 7.74219 13.9922 8.375 13.9922 9.04688C13.9922 9.71875 13.8672 10.3594 13.6172 10.9688C13.3672 11.5781 13.0078 12.1172 12.5391 12.5859L11.1328 11.1797C11.4141 10.8984 11.625 10.5781 11.7656 10.2188C11.9219 9.84375 12 9.46094 12 9.07031C12 8.66406 11.9219 8.28125 11.7656 7.92188C11.625 7.54688 11.4141 7.21875 11.1328 6.9375L12.5391 5.53125ZM15.3516 2.71875V2.69531C16.2422 3.57031 16.9062 4.5625 17.3438 5.67188C17.7812 6.78125 18 7.91406 18 9.07031C18 10.2266 17.7812 11.3516 17.3438 12.4453C16.9062 13.5547 16.2422 14.5469 15.3516 15.4219L13.9453 14.0156C14.6328 13.3438 15.1484 12.5703 15.4922 11.6953C15.8359 10.8359 16.0078 9.96094 16.0078 9.07031C16.0078 8.17969 15.8359 7.30469 15.4922 6.44531C15.1484 5.57031 14.6328 4.79688 13.9453 4.125L15.3516 2.71875Z"
+			fill="currentColor"
+		/>
+	</svg>
+);
+
+export const VolumeHighlightedIcon: FC = () => (
+	<svg {...baseProps} width="18" height="18.1406" viewBox="0 0 18 18.1406" aria-hidden="true">
+		<path
+			d="M0 5.0625H3.65625L10.0078 0V18.1406L3.65625 13.0781H0V5.0625ZM12.5391 5.53125V5.50781C13.0078 5.99219 13.3672 6.53906 13.6172 7.14844C13.8672 7.74219 13.9922 8.375 13.9922 9.04688C13.9922 9.71875 13.8672 10.3594 13.6172 10.9688C13.3672 11.5781 13.0078 12.1172 12.5391 12.5859L11.1328 11.1797C11.4141 10.8984 11.625 10.5781 11.7656 10.2188C11.9219 9.84375 12 9.46094 12 9.07031C12 8.66406 11.9219 8.28125 11.7656 7.92188C11.625 7.54688 11.4141 7.21875 11.1328 6.9375L12.5391 5.53125ZM15.3516 2.71875V2.69531C16.2422 3.57031 16.9062 4.5625 17.3438 5.67188C17.7812 6.78125 18 7.91406 18 9.07031C18 10.2266 17.7812 11.3516 17.3438 12.4453C16.9062 13.5547 16.2422 14.5469 15.3516 15.4219L13.9453 14.0156C14.6328 13.3438 15.1484 12.5703 15.4922 11.6953C15.8359 10.8359 16.0078 9.96094 16.0078 9.07031C16.0078 8.17969 15.8359 7.30469 15.4922 6.44531C15.1484 5.57031 14.6328 4.79688 13.9453 4.125L15.3516 2.71875Z"
+			fill="currentColor"
+		/>
+	</svg>
+);
+
+export const MuteIcon: FC = () => (
+	<svg {...baseProps} width="18.7031" height="18.1406" viewBox="0 0 18.7031 18.1406" aria-hidden="true">
+		<path
+			d="M0 5.0625H3.65625L10.0078 0V18.1406L3.65625 13.0781H0V5.0625ZM7.99219 4.14844L4.35938 7.07812H1.99219V11.0625H4.35938L7.99219 13.9922V4.14844ZM18.7031 6.77344L16.4062 9.07031L18.7031 11.3672L17.2969 12.7734L15 10.4766L12.7031 12.7734L11.2969 11.3672L13.5938 9.07031L11.2969 6.77344L12.7031 5.36719L15 7.66406L17.2969 5.36719L18.7031 6.77344Z"
+			fill="currentColor"
+		/>
+	</svg>
+);
+
+export const MuteHighlightedIcon: FC = () => (
+	<svg {...baseProps} width="18.7031" height="18.1406" viewBox="0 0 18.7031 18.1406" aria-hidden="true">
+		<path
+			d="M0 5.0625H3.65625L10.0078 0V18.1406L3.65625 13.0781H0V5.0625ZM18.7031 6.77344L16.4062 9.07031L18.7031 11.3672L17.2969 12.7734L15 10.4766L12.7031 12.7734L11.2969 11.3672L13.5938 9.07031L11.2969 6.77344L12.7031 5.36719L15 7.66406L17.2969 5.36719L18.7031 6.77344Z"
+			fill="currentColor"
+		/>
+	</svg>
+);
+
+export const FullscreenEnterIcon: FC = () => (
+	<svg {...baseProps} width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+		<path
+			d="M7.28906 9.28125L8.71875 10.7109L3.39844 16.0078H7.00781V18H0V10.9922H1.99219V14.6016L7.28906 9.28125ZM10.9922 0H18V7.00781H16.0078V3.39844L10.7109 8.71875L9.28125 7.28906L14.6016 1.99219H10.9922V0Z"
+			fill="currentColor"
+		/>
+	</svg>
+);
+
+export const FullscreenExitIcon: FC = () => (
+	<svg {...baseProps} width="19.4062" height="19.4062" viewBox="0 0 19.4062 19.4062" aria-hidden="true">
+		<path
+			d="M1.71094 12.7031V10.7109H8.69531V17.6953H6.70312V14.1094L1.40625 19.4062L0 18L5.29688 12.7031H1.71094ZM19.4062 1.40625L14.1094 6.70312H17.6953V8.69531H10.7109V1.71094H12.7031V5.29688L18 0L19.4062 1.40625Z"
+			fill="currentColor"
+		/>
+	</svg>
+);
+
+// Same regular/highlighted split as volume/mute above: hollow (outlined) box for the regular
+// state, solid box for the highlighted state (subtitles on, or the trigger's own flyout open).
+
+export const SubtitlesIcon: FC = () => (
+	<svg {...baseProps} width="18" height="15.9844" viewBox="0 0 18 15.9844" aria-hidden="true">
+		<path
+			d="M0 0H18V15.9844H0V0ZM16.0078 13.9922V1.99219H1.99219V13.9922H16.0078ZM4.00781 10.9922V12.9844H7.00781V10.9922H4.00781ZM7.99219 10.9922V12.9844H13.9922V10.9922H7.99219ZM3 7.99219V9.98438H10.0078V7.99219H3ZM10.9922 7.99219V9.98438H15V7.99219H10.9922Z"
+			fill="currentColor"
+		/>
+	</svg>
+);
+
+export const SubtitlesHighlightedIcon: FC = () => (
+	<svg {...baseProps} width="18" height="15.9844" viewBox="0 0 18 15.9844" aria-hidden="true">
+		<path
+			d="M0 0H18V15.9844H0V0ZM3 7.99219V9.98438H10.0078V7.99219H3ZM7.00781 12.9844V10.9922H4.00781V12.9844H7.00781ZM13.9922 12.9844V10.9922H7.99219V12.9844H13.9922ZM15 9.98438V7.99219H10.9922V9.98438H15Z"
+			fill="currentColor"
+		/>
+	</svg>
+);
+
+export const CheckIcon: FC = () => (
+	<svg {...baseProps} width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+		<path
+			d="M5 12.5l4.5 4.5L19 7.5"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		/>
+	</svg>
+);
+

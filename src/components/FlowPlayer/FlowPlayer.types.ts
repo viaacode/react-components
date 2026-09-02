@@ -139,4 +139,77 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	peakColorActive?: string; // eg: '#00C8AA'
 	peakHeightFactor?: number; // Ratio to make the peaks less or more high. Defaults to 1
 	enableRestartCuePointsButton?: boolean;
+
+	// Custom control bar (opt-in, default behaviour is unaffected)
+	controlsVariant?: 'native' | 'custom'; // default 'native'
+	customControlsConfig?: FlowPlayerCustomControlsConfig;
+}
+
+export interface FlowPlayerCustomControlsConfig {
+	// Per-control visibility. Subtitles/speed default to true only when the corresponding
+	// data (subtitles tracks / speed options) is actually present.
+	showPlayPause?: boolean;
+	showProgressBar?: boolean;
+	showTimestamps?: boolean;
+	showVolume?: boolean;
+	showSubtitles?: boolean;
+	showFullscreen?: boolean;
+	showSpeed?: boolean;
+	showPeak?: boolean; // audio only
+
+	volumeSteps?: number; // discrete bars in the volume flyout, default 10
+
+	// 'data' (default): the real numeric-peak-data canvas, unchanged regardless of controls mode.
+	// 'generic': a decorative, always-the-same waveform (`AudioWaveFormDisplay`, which sizes
+	// itself off its own rendered box) instead of one driven by real audio data - for content with
+	// no peak data of its own. Colors below mirror the top-level `peakColor*` props' naming/
+	// meaning, just applied to this visual instead of the canvas; `active`/`inactive` are revealed
+	// via the same clip-path progress technique already used for the progress bar's own light/dark
+	// label overlay.
+	peakMode?: 'data' | 'generic'; // default 'data'
+	peakColorActive?: string; // eg: '#00C8AA'
+	peakColorInactive?: string; // eg: '#ADADAD'
+	peakColorBackground?: string; // eg: '#FFFFFF'
+
+	autoHideDelayMs?: number; // default 3000, 0 disables auto-hide
+	// Only governs the subtitle on/off preference - volume/mute already persist via
+	// Flowplayer's own internal storage regardless of this flag.
+	persistPreferences?: boolean; // default true
+	persistenceKeyPrefix?: string; // default 'meemoo-flowplayer'
+
+	// Native mode only ever shows the title/logo overlay in fullscreen (see FlowPlayer.scss) - a
+	// normal embedded player essentially never displays it. Custom mode keeps that same
+	// conservative default (false); opt in for a demo/player-page context where showing it,
+	// fading with the rest of the bar, is actually wanted.
+	showTitleOverlay?: boolean; // default false
+
+	colors?: FlowPlayerControlsColors;
+	labels?: FlowPlayerControlsLabels;
+}
+
+export interface FlowPlayerControlsColors {
+	backgroundColor?: string; // control bar background + button backgrounds
+	foregroundColor?: string; // icon color + timestamp text color, against `backgroundColor`
+	accentColor?: string; // progress fill/handle, an active/highlighted button, filled volume bars
+	flyoutBackground?: string; // volume/subtitles/speed popover surface
+	// Text/icon color *inside* a flyout popover, against `flyoutBackground` - deliberately
+	// separate from `foregroundColor`: that one is meant to read against the dark bar, this one
+	// against the (by default light) popover, and reusing one token for both goes invisible the
+	// moment the two backgrounds aren't the same shade (confirmed live: white text on a white
+	// popover). Defaults dark to match `flyoutBackground`'s own default of white.
+	flyoutForeground?: string;
+}
+
+export interface FlowPlayerControlsLabels {
+	play?: string;
+	pause?: string;
+	mute?: string;
+	unmute?: string;
+	volume?: string;
+	fullscreenEnter?: string;
+	fullscreenExit?: string;
+	subtitles?: string;
+	subtitlesOff?: string;
+	speed?: string;
+	progressBar?: string;
 }
