@@ -1,4 +1,5 @@
 import { type FC, type KeyboardEvent, useCallback } from 'react';
+import { clamp } from '../../../utils/clamp';
 import { formatDuration } from '../../../utils/formatters/duration';
 import type { ProgressBarProps } from './ProgressBar.types';
 import { useDragValue } from './use-drag-value';
@@ -20,8 +21,8 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 	foregroundColor,
 	ariaLabel,
 }) => {
-	const playedPct = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
-	const bufferedPct = duration > 0 ? Math.min(100, (bufferedEnd / duration) * 100) : 0;
+	const playedPct = duration > 0 ? clamp((currentTime / duration) * 100, 0, 100) : 0;
+	const bufferedPct = duration > 0 ? clamp((bufferedEnd / duration) * 100, 0, 100) : 0;
 
 	const handleDragChange = useCallback(
 		(percentage: number) => {
@@ -33,7 +34,6 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 	);
 
 	const { containerRef, dragHandlers } = useDragValue({
-		orientation: 'horizontal',
 		onDragStart: onSeekStart,
 		onDragEnd: onSeekEnd,
 		onChange: handleDragChange,
@@ -73,7 +73,10 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 			)}
 			<div
 				ref={containerRef}
-				className="c-flowplayer-progress__track"
+				// Fills the full height of the control bar's pill, not just the thin visual track below -
+				// a much easier target to click/drag than the 4px line alone (same width, so the
+				// drag-to-percentage math in use-drag-value.ts is unaffected either way).
+				className="c-flowplayer-progress__hit-area"
 				role="slider"
 				tabIndex={0}
 				aria-label={ariaLabel}
@@ -84,33 +87,35 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 				onKeyDown={handleKeyDown}
 				{...dragHandlers}
 			>
-				<div className="c-flowplayer-progress__buffered" style={{ width: `${bufferedPct}%` }} />
-				<div
-					className="c-flowplayer-progress__fill"
-					style={{ width: `${playedPct}%`, backgroundColor: accentColor }}
-				/>
-				<div
-					className="c-flowplayer-progress__handle"
-					style={{ left: `${playedPct}%`, backgroundColor: accentColor }}
-				/>
-				{cuepointMarkers.map((cuepoint, index) => {
-					if (cuepoint.startTime == null) {
-						return null;
-					}
-					const start = cuepoint.startTime;
-					const end = cuepoint.endTime ?? duration;
-					return (
-						<div
-							// biome-ignore lint/suspicious/noArrayIndexKey: cuepoints have no stable id
-							key={index}
-							className="c-flowplayer-progress__cuepoint"
-							style={{
-								left: `${(start / duration) * 100}%`,
-								width: `${((end - start) / duration) * 100}%`,
-							}}
-						/>
-					);
-				})}
+				<div className="c-flowplayer-progress__track">
+					<div className="c-flowplayer-progress__buffered" style={{ width: `${bufferedPct}%` }} />
+					<div
+						className="c-flowplayer-progress__fill"
+						style={{ width: `${playedPct}%`, backgroundColor: accentColor }}
+					/>
+					<div
+						className="c-flowplayer-progress__handle"
+						style={{ left: `${playedPct}%`, backgroundColor: accentColor }}
+					/>
+					{cuepointMarkers.map((cuepoint, index) => {
+						if (cuepoint.startTime == null) {
+							return null;
+						}
+						const start = cuepoint.startTime;
+						const end = cuepoint.endTime ?? duration;
+						return (
+							<div
+								// biome-ignore lint/suspicious/noArrayIndexKey: cuepoints have no stable id
+								key={index}
+								className="c-flowplayer-progress__cuepoint"
+								style={{
+									left: `${(start / duration) * 100}%`,
+									width: `${((end - start) / duration) * 100}%`,
+								}}
+							/>
+						);
+					})}
+				</div>
 			</div>
 			{showTimestamps && (
 				<span

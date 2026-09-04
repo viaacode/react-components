@@ -157,8 +157,6 @@ export interface FlowPlayerCustomControlsConfig {
 	showSpeed?: boolean;
 	showPeak?: boolean; // audio only
 
-	volumeSteps?: number; // discrete bars in the volume flyout, default 10
-
 	// 'data' (default): the real numeric-peak-data canvas, unchanged regardless of controls mode.
 	// 'generic': a decorative, always-the-same waveform (`AudioWaveFormDisplay`, which sizes
 	// itself off its own rendered box) instead of one driven by real audio data - for content with

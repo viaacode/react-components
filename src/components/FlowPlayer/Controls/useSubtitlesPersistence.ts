@@ -31,8 +31,18 @@ export interface UseSubtitlesPersistenceOptions {
 	keyPrefix: string;
 	/** Restore is a no-op until the player actually exists - the control bar mounts before it's created. */
 	isPlayerReady: boolean;
-	/** Called once the player is ready, only if a stored preference exists (null = subtitles off). */
-	onRestore: (trackKey: string | null) => void;
+	/**
+	 * Whether at least one subtitle track has loaded. The player can exist before its text tracks
+	 * have populated (e.g. an HLS manifest parsed asynchronously); restore retries whenever this
+	 * flips, instead of giving up permanently the first time it's tried too early.
+	 */
+	hasTracks: boolean;
+	/**
+	 * Called once the player is ready, only if a stored preference exists (null = subtitles off).
+	 * Must return whether the restore actually took effect - a `false` return (target track not
+	 * loaded yet) keeps the restore retryable instead of marking it done.
+	 */
+	onRestore: (trackKey: string | null) => boolean;
 }
 
 /** Only subtitle track selection needs custom persistence - volume/mute persist via Flowplayer's own storage. */
@@ -40,22 +50,27 @@ export function useSubtitlesPersistence({
 	enabled,
 	keyPrefix,
 	isPlayerReady,
+	hasTracks,
 	onRestore,
 }: UseSubtitlesPersistenceOptions) {
 	const hasRestoredRef = useRef(false);
 	const onRestoreRef = useRef(onRestore);
 	onRestoreRef.current = onRestore;
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: `hasTracks` isn't read in the body, it only re-triggers a retry once tracks that weren't there on the first attempt load
 	useEffect(() => {
 		if (!enabled || !isPlayerReady || hasRestoredRef.current) {
 			return;
 		}
-		hasRestoredRef.current = true;
 		const stored = readStoredValue(keyPrefix);
-		if (stored !== undefined) {
-			onRestoreRef.current(stored);
+		if (stored === undefined) {
+			hasRestoredRef.current = true;
+			return;
 		}
-	}, [enabled, keyPrefix, isPlayerReady]);
+		if (onRestoreRef.current(stored)) {
+			hasRestoredRef.current = true;
+		}
+	}, [enabled, keyPrefix, isPlayerReady, hasTracks]);
 
 	const persist = (trackKey: string | null) => {
 		if (enabled) {

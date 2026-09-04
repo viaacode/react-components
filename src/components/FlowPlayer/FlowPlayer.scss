@@ -619,6 +619,13 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 /* Peak file */
 .c-peak {
 	@include flowplayer-fill-absolute;
+
+	// A canvas is a replaced element - unlike a plain div, `inset: 0` alone doesn't stretch it to
+	// fill its container; without an explicit CSS size it renders at its `width`/`height` HTML
+	// attributes (kept high for a crisp backing store) and overflows, clipped by the player's own
+	// `overflow: hidden` - cutting off whichever bars fall past the container's actual edge.
+	width: 100%;
+	height: 100%;
 }
 
 .c-video-player-inner--enable-restart-cue-points-button .c-video-player-inner-overlay {
@@ -649,16 +656,12 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 	}
 }
 
-// Paused (but not ended) offers "resume"; ended offers "replay from the cuepoint start" - not
-// both at once for either state.
-.c-video-player-inner.c-video-player-inner--enable-restart-cue-points-button.is-paused .c-video-player-inner-overlay {
-	.fp-custom-play {
-		display: block;
-	}
-}
-
+// Both "resume" and "restart from the cuepoint" are offered together, in either state - see
+// AVO-3668.
+.c-video-player-inner.c-video-player-inner--enable-restart-cue-points-button.is-paused .c-video-player-inner-overlay,
 .c-video-player-inner.c-video-player-inner--enable-restart-cue-points-button.is-ended .c-video-player-inner-overlay {
-	.fp-replay {
+	.fp-replay,
+	.fp-custom-play {
 		display: block;
 	}
 }

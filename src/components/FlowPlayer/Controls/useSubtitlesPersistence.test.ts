@@ -11,13 +11,14 @@ describe('useSubtitlesPersistence', () => {
 
 	it('does not restore before the player is ready', () => {
 		window.localStorage.setItem(STORAGE_KEY, 'nl');
-		const onRestore = jest.fn();
+		const onRestore = jest.fn(() => true);
 
 		renderHook(() =>
 			useSubtitlesPersistence({
 				enabled: true,
 				keyPrefix: KEY_PREFIX,
 				isPlayerReady: false,
+				hasTracks: true,
 				onRestore,
 			})
 		);
@@ -30,7 +31,7 @@ describe('useSubtitlesPersistence', () => {
 		// player existed, and was never retried once it became ready - so this restore was
 		// silently dropped every time.
 		window.localStorage.setItem(STORAGE_KEY, 'nl');
-		const onRestore = jest.fn();
+		const onRestore = jest.fn(() => true);
 
 		const { rerender } = renderHook(
 			({ isPlayerReady }) =>
@@ -38,6 +39,7 @@ describe('useSubtitlesPersistence', () => {
 					enabled: true,
 					keyPrefix: KEY_PREFIX,
 					isPlayerReady,
+					hasTracks: true,
 					onRestore,
 				}),
 			{ initialProps: { isPlayerReady: false } }
@@ -51,15 +53,48 @@ describe('useSubtitlesPersistence', () => {
 		expect(onRestore).toHaveBeenCalledWith('nl');
 	});
 
+	it('retries once tracks load, if the first attempt found nothing to select yet', () => {
+		// Regression: the player can exist (isPlayerReady) before its text tracks have populated
+		// (e.g. an HLS manifest parsed asynchronously) - a restore attempted in that window used to
+		// permanently mark itself done even though nothing was actually selected.
+		window.localStorage.setItem(STORAGE_KEY, 'nl');
+		const onRestore = jest.fn(() => false);
+
+		const { rerender } = renderHook(
+			({ hasTracks }) =>
+				useSubtitlesPersistence({
+					enabled: true,
+					keyPrefix: KEY_PREFIX,
+					isPlayerReady: true,
+					hasTracks,
+					onRestore,
+				}),
+			{ initialProps: { hasTracks: false } }
+		);
+
+		expect(onRestore).toHaveBeenCalledTimes(1);
+
+		onRestore.mockReturnValue(true);
+		rerender({ hasTracks: true });
+
+		expect(onRestore).toHaveBeenCalledTimes(2);
+
+		rerender({ hasTracks: false });
+		rerender({ hasTracks: true });
+
+		expect(onRestore).toHaveBeenCalledTimes(2);
+	});
+
 	it('restores `null` when subtitles were explicitly turned off', () => {
 		window.localStorage.setItem(STORAGE_KEY, '__off__');
-		const onRestore = jest.fn();
+		const onRestore = jest.fn(() => true);
 
 		renderHook(() =>
 			useSubtitlesPersistence({
 				enabled: true,
 				keyPrefix: KEY_PREFIX,
 				isPlayerReady: true,
+				hasTracks: true,
 				onRestore,
 			})
 		);
@@ -68,13 +103,14 @@ describe('useSubtitlesPersistence', () => {
 	});
 
 	it('does not call onRestore when nothing is stored', () => {
-		const onRestore = jest.fn();
+		const onRestore = jest.fn(() => true);
 
 		renderHook(() =>
 			useSubtitlesPersistence({
 				enabled: true,
 				keyPrefix: KEY_PREFIX,
 				isPlayerReady: true,
+				hasTracks: true,
 				onRestore,
 			})
 		);
@@ -84,7 +120,7 @@ describe('useSubtitlesPersistence', () => {
 
 	it('only restores once, even if the player becomes ready again', () => {
 		window.localStorage.setItem(STORAGE_KEY, 'nl');
-		const onRestore = jest.fn();
+		const onRestore = jest.fn(() => true);
 
 		const { rerender } = renderHook(
 			({ isPlayerReady }) =>
@@ -92,6 +128,7 @@ describe('useSubtitlesPersistence', () => {
 					enabled: true,
 					keyPrefix: KEY_PREFIX,
 					isPlayerReady,
+					hasTracks: true,
 					onRestore,
 				}),
 			{ initialProps: { isPlayerReady: true } }
@@ -104,13 +141,14 @@ describe('useSubtitlesPersistence', () => {
 
 	it('does not restore when persistence is disabled', () => {
 		window.localStorage.setItem(STORAGE_KEY, 'nl');
-		const onRestore = jest.fn();
+		const onRestore = jest.fn(() => true);
 
 		renderHook(() =>
 			useSubtitlesPersistence({
 				enabled: false,
 				keyPrefix: KEY_PREFIX,
 				isPlayerReady: true,
+				hasTracks: true,
 				onRestore,
 			})
 		);
@@ -124,7 +162,8 @@ describe('useSubtitlesPersistence', () => {
 				enabled: true,
 				keyPrefix: KEY_PREFIX,
 				isPlayerReady: true,
-				onRestore: jest.fn(),
+				hasTracks: true,
+				onRestore: jest.fn(() => true),
 			})
 		);
 
@@ -141,7 +180,8 @@ describe('useSubtitlesPersistence', () => {
 				enabled: false,
 				keyPrefix: KEY_PREFIX,
 				isPlayerReady: true,
-				onRestore: jest.fn(),
+				hasTracks: true,
+				onRestore: jest.fn(() => true),
 			})
 		);
 

@@ -5,7 +5,15 @@ import type { Player } from '@flowplayer/player';
  * TextTrack objects - undocumented internal behaviour (checked against 3.32.1's plugins/subtitles.js),
  * re-verify on any @flowplayer/player upgrade.
  */
-type FlowplayerTextTrack = TextTrack & { is_active?: boolean; default?: boolean };
+type FlowplayerTextTrack = TextTrack & {
+	is_active?: boolean;
+	default?: boolean;
+	// Set on tracks sourced from an HLS manifest's own subtitle renditions - selecting one of these
+	// also requires telling hls.js to switch its rendition (see selectSubtitleTrack below), not just
+	// flipping the TextTrack's mode.
+	is_hls_embedded?: boolean;
+	track_id?: number;
+};
 
 export function getSubtitleTracks(player: Player): FlowplayerTextTrack[] {
 	// player.textTracks also contains Flowplayer's own internal tracks (e.g. an "fp-cuepoints"
@@ -47,8 +55,13 @@ function emitTracksUpdated(player: Player, track?: FlowplayerTextTrack) {
 	);
 }
 
-/** Selects a track by key, or pass `null` to turn subtitles off entirely. */
-export function selectSubtitleTrack(player: Player, trackKey: string | null): void {
+/**
+ * Selects a track by key, or pass `null` to turn subtitles off entirely. Returns whether the
+ * selection actually took effect - `false` when `trackKey` doesn't match any currently loaded
+ * track (e.g. called before the source's tracks have populated), so callers can tell a real
+ * selection from a silent no-op.
+ */
+export function selectSubtitleTrack(player: Player, trackKey: string | null): boolean {
 	const currentActive = getActiveSubtitleTrack(player);
 
 	if (trackKey === null) {
@@ -57,19 +70,30 @@ export function selectSubtitleTrack(player: Player, trackKey: string | null): vo
 			currentActive.is_active = false;
 			emitTracksUpdated(player);
 		}
-		return;
+		return true;
 	}
 
 	const tracks = getSubtitleTracks(player);
 	const target = tracks.find((track) => getSubtitleTrackKey(tracks, track) === trackKey);
 	if (!target) {
-		return;
+		return false;
 	}
 	if (currentActive && currentActive !== target) {
 		currentActive.mode = 'disabled';
 		currentActive.is_active = false;
 	}
+	// Mirrors Flowplayer's native subtitles plugin (checked against 3.32.1's plugins/subtitles.js,
+	// re-verify on upgrade): for a track sourced from the HLS manifest itself, flipping the
+	// TextTrack's mode alone doesn't change what hls.js is actually streaming - it also has to be
+	// told to switch its own subtitle rendition.
+	if (target.is_hls_embedded && typeof target.track_id === 'number') {
+		const hlsPlayer = player as unknown as { hls?: { subtitleTrack: number } };
+		if (hlsPlayer.hls) {
+			hlsPlayer.hls.subtitleTrack = target.track_id;
+		}
+	}
 	target.mode = 'hidden';
 	target.is_active = true;
 	emitTracksUpdated(player, target);
+	return true;
 }

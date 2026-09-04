@@ -1,18 +1,21 @@
 import clsx from 'clsx';
-import type { CSSProperties, FC } from 'react';
+import { type CSSProperties, type FC, memo } from 'react';
 import { getWaveFormBars, getWaveFormViewBox, WAVE_FORM_STROKE_WIDTH } from './AudioWaveFormDisplay.helpers';
 import type { AudioWaveFormDisplayProps } from './AudioWaveFormDisplay.types';
 
 import './AudioWaveFormDisplay.scss';
 
-export const AudioWaveFormDisplay: FC<AudioWaveFormDisplayProps> = ({
+// Memoized so PeakDisplay's static "inactive" waveform layer (unchanging colors/size) skips
+// reconciling its ~30-60 <line> elements on every playback timeupdate tick, which only changes
+// the sibling "active" layer's clip-path, not either layer's own props.
+export const AudioWaveFormDisplay: FC<AudioWaveFormDisplayProps> = memo(function AudioWaveFormDisplay({
 	className,
 	rootClassName: root = 'c-audio-wave-form-display',
 	ariaLabel,
 	waveColor,
 	backgroundColor,
 	size = 'small',
-}) => {
+}) {
 	const bars = getWaveFormBars(size);
 	const viewBox = getWaveFormViewBox(size);
 
@@ -54,4 +57,4 @@ export const AudioWaveFormDisplay: FC<AudioWaveFormDisplayProps> = ({
 			</div>
 		</div>
 	);
-};
+});

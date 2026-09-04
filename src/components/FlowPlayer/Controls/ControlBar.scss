@@ -209,16 +209,29 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 		flex: 1 1 auto;
 		min-width: 0;
 
-		&__track {
+		// The actual interactive/draggable element (role="slider") - spans the segment's full height
+		// so the click/drag target isn't limited to the thin visual track below, which is much
+		// harder to hit precisely. Same width as `&__track`, so use-drag-value.ts's horizontal
+		// drag-to-percentage math is identical either way.
+		&__hit-area {
 			position: relative;
 			flex: 1 1 auto;
-			height: $flowplayer-progress-track-height;
-			border-radius: $flowplayer-controls-radius;
-			background-color: $flowplayer-track-background;
+			min-width: 0;
+			height: 100%;
+			display: flex;
+			align-items: center;
 			cursor: pointer;
 			touch-action: none;
 
 			@include flowplayer-focus-ring;
+		}
+
+		&__track {
+			position: relative;
+			width: 100%;
+			height: $flowplayer-progress-track-height;
+			border-radius: $flowplayer-controls-radius;
+			background-color: $flowplayer-track-background;
 		}
 
 		&__buffered {

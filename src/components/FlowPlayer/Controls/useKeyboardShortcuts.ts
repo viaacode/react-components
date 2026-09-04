@@ -1,25 +1,23 @@
 import type { KeyboardEvent } from 'react';
-import type { FlowplayerControlsActions, FlowplayerControlsState } from './useFlowplayerState';
+import { keysSpacebar } from '../../../utils/key-up';
+import type { FlowplayerControlsActions } from './useFlowplayerState';
 
 export interface UseKeyboardShortcutsOptions {
-	state: FlowplayerControlsState;
 	actions: FlowplayerControlsActions;
-	volumeStepPercent: number;
 }
 
 /**
- * Space/F/M/volume/arrow shortcuts while focus is anywhere inside the custom control bar.
+ * Space/F/M/arrow shortcuts while focus is anywhere inside the custom control bar.
+ *
+ * Volume is mute/unmute only (M) - no granular up/down, since there's no volume-level UI to
+ * reflect it (see VolumeControl.tsx).
  *
  * Arrow-key seeking is a deliberate hybrid: Flowplayer's own global keyboard plugin already seeks
  * when the focused element has `aria-valuenow` (true for our progress bar), so we no-op there to
  * avoid double-firing. Everywhere else (play/pause, mute, fullscreen buttons) that plugin doesn't
  * recognize focus, so we call `enqueueSeek` ourselves (see useFlowplayerState.ts) to fill the gap.
  */
-export function useKeyboardShortcuts({
-	state,
-	actions,
-	volumeStepPercent,
-}: UseKeyboardShortcutsOptions) {
+export function useKeyboardShortcuts({ actions }: UseKeyboardShortcutsOptions) {
 	return (event: KeyboardEvent<HTMLElement>) => {
 		if (event.defaultPrevented || event.altKey || event.shiftKey || event.metaKey || event.ctrlKey) {
 			return;
@@ -31,14 +29,17 @@ export function useKeyboardShortcuts({
 		// native browser behaviour - don't also run the global action, or the two fire together.
 		const isButton = target.tagName === 'BUTTON';
 
+		if (keysSpacebar.includes(event.key)) {
+			if (isButton) {
+				return;
+			}
+			actions.togglePlay();
+			event.preventDefault();
+			event.stopPropagation();
+			return;
+		}
+
 		switch (event.key) {
-			case ' ':
-			case 'Spacebar':
-				if (isButton) {
-					return;
-				}
-				actions.togglePlay();
-				break;
 			case 'f':
 			case 'F':
 				actions.toggleFullscreen();
@@ -46,18 +47,6 @@ export function useKeyboardShortcuts({
 			case 'm':
 			case 'M':
 				actions.toggleMute();
-				break;
-			case 'ArrowUp':
-				if (target.hasAttribute('aria-valuenow')) {
-					return;
-				}
-				actions.setVolume(state.volume + volumeStepPercent);
-				break;
-			case 'ArrowDown':
-				if (target.hasAttribute('aria-valuenow')) {
-					return;
-				}
-				actions.setVolume(state.volume - volumeStepPercent);
 				break;
 			case 'ArrowRight':
 				if (target.hasAttribute('aria-valuenow')) {

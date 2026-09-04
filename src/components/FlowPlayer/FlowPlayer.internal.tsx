@@ -410,10 +410,14 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				: { speed: { options: [], labels: [] } }),
 
 			// CUEPOINTS
-			// Set only if an end point was passed, or a playlist item has cuepoints. `end` uses isNil,
-			// not truthiness, since a cuepoint ending at 0 is a real, valid state (see getCuepointsForBar).
+			// Set if a start or end point was passed, or a playlist item has cuepoints - matches
+			// getCuepointsForBar's gating so the custom progress bar's marker and the native plugin
+			// agree on when a cuepoint exists. Uses isNil, not truthiness, since a cuepoint at/ending
+			// at 0 is a real, valid state.
 			...(plugins.includes('cuepoints') &&
-			(!isNil(end) || (src as FlowplayerSourceListSchema)?.items?.some((item) => !!item.cuepoints))
+			(!isNil(start) ||
+				!isNil(end) ||
+				(src as FlowplayerSourceListSchema)?.items?.some((item) => !!item.cuepoints))
 				? {
 						cuepoints: [
 							{

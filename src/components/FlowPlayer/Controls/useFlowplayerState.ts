@@ -1,6 +1,5 @@
 import type { Player } from '@flowplayer/player';
 import { type MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
-import { clamp } from '../../../utils/clamp';
 
 // `transitionState` is Flowplayer's own undocumented state-transition helper, not in the public
 // API - it produces the native "is-toggling" play/pause flash, which `player.togglePlay()` alone
@@ -39,7 +38,6 @@ export interface FlowplayerControlsActions {
 	/** `direction`: 1 to seek forward, -1 to seek backward, by Flowplayer's own configured step. */
 	enqueueSeek: (direction: 1 | -1) => void;
 	setSeeking: (seeking: boolean) => void;
-	setVolume: (volume: number) => void; // 0-100
 	toggleMute: () => void;
 	toggleFullscreen: () => void;
 	setPlaybackRate: (rate: number) => void;
@@ -192,28 +190,14 @@ export function useFlowplayerState(
 		seekingRef.current = seeking;
 	}, []);
 
-	const setVolume = useCallback(
-		(volume: number) => {
-			if (!playerRef.current) {
-				return;
-			}
-			const clamped = clamp(volume, 0, 100);
-			playerRef.current.volume = clamped / 100;
-			if (clamped > 0 && playerRef.current.muted) {
-				playerRef.current.muted = false;
-			}
-		},
-		[playerRef]
-	);
-
 	const toggleMute = useCallback(() => {
 		if (!playerRef.current) {
 			return;
 		}
 		const nextMuted = !playerRef.current.muted;
 		playerRef.current.muted = nextMuted;
-		// No granular volume control in custom mode - unmuting always lands back at full volume,
-		// never wherever it happened to be left (e.g. from ArrowUp/Down) before muting.
+		// Volume is mute/unmute only in custom mode (no granular control) - unmuting always lands
+		// back at full volume rather than some other level.
 		if (!nextMuted) {
 			playerRef.current.volume = 1;
 		}
@@ -239,7 +223,6 @@ export function useFlowplayerState(
 			seek,
 			enqueueSeek,
 			setSeeking,
-			setVolume,
 			toggleMute,
 			toggleFullscreen,
 			setPlaybackRate,

@@ -1,6 +1,5 @@
 import type { FlowPlayerControlsColors, FlowPlayerControlsLabels } from '../FlowPlayer.types';
 
-export const DEFAULT_VOLUME_STEPS = 10;
 export const DEFAULT_AUTO_HIDE_DELAY_MS = 3000;
 export const DEFAULT_PERSISTENCE_KEY_PREFIX = 'meemoo-flowplayer';
 export const DEFAULT_SHOW_PEAK = true;

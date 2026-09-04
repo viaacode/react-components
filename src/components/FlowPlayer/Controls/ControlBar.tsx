@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { type CSSProperties, type FC, useCallback, useEffect, useId, useMemo, useState } from 'react';
 import type { ControlBarProps } from './ControlBar.types';
+import type { FlowPlayerControlsColors, FlowPlayerControlsLabels } from '../FlowPlayer.types';
 import {
 	DEFAULT_AUTO_HIDE_DELAY_MS,
 	DEFAULT_PERSISTENCE_KEY_PREFIX,
-	DEFAULT_VOLUME_STEPS,
 	defaultControlsColors,
 	defaultControlsLabels,
 	isGenericPeakMode,
@@ -32,10 +32,17 @@ import './ControlBar.scss';
 
 type FlyoutId = 'subtitles' | 'speed';
 
+// Stable identities for unset `config`/`colors`/`labels` - a `= {}` default in a destructuring
+// pattern allocates a new object every render, which would defeat the `useMemo`s below keyed on
+// `colors`/`labels` whenever the caller doesn't override them (the common case).
+const EMPTY_CONFIG: NonNullable<ControlBarProps['config']> = {};
+const EMPTY_COLORS: NonNullable<FlowPlayerControlsColors> = {};
+const EMPTY_LABELS: NonNullable<FlowPlayerControlsLabels> = {};
+
 export const ControlBar: FC<ControlBarProps> = ({
 	playerRef,
 	playerInstance,
-	config = {},
+	config = EMPTY_CONFIG,
 	isAudio,
 	hasSubtitles,
 	cuepoints,
@@ -52,7 +59,6 @@ export const ControlBar: FC<ControlBarProps> = ({
 		showFullscreen = true,
 		showSpeed,
 		showPeak,
-		volumeSteps = DEFAULT_VOLUME_STEPS,
 		peakMode,
 		peakColorActive,
 		peakColorInactive,
@@ -60,8 +66,8 @@ export const ControlBar: FC<ControlBarProps> = ({
 		autoHideDelayMs = DEFAULT_AUTO_HIDE_DELAY_MS,
 		persistPreferences = true,
 		persistenceKeyPrefix = DEFAULT_PERSISTENCE_KEY_PREFIX,
-		colors = {},
-		labels = {},
+		colors = EMPTY_COLORS,
+		labels = EMPTY_LABELS,
 	} = config;
 
 	// Stable per-instance id for the flyout dropdowns - avoids id collisions with multiple players on one page.
@@ -79,6 +85,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 	const [activeSubtitleTrackKey, setActiveSubtitleTrackKey] = useState<string | null>(null);
 	// One "which flyout is open" slot instead of a boolean per flyout - makes them mutually exclusive for free.
 	const [openFlyout, setOpenFlyout] = useState<FlyoutId | null>(null);
+	const [isSeeking, setIsSeeking] = useState(false);
 
 	// Sync once the player exists / is (re)created, and again whenever the plugin reports a
 	// track change (loaded/selected/deselected), before any stored preference is restored.
@@ -112,12 +119,16 @@ export const ControlBar: FC<ControlBarProps> = ({
 		enabled: persistPreferences,
 		keyPrefix: persistenceKeyPrefix,
 		isPlayerReady: !!playerInstance,
+		hasTracks: subtitleTracks.length > 0,
 		onRestore: (storedTrackKey) => {
 			if (!playerRef.current) {
-				return;
+				return false;
 			}
-			selectSubtitleTrack(playerRef.current, storedTrackKey);
-			setActiveSubtitleTrackKey(storedTrackKey);
+			const restored = selectSubtitleTrack(playerRef.current, storedTrackKey);
+			if (restored) {
+				setActiveSubtitleTrackKey(storedTrackKey);
+			}
+			return restored;
 		},
 	});
 
@@ -131,19 +142,26 @@ export const ControlBar: FC<ControlBarProps> = ({
 	};
 
 	// Listens on the whole player root, not just the bar itself, so moving the pointer anywhere
-	// over the video/audio area (not only over the pill row) keeps the controls revealed.
+	// over the video/audio area (not only over the pill row) keeps the controls revealed. Also
+	// suppressed while actively dragging the progress bar - a slow drag (especially touch, which
+	// only reveals on `touchstart`) can otherwise sit idle long enough for the inactivity timer to
+	// hide the bar mid-gesture.
 	const autoHideVisible = useAutoHideControls({
 		containerRef,
 		delayMs: autoHideDelayMs,
 		isPlaying: !state.paused,
-		suppress: openFlyout !== null,
+		suppress: openFlyout !== null || isSeeking,
 	});
 	// Matches native's `.is-starting .fp-controls{visibility:hidden}` - stays hidden over the
 	// poster until the first playback, same as the native bar this replaces.
 	const isVisible = hasStartedPlaying && autoHideVisible;
 
 	// The title/logo overlays are built imperatively by FlowPlayer.internal.tsx, not rendered here -
-	// this class lets ControlBar.scss fade them in sync with our own visibility.
+	// this class lets ControlBar.scss fade them in sync with our own visibility. `containerRef` is
+	// the same node whose `className` FlowPlayer.internal.tsx's own memo recomputes from `clsx(...)`
+	// on unrelated prop changes (subtitles, speed, ...), which would wipe this class out from under
+	// us - no dependency array, so it's reapplied after every render instead of only when isVisible
+	// changes.
 	useEffect(() => {
 		const container = containerRef.current;
 		if (!container) {
@@ -153,16 +171,18 @@ export const ControlBar: FC<ControlBarProps> = ({
 		return () => {
 			container.classList.remove('c-video-player-inner--controls-hidden');
 		};
-	}, [containerRef, isVisible]);
-
-	const handleKeyDown = useKeyboardShortcuts({
-		state,
-		actions,
-		volumeStepPercent: 100 / volumeSteps,
 	});
 
-	const handleSeekStart = useCallback(() => actions.setSeeking(true), [actions]);
-	const handleSeekEnd = useCallback(() => actions.setSeeking(false), [actions]);
+	const handleKeyDown = useKeyboardShortcuts({ actions });
+
+	const handleSeekStart = useCallback(() => {
+		actions.setSeeking(true);
+		setIsSeeking(true);
+	}, [actions]);
+	const handleSeekEnd = useCallback(() => {
+		actions.setSeeking(false);
+		setIsSeeking(false);
+	}, [actions]);
 	const openFlyoutHandler = useCallback((id: FlyoutId) => setOpenFlyout(id), []);
 	const closeFlyoutHandler = useCallback(
 		(id: FlyoutId) => setOpenFlyout((current) => (current === id ? null : current)),
