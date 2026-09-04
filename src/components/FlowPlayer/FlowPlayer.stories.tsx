@@ -341,3 +341,95 @@ export const CustomButton: Story = {
 	},
 	render: Template,
 };
+
+export const CustomControls: Story = {
+	args: {
+		...MOCK_FLOW_PLAYER_PROPS_FULL,
+		src: 'https://archief-media.viaa.be/viaa/TESTBEELD/d97b24406291480aac11d0728335afe011f3d283abde48649a4c4e9079428b8a/browse.mp4',
+		controlsVariant: 'custom',
+		customControlsConfig: {
+			// Off by default (matches native mode's fullscreen-only visibility) - shown here since
+			// this demo has a title/logo/metadata worth actually seeing fade with the bar.
+			showTitleOverlay: true,
+		},
+		speed: {
+			options: [0.5, 0.75, 1, 1.25, 1.5],
+			labels: ['0.5', '0.75', 'normaal', '1.25', '1.5'],
+		},
+		subtitles: [
+			{
+				crossorigin: 'anonymous',
+				default: true,
+				kind: 'subtitles',
+				lang: 'nl',
+				id: '123',
+				label: 'Nederlands',
+				src: 'https://avo2-proxy-qas.hetarchief.be/subtitles/convert-srt-to-vtt/viaa/MOB/TESTBEELD/3b61046461be4b1e9f0fad19b42baa192487807cfefa4c289c0fa65d5c78195b/3b61046461be4b1e9f0fad19b42baa192487807cfefa4c289c0fa65d5c78195b.srt',
+			},
+		],
+	},
+	render: Template,
+};
+
+export const CustomControlsCustomColors: Story = {
+	args: {
+		...MOCK_FLOW_PLAYER_PROPS_FULL,
+		controlsVariant: 'custom',
+		customControlsConfig: {
+			colors: {
+				backgroundColor: '#1d1d1d',
+				foregroundColor: '#f5f5f5',
+				accentColor: '#ff6b6b',
+				flyoutBackground: '#2a2a2a',
+			},
+		},
+	},
+	render: Template,
+};
+
+export const CustomControlsSomeHidden: Story = {
+	args: {
+		...MOCK_FLOW_PLAYER_PROPS_FULL,
+		controlsVariant: 'custom',
+		customControlsConfig: {
+			showTimestamps: false,
+			showVolume: false,
+			showFullscreen: false,
+		},
+	},
+	render: Template,
+};
+
+export const CustomControlsWithCuepoints: Story = {
+	args: {
+		...MOCK_FLOW_PLAYER_PROPS_FULL,
+		controlsVariant: 'custom',
+		start: 60,
+		end: 70,
+	},
+	render: Template,
+};
+
+export const CustomControlsAudioWithGenericPeak: Story = {
+	args: {
+		...MOCK_FLOW_PLAYER_PROPS_FULL,
+		src: [
+			{
+				src: 'https://cdn.flowplayer.com/token:eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI4ZDhjZjMzMi0xZWRlLTQ5ZDUtYmI3MC1jMTkzMzgzYzVkNjMiLCJuYmYiOjE3MDkxMTEwOTcsImlzcyI6Imh0dHBzOi8vd3d3LmZsb3dwbGF5ZXIuY29tIiwiZXhwIjoxNzA5MTk3NDk3LCJpYXQiOjE3MDkxMTEwOTd9.Td9X3lD8E3T8_w4wzrlxo-ImN6Em4EhdWLdN1t7Qw8_VewM9rO62pD-FCMbwND05_VFbtKyMdcBUO4LofBtNhyu8dVxDZiuCY1UPntMU9gYCOkhhxrouxtgEMZr32g4sVjEiR-eLY00hL3LjuanAS6A30gN6P2hBfFGlwm2rHQnfZGm1WClT3KFP3W4Lu5Ahgoo8lbIC908YVq9U7odwTN8m8Zb28jgznFglkmdXWTjAY_PMf5-j0_7oxFQWbtd5YAHNxVKu5vo2MLLBubh3CkIh_sZBLpf0WvY5zTHrk5_aEz2uFwufMjROxfVKNJiVx05paYHUeBkSw4B1bk2r4RELGpKOnYpakAW_GZAZdXvwlmlzvcl8-I4xJVZgwnwFUIML3fnl-YaH2xyIAvHqXc7SvMN-IyRuYc5y33wiJVl-EEf2eZk_Ufnxmpe8SYDiohxdE-koQ4VXLZzA6_khQwGwNbd3uzhhQ8uGTN-4-j2962Obq4xx8PFcxh3tgcO5_dcp7R27UuEo31hizKVL9O2h9B0h4wvcdDqYuChjhNyX7XIpmLfYAMjes_wuJZdi0WvuHzoAeJCqPAJDBpjDF7L3mqupflAsmcIx5OspxmLM76YlzK_uIk7aVlaZ7_uCJhUiDBLICLI0Ep-kEf4JaT3-d_e-y9G-qfOrU_hDF50/bacec074-242b-499f-9ca8-38e382b6e179/v-8d8cf332-1ede-49d5-bb70-c193383c5d63_original.mp3',
+				type: 'audio/mp3',
+			},
+		],
+		type: 'audio',
+		poster: 'https://placehold.co/1920x1080',
+		controlsVariant: 'custom',
+		customControlsConfig: {
+			// `peakMode: 'generic'` always renders the built-in `AudioWaveFormDisplay` - no
+			// caller-supplied visual, no size prop (it sizes itself off its own rendered box) -
+			// just colors, same fake-playing progress overlay as before.
+			peakMode: 'generic',
+			peakColorActive: '#00c8aa',
+			peakColorInactive: '#ffffff',
+		},
+	},
+	render: Template,
+};

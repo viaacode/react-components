@@ -1,0 +1,355 @@
+@use "sass:math";
+@use "../flowplayer-shared" as *;
+
+// Colors are runtime CSS custom properties set by ControlBar.tsx - these are just the fallbacks.
+$flowplayer-controls-default-bg: #000;
+$flowplayer-controls-default-fg: #fff;
+$flowplayer-controls-default-accent: #00c8aa;
+$flowplayer-controls-default-flyout-bg: #fff;
+$flowplayer-controls-radius: 99.9rem; // always fully round - clamps automatically to half the shorter side
+
+// Measurements below are taken from the Figma export, not assumed.
+
+// Play/pause and fullscreen: each a 48x36 "stadium" pill (rx=18). 36px is also the height of
+// every other segment in the bar.
+$flowplayer-icon-button-width: 4.8rem;
+$flowplayer-icon-button-height: 3.6rem;
+$flowplayer-controls-gap: 0.8rem; // gap between the 4 top-level segments
+$flowplayer-controls-edge-offset: 0.8rem; // not in the exports - matches the inter-segment gap; flag if this should differ
+
+// Progress segment: [current time] -- gap -- [track] -- gap -- [duration], same value for the
+// gap and the segment's own inline padding.
+$flowplayer-progress-inline-gap: 1.68rem;
+$flowplayer-progress-track-height: 0.4rem;
+$flowplayer-progress-handle-size: 0.8rem;
+$flowplayer-track-background: #222; // unplayed track
+$flowplayer-buffered-background: #505050; // buffered range
+$flowplayer-cuepoint-background: rgb(255 255 255 / 60%); // not present in any export - unconfirmed, left as-is
+
+// Volume/subtitles/speed share one pill: 4px inset on every edge, then each icon gets a 40x28
+// slot (28 = 36 - 2*4) with zero gap between adjacent slots - they sit flush against each other.
+$flowplayer-slot-inset: 0.4rem;
+$flowplayer-slot-width: 4rem;
+$flowplayer-slot-height: 2.8rem;
+
+// Background for a toggled-on slot icon (e.g. muted) or an open flyout trigger - fixed, not exposed via `colors`.
+$flowplayer-slot-active-background: #009690;
+
+// This codebase's root font-size is 10px (62.5% reset), not the usual 16px - 0.8rem/1.6rem are the correct 8px/16px here.
+$flowplayer-controls-padding-block: 0.8rem; // 8px
+$flowplayer-controls-padding-inline: 1.6rem; // 16px
+$flowplayer-controls-transition: opacity 0.2s ease;
+$flowplayer-focus-outline-width: 0.2rem;
+$flowplayer-focus-outline-offset: 0.2rem;
+
+// Subtitles flyout card: 240px wide, square corners, drop shadow, "Off" row + divider + track list.
+$flowplayer-subtitles-flyout-width: 24rem;
+$flowplayer-flyout-shadow: 0 0 0.8rem rgb(0 0 0 / 24%);
+$flowplayer-flyout-divider-color: #e6e6e6;
+$flowplayer-flyout-option-padding: 2rem 3.7rem;
+$flowplayer-flyout-option-icon-gap: 1.3rem;
+
+@mixin flowplayer-focus-ring {
+	&:focus-visible {
+		outline: $flowplayer-focus-outline-width solid var(--flowplayer-controls-accent, $flowplayer-controls-default-accent);
+		outline-offset: $flowplayer-focus-outline-offset;
+	}
+}
+
+@mixin flowplayer-absolute-fill-bar($background) {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	border-radius: $flowplayer-controls-radius;
+	background-color: $background;
+}
+
+// Nested under this real ancestor so every rule here outranks Flowplayer's own
+// `.flowplayer * { background-color: transparent; ... }` reset, which loads after this file.
+.c-video-player-inner {
+	// Transparent flex row - each segment below carries its own pill background (4 independent
+	// groups: play/pause, progress, volume/subtitles/speed, fullscreen), not one continuous bar.
+	.c-flowplayer-control-bar {
+		position: absolute;
+		left: $flowplayer-controls-edge-offset;
+		right: $flowplayer-controls-edge-offset;
+		bottom: $flowplayer-controls-edge-offset;
+		z-index: 5;
+		display: flex;
+		align-items: center;
+		gap: $flowplayer-controls-gap;
+		color: var(--flowplayer-controls-fg, $flowplayer-controls-default-fg);
+		transition: $flowplayer-controls-transition;
+		opacity: 1;
+
+		// Flowplayer's own `.flowplayer * { color: #fff; }` reset matches every element here too -
+		// without re-affirming inherit, a `color` set here or via a flyout's inline color gets lost one level down.
+		* {
+			color: inherit;
+		}
+
+		&--hidden {
+			opacity: 0;
+			pointer-events: none;
+		}
+
+		&__segment {
+			display: flex;
+			align-items: center;
+			height: $flowplayer-icon-button-height;
+			border-radius: $flowplayer-controls-radius;
+			background-color: var(--flowplayer-controls-bg, $flowplayer-controls-default-bg);
+
+			&--icon {
+				flex: 0 0 auto;
+
+				// No padding: the button itself is the full 48x36 pill, matching the reference exactly.
+				padding: 0;
+			}
+
+			&--progress {
+				flex: 1 1 auto;
+				min-width: 0;
+
+				// Padding/gap live on `.c-flowplayer-progress` below, not here.
+			}
+
+			&--secondary {
+				flex: 0 0 auto;
+				gap: 0; // slots sit flush against each other, no inter-icon gap
+				padding: $flowplayer-slot-inset;
+			}
+		}
+	}
+
+	// Opt-in (`customControlsConfig.showTitleOverlay`), fullscreen-only to match native mode's own
+	// behaviour. Fades the title/logo overlay (built by FlowPlayer.internal.tsx) off the same
+	// auto-hide signal as the control bar, so both fade together.
+	&.c-video-player-inner--show-title-overlay.is-fullscreen {
+		.c-title-overlay,
+		.c-logo-overlay {
+			display: block;
+			opacity: 1;
+			transition: $flowplayer-controls-transition;
+		}
+
+		&.c-video-player-inner--controls-hidden {
+			.c-title-overlay,
+			.c-logo-overlay {
+				opacity: 0;
+				pointer-events: none;
+			}
+		}
+	}
+
+	.c-flowplayer-control-button {
+		flex: 0 0 auto;
+		width: $flowplayer-icon-button-width;
+		height: $flowplayer-icon-button-height;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+
+		// Resets a host app's own global <button> padding/margin (Button.tsx ships unstyled), which
+		// would otherwise throw the icon off-center in this pill.
+		padding: 0;
+		margin: 0;
+		line-height: 0;
+		border-radius: $flowplayer-controls-radius;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		color: var(--flowplayer-controls-fg, $flowplayer-controls-default-fg);
+
+		// Same reasoning, one level down.
+		[class$="__content"],
+		[class$="__icon"] {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			height: 100%;
+			padding: 0;
+			margin: 0;
+		}
+
+		// Volume/subtitles/speed triggers - share one pill instead of having their own (see `&--secondary` above).
+		&--slot {
+			width: $flowplayer-slot-width;
+			height: $flowplayer-slot-height;
+		}
+
+		// Toggled-on slot (e.g. muted) or its flyout open - background only, icon stays regular color.
+		&--active {
+			background-color: $flowplayer-slot-active-background;
+		}
+
+		// Speed trigger shows the rate as text ("1x") instead of an icon - restore line-height and size it to fit the slot.
+		&--text {
+			line-height: normal;
+
+			[class$="__label"] {
+				font-size: 1.2rem;
+				font-weight: 500;
+				white-space: nowrap;
+			}
+		}
+
+		@include flowplayer-focus-ring;
+	}
+
+	.c-flowplayer-progress {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		gap: $flowplayer-progress-inline-gap;
+		padding-inline: $flowplayer-progress-inline-gap;
+		flex: 1 1 auto;
+		min-width: 0;
+
+		// The actual interactive/draggable element (role="slider") - spans the segment's full height
+		// so the click/drag target isn't limited to the thin visual track below, which is much
+		// harder to hit precisely. Same width as `&__track`, so use-drag-value.ts's horizontal
+		// drag-to-percentage math is identical either way.
+		&__hit-area {
+			position: relative;
+			flex: 1 1 auto;
+			min-width: 0;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+			touch-action: none;
+
+			@include flowplayer-focus-ring;
+		}
+
+		&__track {
+			position: relative;
+			width: 100%;
+			height: $flowplayer-progress-track-height;
+			border-radius: $flowplayer-controls-radius;
+			background-color: $flowplayer-track-background;
+		}
+
+		&__buffered {
+			@include flowplayer-absolute-fill-bar($flowplayer-buffered-background);
+		}
+
+		&__fill {
+			@include flowplayer-absolute-fill-bar(transparent);
+		}
+
+		&__handle {
+			position: absolute;
+			top: 50%;
+			width: $flowplayer-progress-handle-size;
+			height: $flowplayer-progress-handle-size;
+			border-radius: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		&__cuepoint {
+			position: absolute;
+			top: 0;
+			height: 100%;
+			background-color: $flowplayer-cuepoint-background;
+			border-radius: $flowplayer-controls-radius;
+			pointer-events: none;
+		}
+
+		&__time {
+			font-size: 1.4rem;
+			font-weight: 400;
+			line-height: 2rem;
+			white-space: nowrap;
+			flex: 0 0 auto;
+		}
+	}
+
+	.c-flowplayer-speed-flyout,
+	.c-flowplayer-subtitles-flyout {
+		// Card chrome: square corners + soft shadow, not the pill radius used elsewhere - this is a popover.
+		border-radius: 0;
+		box-shadow: $flowplayer-flyout-shadow;
+
+		&__list {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		&__divider {
+			height: 0.1rem;
+			margin: 0;
+			background-color: $flowplayer-flyout-divider-color;
+			border: none;
+		}
+
+		&__option {
+			display: flex;
+			align-items: center;
+			gap: $flowplayer-flyout-option-icon-gap;
+			width: 100%;
+			padding: $flowplayer-flyout-option-padding;
+			background: none;
+			border: none;
+			text-align: left;
+			cursor: pointer;
+			color: inherit;
+			font-family: inherit;
+			font-size: 1.4rem;
+			font-weight: 500;
+			line-height: 2rem;
+
+			&:hover,
+			&:focus-visible {
+				background-color: rgb(0 0 0 / 5%);
+			}
+
+			svg {
+				flex: 0 0 auto;
+			}
+		}
+	}
+
+	// Fixed width so the option list doesn't reflow per language name.
+	.c-flowplayer-subtitles-flyout {
+		width: $flowplayer-subtitles-flyout-width;
+	}
+
+	// Flowplayer sets its own poster as an inline background-image (hence !important to win) - the
+	// generic waveform replaces it entirely, it shouldn't show through behind/around it.
+	&.c-video-player-inner--generic-peak {
+		background-image: none !important;
+	}
+
+	// Sibling of the control bar, absolutely filling the player area like native's own `.c-peak` canvas.
+	.c-flowplayer-peak-image {
+		@include flowplayer-fill-absolute;
+		z-index: 1;
+
+		// No filter/dimming - PeakDisplay renders two real AudioWaveFormDisplay instances (one per
+		// state) instead, since a CSS filter can't recolor a prop-driven bar color.
+		&__layer {
+			position: absolute;
+			inset: 0;
+		}
+
+		// Same specificity fix as elsewhere in this file - ties with Flowplayer's own
+		// `background-color: transparent` reset otherwise and loses on source order.
+		.c-audio-wave-form-display {
+			background-color: var(--c-audio-wave-form-display-bg, transparent);
+		}
+	}
+
+	// `.fp-ui` (holds `.fp-switch`, the native play/pause flash icon custom mode relies on) has no
+	// z-index of its own, so it'd paint below `.c-flowplayer-peak-image` and be invisible. Scoped to
+	// generic-peak mode only, so it doesn't also affect native-controls players sharing this stylesheet.
+	&.c-video-player-inner--generic-peak .fp-ui {
+		z-index: 2;
+	}
+
+}

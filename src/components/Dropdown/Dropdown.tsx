@@ -1,6 +1,7 @@
 import {
 	autoUpdate,
 	offset as offsetHelper,
+	shift,
 	useClick,
 	useDismiss,
 	useFloating,
@@ -49,6 +50,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		variants,
 		isDisabled,
 		offset = 10,
+		shiftPadding,
 	} = props;
 	const { refs, floatingStyles, context } = useFloating({
 		placement,
@@ -57,7 +59,12 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 			open ? onOpen() : onClose();
 		},
 		whileElementsMounted: autoUpdate,
-		middleware: [offsetHelper(offset)],
+		// `shift` nudges the flyout back within its clipping ancestor near an edge, instead of
+		// letting it get clipped. Opt-in via `shiftPadding` so other consumers are unaffected.
+		middleware: [
+			offsetHelper(offset),
+			...(shiftPadding !== undefined ? [shift({ padding: shiftPadding })] : []),
+		],
 	});
 
 	const click = useClick(context);

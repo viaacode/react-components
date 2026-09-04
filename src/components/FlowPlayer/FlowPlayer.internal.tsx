@@ -14,14 +14,18 @@ import { isNil } from '../../utils/is-nil';
 import { keysEnter, keysSpacebar, onKey } from '../../utils/key-up';
 import { noop } from '../../utils/noop';
 
+import { ControlBar } from './Controls/ControlBar';
+import { isGenericPeakMode } from './Controls/Controls.consts';
 import { registerCommands } from './FlowPlayer.commands';
 import {
 	ALL_FLOWPLAYER_PLUGINS,
 	DELAY_BETWEEN_PLAYLIST_VIDEOS,
 	dutchFlowplayerTranslations,
+	NATIVE_CONTROLS_HIDE_SELECTOR,
 } from './FlowPlayer.consts';
-import { convertGAEventsArrayToObject } from './FlowPlayer.helpers';
+import { convertGAEventsArrayToObject, getCuepointsForBar } from './FlowPlayer.helpers';
 import type {
+	Cuepoints,
 	FlowPlayerProps,
 	FlowplayerConfigWithPlugins,
 	FlowplayerSourceItem,
@@ -86,7 +90,26 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	peakHeightFactor,
 	enableRestartCuePointsButton,
 	onMetadataLoaded,
+	controlsVariant = 'native',
+	customControlsConfig,
 }) => {
+	const isCustomControls = controlsVariant === 'custom';
+	// Matches ControlBar.tsx's own gate on rendering `PeakDisplay` itself (`isAudio && showPeak &&
+	// peakMode === 'generic'`) - without it, a video player using custom controls with the default
+	// `peakMode: 'generic'` (set unconditionally in consumers like `IeObjectFlowPlayerWrapper`, not
+	// just for audio) would pick up the `c-video-player-inner--generic-peak` class below and, with
+	// it, the CSS override that cancels Flowplayer's own poster background-image - hiding the
+	// video's poster even though no peak overlay is ever actually rendered for it.
+	const useGenericPeak =
+		type === 'audio' &&
+		isCustomControls &&
+		isGenericPeakMode(customControlsConfig?.showPeak, customControlsConfig?.peakMode);
+	// Memoized so `playerHtml` (and `ControlBar` through it) doesn't re-render every time.
+	const cuepointsForBar: Cuepoints | undefined = useMemo(
+		() => getCuepointsForBar(start, end),
+		[start, end]
+	);
+
 	const videoContainerRef = useRef<HTMLDivElement>(null);
 	const peakCanvas = useRef<HTMLCanvasElement>(null);
 
@@ -360,15 +383,23 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			autoplay: autoplay ? flowplayerWithPlugins.autoplay.ON : flowplayerWithPlugins.autoplay.OFF,
 			muted,
 			multiplay: false,
+			// Flowplayer re-derives the `no-controls` state class from this `ui` bitmask on its own
+			// "config" event (fired after `controls: false` below has already set it once at init),
+			// so without the NO_CONTROLS bit here that later pass resets it to false again - dropping
+			// the `.no-controls .fp-middle{padding-bottom:3.6em}` reservation that the custom control
+			// bar's height math already accounts for, which visibly shifts the centered play/pause
+			// icon down. OR-ing it in here keeps both mechanisms in agreement so there's nothing to
+			// reset.
 			ui:
-				ui ||
-				(flowplayerWithPlugins as any).ui.LOGO_ON_RIGHT |
-					(flowplayerWithPlugins as any).ui.USE_DRAG_HANDLE,
+				(ui ||
+					(flowplayerWithPlugins as any).ui.LOGO_ON_RIGHT |
+						(flowplayerWithPlugins as any).ui.USE_DRAG_HANDLE) |
+				(isCustomControls ? (flowplayerWithPlugins as any).ui.NO_CONTROLS : 0),
 			plugins,
 			preload: getPreload(),
 			lang: 'nl',
 			seekable,
-			controls,
+			controls: isCustomControls ? false : controls,
 
 			// KEYBOARD
 			...(plugins.includes('keyboard') ? { keyboard: { seek_step: '15' } } : {}),
@@ -379,9 +410,14 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				: { speed: { options: [], labels: [] } }),
 
 			// CUEPOINTS
-			// Only set cuepoints if an end point was passed in the props or one of the playlist items has cuepoints configured
+			// Set if a start or end point was passed, or a playlist item has cuepoints - matches
+			// getCuepointsForBar's gating so the custom progress bar's marker and the native plugin
+			// agree on when a cuepoint exists. Uses isNil, not truthiness, since a cuepoint at/ending
+			// at 0 is a real, valid state.
 			...(plugins.includes('cuepoints') &&
-			(end || (src as FlowplayerSourceListSchema)?.items?.some((item) => !!item.cuepoints))
+			(!isNil(start) ||
+				!isNil(end) ||
+				(src as FlowplayerSourceListSchema)?.items?.some((item) => !!item.cuepoints))
 				? {
 						cuepoints: [
 							{
@@ -503,6 +539,19 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		videoContainerRef.current && !player.current && reInitFlowPlayer();
 	}, [videoContainerRef]); // Only redo effect when ref changes
 
+	// Keeps native chrome's hidden state in sync with `controlsVariant` on every change/re-init,
+	// not just at mount - otherwise switching back to 'native' left controls hidden forever.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: `_player` only re-triggers this (flowplayer rebuilds the native DOM on each (re)init), it isn't read in the body
+	useEffect(() => {
+		const parent = videoContainerRef.current?.parentElement;
+		if (!parent) {
+			return;
+		}
+		for (const el of parent.querySelectorAll(NATIVE_CONTROLS_HIDE_SELECTOR)) {
+			el.classList.toggle('fp-controls-hidden', isCustomControls);
+		}
+	}, [isCustomControls, _player]);
+
 	useEffect(() => {
 		if (!canPlay) {
 			player.current?.pause();
@@ -552,7 +601,9 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: TODO fix
 	useEffect(() => {
-		if (peakCanvas.current && isAudio) {
+		// Skip the canvas draw loop when the custom-controls generic-peak mode is active, so it
+		// doesn't paint fallback bars underneath/behind the generic peak overlay.
+		if (peakCanvas.current && isAudio && !useGenericPeak) {
 			if (drawPeaksTimerId) {
 				clearInterval(drawPeaksTimerId);
 			}
@@ -564,7 +615,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				clearInterval(drawPeaksTimerId);
 			}
 		};
-	}, [peakCanvas, setDrawPeaksTimerId]);
+	}, [peakCanvas, setDrawPeaksTimerId, useGenericPeak]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: TODO fix
 	useEffect(() => {
@@ -623,7 +674,6 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 
 	const playlistItems = useMemo(() => (src as FlowplayerSourceListSchema)?.items, [src]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: TODO fix
 	const playerHtml = useMemo(
 		() => (
 			<>
@@ -631,12 +681,34 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 					className={clsx('c-video-player-inner', {
 						'c-video-player-inner--audio': isAudio,
 						'c-video-player-inner--enable-restart-cue-points-button': enableRestartCuePointsButton,
+						'c-video-player-inner--custom-controls': isCustomControls,
+						'c-video-player-inner--show-title-overlay':
+							isCustomControls && customControlsConfig?.showTitleOverlay,
+						// Flowplayer sets its own poster as an inline `background-image` regardless of
+						// controls mode - PeakDisplay's generic waveform is meant to fully replace that,
+						// not sit on top of it (see the CSS override in ControlBar.scss).
+						'c-video-player-inner--generic-peak': useGenericPeak,
 					})}
 					data-player-id={dataPlayerId}
 					ref={videoContainerRef}
 				>
-					<canvas ref={peakCanvas} className="c-peak" width="1212" height="779" />
+					{/* The generic-peak overlay (ControlBar's PeakDisplay) replaces this canvas
+					entirely, rather than sitting on top of it - not rendered at all in that mode. */}
+					{!useGenericPeak && <canvas ref={peakCanvas} className="c-peak" width="1212" height="779" />}
 					{customControls}
+					{isCustomControls && (
+						<ControlBar
+							playerRef={player}
+							playerInstance={_player}
+							config={customControlsConfig}
+							isAudio={isAudio}
+							hasSubtitles={!!subtitles?.length}
+							cuepoints={cuepointsForBar}
+							speed={speed}
+							containerRef={videoContainerRef}
+							hasStartedPlaying={startedPlaying}
+						/>
+					)}
 					<div className="c-video-player-inner-overlay">
 						{/** biome-ignore lint/a11y/noStaticElementInteractions: TODO fix */}
 						<span
@@ -668,7 +740,22 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				</div>
 			</>
 		),
-		[dataPlayerId]
+		[
+			dataPlayerId,
+			isAudio,
+			enableRestartCuePointsButton,
+			isCustomControls,
+			customControlsConfig,
+			useGenericPeak,
+			_player,
+			cuepointsForBar,
+			speed,
+			subtitles,
+			customControls,
+			handleReplayClicked,
+			handlePlayClicked,
+			startedPlaying,
+		]
 	);
 
 	return useMemo(() => {

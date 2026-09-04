@@ -1,5 +1,6 @@
 @use "sass:math";
 @use "@flowplayer/player/flowplayer.css";
+@use "./flowplayer-shared" as *;
 
 $color-gray-900: #0f171d;
 $color-teal-bright: #25a4cf;
@@ -259,6 +260,30 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 
 	.fp-controls-hidden {
 		display: none !important;
+	}
+
+	// Native's own top/bottom gradient fades on its own hardcoded 2000ms timer, out of sync with
+	// our configurable auto-hide (useAutoHideControls.ts). Cancel it and redraw the same gradient
+	// ourselves, keyed off our own control bar's visibility class, so both fade together.
+	&.c-video-player-inner--custom-controls {
+		.fp-ui {
+			background-image: none;
+		}
+
+		.fp-ui::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			pointer-events: none;
+			background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent 15%),
+				linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent 20%);
+			opacity: 1;
+			transition: opacity 0.2s ease;
+		}
+
+		&.c-video-player-inner--controls-hidden .fp-ui::before {
+			opacity: 0;
+		}
 	}
 
 	.fp-controls:hover .fp-dragger {
@@ -593,12 +618,14 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 
 /* Peak file */
 .c-peak {
+	@include flowplayer-fill-absolute;
+
+	// A canvas is a replaced element - unlike a plain div, `inset: 0` alone doesn't stretch it to
+	// fill its container; without an explicit CSS size it renders at its `width`/`height` HTML
+	// attributes (kept high for a crisp backing store) and overflows, clipped by the player's own
+	// `overflow: hidden` - cutting off whichever bars fall past the container's actual edge.
 	width: 100%;
 	height: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
-	pointer-events: none;
 }
 
 .c-video-player-inner--enable-restart-cue-points-button .c-video-player-inner-overlay {
@@ -629,6 +656,8 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 	}
 }
 
+// Both "resume" and "restart from the cuepoint" are offered together, in either state - see
+// AVO-3668.
 .c-video-player-inner.c-video-player-inner--enable-restart-cue-points-button.is-paused .c-video-player-inner-overlay,
 .c-video-player-inner.c-video-player-inner--enable-restart-cue-points-button.is-ended .c-video-player-inner-overlay {
 	.fp-replay,

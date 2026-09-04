@@ -1,0 +1,11 @@
+// Shared between FlowPlayer.scss (native mode) and Controls/ControlBar.scss (custom mode) - only
+// for things that are genuinely identical in both, not things that merely look similar. Native's
+// own `em`-based measurements stay separate from the custom bar's `rem`-based ones on purpose.
+
+// Fills the nearest positioned ancestor edge-to-edge, no pointer events - used by both the native
+// data-mode waveform canvas and the custom generic-mode waveform.
+@mixin flowplayer-fill-absolute {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
