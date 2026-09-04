@@ -1,7 +1,12 @@
 import type { FC, KeyboardEvent } from 'react';
-import { formatTime } from './Controls.helpers';
+import { formatDuration } from '../../../utils/formatters/duration';
 import type { ProgressBarProps } from './ProgressBar.types';
 import { useDragValue } from './use-drag-value';
+
+// Adaptive, unpadded (e.g. "3:45", "1:03:45") - a fixed-width "00:03:45" reads oddly for a live
+// progress readout, which is short most of the time.
+const formatProgressTime = (seconds: number) =>
+	formatDuration(seconds, { includeHours: 'auto', padLeadingUnit: false });
 
 export const ProgressBar: FC<ProgressBarProps> = ({
 	currentTime,
@@ -64,7 +69,7 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 					className="c-flowplayer-progress__time c-flowplayer-progress__time--current"
 					style={{ color: foregroundColor }}
 				>
-					{formatTime(currentTime)}
+					{formatProgressTime(currentTime)}
 				</span>
 			)}
 			<div
@@ -76,7 +81,7 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 				aria-valuemin={0}
 				aria-valuemax={duration}
 				aria-valuenow={currentTime}
-				aria-valuetext={formatTime(currentTime)}
+				aria-valuetext={formatProgressTime(currentTime)}
 				onKeyDown={handleKeyDown}
 				{...dragHandlers}
 			>
@@ -113,7 +118,7 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 					className="c-flowplayer-progress__time c-flowplayer-progress__time--duration"
 					style={{ color: foregroundColor }}
 				>
-					{formatTime(duration)}
+					{formatProgressTime(duration)}
 				</span>
 			)}
 		</div>

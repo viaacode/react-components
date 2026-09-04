@@ -41,6 +41,7 @@ export const SpeedControl: FC<SpeedControlProps> = ({
 		placement="top-end"
 		menuWidth="fit-content"
 		flyoutClassName="c-flowplayer-speed-flyout"
+		shiftPadding={8}
 	>
 		<DropdownButton>
 			<Button

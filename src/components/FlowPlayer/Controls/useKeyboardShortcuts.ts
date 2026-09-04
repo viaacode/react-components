@@ -58,9 +58,15 @@ export function useKeyboardShortcuts({
 				actions.toggleMute();
 				break;
 			case 'ArrowUp':
+				if (target.hasAttribute('aria-valuenow')) {
+					return;
+				}
 				actions.setVolume(state.volume + volumeStepPercent);
 				break;
 			case 'ArrowDown':
+				if (target.hasAttribute('aria-valuenow')) {
+					return;
+				}
 				actions.setVolume(state.volume - volumeStepPercent);
 				break;
 			case 'ArrowRight':

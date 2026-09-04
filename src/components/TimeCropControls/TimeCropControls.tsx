@@ -1,11 +1,6 @@
 import { clsx } from 'clsx';
 import { type FC, useCallback, useEffect, useState } from 'react';
-import {
-	formatDurationHoursMinutesSeconds,
-	formatDurationMinutesSeconds,
-	getValidStartAndEnd,
-	parseDuration,
-} from '../../utils';
+import { formatDuration, getValidStartAndEnd, parseDuration } from '../../utils';
 import { clamp } from '../../utils/clamp';
 import MultiRange from '../MultiRange/MultiRange';
 import { TextInput } from '../TextInput';
@@ -33,13 +28,9 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 	startSliderId,
 	endSliderId,
 }) => {
-	const formatDuration = useCallback(
-		(numSeconds: number | null | undefined) => {
-			if (skipHourFormatting) {
-				return formatDurationMinutesSeconds(numSeconds);
-			}
-			return formatDurationHoursMinutesSeconds(numSeconds);
-		},
+	const formatFieldValue = useCallback(
+		(numSeconds: number | null | undefined) =>
+			formatDuration(numSeconds, { includeHours: skipHourFormatting ? 'never' : 'always' }),
 		[skipHourFormatting]
 	);
 
@@ -54,13 +45,13 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 		[skipHourFormatting, minTime, maxTime]
 	);
 
-	const [fragmentStartString, setFragmentStartString] = useState<string>(formatDuration(startTime));
-	const [fragmentEndString, setFragmentEndString] = useState<string>(formatDuration(endTime));
+	const [fragmentStartString, setFragmentStartString] = useState<string>(formatFieldValue(startTime));
+	const [fragmentEndString, setFragmentEndString] = useState<string>(formatFieldValue(endTime));
 
 	useEffect(() => {
-		setFragmentStartString(formatDuration(startTime));
-		setFragmentEndString(formatDuration(endTime));
-	}, [startTime, endTime, formatDuration]);
+		setFragmentStartString(formatFieldValue(startTime));
+		setFragmentEndString(formatFieldValue(endTime));
+	}, [startTime, endTime, formatFieldValue]);
 
 	const onUpdateMultiRangeValues = (values: number[]) => {
 		onChange(values[0], values[1]);
@@ -83,7 +74,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 
 					if (correctWrongTimeInput && newStartTime > maxTime) {
 						newStartTime = maxTime;
-						setFragmentStartString(formatDuration(newStartTime));
+						setFragmentStartString(formatFieldValue(newStartTime));
 					}
 
 					if (newStartTime > (endTime || maxTime)) {
@@ -96,7 +87,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 
 					if (correctWrongTimeInput && newEndTime > maxTime) {
 						newEndTime = maxTime;
-						setFragmentEndString(formatDuration(newEndTime));
+						setFragmentEndString(formatFieldValue(newEndTime));
 					}
 
 					if (newEndTime < (startTime || minTime)) {
@@ -120,7 +111,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 
 					if (correctWrongTimeInput && newStartTime > maxTime) {
 						newStartTime = maxTime;
-						setFragmentStartString(formatDuration(newStartTime));
+						setFragmentStartString(formatFieldValue(newStartTime));
 					}
 
 					if (newStartTime > (endTime || maxTime)) {
@@ -132,7 +123,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 					if (correctWrongTimeInput) {
 						const newStartTime = 0;
 						onChange(newStartTime, endTime);
-						setFragmentStartString(formatDuration(newStartTime));
+						setFragmentStartString(formatFieldValue(newStartTime));
 					}
 					onError(TimeCropControlsErrors.WRONG_FORMAT_START_DATE);
 				}
@@ -142,7 +133,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 
 					if (correctWrongTimeInput && newEndTime > maxTime) {
 						newEndTime = maxTime;
-						setFragmentEndString(formatDuration(newEndTime));
+						setFragmentEndString(formatFieldValue(newEndTime));
 					}
 
 					if (newEndTime < (startTime || minTime)) {
@@ -154,7 +145,7 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 					if (correctWrongTimeInput) {
 						const newEndTime = 0;
 						onChange(startTime, newEndTime);
-						setFragmentEndString(formatDuration(newEndTime));
+						setFragmentEndString(formatFieldValue(newEndTime));
 					}
 					onError(TimeCropControlsErrors.WRONG_FORMAT_END_DATE);
 				}

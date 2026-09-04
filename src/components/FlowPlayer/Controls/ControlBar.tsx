@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { type CSSProperties, type FC, useEffect, useState } from 'react';
+import { type CSSProperties, type FC, useCallback, useEffect, useId, useMemo, useState } from 'react';
 import type { ControlBarProps } from './ControlBar.types';
 import {
 	DEFAULT_AUTO_HIDE_DELAY_MS,
@@ -60,8 +60,13 @@ export const ControlBar: FC<ControlBarProps> = ({
 		labels = {},
 	} = config;
 
-	const mergedColors = { ...defaultControlsColors, ...colors };
-	const mergedLabels = { ...defaultControlsLabels, ...labels };
+	// Stable per-instance id for the volume/subtitles/speed dropdowns - a hardcoded id would collide
+	// when multiple custom-controls players render on the same page (invalid HTML, broken
+	// aria-controls association for every instance after the first).
+	const controlsId = useId();
+
+	const mergedColors = useMemo(() => ({ ...defaultControlsColors, ...colors }), [colors]);
+	const mergedLabels = useMemo(() => ({ ...defaultControlsLabels, ...labels }), [labels]);
 
 	const resolvedShowSubtitles = showSubtitles ?? hasSubtitles;
 	const resolvedShowSpeed = showSpeed ?? !!speed?.options?.length;
@@ -104,6 +109,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 	const { persist: persistSubtitles } = useSubtitlesPersistence({
 		enabled: persistPreferences,
 		keyPrefix: persistenceKeyPrefix,
+		isPlayerReady: !!playerInstance,
 		onRestore: (storedTrackKey) => {
 			if (!playerRef.current) {
 				return;
@@ -151,6 +157,15 @@ export const ControlBar: FC<ControlBarProps> = ({
 		actions,
 		volumeStepPercent: 100 / volumeSteps,
 	});
+
+	const handleSeekStart = useCallback(() => actions.setSeeking(true), [actions]);
+	const handleSeekEnd = useCallback(() => actions.setSeeking(false), [actions]);
+	const openVolumeFlyout = useCallback(() => setVolumeFlyoutOpen(true), []);
+	const closeVolumeFlyout = useCallback(() => setVolumeFlyoutOpen(false), []);
+	const openSubtitlesFlyout = useCallback(() => setSubtitlesFlyoutOpen(true), []);
+	const closeSubtitlesFlyout = useCallback(() => setSubtitlesFlyoutOpen(false), []);
+	const openSpeedFlyout = useCallback(() => setSpeedFlyoutOpen(true), []);
+	const closeSpeedFlyout = useCallback(() => setSpeedFlyoutOpen(false), []);
 
 	const percentagePlayed = state.duration > 0 ? state.currentTime / state.duration : 0;
 	const hasSpeedOptions = resolvedShowSpeed && !!speed?.options?.length;
@@ -208,8 +223,8 @@ export const ControlBar: FC<ControlBarProps> = ({
 							duration={state.duration}
 							bufferedEnd={state.bufferedEnd}
 							onSeek={actions.seek}
-							onSeekStart={() => actions.setSeeking(true)}
-							onSeekEnd={() => actions.setSeeking(false)}
+							onSeekStart={handleSeekStart}
+							onSeekEnd={handleSeekEnd}
 							showTimestamps={showTimestamps}
 							cuepoints={cuepoints}
 							accentColor={mergedColors.accentColor}
@@ -223,7 +238,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 					<div className="c-flowplayer-control-bar__segment c-flowplayer-control-bar__segment--secondary">
 						{showVolume && (
 							<VolumeControl
-								id="flowplayer-controls"
+								id={controlsId}
 								volume={state.volume}
 								muted={state.muted}
 								steps={volumeSteps}
@@ -234,14 +249,14 @@ export const ControlBar: FC<ControlBarProps> = ({
 								flyoutForegroundColor={mergedColors.flyoutForeground}
 								labels={mergedLabels}
 								isOpen={volumeFlyoutOpen}
-								onOpen={() => setVolumeFlyoutOpen(true)}
-								onClose={() => setVolumeFlyoutOpen(false)}
+								onOpen={openVolumeFlyout}
+								onClose={closeVolumeFlyout}
 							/>
 						)}
 
 						{resolvedShowSubtitles && (
 							<SubtitlesControl
-								id="flowplayer-controls"
+								id={controlsId}
 								tracks={subtitleTracks}
 								activeTrackKey={activeSubtitleTrackKey}
 								onSelect={handleSelectSubtitleTrack}
@@ -250,14 +265,14 @@ export const ControlBar: FC<ControlBarProps> = ({
 								flyoutForegroundColor={mergedColors.flyoutForeground}
 								flyoutBackground={mergedColors.flyoutBackground}
 								isOpen={subtitlesFlyoutOpen}
-								onOpen={() => setSubtitlesFlyoutOpen(true)}
-								onClose={() => setSubtitlesFlyoutOpen(false)}
+								onOpen={openSubtitlesFlyout}
+								onClose={closeSubtitlesFlyout}
 							/>
 						)}
 
 						{hasSpeedOptions && (
 							<SpeedControl
-								id="flowplayer-controls"
+								id={controlsId}
 								options={speed?.options ?? []}
 								labelsForOptions={speed?.labels}
 								currentRate={state.playbackRate}
@@ -267,8 +282,8 @@ export const ControlBar: FC<ControlBarProps> = ({
 								flyoutForegroundColor={mergedColors.flyoutForeground}
 								accentColor={mergedColors.accentColor}
 								isOpen={speedFlyoutOpen}
-								onOpen={() => setSpeedFlyoutOpen(true)}
-								onClose={() => setSpeedFlyoutOpen(false)}
+								onOpen={openSpeedFlyout}
+								onClose={closeSpeedFlyout}
 							/>
 						)}
 					</div>

@@ -20,8 +20,9 @@ import {
 	ALL_FLOWPLAYER_PLUGINS,
 	DELAY_BETWEEN_PLAYLIST_VIDEOS,
 	dutchFlowplayerTranslations,
+	NATIVE_CONTROLS_HIDE_SELECTOR,
 } from './FlowPlayer.consts';
-import { convertGAEventsArrayToObject } from './FlowPlayer.helpers';
+import { convertGAEventsArrayToObject, getCuepointsForBar } from './FlowPlayer.helpers';
 import type {
 	Cuepoints,
 	FlowPlayerProps,
@@ -31,14 +32,6 @@ import type {
 	FlowplayerSourceListSchema,
 } from './FlowPlayer.types';
 import { drawPeak } from './Peak/draw-peak';
-
-// `.fp-middle` is deliberately NOT in this list - it's the element Flowplayer's own native UI
-// bundle attaches its click-anywhere-on-the-video-to-toggle-play listener to, so `display: none`
-// on it (via `.fp-controls-hidden`) would silently kill that click-to-toggle behaviour. It also
-// contains `.fp-switch` (the native play/pause flash icon), which custom mode relies on too - see
-// useFlowplayerState.ts's `transitionState` call - so it stays fully visible, exactly like native
-// mode.
-const NATIVE_CONTROLS_HIDE_SELECTOR = '.fp-controls, .fp-header, .fp-error';
 
 import './FlowPlayer.scss';
 
@@ -111,7 +104,12 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		isCustomControls &&
 		(customControlsConfig?.showPeak ?? true) &&
 		(customControlsConfig?.peakMode ?? 'data') === 'generic';
-	const cuepointsForBar: Cuepoints | undefined = end || start ? [{ startTime: start, endTime: end }] : undefined;
+	// Memoized so this doesn't hand `playerHtml`'s own `useMemo` (and, through it, `ControlBar`) a
+	// new array identity - and therefore a reason to re-render - on every render.
+	const cuepointsForBar: Cuepoints | undefined = useMemo(
+		() => getCuepointsForBar(start, end),
+		[start, end]
+	);
 
 	const videoContainerRef = useRef<HTMLDivElement>(null);
 	const peakCanvas = useRef<HTMLCanvasElement>(null);
@@ -204,17 +202,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			cuePointIndicator.classList.add('fp-cuepoint');
 			timeline.prepend(cuePointIndicator);
 		}
-
-		// Custom controls mode: hide Flowplayer's native chrome, but never `.fp-ui` itself -
-		// title/logo overlays are children of it and must stay visible.
-		if (isCustomControls) {
-			videoContainerRef.current.parentElement
-				.querySelectorAll(NATIVE_CONTROLS_HIDE_SELECTOR)
-				.forEach((el) => {
-					el.classList.add('fp-controls-hidden');
-				});
-		}
-	}, [createLogoOverlay, createTitleOverlay, isCustomControls]);
+	}, [createLogoOverlay, createTitleOverlay]);
 
 	/**
 	 * Jump to first cuepoint if it exists
@@ -538,6 +526,21 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	useEffect(() => {
 		videoContainerRef.current && !player.current && reInitFlowPlayer();
 	}, [videoContainerRef]); // Only redo effect when ref changes
+
+	// Keeps native chrome's hidden state in sync with `controlsVariant`, not just applying it once
+	// at init - otherwise switching `controlsVariant` from 'custom' to 'native' on an already-
+	// mounted player left native controls hidden forever, with no custom bar either. Re-runs when
+	// the player is (re)created too, since flowplayer rebuilds this DOM on each (re)init.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: `_player` is a re-run trigger only (flowplayer rebuilds the native DOM on each (re)init), not read in the body
+	useEffect(() => {
+		const parent = videoContainerRef.current?.parentElement;
+		if (!parent) {
+			return;
+		}
+		for (const el of parent.querySelectorAll(NATIVE_CONTROLS_HIDE_SELECTOR)) {
+			el.classList.toggle('fp-controls-hidden', isCustomControls);
+		}
+	}, [isCustomControls, _player]);
 
 	useEffect(() => {
 		if (!canPlay) {

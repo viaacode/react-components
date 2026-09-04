@@ -49,6 +49,7 @@ export const VolumeControl: FC<VolumeControlProps> = ({
 			placement="top-start"
 			menuWidth="fit-content"
 			flyoutClassName="c-flowplayer-volume-flyout"
+			shiftPadding={8}
 		>
 			<DropdownButton>
 				<Button
@@ -69,7 +70,7 @@ export const VolumeControl: FC<VolumeControlProps> = ({
 					title={labels.volume}
 					rootClassName="c-flowplayer-control-button"
 					className={clsx('c-flowplayer-control-button--slot', {
-						'c-flowplayer-control-button--active': isOpen,
+						'c-flowplayer-control-button--active': isOpen || isMutedVisually,
 					})}
 				/>
 			</DropdownButton>

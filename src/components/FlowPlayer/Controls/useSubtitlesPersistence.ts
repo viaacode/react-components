@@ -29,7 +29,14 @@ export interface UseSubtitlesPersistenceOptions {
 	/** Whether persistence is turned on at all (`customControlsConfig.persistPreferences`). */
 	enabled: boolean;
 	keyPrefix: string;
-	/** Called once on mount, only if a stored preference exists (null = subtitles off). */
+	/**
+	 * Whether the underlying flowplayer instance exists yet. Restore is a no-op until this is
+	 * true - the control bar mounts (and this hook's effects run) before FlowPlayer.internal.tsx
+	 * has actually created the player, so restoring against a not-yet-existing player would
+	 * silently do nothing and never be retried.
+	 */
+	isPlayerReady: boolean;
+	/** Called once the player is ready, only if a stored preference exists (null = subtitles off). */
 	onRestore: (trackKey: string | null) => void;
 }
 
@@ -38,13 +45,18 @@ export interface UseSubtitlesPersistenceOptions {
  * Flowplayer's own internal storage. Confirmed: the subtitles plugin's own `_storage` usage is
  * limited to caption *styling* (font/color/edge-style), not which track is active.
  */
-export function useSubtitlesPersistence({ enabled, keyPrefix, onRestore }: UseSubtitlesPersistenceOptions) {
+export function useSubtitlesPersistence({
+	enabled,
+	keyPrefix,
+	isPlayerReady,
+	onRestore,
+}: UseSubtitlesPersistenceOptions) {
 	const hasRestoredRef = useRef(false);
 	const onRestoreRef = useRef(onRestore);
 	onRestoreRef.current = onRestore;
 
 	useEffect(() => {
-		if (!enabled || hasRestoredRef.current) {
+		if (!enabled || !isPlayerReady || hasRestoredRef.current) {
 			return;
 		}
 		hasRestoredRef.current = true;
@@ -52,7 +64,7 @@ export function useSubtitlesPersistence({ enabled, keyPrefix, onRestore }: UseSu
 		if (stored !== undefined) {
 			onRestoreRef.current(stored);
 		}
-	}, [enabled, keyPrefix]);
+	}, [enabled, keyPrefix, isPlayerReady]);
 
 	const persist = (trackKey: string | null) => {
 		if (enabled) {

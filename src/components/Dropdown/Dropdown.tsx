@@ -50,6 +50,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		variants,
 		isDisabled,
 		offset = 10,
+		shiftPadding,
 	} = props;
 	const { refs, floatingStyles, context } = useFloating({
 		placement,
@@ -61,8 +62,12 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		// `shift` nudges the flyout back within its clipping ancestor (e.g. the video player's
 		// `overflow: hidden` root) when the default placement would otherwise push part of it
 		// outside the visible area - without it, a flyout near an edge gets silently clipped
-		// instead of repositioned.
-		middleware: [offsetHelper(offset), shift({ padding: 8 })],
+		// instead of repositioned. Opt-in via `shiftPadding` only - every other Dropdown consumer
+		// keeps its existing, unshifted positioning.
+		middleware: [
+			offsetHelper(offset),
+			...(shiftPadding !== undefined ? [shift({ padding: shiftPadding })] : []),
+		],
 	});
 
 	const click = useClick(context);

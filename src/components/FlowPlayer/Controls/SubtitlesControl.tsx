@@ -53,6 +53,7 @@ export const SubtitlesControl: FC<SubtitlesControlProps> = ({
 			placement="top-end"
 			menuWidth="fit-content"
 			flyoutClassName="c-flowplayer-subtitles-flyout"
+			shiftPadding={8}
 		>
 			<DropdownButton>
 				<Button
