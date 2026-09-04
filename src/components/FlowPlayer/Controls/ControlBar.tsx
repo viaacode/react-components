@@ -7,6 +7,7 @@ import {
 	DEFAULT_VOLUME_STEPS,
 	defaultControlsColors,
 	defaultControlsLabels,
+	isGenericPeakMode,
 } from './Controls.consts';
 import { FullscreenButton } from './FullscreenButton';
 import { PeakDisplay } from './PeakDisplay';
@@ -29,6 +30,8 @@ import { VolumeControl } from './VolumeControl';
 
 import './ControlBar.scss';
 
+type FlyoutId = 'volume' | 'subtitles' | 'speed';
+
 export const ControlBar: FC<ControlBarProps> = ({
 	playerRef,
 	playerInstance,
@@ -47,9 +50,9 @@ export const ControlBar: FC<ControlBarProps> = ({
 		showSubtitles,
 		showFullscreen = true,
 		showSpeed,
-		showPeak = true,
+		showPeak,
 		volumeSteps = DEFAULT_VOLUME_STEPS,
-		peakMode = 'data',
+		peakMode,
 		peakColorActive,
 		peakColorInactive,
 		peakColorBackground,
@@ -75,9 +78,10 @@ export const ControlBar: FC<ControlBarProps> = ({
 
 	const [subtitleTracks, setSubtitleTracks] = useState<SubtitleTrackOption[]>([]);
 	const [activeSubtitleTrackKey, setActiveSubtitleTrackKey] = useState<string | null>(null);
-	const [volumeFlyoutOpen, setVolumeFlyoutOpen] = useState(false);
-	const [speedFlyoutOpen, setSpeedFlyoutOpen] = useState(false);
-	const [subtitlesFlyoutOpen, setSubtitlesFlyoutOpen] = useState(false);
+	// A single "which flyout is open" slot rather than one boolean per flyout - besides being three
+	// times less state to keep in sync, it makes the three flyouts mutually exclusive for free
+	// (opening one always replaces whichever id was open before).
+	const [openFlyout, setOpenFlyout] = useState<FlyoutId | null>(null);
 
 	// Sync once the player exists / is (re)created, and again whenever the plugin reports a
 	// track change (loaded/selected/deselected), before any stored preference is restored.
@@ -89,9 +93,10 @@ export const ControlBar: FC<ControlBarProps> = ({
 		}
 
 		const syncTracks = () => {
+			const tracks = getSubtitleTracks(player);
 			setSubtitleTracks(
-				getSubtitleTracks(player).map((track) => ({
-					key: getSubtitleTrackKey(track),
+				tracks.map((track) => ({
+					key: getSubtitleTrackKey(tracks, track),
 					label: track.label || track.language || '',
 				}))
 			);
@@ -134,7 +139,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 		containerRef,
 		delayMs: autoHideDelayMs,
 		isPlaying: !state.paused,
-		suppress: volumeFlyoutOpen || speedFlyoutOpen || subtitlesFlyoutOpen,
+		suppress: openFlyout !== null,
 	});
 
 	// The title/logo overlays are DOM children of `.fp-ui`, created imperatively by
@@ -160,12 +165,11 @@ export const ControlBar: FC<ControlBarProps> = ({
 
 	const handleSeekStart = useCallback(() => actions.setSeeking(true), [actions]);
 	const handleSeekEnd = useCallback(() => actions.setSeeking(false), [actions]);
-	const openVolumeFlyout = useCallback(() => setVolumeFlyoutOpen(true), []);
-	const closeVolumeFlyout = useCallback(() => setVolumeFlyoutOpen(false), []);
-	const openSubtitlesFlyout = useCallback(() => setSubtitlesFlyoutOpen(true), []);
-	const closeSubtitlesFlyout = useCallback(() => setSubtitlesFlyoutOpen(false), []);
-	const openSpeedFlyout = useCallback(() => setSpeedFlyoutOpen(true), []);
-	const closeSpeedFlyout = useCallback(() => setSpeedFlyoutOpen(false), []);
+	const openFlyoutHandler = useCallback((id: FlyoutId) => setOpenFlyout(id), []);
+	const closeFlyoutHandler = useCallback(
+		(id: FlyoutId) => setOpenFlyout((current) => (current === id ? null : current)),
+		[]
+	);
 
 	const percentagePlayed = state.duration > 0 ? state.currentTime / state.duration : 0;
 	const hasSpeedOptions = resolvedShowSpeed && !!speed?.options?.length;
@@ -189,7 +193,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 			{/* Rendered as a sibling of the control bar, not a flex item inside it - like the
 			data-mode `.c-peak` canvas, this needs to fill the whole video/audio area, not sit
 			inside the bottom pill row. */}
-			{isAudio && showPeak && peakMode === 'generic' && (
+			{isAudio && isGenericPeakMode(showPeak, peakMode) && (
 				<PeakDisplay
 					percentagePlayed={percentagePlayed}
 					colorActive={peakColorActive}
@@ -248,9 +252,9 @@ export const ControlBar: FC<ControlBarProps> = ({
 								flyoutBackground={mergedColors.flyoutBackground}
 								flyoutForegroundColor={mergedColors.flyoutForeground}
 								labels={mergedLabels}
-								isOpen={volumeFlyoutOpen}
-								onOpen={openVolumeFlyout}
-								onClose={closeVolumeFlyout}
+								isOpen={openFlyout === 'volume'}
+								onOpen={() => openFlyoutHandler('volume')}
+								onClose={() => closeFlyoutHandler('volume')}
 							/>
 						)}
 
@@ -264,9 +268,9 @@ export const ControlBar: FC<ControlBarProps> = ({
 								triggerLabel={mergedLabels.subtitles}
 								flyoutForegroundColor={mergedColors.flyoutForeground}
 								flyoutBackground={mergedColors.flyoutBackground}
-								isOpen={subtitlesFlyoutOpen}
-								onOpen={openSubtitlesFlyout}
-								onClose={closeSubtitlesFlyout}
+								isOpen={openFlyout === 'subtitles'}
+								onOpen={() => openFlyoutHandler('subtitles')}
+								onClose={() => closeFlyoutHandler('subtitles')}
 							/>
 						)}
 
@@ -281,9 +285,9 @@ export const ControlBar: FC<ControlBarProps> = ({
 								flyoutBackground={mergedColors.flyoutBackground}
 								flyoutForegroundColor={mergedColors.flyoutForeground}
 								accentColor={mergedColors.accentColor}
-								isOpen={speedFlyoutOpen}
-								onOpen={openSpeedFlyout}
-								onClose={closeSpeedFlyout}
+								isOpen={openFlyout === 'speed'}
+								onOpen={() => openFlyoutHandler('speed')}
+								onClose={() => closeFlyoutHandler('speed')}
 							/>
 						)}
 					</div>

@@ -28,14 +28,25 @@ export function isSubtitlesEnabled(player: Player): boolean {
 	return !!getActiveSubtitleTrack(player);
 }
 
-/** A stable identifier for a track, suitable for persistence and for matching a track in a list. */
-export function getSubtitleTrackKey(track: FlowplayerTextTrack): string {
-	return track.language || track.label || '';
+/**
+ * A stable identifier for a track, suitable for persistence and for matching a track in a list.
+ * `language`/`label` alone aren't guaranteed unique (e.g. two tracks both tagged "en" - a regular
+ * and an SDH/forced variant, or two tracks both missing language/label), so ties are broken by
+ * position among tracks sharing the same base key.
+ */
+export function getSubtitleTrackKey(tracks: FlowplayerTextTrack[], track: FlowplayerTextTrack): string {
+	const base = track.language || track.label || 'track';
+	const sameBase = tracks.filter((candidate) => (candidate.language || candidate.label || 'track') === base);
+	if (sameBase.length <= 1) {
+		return base;
+	}
+	return `${base}-${sameBase.indexOf(track)}`;
 }
 
 export function getActiveSubtitleTrackKey(player: Player): string | null {
-	const active = getActiveSubtitleTrack(player);
-	return active ? getSubtitleTrackKey(active) : null;
+	const tracks = getSubtitleTracks(player);
+	const active = tracks.find((track) => track.is_active);
+	return active ? getSubtitleTrackKey(tracks, active) : null;
 }
 
 function emitTracksUpdated(player: Player, track?: FlowplayerTextTrack) {
@@ -59,7 +70,8 @@ export function selectSubtitleTrack(player: Player, trackKey: string | null): vo
 		return;
 	}
 
-	const target = getSubtitleTracks(player).find((track) => getSubtitleTrackKey(track) === trackKey);
+	const tracks = getSubtitleTracks(player);
+	const target = tracks.find((track) => getSubtitleTrackKey(tracks, track) === trackKey);
 	if (!target) {
 		return;
 	}

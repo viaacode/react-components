@@ -1,4 +1,5 @@
 import { type PointerEvent as ReactPointerEvent, useCallback, useRef } from 'react';
+import { clamp } from '../../../utils/clamp';
 
 export interface UseDragValueOptions {
 	orientation?: 'horizontal' | 'vertical';
@@ -13,25 +14,29 @@ export interface UseDragValueOptions {
  */
 export function useDragValue({ orientation = 'horizontal', onChange, onDragStart, onDragEnd }: UseDragValueOptions) {
 	const containerRef = useRef<HTMLDivElement>(null);
+	// Cached on pointerdown and reused for the rest of that drag - re-measuring on every
+	// pointermove (which can fire 60+ times/sec) forces a synchronous layout read for no benefit,
+	// since the container doesn't resize mid-drag.
+	const rectRef = useRef<DOMRect | null>(null);
 
 	const computeValue = useCallback(
 		(clientX: number, clientY: number): number => {
-			const el = containerRef.current;
-			if (!el) {
+			const rect = rectRef.current;
+			if (!rect) {
 				return 0;
 			}
-			const rect = el.getBoundingClientRect();
 			const ratio =
 				orientation === 'vertical'
 					? (rect.bottom - clientY) / rect.height
 					: (clientX - rect.left) / rect.width;
-			return Math.max(0, Math.min(100, ratio * 100));
+			return clamp(ratio * 100, 0, 100);
 		},
 		[orientation]
 	);
 
 	const handlePointerDown = useCallback(
 		(event: ReactPointerEvent<HTMLDivElement>) => {
+			rectRef.current = event.currentTarget.getBoundingClientRect();
 			event.currentTarget.setPointerCapture(event.pointerId);
 			onDragStart?.();
 			onChange(computeValue(event.clientX, event.clientY));

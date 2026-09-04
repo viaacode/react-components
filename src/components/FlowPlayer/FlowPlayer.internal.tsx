@@ -15,6 +15,7 @@ import { keysEnter, keysSpacebar, onKey } from '../../utils/key-up';
 import { noop } from '../../utils/noop';
 
 import { ControlBar } from './Controls/ControlBar';
+import { isGenericPeakMode } from './Controls/Controls.consts';
 import { registerCommands } from './FlowPlayer.commands';
 import {
 	ALL_FLOWPLAYER_PLUGINS,
@@ -102,8 +103,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	const useGenericPeak =
 		type === 'audio' &&
 		isCustomControls &&
-		(customControlsConfig?.showPeak ?? true) &&
-		(customControlsConfig?.peakMode ?? 'data') === 'generic';
+		isGenericPeakMode(customControlsConfig?.showPeak, customControlsConfig?.peakMode);
 	// Memoized so this doesn't hand `playerHtml`'s own `useMemo` (and, through it, `ControlBar`) a
 	// new array identity - and therefore a reason to re-render - on every render.
 	const cuepointsForBar: Cuepoints | undefined = useMemo(
@@ -403,9 +403,10 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				: { speed: { options: [], labels: [] } }),
 
 			// CUEPOINTS
-			// Only set cuepoints if an end point was passed in the props or one of the playlist items has cuepoints configured
+			// Only set cuepoints if an end point was passed in the props or one of the playlist items has cuepoints configured.
+			// `end` is checked with isNil, not truthiness - a cuepoint ending at 0 is a real, valid state (see getCuepointsForBar).
 			...(plugins.includes('cuepoints') &&
-			(end || (src as FlowplayerSourceListSchema)?.items?.some((item) => !!item.cuepoints))
+			(!isNil(end) || (src as FlowplayerSourceListSchema)?.items?.some((item) => !!item.cuepoints))
 				? {
 						cuepoints: [
 							{

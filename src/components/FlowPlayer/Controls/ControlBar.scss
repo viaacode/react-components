@@ -431,10 +431,12 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 	// the native play/pause flash icon this custom bar relies on, see useFlowplayerState.ts) has no
 	// z-index of its own (`auto`), so without this it paints *below* `.c-flowplayer-peak-image`
 	// (explicit z-index) regardless of DOM order - confirmed live: the flash fires correctly
-	// (opacity toggles) but is invisible behind the waveform image. Only matters in generic-peak
-	// mode (video has no such full-frame sibling in front of it); keeping it below the control
-	// bar's own z-index (5) either way.
-	.fp-ui {
+	// (opacity toggles) but is invisible behind the waveform image. Scoped to generic-peak mode -
+	// that's the only mode with such a full-frame sibling in front of it, and an unscoped rule here
+	// would also affect ordinary native-controls players sharing this bundled stylesheet (e.g.
+	// racing `.c-video-player-inner-overlay`'s own z-index: 2 for the restart-cuepoint button).
+	// Keeping it below the control bar's own z-index (5) either way.
+	&.c-video-player-inner--generic-peak .fp-ui {
 		z-index: 2;
 	}
 

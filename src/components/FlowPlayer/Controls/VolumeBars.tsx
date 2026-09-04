@@ -1,4 +1,5 @@
-import type { FC, KeyboardEvent } from 'react';
+import { type FC, type KeyboardEvent, useCallback } from 'react';
+import { clamp } from '../../../utils/clamp';
 import { useDragValue } from './use-drag-value';
 
 export interface VolumeBarsProps {
@@ -25,12 +26,17 @@ export const VolumeBars: FC<VolumeBarsProps> = ({
 	unfilledColor,
 	ariaLabel,
 }) => {
+	const handleDragChange = useCallback(
+		(percentage: number) => {
+			const stepIndex = Math.round((percentage / 100) * steps);
+			onChange(clamp((stepIndex / steps) * 100, 0, 100));
+		},
+		[steps, onChange]
+	);
+
 	const { containerRef, dragHandlers } = useDragValue({
 		orientation: 'horizontal',
-		onChange: (percentage) => {
-			const stepIndex = Math.round((percentage / 100) * steps);
-			onChange(Math.max(0, Math.min(100, (stepIndex / steps) * 100)));
-		},
+		onChange: handleDragChange,
 	});
 
 	const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -38,11 +44,11 @@ export const VolumeBars: FC<VolumeBarsProps> = ({
 		switch (event.key) {
 			case 'ArrowUp':
 			case 'ArrowRight':
-				onChange(Math.min(100, value + stepSize));
+				onChange(clamp(value + stepSize, 0, 100));
 				break;
 			case 'ArrowDown':
 			case 'ArrowLeft':
-				onChange(Math.max(0, value - stepSize));
+				onChange(clamp(value - stepSize, 0, 100));
 				break;
 			case 'Home':
 				onChange(0);
@@ -54,6 +60,12 @@ export const VolumeBars: FC<VolumeBarsProps> = ({
 				return;
 		}
 		event.preventDefault();
+		// Flowplayer's own global keyboard plugin (bound to `document`) also matches any focused
+		// element with `aria-valuenow` on arrow keys, but only special-cases its own `.fp-volume`/
+		// `.fp-timeline` elements - anything else (like this slider) falls through to its generic
+		// handling and ends up seeking the video or double-adjusting its own volume state. Stop
+		// the event here so it never reaches that listener.
+		event.stopPropagation();
 	};
 
 	return (

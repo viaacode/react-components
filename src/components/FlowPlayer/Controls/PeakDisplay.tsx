@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { AudioWaveFormDisplay } from '../../AudioWaveFormDisplay/AudioWaveFormDisplay';
 import { WAVE_FORM_PADDING_X_PERCENT } from '../../AudioWaveFormDisplay/AudioWaveFormDisplay.helpers';
+import { clamp } from '../../../utils/clamp';
 
 export interface PeakDisplayProps {
 	percentagePlayed: number; // 0-1
@@ -23,7 +24,7 @@ export const PeakDisplay: FC<PeakDisplayProps> = ({
 	colorBackground,
 }) => {
 	const contentSpan = 100 - WAVE_FORM_PADDING_X_PERCENT * 2;
-	const revealPct = WAVE_FORM_PADDING_X_PERCENT + Math.max(0, Math.min(1, percentagePlayed)) * contentSpan;
+	const revealPct = WAVE_FORM_PADDING_X_PERCENT + clamp(percentagePlayed, 0, 1) * contentSpan;
 
 	return (
 		<div className="c-flowplayer-peak-image">

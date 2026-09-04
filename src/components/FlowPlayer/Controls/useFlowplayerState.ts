@@ -1,5 +1,6 @@
 import type { Player } from '@flowplayer/player';
 import { type MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { clamp } from '../../../utils/clamp';
 
 // `transitionState` is Flowplayer's own internal state-transition helper - not part of the
 // public API/types. It's what native UI's own click handling calls to produce the "is-toggling"
@@ -213,7 +214,7 @@ export function useFlowplayerState(
 			if (!playerRef.current) {
 				return;
 			}
-			const clamped = Math.max(0, Math.min(100, volume));
+			const clamped = clamp(volume, 0, 100);
 			playerRef.current.volume = clamped / 100;
 			if (clamped > 0 && playerRef.current.muted) {
 				playerRef.current.muted = false;

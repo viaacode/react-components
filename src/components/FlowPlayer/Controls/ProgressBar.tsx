@@ -1,4 +1,4 @@
-import type { FC, KeyboardEvent } from 'react';
+import { type FC, type KeyboardEvent, useCallback } from 'react';
 import { formatDuration } from '../../../utils/formatters/duration';
 import type { ProgressBarProps } from './ProgressBar.types';
 import { useDragValue } from './use-drag-value';
@@ -24,15 +24,20 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 	const playedPct = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
 	const bufferedPct = duration > 0 ? Math.min(100, (bufferedEnd / duration) * 100) : 0;
 
-	const { containerRef, dragHandlers } = useDragValue({
-		orientation: 'horizontal',
-		onDragStart: onSeekStart,
-		onDragEnd: onSeekEnd,
-		onChange: (percentage) => {
+	const handleDragChange = useCallback(
+		(percentage: number) => {
 			if (duration > 0) {
 				onSeek((percentage / 100) * duration);
 			}
 		},
+		[duration, onSeek]
+	);
+
+	const { containerRef, dragHandlers } = useDragValue({
+		orientation: 'horizontal',
+		onDragStart: onSeekStart,
+		onDragEnd: onSeekEnd,
+		onChange: handleDragChange,
 	});
 
 	// ArrowLeft/ArrowRight are deliberately not handled here - Flowplayer's own global `keyboard`
