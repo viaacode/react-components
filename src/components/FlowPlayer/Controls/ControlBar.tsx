@@ -30,7 +30,7 @@ import { VolumeControl } from './VolumeControl';
 
 import './ControlBar.scss';
 
-type FlyoutId = 'volume' | 'subtitles' | 'speed';
+type FlyoutId = 'subtitles' | 'speed';
 
 export const ControlBar: FC<ControlBarProps> = ({
 	playerRef,
@@ -41,6 +41,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 	cuepoints,
 	speed,
 	containerRef,
+	hasStartedPlaying,
 }) => {
 	const {
 		showPlayPause = true,
@@ -131,12 +132,15 @@ export const ControlBar: FC<ControlBarProps> = ({
 
 	// Listens on the whole player root, not just the bar itself, so moving the pointer anywhere
 	// over the video/audio area (not only over the pill row) keeps the controls revealed.
-	const isVisible = useAutoHideControls({
+	const autoHideVisible = useAutoHideControls({
 		containerRef,
 		delayMs: autoHideDelayMs,
 		isPlaying: !state.paused,
 		suppress: openFlyout !== null,
 	});
+	// Matches native's `.is-starting .fp-controls{visibility:hidden}` - stays hidden over the
+	// poster until the first playback, same as the native bar this replaces.
+	const isVisible = hasStartedPlaying && autoHideVisible;
 
 	// The title/logo overlays are built imperatively by FlowPlayer.internal.tsx, not rendered here -
 	// this class lets ControlBar.scss fade them in sync with our own visibility.
@@ -230,21 +234,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 				{hasSecondarySegment && (
 					<div className="c-flowplayer-control-bar__segment c-flowplayer-control-bar__segment--secondary">
 						{showVolume && (
-							<VolumeControl
-								id={controlsId}
-								volume={state.volume}
-								muted={state.muted}
-								steps={volumeSteps}
-								onVolumeChange={actions.setVolume}
-								onToggleMute={actions.toggleMute}
-								accentColor={mergedColors.accentColor}
-								flyoutBackground={mergedColors.flyoutBackground}
-								flyoutForegroundColor={mergedColors.flyoutForeground}
-								labels={mergedLabels}
-								isOpen={openFlyout === 'volume'}
-								onOpen={() => openFlyoutHandler('volume')}
-								onClose={() => closeFlyoutHandler('volume')}
-							/>
+							<VolumeControl muted={state.muted} onToggleMute={actions.toggleMute} labels={mergedLabels} />
 						)}
 
 						{resolvedShowSubtitles && (

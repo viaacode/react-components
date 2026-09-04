@@ -702,6 +702,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 							cuepoints={cuepointsForBar}
 							speed={speed}
 							containerRef={videoContainerRef}
+							hasStartedPlaying={startedPlaying}
 						/>
 					)}
 					<div className="c-video-player-inner-overlay">
@@ -749,6 +750,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			customControls,
 			handleReplayClicked,
 			handlePlayClicked,
+			startedPlaying,
 		]
 	);
 

@@ -207,8 +207,15 @@ export function useFlowplayerState(
 	);
 
 	const toggleMute = useCallback(() => {
-		if (playerRef.current) {
-			playerRef.current.muted = !playerRef.current.muted;
+		if (!playerRef.current) {
+			return;
+		}
+		const nextMuted = !playerRef.current.muted;
+		playerRef.current.muted = nextMuted;
+		// No granular volume control in custom mode - unmuting always lands back at full volume,
+		// never wherever it happened to be left (e.g. from ArrowUp/Down) before muting.
+		if (!nextMuted) {
+			playerRef.current.volume = 1;
 		}
 	}, [playerRef]);
 

@@ -256,48 +256,6 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 		}
 	}
 
-	.c-flowplayer-volume-flyout {
-		&__content {
-			display: flex;
-			align-items: center;
-			gap: $flowplayer-controls-padding-block;
-
-			// No top/bottom padding - height comes from the mute button. Asymmetric left/right on purpose.
-			padding: 0;
-			padding-left: $flowplayer-controls-padding-block; // 1 spacer
-			padding-right: $flowplayer-controls-padding-inline; // 2 spacers
-
-			// Square corners like the other flyouts, but no shadow - reads fine as a flat card here.
-			border-radius: 0;
-			background-color: var(--flowplayer-controls-flyout-bg, $flowplayer-controls-default-flyout-bg);
-
-			// 2-class selector outranks `.c-flowplayer-control-button--slot`'s own width (1 class).
-			.c-flowplayer-control-button {
-				width: auto;
-				padding-left: $flowplayer-controls-padding-block; // 1 spacer
-				padding-right: $flowplayer-controls-padding-block; // 1 spacer
-			}
-		}
-	}
-
-	.c-flowplayer-volume-bars {
-		display: flex;
-		align-items: flex-end;
-		gap: 0.4rem;
-		height: 1.25rem;
-		cursor: pointer;
-		touch-action: none;
-
-		@include flowplayer-focus-ring;
-
-		&__bar {
-			display: inline-block;
-			width: 0.3rem;
-			height: 100%;
-			border-radius: 0.2rem;
-		}
-	}
-
 	.c-flowplayer-speed-flyout,
 	.c-flowplayer-subtitles-flyout {
 		// Card chrome: square corners + soft shadow, not the pill radius used elsewhere - this is a popover.
