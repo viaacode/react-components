@@ -383,10 +383,18 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			autoplay: autoplay ? flowplayerWithPlugins.autoplay.ON : flowplayerWithPlugins.autoplay.OFF,
 			muted,
 			multiplay: false,
+			// Flowplayer re-derives the `no-controls` state class from this `ui` bitmask on its own
+			// "config" event (fired after `controls: false` below has already set it once at init),
+			// so without the NO_CONTROLS bit here that later pass resets it to false again - dropping
+			// the `.no-controls .fp-middle{padding-bottom:3.6em}` reservation that the custom control
+			// bar's height math already accounts for, which visibly shifts the centered play/pause
+			// icon down. OR-ing it in here keeps both mechanisms in agreement so there's nothing to
+			// reset.
 			ui:
-				ui ||
-				(flowplayerWithPlugins as any).ui.LOGO_ON_RIGHT |
-					(flowplayerWithPlugins as any).ui.USE_DRAG_HANDLE,
+				(ui ||
+					(flowplayerWithPlugins as any).ui.LOGO_ON_RIGHT |
+						(flowplayerWithPlugins as any).ui.USE_DRAG_HANDLE) |
+				(isCustomControls ? (flowplayerWithPlugins as any).ui.NO_CONTROLS : 0),
 			plugins,
 			preload: getPreload(),
 			lang: 'nl',
