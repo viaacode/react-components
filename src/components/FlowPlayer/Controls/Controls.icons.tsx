@@ -5,12 +5,8 @@ const baseProps: SVGProps<SVGSVGElement> = {
 	focusable: false,
 };
 
-// The icons below are traced from meemoo's own icon set (the "meemoocons" webfont), not generic
-// Material glyphs - each rendered at its own natural size via a viewBox cropped tight to the
-// glyph's actual bounding box (the exported assets had a few px of one-sided padding baked into
-// their nominal viewBox, which would have thrown off flex-centering in a button same as the
-// generic icons did before). No forced uniform 24x24 grid - flex centering in
-// `.c-flowplayer-control-button` handles differently-sized icons correctly on its own.
+// Traced from meemoo's own icon set, each at its own natural size (viewBox cropped tight to the
+// glyph) - no forced uniform grid, flex centering in `.c-flowplayer-control-button` handles it.
 
 export const PlayIcon: FC = () => (
 	<svg {...baseProps} width="14.0859" height="15.375" viewBox="0 0 14.0859 15.375" aria-hidden="true">
@@ -24,10 +20,8 @@ export const PauseIcon: FC = () => (
 	</svg>
 );
 
-// Volume/mute each have two glyph variants, not just a recolor: the "regular" shape has a hollow
-// (outlined) speaker cone, the "highlighted" shape (shown while the trigger is open/active, where
-// the button gets an accent-colored background) has it filled solid. Which pair is shown is a
-// separate axis from muted/unmuted - see VolumeControl.tsx.
+// Regular = hollow speaker cone, highlighted = filled solid (shown while the flyout is open) -
+// a separate axis from muted/unmuted, see VolumeControl.tsx.
 
 export const VolumeIcon: FC = () => (
 	<svg {...baseProps} width="18" height="18.1406" viewBox="0 0 18 18.1406" aria-hidden="true">
@@ -83,8 +77,7 @@ export const FullscreenExitIcon: FC = () => (
 	</svg>
 );
 
-// Same regular/highlighted split as volume/mute above: hollow (outlined) box for the regular
-// state, solid box for the highlighted state (subtitles on, or the trigger's own flyout open).
+// Same regular/highlighted split as volume/mute above.
 
 export const SubtitlesIcon: FC = () => (
 	<svg {...baseProps} width="18" height="15.9844" viewBox="0 0 18 15.9844" aria-hidden="true">

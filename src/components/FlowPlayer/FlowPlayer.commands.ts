@@ -15,12 +15,8 @@ function toggleVideoControls(showControls: boolean) {
 	// Not using videoPlayer.controls because the flowPlayer hides those by default and shows its own set of controls
 	// If we would use videoPlayer.controls = showControls, we would see 2 different sets
 
-	// EMBED_CONTROLS_HIDE_SELECTOR is Flowplayer's native chrome including `.fp-middle` (see
-	// FlowPlayer.consts.ts for why this command needs it, unlike the custom-controls-variant
-	// toggle); [data-flowplayer-controls] is the custom control bar's own root, used when a
-	// consumer opted into `controlsVariant="custom"`. Both are hidden the same way so this
-	// command's public payload shape stays the same regardless of which controls variant is
-	// active.
+	// EMBED_CONTROLS_HIDE_SELECTOR is native's chrome incl. `.fp-middle` (see FlowPlayer.consts.ts);
+	// [data-flowplayer-controls] is the custom control bar's root when `controlsVariant="custom"`.
 	const flowPlayerElements = document.querySelectorAll(
 		`${EMBED_CONTROLS_HIDE_SELECTOR}, [data-flowplayer-controls]`
 	);

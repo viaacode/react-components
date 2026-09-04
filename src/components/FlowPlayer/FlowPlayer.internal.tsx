@@ -104,8 +104,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		type === 'audio' &&
 		isCustomControls &&
 		isGenericPeakMode(customControlsConfig?.showPeak, customControlsConfig?.peakMode);
-	// Memoized so this doesn't hand `playerHtml`'s own `useMemo` (and, through it, `ControlBar`) a
-	// new array identity - and therefore a reason to re-render - on every render.
+	// Memoized so `playerHtml` (and `ControlBar` through it) doesn't re-render every time.
 	const cuepointsForBar: Cuepoints | undefined = useMemo(
 		() => getCuepointsForBar(start, end),
 		[start, end]
@@ -403,8 +402,8 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				: { speed: { options: [], labels: [] } }),
 
 			// CUEPOINTS
-			// Only set cuepoints if an end point was passed in the props or one of the playlist items has cuepoints configured.
-			// `end` is checked with isNil, not truthiness - a cuepoint ending at 0 is a real, valid state (see getCuepointsForBar).
+			// Set only if an end point was passed, or a playlist item has cuepoints. `end` uses isNil,
+			// not truthiness, since a cuepoint ending at 0 is a real, valid state (see getCuepointsForBar).
 			...(plugins.includes('cuepoints') &&
 			(!isNil(end) || (src as FlowplayerSourceListSchema)?.items?.some((item) => !!item.cuepoints))
 				? {
@@ -528,11 +527,9 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		videoContainerRef.current && !player.current && reInitFlowPlayer();
 	}, [videoContainerRef]); // Only redo effect when ref changes
 
-	// Keeps native chrome's hidden state in sync with `controlsVariant`, not just applying it once
-	// at init - otherwise switching `controlsVariant` from 'custom' to 'native' on an already-
-	// mounted player left native controls hidden forever, with no custom bar either. Re-runs when
-	// the player is (re)created too, since flowplayer rebuilds this DOM on each (re)init.
-	// biome-ignore lint/correctness/useExhaustiveDependencies: `_player` is a re-run trigger only (flowplayer rebuilds the native DOM on each (re)init), not read in the body
+	// Keeps native chrome's hidden state in sync with `controlsVariant` on every change/re-init,
+	// not just at mount - otherwise switching back to 'native' left controls hidden forever.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: `_player` only re-triggers this (flowplayer rebuilds the native DOM on each (re)init), it isn't read in the body
 	useEffect(() => {
 		const parent = videoContainerRef.current?.parentElement;
 		if (!parent) {

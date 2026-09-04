@@ -28,12 +28,7 @@ export const convertGAEventsArrayToObject = (googleAnalyticsEvents: GoogleAnalyt
 	}, {});
 };
 
-/**
- * `isNil`, not truthy - a cuepoint starting at 0 (`start: 0, end: undefined`) is a real, valid
- * cuepoint, not the same as "no cuepoint configured" (`0 || undefined` would otherwise be falsy
- * and silently drop it). Matches the same null-check FlowPlayer.internal.tsx's own
- * `updateCuepointPosition` already uses for these same values.
- */
+/** `isNil`, not truthy - a cuepoint at 0 is real and shouldn't be dropped as "not configured". */
 export function getCuepointsForBar(
 	start: number | null | undefined,
 	end: number | null | undefined

@@ -10,20 +10,10 @@ export interface UseKeyboardShortcutsOptions {
 /**
  * Space/F/M/volume/arrow shortcuts while focus is anywhere inside the custom control bar.
  *
- * Arrow-key seeking is a deliberate hybrid, not a full delegation to Flowplayer's own global
- * `keyboard` plugin (bound to `document`, always active, can't be disabled per-instance). That
- * plugin resolves "the active player" from `document.activeElement` in two ways: either the
- * focused element has an `aria-valuenow` attribute (a slider - our progress bar qualifies, via
- * `role="slider"`), or nothing in our UI has focus at all (`activeElement === document.body`,
- * relying on a prior mousedown). Confirmed live: with focus on our progress bar, arrow keys work
- * with zero code of ours - native's own overlay, debounce, everything. But with focus on any of
- * our *other* controls (play/pause, mute, fullscreen - real, individually-focusable `<button>`s,
- * deliberately not native's non-interactive custom elements), that resolution fails and native's
- * listener silently does nothing - not an edge case, but the single most common state right after
- * clicking play. So: when focus is already on our own slider, do nothing here and let native's
- * listener handle it alone (calling it too would double-fire - confirmed live). Everywhere else,
- * call the player's own `enqueueSeek` ourselves (see useFlowplayerState.ts) to fill that gap while
- * still getting native's overlay/debounce for free.
+ * Arrow-key seeking is a deliberate hybrid: Flowplayer's own global keyboard plugin already seeks
+ * when the focused element has `aria-valuenow` (true for our progress bar), so we no-op there to
+ * avoid double-firing. Everywhere else (play/pause, mute, fullscreen buttons) that plugin doesn't
+ * recognize focus, so we call `enqueueSeek` ourselves (see useFlowplayerState.ts) to fill the gap.
  */
 export function useKeyboardShortcuts({
 	state,

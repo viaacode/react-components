@@ -1,13 +1,9 @@
 // Shared between FlowPlayer.scss (native mode) and Controls/ControlBar.scss (custom mode) - only
-// for concerns that are genuinely the same thing in both, not things that merely look similar.
-// Native's own measurements (e.g. `$fp-controls-height`, in `em` and tied to its own font-size
-// cascade) are deliberately NOT merged with the custom bar's `rem`-based equivalents here: the two
-// aren't guaranteed to resolve to the same pixel value, so unifying them would risk silently
-// changing native mode's sizing rather than actually deduplicating anything.
+// for things that are genuinely identical in both, not things that merely look similar. Native's
+// own `em`-based measurements stay separate from the custom bar's `rem`-based ones on purpose.
 
-// Fills the nearest positioned ancestor edge-to-edge and never intercepts pointer events -
-// native's `.c-peak` (data-mode waveform canvas) and custom's `.c-flowplayer-peak-image`
-// (generic-mode waveform) both need exactly this, independent of whichever mode is active.
+// Fills the nearest positioned ancestor edge-to-edge, no pointer events - used by both the native
+// data-mode waveform canvas and the custom generic-mode waveform.
 @mixin flowplayer-fill-absolute {
 	position: absolute;
 	inset: 0;

@@ -11,13 +11,7 @@ export interface VolumeBarsProps {
 	ariaLabel: string;
 }
 
-/**
- * The row of bars IS the interactive control (click/drag sets discrete volume steps), not a
- * decorative icon next to a separate slider. The bars are laid out left-to-right, so the drag
- * axis has to be horizontal too - it was wired up as vertical before, which read the click/drag
- * position along the container's ~20px height instead of its full width, making the actual step
- * you landed on nearly random relative to where you clicked.
- */
+/** The row of bars IS the interactive control (click/drag sets discrete volume steps). */
 export const VolumeBars: FC<VolumeBarsProps> = ({
 	value,
 	steps = 10,
@@ -60,11 +54,8 @@ export const VolumeBars: FC<VolumeBarsProps> = ({
 				return;
 		}
 		event.preventDefault();
-		// Flowplayer's own global keyboard plugin (bound to `document`) also matches any focused
-		// element with `aria-valuenow` on arrow keys, but only special-cases its own `.fp-volume`/
-		// `.fp-timeline` elements - anything else (like this slider) falls through to its generic
-		// handling and ends up seeking the video or double-adjusting its own volume state. Stop
-		// the event here so it never reaches that listener.
+		// Flowplayer's own global keyboard plugin also matches `aria-valuenow` on arrow keys and
+		// would seek/double-adjust volume if this reached it - stop it here.
 		event.stopPropagation();
 	};
 

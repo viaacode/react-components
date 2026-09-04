@@ -59,11 +59,8 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 			open ? onOpen() : onClose();
 		},
 		whileElementsMounted: autoUpdate,
-		// `shift` nudges the flyout back within its clipping ancestor (e.g. the video player's
-		// `overflow: hidden` root) when the default placement would otherwise push part of it
-		// outside the visible area - without it, a flyout near an edge gets silently clipped
-		// instead of repositioned. Opt-in via `shiftPadding` only - every other Dropdown consumer
-		// keeps its existing, unshifted positioning.
+		// `shift` nudges the flyout back within its clipping ancestor near an edge, instead of
+		// letting it get clipped. Opt-in via `shiftPadding` so other consumers are unaffected.
 		middleware: [
 			offsetHelper(offset),
 			...(shiftPadding !== undefined ? [shift({ padding: shiftPadding })] : []),

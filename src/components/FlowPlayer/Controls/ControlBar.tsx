@@ -63,9 +63,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 		labels = {},
 	} = config;
 
-	// Stable per-instance id for the volume/subtitles/speed dropdowns - a hardcoded id would collide
-	// when multiple custom-controls players render on the same page (invalid HTML, broken
-	// aria-controls association for every instance after the first).
+	// Stable per-instance id for the flyout dropdowns - avoids id collisions with multiple players on one page.
 	const controlsId = useId();
 
 	const mergedColors = useMemo(() => ({ ...defaultControlsColors, ...colors }), [colors]);
@@ -78,9 +76,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 
 	const [subtitleTracks, setSubtitleTracks] = useState<SubtitleTrackOption[]>([]);
 	const [activeSubtitleTrackKey, setActiveSubtitleTrackKey] = useState<string | null>(null);
-	// A single "which flyout is open" slot rather than one boolean per flyout - besides being three
-	// times less state to keep in sync, it makes the three flyouts mutually exclusive for free
-	// (opening one always replaces whichever id was open before).
+	// One "which flyout is open" slot instead of a boolean per flyout - makes them mutually exclusive for free.
 	const [openFlyout, setOpenFlyout] = useState<FlyoutId | null>(null);
 
 	// Sync once the player exists / is (re)created, and again whenever the plugin reports a
@@ -142,10 +138,8 @@ export const ControlBar: FC<ControlBarProps> = ({
 		suppress: openFlyout !== null,
 	});
 
-	// The title/logo overlays are DOM children of `.fp-ui`, created imperatively by
-	// FlowPlayer.internal.tsx - not something this component renders or controls directly. A
-	// class on the shared player root lets ControlBar.scss fade them in sync with this same
-	// visibility signal without either side needing a reference to the other's DOM nodes.
+	// The title/logo overlays are built imperatively by FlowPlayer.internal.tsx, not rendered here -
+	// this class lets ControlBar.scss fade them in sync with our own visibility.
 	useEffect(() => {
 		const container = containerRef.current;
 		if (!container) {
@@ -183,16 +177,11 @@ export const ControlBar: FC<ControlBarProps> = ({
 	};
 
 	return (
-		// `display: contents` keeps this a plain layout no-op (PeakDisplay/the bar position
-		// themselves against `.c-video-player-inner`, same as before) while still being a real
-		// DOM/React ancestor - needed so a keydown from any focused control below bubbles through
-		// one place for the space/f/m/arrow safety net (see useKeyboardShortcuts.ts). It's not a
-		// widget in its own right, so it takes no role/tabIndex of its own.
-		// biome-ignore lint/a11y/noStaticElementInteractions: event-delegation wrapper only, every actually-interactive element inside already has its own role/tabIndex
+		// `display: contents` keeps this a layout no-op while still being a real DOM ancestor, so a
+		// keydown from any focused control below bubbles through one place (useKeyboardShortcuts.ts).
+		// biome-ignore lint/a11y/noStaticElementInteractions: event-delegation wrapper only, every interactive element inside already has its own role/tabIndex
 		<div style={{ display: 'contents' }} onKeyDown={handleKeyDown}>
-			{/* Rendered as a sibling of the control bar, not a flex item inside it - like the
-			data-mode `.c-peak` canvas, this needs to fill the whole video/audio area, not sit
-			inside the bottom pill row. */}
+			{/* Sibling of the control bar, not a flex item inside it - fills the whole video/audio area. */}
 			{isAudio && isGenericPeakMode(showPeak, peakMode) && (
 				<PeakDisplay
 					percentagePlayed={percentagePlayed}

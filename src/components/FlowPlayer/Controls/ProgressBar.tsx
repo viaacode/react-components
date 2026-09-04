@@ -3,8 +3,7 @@ import { formatDuration } from '../../../utils/formatters/duration';
 import type { ProgressBarProps } from './ProgressBar.types';
 import { useDragValue } from './use-drag-value';
 
-// Adaptive, unpadded (e.g. "3:45", "1:03:45") - a fixed-width "00:03:45" reads oddly for a live
-// progress readout, which is short most of the time.
+// Adaptive, unpadded (e.g. "3:45", "1:03:45") - fixed-width "00:03:45" reads oddly for a live readout.
 const formatProgressTime = (seconds: number) =>
 	formatDuration(seconds, { includeHours: 'auto', padLeadingUnit: false });
 
@@ -40,14 +39,9 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 		onChange: handleDragChange,
 	});
 
-	// ArrowLeft/ArrowRight are deliberately not handled here - Flowplayer's own global `keyboard`
-	// plugin (bound to `document`, always active, can't be disabled per-instance) already resolves
-	// "the active player" and calls its own `enqueueSeek()` on arrow keys whenever
-	// `document.activeElement` has an `aria-valuenow` attribute - true for this track (`role`
-	// `="slider"`) - producing the native "+5/+10" overlay and accumulate-then-commit behaviour for
-	// free. Handling it here too would just double-fire both (confirmed live). useKeyboardShortcuts.ts
-	// covers the rest of the bar, where native's own listener does NOT recognise focus (see its own
-	// comment for why). Home/End have no native equivalent, so those still jump directly.
+	// ArrowLeft/ArrowRight aren't handled here - Flowplayer's own global keyboard plugin already
+	// seeks on arrow keys when this track (role="slider") has focus; handling it too would
+	// double-fire. Home/End have no native equivalent, so those still jump directly.
 	const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
 		if (duration <= 0) {
 			return;

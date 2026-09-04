@@ -1,27 +1,24 @@
 @use "sass:math";
 @use "../flowplayer-shared" as *;
 
-// Colors are runtime-themeable CSS custom properties (set inline by ControlBar.tsx from the
-// `colors` config) - these are only the *fallback* values for when no config is passed.
+// Colors are runtime CSS custom properties set by ControlBar.tsx - these are just the fallbacks.
 $flowplayer-controls-default-bg: #000;
 $flowplayer-controls-default-fg: #fff;
 $flowplayer-controls-default-accent: #00c8aa;
 $flowplayer-controls-default-flyout-bg: #fff;
 $flowplayer-controls-radius: 99.9rem; // always fully round - clamps automatically to half the shorter side
 
-// All measurements below are taken directly from the Figma export (desktop.svg / mobile.svg /
-// "with muted sound.svg") rather than assumed - see PR discussion for the raw numbers.
+// Measurements below are taken from the Figma export, not assumed.
 
-// Play/pause and fullscreen: each is its own 48x36 pill (not a circle - `rx=18` on a 36-tall
-// rect is a "stadium" shape). 36px is also the height of every other segment in the bar.
+// Play/pause and fullscreen: each a 48x36 "stadium" pill (rx=18). 36px is also the height of
+// every other segment in the bar.
 $flowplayer-icon-button-width: 4.8rem;
 $flowplayer-icon-button-height: 3.6rem;
 $flowplayer-controls-gap: 0.8rem; // gap between the 4 top-level segments
-$flowplayer-controls-edge-offset: 0.8rem; // not shown in the exports (isolated bar, no video frame) - matches the inter-segment gap; flag if this should differ
+$flowplayer-controls-edge-offset: 0.8rem; // not in the exports - matches the inter-segment gap; flag if this should differ
 
-// Progress segment: [current time] -- gap -- [track] -- gap -- [duration], with the same value
-// used for both the gap and the segment's own inline padding (measured ~16.8px on both sides,
-// both files).
+// Progress segment: [current time] -- gap -- [track] -- gap -- [duration], same value for the
+// gap and the segment's own inline padding.
 $flowplayer-progress-inline-gap: 1.68rem;
 $flowplayer-progress-track-height: 0.4rem;
 $flowplayer-progress-handle-size: 0.8rem;
@@ -35,33 +32,22 @@ $flowplayer-slot-inset: 0.4rem;
 $flowplayer-slot-width: 4rem;
 $flowplayer-slot-height: 2.8rem;
 
-// Background shown behind a slot's icon when that control is toggled on (e.g. muted) or its own
-// flyout is open - not exposed via the `colors` config, same treatment as the track/buffered/
-// cuepoint colors above (fixed, not brand-critical enough to warrant its own prop).
+// Background for a toggled-on slot icon (e.g. muted) or an open flyout trigger - fixed, not exposed via `colors`.
 $flowplayer-slot-active-background: #009690;
-// These were previously 0.5rem/1rem, silently assuming a 16px root font-size (5px/10px real
-// result) - wrong for this codebase, where the actual root is 10px (62.5% reset, see
-// hetarchief-client/admin-core-ui's own base styles). 0.8rem/1.6rem are the correct 8px/16px here.
+
+// This codebase's root font-size is 10px (62.5% reset), not the usual 16px - 0.8rem/1.6rem are the correct 8px/16px here.
 $flowplayer-controls-padding-block: 0.8rem; // 8px
 $flowplayer-controls-padding-inline: 1.6rem; // 16px
 $flowplayer-controls-transition: opacity 0.2s ease;
 $flowplayer-focus-outline-width: 0.2rem;
 $flowplayer-focus-outline-offset: 0.2rem;
 
-// The subtitles flyout card, from "with call out.svg": 240px wide, square corners, drop shadow
-// (blur 4, black 24% opacity, no offset), an "Off" row, a divider, then the track list. Padding
-// and the checkmark<->label gap are approximated from the exported glyph bounding boxes (outline
-// text has no precise box of its own) - close, not pixel-exact.
+// Subtitles flyout card: 240px wide, square corners, drop shadow, "Off" row + divider + track list.
 $flowplayer-subtitles-flyout-width: 24rem;
 $flowplayer-flyout-shadow: 0 0 0.8rem rgb(0 0 0 / 24%);
 $flowplayer-flyout-divider-color: #e6e6e6;
 $flowplayer-flyout-option-padding: 2rem 3.7rem;
 $flowplayer-flyout-option-icon-gap: 1.3rem;
-
-// Confirmed from Figma's inspect panel (not the outline-path estimate above): "Uit" and a track
-// name are both 14px/500/20px - no weight difference between them, despite how it reads visually.
-// The AI-generated-subtitles disclaimer text (not yet built, see PR discussion) is 12px/500/16px
-// when that lands.
 
 @mixin flowplayer-focus-ring {
 	&:focus-visible {
@@ -79,14 +65,11 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 	background-color: $background;
 }
 
-// Nested under a real ancestor (present on the same element as `.flowplayer` itself) so every
-// rule here outranks Flowplayer's own `.flowplayer * { background-color: transparent; ... }`
-// reset, which has equal specificity to a single class selector and would otherwise win on
-// source order (flowplayer.css loads after this file in the module graph).
+// Nested under this real ancestor so every rule here outranks Flowplayer's own
+// `.flowplayer * { background-color: transparent; ... }` reset, which loads after this file.
 .c-video-player-inner {
-	// The outer bar is just a transparent flex row - each segment below carries its own pill
-	// background, matching the design's four independently-grouped controls (play/pause,
-	// timestamps+progress, volume/subtitles/speed, fullscreen) rather than one continuous bar.
+	// Transparent flex row - each segment below carries its own pill background (4 independent
+	// groups: play/pause, progress, volume/subtitles/speed, fullscreen), not one continuous bar.
 	.c-flowplayer-control-bar {
 		position: absolute;
 		left: $flowplayer-controls-edge-offset;
@@ -100,12 +83,8 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 		transition: $flowplayer-controls-transition;
 		opacity: 1;
 
-		// Flowplayer's own `.flowplayer * { color: #fff; }` reset (same class of bug as the
-		// `background-color` one at the top of this file) directly matches every element in this
-		// bar and its flyouts, not just the bar itself - without re-affirming inherit at every
-		// level, anything that sets its own `color` (this rule, or a flyout's inline
-		// `flyoutForegroundColor` for readable content against its light popover background) has
-		// that override silently lost one level further down the tree.
+		// Flowplayer's own `.flowplayer * { color: #fff; }` reset matches every element here too -
+		// without re-affirming inherit, a `color` set here or via a flyout's inline color gets lost one level down.
 		* {
 			color: inherit;
 		}
@@ -133,9 +112,7 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 				flex: 1 1 auto;
 				min-width: 0;
 
-				// Padding/gap live on `.c-flowplayer-progress` below, not here - ProgressBar
-				// renders its own root div as the single child of this segment, and that's where
-				// the actual [time][track][time] flex row lives.
+				// Padding/gap live on `.c-flowplayer-progress` below, not here.
 			}
 
 			&--secondary {
@@ -146,13 +123,9 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 		}
 	}
 
-	// Opt-in (`customControlsConfig.showTitleOverlay`) - native mode only ever shows the title/logo
-	// overlay in fullscreen (see FlowPlayer.scss), essentially never for a normal embed, so custom
-	// mode defaults to that same conservative behaviour. `&.is-fullscreen` is the actual gate for
-	// that (missing here previously - the overlay was showing at any size once opted in); when
-	// fullscreen, this drives the overlays (DOM children of `.fp-ui`, built imperatively in
-	// FlowPlayer.internal.tsx - not this stylesheet's own markup) off the same auto-hide signal as
-	// the control bar, so both fade together instead of drifting apart on separate timers.
+	// Opt-in (`customControlsConfig.showTitleOverlay`), fullscreen-only to match native mode's own
+	// behaviour. Fades the title/logo overlay (built by FlowPlayer.internal.tsx) off the same
+	// auto-hide signal as the control bar, so both fade together.
 	&.c-video-player-inner--show-title-overlay.is-fullscreen {
 		.c-title-overlay,
 		.c-logo-overlay {
@@ -178,11 +151,8 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 		align-items: center;
 		justify-content: center;
 
-		// A host app's own global button reset can set a default padding/margin/line-height on
-		// bare <button> elements (confirmed live: hetarchief-client's is `padding: 1px 6px`) -
-		// this component has no scoped stylesheet of its own (Button.tsx ships unstyled), so
-		// without an explicit reset here that inherited padding throws the icon off-center inside
-		// this specific pill, even though the icon itself is centered within its own box.
+		// Resets a host app's own global <button> padding/margin (Button.tsx ships unstyled), which
+		// would otherwise throw the icon off-center in this pill.
 		padding: 0;
 		margin: 0;
 		line-height: 0;
@@ -192,8 +162,7 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 		cursor: pointer;
 		color: var(--flowplayer-controls-fg, $flowplayer-controls-default-fg);
 
-		// Same reasoning as above, one level down - a global `.c-button__content`/`__icon`-style
-		// rule elsewhere in a host app shouldn't be able to nudge the icon off-center either.
+		// Same reasoning, one level down.
 		[class$="__content"],
 		[class$="__icon"] {
 			display: flex;
@@ -205,23 +174,18 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 			margin: 0;
 		}
 
-		// Volume/subtitles/speed triggers - smaller, and shares its pill with its siblings
-		// instead of being one of its own (see `&--secondary` above).
+		// Volume/subtitles/speed triggers - share one pill instead of having their own (see `&--secondary` above).
 		&--slot {
 			width: $flowplayer-slot-width;
 			height: $flowplayer-slot-height;
 		}
 
-		// A slot button that's toggled on (e.g. muted) or has its own flyout open right now.
-		// Background only - the icon stays in the regular foreground color, since the accent
-		// color would nearly disappear against this background.
+		// Toggled-on slot (e.g. muted) or its flyout open - background only, icon stays regular color.
 		&--active {
 			background-color: $flowplayer-slot-active-background;
 		}
 
-		// Speed trigger shows the current rate as text ("1x", "0.5x", ...) instead of an icon -
-		// `line-height: 0` above is fine for an SVG icon but would collapse real text, so restore
-		// it here, and size the label down to fit the 40px-wide slot comfortably.
+		// Speed trigger shows the rate as text ("1x") instead of an icon - restore line-height and size it to fit the slot.
 		&--text {
 			line-height: normal;
 
@@ -298,20 +262,16 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 			align-items: center;
 			gap: $flowplayer-controls-padding-block;
 
-			// No top/bottom padding - the row's own height comes from its tallest child (the mute
-			// button). Left is 1 spacer, right is 2 - asymmetric on purpose, not a mistake.
+			// No top/bottom padding - height comes from the mute button. Asymmetric left/right on purpose.
 			padding: 0;
 			padding-left: $flowplayer-controls-padding-block; // 1 spacer
 			padding-right: $flowplayer-controls-padding-inline; // 2 spacers
 
-			// Square corners like the subtitles/speed flyouts, but no drop shadow - unlike those
-			// text-heavy popovers, this one reads fine as a flat card against the video.
+			// Square corners like the other flyouts, but no shadow - reads fine as a flat card here.
 			border-radius: 0;
 			background-color: var(--flowplayer-controls-flyout-bg, $flowplayer-controls-default-flyout-bg);
 
-			// The mute button fits its icon, not a fixed slot width like the trigger buttons in the
-			// main bar - this 2-class selector outranks `.c-flowplayer-control-button--slot`'s own
-			// `width` (1 class), which is also present on this same element.
+			// 2-class selector outranks `.c-flowplayer-control-button--slot`'s own width (1 class).
 			.c-flowplayer-control-button {
 				width: auto;
 				padding-left: $flowplayer-controls-padding-block; // 1 spacer
@@ -340,8 +300,7 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 
 	.c-flowplayer-speed-flyout,
 	.c-flowplayer-subtitles-flyout {
-		// Card chrome: square corners and a soft shadow, not the pill radius used everywhere
-		// else in the bar - this is a popover, not a segment.
+		// Card chrome: square corners + soft shadow, not the pill radius used elsewhere - this is a popover.
 		border-radius: 0;
 		box-shadow: $flowplayer-flyout-shadow;
 
@@ -385,57 +344,39 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 		}
 	}
 
-	// Fixed width, matching the design - the option list (an "Off" entry plus every configured
-	// subtitle track) reads better at a stable width than one that reflows per language name.
+	// Fixed width so the option list doesn't reflow per language name.
 	.c-flowplayer-subtitles-flyout {
 		width: $flowplayer-subtitles-flyout-width;
 	}
 
-	// Flowplayer sets its own `poster` as an inline `background-image` on this element regardless
-	// of controls mode (confirmed live - it's inline, not a class-driven rule, hence !important
-	// here to win over it). The generic waveform (PeakDisplay) is meant to fully replace that
-	// poster, not sit on top of it - otherwise a generic/placeholder poster (e.g. a host app's own
-	// default "no thumbnail" graphic) shows through behind/around it.
+	// Flowplayer sets its own poster as an inline background-image (hence !important to win) - the
+	// generic waveform replaces it entirely, it shouldn't show through behind/around it.
 	&.c-video-player-inner--generic-peak {
 		background-image: none !important;
 	}
 
-	// A sibling of the control bar (see ControlBar.tsx), positioned the same way as the existing
-	// data-mode `.c-peak` canvas in FlowPlayer.scss: absolutely filling the whole player area,
-	// not constrained to whatever flex context it happens to render in - shared via
-	// `flowplayer-fill-absolute` in flowplayer-shared.scss, since both are the same pattern.
+	// Sibling of the control bar, absolutely filling the player area like native's own `.c-peak` canvas.
 	.c-flowplayer-peak-image {
 		@include flowplayer-fill-absolute;
 		z-index: 1;
 
-		// No filter/dimming here - PeakDisplay renders two real `AudioWaveFormDisplay` instances
-		// (one per state) to make "played" look different from "not yet played", since a CSS
-		// filter can't correctly recolor it (its bar color is its own prop, not `currentColor`),
-		// and grayscale+opacity read as a washed-out mistake rather than an intentional highlight.
+		// No filter/dimming - PeakDisplay renders two real AudioWaveFormDisplay instances (one per
+		// state) instead, since a CSS filter can't recolor a prop-driven bar color.
 		&__layer {
 			position: absolute;
 			inset: 0;
 		}
 
-		// `AudioWaveFormDisplay`'s own SCSS sets `background-color` via a single class selector
-		// (same specificity as Flowplayer's own `.flowplayer * { background-color: transparent }`
-		// reset - confirmed live: `peakColorBackground` was silently never showing, since that
-		// reset loads later and wins the tie on source order). Same fix as everywhere else in this
-		// file: nested under the real `.c-video-player-inner` ancestor for a higher-specificity win.
+		// Same specificity fix as elsewhere in this file - ties with Flowplayer's own
+		// `background-color: transparent` reset otherwise and loses on source order.
 		.c-audio-wave-form-display {
 			background-color: var(--c-audio-wave-form-display-bg, transparent);
 		}
 	}
 
-	// `.fp-ui` (native's own overlay layer - title/logo overlays, and specifically `.fp-switch`,
-	// the native play/pause flash icon this custom bar relies on, see useFlowplayerState.ts) has no
-	// z-index of its own (`auto`), so without this it paints *below* `.c-flowplayer-peak-image`
-	// (explicit z-index) regardless of DOM order - confirmed live: the flash fires correctly
-	// (opacity toggles) but is invisible behind the waveform image. Scoped to generic-peak mode -
-	// that's the only mode with such a full-frame sibling in front of it, and an unscoped rule here
-	// would also affect ordinary native-controls players sharing this bundled stylesheet (e.g.
-	// racing `.c-video-player-inner-overlay`'s own z-index: 2 for the restart-cuepoint button).
-	// Keeping it below the control bar's own z-index (5) either way.
+	// `.fp-ui` (holds `.fp-switch`, the native play/pause flash icon custom mode relies on) has no
+	// z-index of its own, so it'd paint below `.c-flowplayer-peak-image` and be invisible. Scoped to
+	// generic-peak mode only, so it doesn't also affect native-controls players sharing this stylesheet.
 	&.c-video-player-inner--generic-peak .fp-ui {
 		z-index: 2;
 	}

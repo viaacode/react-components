@@ -8,15 +8,10 @@ export interface UseDragValueOptions {
 	onDragEnd?: () => void;
 }
 
-/**
- * Shared pointer-drag logic for the progress bar and the volume bars: click or drag anywhere in
- * the container to set a 0-100 percentage. Pointer Events unify mouse/touch/pen in one code path.
- */
+/** Shared pointer-drag logic for the progress bar and volume bars: click/drag to set a 0-100 value. */
 export function useDragValue({ orientation = 'horizontal', onChange, onDragStart, onDragEnd }: UseDragValueOptions) {
 	const containerRef = useRef<HTMLDivElement>(null);
-	// Cached on pointerdown and reused for the rest of that drag - re-measuring on every
-	// pointermove (which can fire 60+ times/sec) forces a synchronous layout read for no benefit,
-	// since the container doesn't resize mid-drag.
+	// Cached on pointerdown, reused for the rest of the drag - avoids re-measuring on every pointermove.
 	const rectRef = useRef<DOMRect | null>(null);
 
 	const computeValue = useCallback(

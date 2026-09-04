@@ -2,13 +2,8 @@ import type { Player } from '@flowplayer/player';
 
 /**
  * Flowplayer's subtitles plugin bolts non-standard `is_active`/`default` fields onto native
- * TextTrack objects (verified by reading @flowplayer/player 3.32.1's plugins/subtitles.js -
- * this is undocumented internal behaviour, not covered by that package's public .d.ts or by
- * semver. Re-verify against the plugin source on any upgrade of @flowplayer/player).
- *
- * The same plugin also persists caption *styling* preferences (font/color/edge-style, via a
- * `StyleOpt` class) to its own storage - that's unrelated to which track is active, and isn't
- * replicated here; only track selection is exposed by this control.
+ * TextTrack objects - undocumented internal behaviour (checked against 3.32.1's plugins/subtitles.js),
+ * re-verify on any @flowplayer/player upgrade.
  */
 type FlowplayerTextTrack = TextTrack & { is_active?: boolean; default?: boolean };
 
@@ -28,12 +23,7 @@ export function isSubtitlesEnabled(player: Player): boolean {
 	return !!getActiveSubtitleTrack(player);
 }
 
-/**
- * A stable identifier for a track, suitable for persistence and for matching a track in a list.
- * `language`/`label` alone aren't guaranteed unique (e.g. two tracks both tagged "en" - a regular
- * and an SDH/forced variant, or two tracks both missing language/label), so ties are broken by
- * position among tracks sharing the same base key.
- */
+/** A stable id for a track. `language`/`label` alone can collide (e.g. two "en" tracks), so ties break by position. */
 export function getSubtitleTrackKey(tracks: FlowplayerTextTrack[], track: FlowplayerTextTrack): string {
 	const base = track.language || track.label || 'track';
 	const sameBase = tracks.filter((candidate) => (candidate.language || candidate.label || 'track') === base);

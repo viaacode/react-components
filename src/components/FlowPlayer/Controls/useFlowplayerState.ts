@@ -2,34 +2,20 @@ import type { Player } from '@flowplayer/player';
 import { type MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { clamp } from '../../../utils/clamp';
 
-// `transitionState` is Flowplayer's own internal state-transition helper - not part of the
-// public API/types. It's what native UI's own click handling calls to produce the "is-toggling"
-// flash (a brief class that reveals `.fp-play`/`.fp-pause` for ~300ms via flowplayer.css) whenever
-// play/pause is triggered through its own DOM elements (confirmed live: clicking the native
-// `.fp-middle` passthrough fires it, calling `player.togglePlay()` directly - as our own button
-// does - does not). Calling it ourselves right after toggling reproduces that same native flash
-// for our custom button instead of leaving it silently missing. Version-pinned (`3.32.1`,
-// package.json) since this isn't a documented method and could change on a flowplayer upgrade.
+// `transitionState` is Flowplayer's own undocumented state-transition helper, not in the public
+// API - it produces the native "is-toggling" play/pause flash, which `player.togglePlay()` alone
+// doesn't trigger. Calling it ourselves reproduces that flash for our custom button.
+// Version-pinned to 3.32.1 (package.json); re-verify on upgrade.
 interface PlayerWithTransitionState extends Player {
 	transitionState: (nextState: string, previousState: string, durationMs: number) => void;
 }
 
 const NATIVE_TOGGLE_FLASH_DURATION_MS = 300;
 
-// `enqueueSeek` is Flowplayer's own internal step-seek helper - also excluded from the public
-// types (`/* Excluded from this release type: enqueueSeek */` in @flowplayer/player's .d.ts), same
-// undocumented-but-real category as `transitionState` above. Its own global `keyboard` plugin
-// already calls this on arrow keys, but ONLY resolves "the active player" when
-// `document.activeElement` itself has an `aria-valuenow` attribute (confirmed live: focus our own
-// progress bar - has `aria-valuenow` via `role="slider"` - and arrow keys work with zero code of
-// ours; focus any of our plain buttons - play/pause, mute, fullscreen, none of which are sliders -
-// and Flowplayer's own listener silently no-ops). That's a real gap in native's own model, not
-// something we introduced: its own non-slider controls are custom elements that were never real
-// Tab stops to begin with, so it never needed to handle this case. Our controls deliberately ARE
-// real, individually-focusable `<button>`s (see FlowPlayer's own accessibility notes), so this gap
-// is reachable in practice. `useKeyboardShortcuts.ts` calls this itself, but only when focus is on
-// something other than our own slider, to fill exactly that gap without double-handling the case
-// Flowplayer's own listener already covers.
+// `enqueueSeek` is another undocumented Flowplayer internal (excluded from its public types), same
+// category as `transitionState` above. Its own keyboard plugin only seeks when
+// `document.activeElement` has `aria-valuenow` (true for our progress bar, not our plain buttons) -
+// useKeyboardShortcuts.ts calls this itself to fill that gap for everything else.
 interface PlayerWithEnqueueSeek extends Player {
 	enqueueSeek: (offsetSeconds: number) => void;
 }
@@ -71,13 +57,10 @@ const INITIAL_STATE: FlowplayerControlsState = {
 };
 
 /**
- * Subscribes once to a flowplayer instance's native + flowplayer-specific events and exposes
- * a single source of truth for the custom control bar. Leaf controls never register their own
- * player listeners - they read this state and call these actions instead.
- *
- * `playerRef` must be a ref (not a plain value) to avoid stale closures in the event handlers -
- * same trick already used in FlowPlayer.internal.tsx. `playerInstance` only exists to trigger the
- * effect to re-subscribe when the underlying player is (re)created.
+ * Subscribes once to the player's events and exposes a single source of truth for the control bar -
+ * leaf controls read this state and call these actions instead of listening themselves.
+ * `playerRef` (not a plain value) avoids stale closures; `playerInstance` only triggers re-subscribing
+ * when the player is (re)created.
  */
 export function useFlowplayerState(
 	playerRef: MutableRefObject<Player | null>,

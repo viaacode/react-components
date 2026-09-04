@@ -10,13 +10,8 @@ export interface PeakDisplayProps {
 	colorBackground?: string;
 }
 
-// `peakMode: 'generic'` (see FlowPlayer.types.ts) always renders this one built-in waveform
-// rather than accepting an arbitrary visual from the caller - two copies, "not yet played" and
-// "played", the second revealed via clip-path as `percentagePlayed` grows (the same technique
-// already used in ProgressBar.tsx for its light/dark label overlay). `AudioWaveFormDisplay`'s own
-// horizontal padding (`WAVE_FORM_PADDING_X_PERCENT`) is baked in here rather than left
-// caller-configurable, since this is always the same component now. Always rendered at `size:
-// "large"` - this is only ever used for the active, playing FlowPlayer view.
+// Two waveform copies, "not yet played" and "played", the second revealed via clip-path as
+// `percentagePlayed` grows (same technique as ProgressBar.tsx's own label overlay).
 export const PeakDisplay: FC<PeakDisplayProps> = ({
 	percentagePlayed,
 	colorActive,

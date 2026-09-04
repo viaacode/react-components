@@ -262,13 +262,9 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 		display: none !important;
 	}
 
-	// Native's own top/bottom gradient (`.fp-ui`'s background-image, see flowplayer.css) is gated
-	// by `is-hovered`/`is-touched`/etc, which Flowplayer's bundle toggles off after its own
-	// hardcoded 2000ms inactivity timeout - a different, unrelated timer from our own control bar's
-	// auto-hide (`useAutoHideControls.ts`, configurable, defaults to 3000ms). Both hide instantly on
-	// mouseleave (so that case looks fine), but on pure inactivity the two drift apart. Cancel
-	// native's own gradient in this mode and re-draw the same gradient ourselves, keyed off the one
-	// class our own control bar already toggles (`ControlBar.tsx`), so both fade in lockstep.
+	// Native's own top/bottom gradient fades on its own hardcoded 2000ms timer, out of sync with
+	// our configurable auto-hide (useAutoHideControls.ts). Cancel it and redraw the same gradient
+	// ourselves, keyed off our own control bar's visibility class, so both fade together.
 	&.c-video-player-inner--custom-controls {
 		.fp-ui {
 			background-image: none;

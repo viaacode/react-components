@@ -11,11 +11,6 @@ export interface ControlBarProps {
 	hasSubtitles: boolean;
 	cuepoints?: Cuepoints;
 	speed?: { options: number[]; labels: string[] };
-	/**
-	 * The whole player root (`.c-video-player-inner`), not just the control bar's own DOM node -
-	 * used so auto-hide reacts to activity anywhere over the player, and so the title/logo
-	 * overlays (owned by FlowPlayer.internal.tsx, not this component) can fade in sync with the
-	 * control bar via a class toggled on this same element.
-	 */
+	/** The whole player root, not just the control bar's DOM node - needed for auto-hide and the title/logo overlay fade. */
 	containerRef: MutableRefObject<HTMLDivElement | null>;
 }

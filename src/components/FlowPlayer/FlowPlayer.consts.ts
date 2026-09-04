@@ -2,20 +2,13 @@ import type { FlowplayerPlugin } from './FlowPlayer.types';
 
 export const DELAY_BETWEEN_PLAYLIST_VIDEOS = 7;
 
-// `.fp-middle` is deliberately NOT in this list - it's the element Flowplayer's own native UI
-// bundle attaches its click-anywhere-on-the-video-to-toggle-play listener to, so `display: none`
-// on it (via `.fp-controls-hidden`) would silently kill that click-to-toggle behaviour. It also
-// contains `.fp-switch` (the native play/pause flash icon), which custom mode relies on too - see
-// useFlowplayerState.ts's `transitionState` call - so it stays fully visible while custom controls
-// are active. Used only by FlowPlayer.internal.tsx to hide Flowplayer's own chrome behind our
-// custom control bar - NOT by the postMessage embed API, which has no custom bar to fall back on
-// and needs `.fp-middle` hidden too (see EMBED_CONTROLS_HIDE_SELECTOR below).
+// `.fp-middle` (native's click-to-toggle-play target, also holds the `.fp-switch` flash icon
+// custom mode relies on) is deliberately excluded - custom controls hide native's chrome behind
+// their own bar but keep `.fp-middle` visible/working.
 export const NATIVE_CONTROLS_HIDE_SELECTOR = '.fp-controls, .fp-header, .fp-error';
 
-// Used by FlowPlayer.commands.ts's postMessage `set_controls`/`initialize(controls: false)`
-// handling. Unlike NATIVE_CONTROLS_HIDE_SELECTOR above, this includes `.fp-middle` - a host app
-// hiding controls via postMessage expects to fully own interaction with the video, with no
-// click-anywhere-to-toggle-play left active underneath.
+// For the postMessage embed API (FlowPlayer.commands.ts) - unlike the selector above, this
+// includes `.fp-middle`, since a host app hiding controls remotely expects no click-to-play left active.
 export const EMBED_CONTROLS_HIDE_SELECTOR = '.fp-controls, .fp-middle, .fp-header, .fp-error';
 
 export const dutchFlowplayerTranslations = {

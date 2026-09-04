@@ -9,11 +9,9 @@ export interface UseAutoHideControlsOptions {
 }
 
 /**
- * Visible by default; while playing, hides after `delayMs` of no pointer/keyboard activity, or
- * immediately once the pointer leaves the player entirely (matching native mode's hover-driven
- * behaviour, rather than only ever timing out). Always visible while paused, or while `suppress`
- * is true. Touch is handled via `touchstart` since flowplayer's own tap-to-reveal machinery lives
- * in the native UI bundle we're hiding and does nothing for a hidden native bar.
+ * While playing, hides after `delayMs` of inactivity or immediately on pointer-leave. Always
+ * visible while paused or `suppress` is true. Handles `touchstart` itself since native's own
+ * tap-to-reveal lives in the UI bundle we're hiding.
  */
 export function useAutoHideControls({ containerRef, delayMs, isPlaying, suppress }: UseAutoHideControlsOptions) {
 	const [isVisible, setIsVisible] = useState(true);

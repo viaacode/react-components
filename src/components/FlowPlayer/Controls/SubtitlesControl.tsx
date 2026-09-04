@@ -24,10 +24,7 @@ export interface SubtitlesControlProps {
 	onClose: () => void;
 }
 
-/**
- * Mirrors Flowplayer's own native "Subtitles" menu (track list + an off option) - not just a
- * plain on/off toggle, so every subtitle track the consumer configured stays selectable.
- */
+/** Mirrors Flowplayer's own native "Subtitles" menu: track list + an off option, not a plain toggle. */
 export const SubtitlesControl: FC<SubtitlesControlProps> = ({
 	id,
 	tracks,

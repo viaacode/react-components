@@ -6,12 +6,7 @@ export const DEFAULT_PERSISTENCE_KEY_PREFIX = 'meemoo-flowplayer';
 export const DEFAULT_SHOW_PEAK = true;
 export const DEFAULT_PEAK_MODE = 'data' as const;
 
-/**
- * Whether the generic built-in waveform (`PeakDisplay`) should render for this config. Shared
- * between ControlBar.tsx (which renders `PeakDisplay` itself) and FlowPlayer.internal.tsx (which
- * needs the same answer to decide whether to cancel Flowplayer's own poster background-image) so
- * the two can never drift on what "generic peak mode" means.
- */
+/** Whether the generic built-in waveform (`PeakDisplay`) should render - shared by ControlBar.tsx and FlowPlayer.internal.tsx so they can't drift. */
 export function isGenericPeakMode(showPeak: boolean | undefined, peakMode: 'data' | 'generic' | undefined): boolean {
 	return (showPeak ?? DEFAULT_SHOW_PEAK) && (peakMode ?? DEFAULT_PEAK_MODE) === 'generic';
 }
