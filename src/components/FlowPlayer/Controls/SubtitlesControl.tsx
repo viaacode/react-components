@@ -1,14 +1,10 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 import { Button } from '../../Button';
-import Dropdown from '../../Dropdown/Dropdown';
-import { DropdownButton, DropdownContent } from '../../Dropdown/Dropdown.slots';
-import { CheckIcon, SubtitlesHighlightedIcon, SubtitlesIcon } from './Controls.icons';
+import { ControlFlyout, type FlyoutOptionData } from './ControlFlyout';
+import { SubtitlesHighlightedIcon, SubtitlesIcon } from './Controls.icons';
 
-export interface SubtitleTrackOption {
-	key: string;
-	label: string;
-}
+export type SubtitleTrackOption = FlyoutOptionData;
 
 export interface SubtitlesControlProps {
 	id: string;
@@ -23,6 +19,8 @@ export interface SubtitlesControlProps {
 	onOpen: () => void;
 	onClose: () => void;
 }
+
+const OFF_KEY = '__off';
 
 /** Mirrors Flowplayer's own native "Subtitles" menu: track list + an off option, not a plain toggle. */
 export const SubtitlesControl: FC<SubtitlesControlProps> = ({
@@ -41,19 +39,20 @@ export const SubtitlesControl: FC<SubtitlesControlProps> = ({
 	const isOn = activeTrackKey !== null;
 	const isHighlighted = isOn || isOpen;
 
+	const options: FlyoutOptionData[] = [{ key: OFF_KEY, label: offLabel }, ...tracks];
+
 	return (
-		<Dropdown
+		<ControlFlyout
 			id={`${id}__subtitles`}
+			flyoutClassName="c-flowplayer-subtitles-flyout"
+			flyoutBackground={flyoutBackground}
+			flyoutForegroundColor={flyoutForegroundColor}
 			isOpen={isOpen}
 			onOpen={onOpen}
 			onClose={onClose}
-			placement="top-end"
-			menuWidth="fit-content"
-			flyoutClassName="c-flowplayer-subtitles-flyout"
-			shiftPadding={8}
-			maxHeightPadding={8}
-		>
-			<DropdownButton>
+			activeKey={activeTrackKey ?? OFF_KEY}
+			onSelect={(key) => onSelect(key === OFF_KEY ? null : (key as string))}
+			trigger={
 				<Button
 					icon={isHighlighted ? <SubtitlesHighlightedIcon /> : <SubtitlesIcon />}
 					ariaLabel={triggerLabel}
@@ -63,43 +62,8 @@ export const SubtitlesControl: FC<SubtitlesControlProps> = ({
 						'c-flowplayer-control-button--active': isHighlighted,
 					})}
 				/>
-			</DropdownButton>
-			<DropdownContent>
-				<ul
-					className="c-flowplayer-subtitles-flyout__list"
-					style={{ backgroundColor: flyoutBackground, color: flyoutForegroundColor }}
-				>
-					<li>
-						<button
-							type="button"
-							className="c-flowplayer-subtitles-flyout__option"
-							aria-pressed={!isOn}
-							onClick={() => onSelect(null)}
-						>
-							{offLabel}
-						</button>
-					</li>
-					{tracks.length > 0 && <li className="c-flowplayer-subtitles-flyout__divider" aria-hidden="true" />}
-					{tracks.map((track) => {
-						const isActive = activeTrackKey === track.key;
-						return (
-							<li key={track.key}>
-								<button
-									type="button"
-									className={clsx('c-flowplayer-subtitles-flyout__option', {
-										'c-flowplayer-subtitles-flyout__option--active': isActive,
-									})}
-									aria-pressed={isActive}
-									onClick={() => onSelect(track.key)}
-								>
-									{isActive && <CheckIcon />}
-									{track.label}
-								</button>
-							</li>
-						);
-					})}
-				</ul>
-			</DropdownContent>
-		</Dropdown>
+			}
+			options={options}
+		/>
 	);
 };

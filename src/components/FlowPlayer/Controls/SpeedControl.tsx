@@ -1,19 +1,16 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 import { Button } from '../../Button';
-import Dropdown from '../../Dropdown/Dropdown';
-import { DropdownButton, DropdownContent } from '../../Dropdown/Dropdown.slots';
+import { ControlFlyout, type FlyoutOptionData } from './ControlFlyout';
 
 export interface SpeedControlProps {
 	id: string;
-	options: number[];
-	labelsForOptions?: string[];
+	options: FlyoutOptionData[];
 	currentRate: number;
 	onChange: (rate: number) => void;
 	label: string;
 	flyoutBackground: string;
 	flyoutForegroundColor: string;
-	accentColor: string;
 	isOpen: boolean;
 	onOpen: () => void;
 	onClose: () => void;
@@ -22,29 +19,26 @@ export interface SpeedControlProps {
 export const SpeedControl: FC<SpeedControlProps> = ({
 	id,
 	options,
-	labelsForOptions,
 	currentRate,
 	onChange,
 	label,
 	flyoutBackground,
 	flyoutForegroundColor,
-	accentColor,
 	isOpen,
 	onOpen,
 	onClose,
 }) => (
-	<Dropdown
+	<ControlFlyout
 		id={`${id}__speed`}
+		flyoutClassName="c-flowplayer-speed-flyout"
+		flyoutBackground={flyoutBackground}
+		flyoutForegroundColor={flyoutForegroundColor}
 		isOpen={isOpen}
 		onOpen={onOpen}
 		onClose={onClose}
-		placement="top-end"
-		menuWidth="fit-content"
-		flyoutClassName="c-flowplayer-speed-flyout"
-		shiftPadding={8}
-		maxHeightPadding={8}
-	>
-		<DropdownButton>
+		activeKey={currentRate}
+		onSelect={(key) => onChange(key as number)}
+		trigger={
 			<Button
 				label={`${currentRate}x`}
 				ariaLabel={`${label}: ${currentRate}x`}
@@ -54,26 +48,7 @@ export const SpeedControl: FC<SpeedControlProps> = ({
 					'c-flowplayer-control-button--active': isOpen,
 				})}
 			/>
-		</DropdownButton>
-		<DropdownContent>
-			<ul
-				className="c-flowplayer-speed-flyout__list"
-				style={{ backgroundColor: flyoutBackground, color: flyoutForegroundColor }}
-			>
-				{options.map((option, index) => (
-					<li key={option}>
-						<button
-							type="button"
-							className="c-flowplayer-speed-flyout__option"
-							aria-pressed={currentRate === option}
-							style={currentRate === option ? { color: accentColor } : undefined}
-							onClick={() => onChange(option)}
-						>
-							{labelsForOptions?.[index] ?? `${option}x`}
-						</button>
-					</li>
-				))}
-			</ul>
-		</DropdownContent>
-	</Dropdown>
+		}
+		options={options}
+	/>
 );

@@ -703,6 +703,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 							config={customControlsConfig}
 							isAudio={isAudio}
 							hasSubtitles={!!subtitles?.length}
+							subtitles={subtitles}
 							cuepoints={cuepointsForBar}
 							speed={speed}
 							containerRef={videoContainerRef}

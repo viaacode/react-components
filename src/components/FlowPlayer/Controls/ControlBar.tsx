@@ -45,6 +45,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 	config = EMPTY_CONFIG,
 	isAudio,
 	hasSubtitles,
+	subtitles,
 	cuepoints,
 	speed,
 	containerRef,
@@ -99,10 +100,21 @@ export const ControlBar: FC<ControlBarProps> = ({
 		const syncTracks = () => {
 			const tracks = getSubtitleTracks(player);
 			setSubtitleTracks(
-				tracks.map((track) => ({
-					key: getSubtitleTrackKey(tracks, track),
-					label: track.label || track.language || '',
-				}))
+				tracks.map((track) => {
+					// subLabel/icon aren't on the runtime TextTrack (the browser API doesn't carry
+					// custom fields) - looked back up from the original config by label. Matching by
+					// `lang` too would be more precise on paper, but Flowplayer's subtitles plugin
+					// doesn't propagate it onto the runtime TextTrack (`track.language` reads back
+					// empty even when the config's `lang` was set), so label is the only field that
+					// actually round-trips.
+					const trackConfig = subtitles?.find((config) => config.label === track.label);
+					return {
+						key: getSubtitleTrackKey(tracks, track),
+						label: track.label || track.language || '',
+						subLabel: trackConfig?.subLabel,
+						icon: trackConfig?.icon,
+					};
+				})
 			);
 			setActiveSubtitleTrackKey(getActiveSubtitleTrackKey(player));
 		};
@@ -113,7 +125,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 		return () => {
 			player.off('tracks:text:updated' as never, syncTracks);
 		};
-	}, [playerRef, playerInstance]);
+	}, [playerRef, playerInstance, subtitles]);
 
 	const { persist: persistSubtitles } = useSubtitlesPersistence({
 		enabled: persistPreferences,
@@ -276,14 +288,15 @@ export const ControlBar: FC<ControlBarProps> = ({
 						{hasSpeedOptions && (
 							<SpeedControl
 								id={controlsId}
-								options={speed?.options ?? []}
-								labelsForOptions={speed?.labels}
+								options={(speed?.options ?? []).map((option, index) => ({
+									key: option,
+									label: speed?.labels?.[index] ?? `${option}x`,
+								}))}
 								currentRate={state.playbackRate}
 								onChange={actions.setPlaybackRate}
 								label={mergedLabels.speed}
 								flyoutBackground={mergedColors.flyoutBackground}
 								flyoutForegroundColor={mergedColors.flyoutForeground}
-								accentColor={mergedColors.accentColor}
 								isOpen={openFlyout === 'speed'}
 								onOpen={() => openFlyoutHandler('speed')}
 								onClose={() => closeFlyoutHandler('speed')}

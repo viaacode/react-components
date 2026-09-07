@@ -364,6 +364,7 @@ export const CustomControls: Story = {
 				lang: 'nl',
 				id: '123',
 				label: 'Nederlands',
+				subLabel: 'nl',
 				src: 'https://avo2-proxy-qas.hetarchief.be/subtitles/convert-srt-to-vtt/viaa/MOB/TESTBEELD/3b61046461be4b1e9f0fad19b42baa192487807cfefa4c289c0fa65d5c78195b/3b61046461be4b1e9f0fad19b42baa192487807cfefa4c289c0fa65d5c78195b.srt',
 			},
 		],

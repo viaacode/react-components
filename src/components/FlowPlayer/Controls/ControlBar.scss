@@ -43,12 +43,22 @@ $flowplayer-controls-transition: opacity 0.2s ease;
 $flowplayer-focus-outline-width: 0.2rem;
 $flowplayer-focus-outline-offset: 0.2rem;
 
-// Subtitles flyout card: 240px wide, square corners, drop shadow, "Off" row + divider + track list.
+// Subtitles flyout card: 240px wide, square corners, drop shadow, "Off" row + track list.
 $flowplayer-subtitles-flyout-width: 24rem;
 $flowplayer-flyout-shadow: 0 0 0.8rem rgb(0 0 0 / 24%);
-$flowplayer-flyout-divider-color: #e6e6e6;
-$flowplayer-flyout-option-padding: 2rem 3.7rem;
-$flowplayer-flyout-option-icon-gap: 1.3rem;
+
+// Option row: checkmark box (reserves its space even when empty) -- gap -- label (+ optional
+// trailing icon), with an optional HTML sublabel below, indented to sit under the label/icon
+// rather than the checkmark. One divider line between every option, not just at fixed points.
+$flowplayer-flyout-option-padding-block: 1.6rem;
+$flowplayer-flyout-option-padding-inline-start: 0.8rem;
+$flowplayer-flyout-option-padding-inline-end: 1.6rem;
+$flowplayer-flyout-option-row-gap: 0.8rem;
+$flowplayer-flyout-option-sublabel-gap: 0.4rem;
+$flowplayer-flyout-option-icon-size: 2rem;
+$flowplayer-flyout-option-divider-color: silver;
+$flowplayer-flyout-option-text-color: #000;
+$flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 
 @mixin flowplayer-focus-ring {
 	&:focus-visible {
@@ -285,36 +295,77 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 			padding: 0;
 		}
 
-		&__divider {
-			height: 0.1rem;
-			margin: 0;
-			background-color: $flowplayer-flyout-divider-color;
-			border: none;
-		}
-
 		&__option {
 			display: flex;
-			align-items: center;
-			gap: $flowplayer-flyout-option-icon-gap;
+			flex-direction: column;
+			gap: $flowplayer-flyout-option-sublabel-gap;
 			width: 100%;
-			padding: $flowplayer-flyout-option-padding;
+			padding: $flowplayer-flyout-option-padding-block $flowplayer-flyout-option-padding-inline-end
+				$flowplayer-flyout-option-padding-block $flowplayer-flyout-option-padding-inline-start;
 			background: none;
 			border: none;
 			text-align: left;
 			cursor: pointer;
 			color: inherit;
 			font-family: inherit;
-			font-size: 1.4rem;
-			font-weight: 500;
-			line-height: 2rem;
+
+			// One <li> per option, each wrapping a single button - so a `:last-child` on the button
+			// itself would always match (it's the sole child of its own <li>) and never draw a
+			// divider. The divider therefore lives on the <li>, where sibling order is real.
+			&-item {
+				&:not(:last-child) {
+					border-bottom: 0.1rem solid $flowplayer-flyout-option-divider-color;
+				}
+			}
 
 			&:hover,
 			&:focus-visible {
 				background-color: rgb(0 0 0 / 5%);
 			}
 
-			svg {
+			&-row {
+				display: flex;
+				align-items: center;
+				gap: $flowplayer-flyout-option-row-gap;
+			}
+
+			&-check,
+			&-icon {
 				flex: 0 0 auto;
+				width: $flowplayer-flyout-option-icon-size;
+				height: $flowplayer-flyout-option-icon-size;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1.6rem;
+				font-style: normal;
+				font-weight: 400;
+				line-height: 2rem;
+				color: $flowplayer-flyout-option-text-color;
+
+				svg {
+					width: 100%;
+					height: 100%;
+				}
+			}
+
+			&-label {
+				flex: 1 1 auto;
+				font-size: 1.4rem;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 2rem;
+				color: $flowplayer-flyout-option-text-color;
+			}
+
+			&-sublabel {
+				// Indented past the checkmark column so it sits under the label/icon row, not the checkmark.
+				margin-inline-start: calc(#{$flowplayer-flyout-option-icon-size} + #{$flowplayer-flyout-option-row-gap});
+				font-size: 1.2rem;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 1.6rem;
+				color: $flowplayer-flyout-option-sublabel-color;
 			}
 		}
 	}
