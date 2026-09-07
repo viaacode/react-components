@@ -30,4 +30,11 @@ export interface DropdownProps extends DefaultComponentProps {
 	 * a padding value (in px) to enable it.
 	 */
 	shiftPadding?: number;
+	/**
+	 * Opts into floating-ui's `size` middleware, capping the flyout's height to whatever space is
+	 * actually available in its clipping ancestor and the viewport (scrolling its own content
+	 * instead of overflowing past that ancestor's edge), with this many px kept clear on every
+	 * side. Off by default so existing consumers keep their current (unconstrained) height.
+	 */
+	maxHeightPadding?: number;
 }

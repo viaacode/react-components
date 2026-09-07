@@ -276,6 +276,9 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 		border-radius: 0;
 		box-shadow: $flowplayer-flyout-shadow;
 
+		// Dropdown.tsx sets `max-height`/`overflow-y` inline (`maxHeightPadding`, floating-ui's `size`
+		// middleware) once the flyout is taller than the player - this element is what actually
+		// scrolls, so the list itself must not add its own min/max sizing that would fight it.
 		&__list {
 			list-style: none;
 			margin: 0;
