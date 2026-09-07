@@ -32,7 +32,8 @@ $flowplayer-slot-inset: 0.4rem;
 $flowplayer-slot-width: 4rem;
 $flowplayer-slot-height: 2.8rem;
 
-// Background for a toggled-on slot icon (e.g. muted) or an open flyout trigger - fixed, not exposed via `colors`.
+// Background for a toggled-on slot icon (e.g. muted) or an open flyout trigger - follows the
+// accent color from `colors` (falls back to this when unset).
 $flowplayer-slot-active-background: #009690;
 
 // This codebase's root font-size is 10px (62.5% reset), not the usual 16px - 0.8rem/1.6rem are the correct 8px/16px here.
@@ -182,7 +183,7 @@ $flowplayer-flyout-option-icon-gap: 1.3rem;
 
 		// Toggled-on slot (e.g. muted) or its flyout open - background only, icon stays regular color.
 		&--active {
-			background-color: $flowplayer-slot-active-background;
+			background-color: var(--flowplayer-controls-accent, $flowplayer-slot-active-background);
 		}
 
 		// Speed trigger shows the rate as text ("1x") instead of an icon - restore line-height and size it to fit the slot.
