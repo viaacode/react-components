@@ -1,7 +1,6 @@
 import type { FlowPlayerControlsColors, FlowPlayerControlsLabels } from '../FlowPlayer.types';
 
 export const DEFAULT_AUTO_HIDE_DELAY_MS = 3000;
-export const DEFAULT_PERSISTENCE_KEY_PREFIX = 'meemoo-flowplayer';
 export const DEFAULT_SHOW_PEAK = true;
 export const DEFAULT_PEAK_MODE = 'data' as const;
 

@@ -12,6 +12,7 @@ function buildTrack(overrides: Partial<FakeTextTrack> & { kind: TextTrackKind })
 		language: '',
 		mode: 'disabled',
 		is_active: false,
+		addEventListener: jest.fn(),
 		...overrides,
 	} as FakeTextTrack;
 }
@@ -39,6 +40,32 @@ describe('selectSubtitleTrack', () => {
 		expect(selectSubtitleTrack(player, key)).toBe(true);
 		expect(track.is_active).toBe(true);
 		expect(track.mode).toBe('hidden');
+	});
+
+	it('emits a synthetic "cuechange" after activating a track, mirroring the plugin\'s own non-native select behaviour - without it, the caption overlay can stay empty until the browser\'s own cuechange happens to fire', () => {
+		const track = buildTrack({ kind: 'subtitles', label: 'Nederlands', language: 'nl' });
+		const { player } = buildPlayer([track]);
+		const key = getSubtitleTrackKey([track], track);
+
+		selectSubtitleTrack(player, key);
+
+		expect(player.emit).toHaveBeenCalledWith('cuechange', { track });
+	});
+
+	it('also forwards the track\'s own native "cuechange" once, to catch the case where the immediate emit above raced the browser (cues/activeCues aren\'t available in the same tick right after a track\'s first activation - confirmed live: empty immediately after the mode flip, populated only after the browser parses/links the cues)', () => {
+		const track = buildTrack({ kind: 'subtitles', label: 'Nederlands', language: 'nl' });
+		const { player } = buildPlayer([track]);
+		const key = getSubtitleTrackKey([track], track);
+
+		selectSubtitleTrack(player, key);
+
+		expect(track.addEventListener).toHaveBeenCalledWith('cuechange', expect.any(Function), { once: true });
+
+		(player.emit as jest.Mock).mockClear();
+		const [, nativeHandler] = (track.addEventListener as jest.Mock).mock.calls[0];
+		nativeHandler();
+
+		expect(player.emit).toHaveBeenCalledWith('cuechange', { track });
 	});
 
 	it('returns true and clears the active track when passed null', () => {

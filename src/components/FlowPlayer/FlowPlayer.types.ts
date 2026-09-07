@@ -173,10 +173,6 @@ export interface FlowPlayerCustomControlsConfig {
 	peakColorBackground?: string; // eg: '#FFFFFF'
 
 	autoHideDelayMs?: number; // default 3000, 0 disables auto-hide
-	// Only governs the subtitle on/off preference - volume/mute already persist via
-	// Flowplayer's own internal storage regardless of this flag.
-	persistPreferences?: boolean; // default true
-	persistenceKeyPrefix?: string; // default 'meemoo-flowplayer'
 
 	// Native mode only ever shows the title/logo overlay in fullscreen (see FlowPlayer.scss) - a
 	// normal embedded player essentially never displays it. Custom mode keeps that same

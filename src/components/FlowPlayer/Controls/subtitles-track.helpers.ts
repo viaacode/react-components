@@ -56,6 +56,34 @@ function emitTracksUpdated(player: Player, track?: FlowplayerTextTrack) {
 }
 
 /**
+ * Mirrors the subtitles plugin's own (non-native) track-select behaviour (checked against
+ * 3.32.1's plugins/subtitles.js): after activating a track, it manually re-emits "cuechange" so
+ * the plugin's own cue-rendering listener redraws `.fp-captions` immediately, instead of relying
+ * solely on the browser's native `cuechange` event on the TextTrack (which the plugin's own
+ * `oncuechange` closure - bound once, per track, when it was first added - can otherwise miss or
+ * delay, leaving the caption overlay empty even though the track is correctly marked active).
+ *
+ * On a track's first activation, though, that immediate emit races the browser: flipping `mode`
+ * from "disabled" to "hidden" doesn't make `track.cues`/`track.activeCues` available in the same
+ * tick (confirmed live - empty immediately after the flip, populated only after the browser
+ * parses/links the cues, ~hundreds of ms later), so the immediate render can still draw an empty
+ * frame. Also listen once for the track's own native "cuechange" so the real cue list gets forwarded
+ * as soon as the browser actually computes it, instead of leaving the premature empty render as the
+ * final state until some unrelated later cue change happens to fire.
+ */
+function emitCueChange(player: Player, track: FlowplayerTextTrack) {
+	const emit = (player as unknown as { emit: (event: string, payload?: unknown) => void }).emit.bind(player);
+	emit('cuechange', { track });
+	track.addEventListener(
+		'cuechange',
+		() => {
+			emit('cuechange', { track });
+		},
+		{ once: true }
+	);
+}
+
+/**
  * Selects a track by key, or pass `null` to turn subtitles off entirely. Returns whether the
  * selection actually took effect - `false` when `trackKey` doesn't match any currently loaded
  * track (e.g. called before the source's tracks have populated), so callers can tell a real
@@ -95,5 +123,6 @@ export function selectSubtitleTrack(player: Player, trackKey: string | null): bo
 	target.mode = 'hidden';
 	target.is_active = true;
 	emitTracksUpdated(player, target);
+	emitCueChange(player, target);
 	return true;
 }

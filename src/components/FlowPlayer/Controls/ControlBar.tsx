@@ -4,7 +4,6 @@ import type { ControlBarProps } from './ControlBar.types';
 import type { FlowPlayerControlsColors, FlowPlayerControlsLabels } from '../FlowPlayer.types';
 import {
 	DEFAULT_AUTO_HIDE_DELAY_MS,
-	DEFAULT_PERSISTENCE_KEY_PREFIX,
 	defaultControlsColors,
 	defaultControlsLabels,
 	isGenericPeakMode,
@@ -25,7 +24,6 @@ import {
 import { useAutoHideControls } from './useAutoHideControls';
 import { useFlowplayerState } from './useFlowplayerState';
 import { useKeyboardShortcuts } from './useKeyboardShortcuts';
-import { useSubtitlesPersistence } from './useSubtitlesPersistence';
 import { VolumeControl } from './VolumeControl';
 
 import './ControlBar.scss';
@@ -65,8 +63,6 @@ export const ControlBar: FC<ControlBarProps> = ({
 		peakColorInactive,
 		peakColorBackground,
 		autoHideDelayMs = DEFAULT_AUTO_HIDE_DELAY_MS,
-		persistPreferences = true,
-		persistenceKeyPrefix = DEFAULT_PERSISTENCE_KEY_PREFIX,
 		colors = EMPTY_COLORS,
 		labels = EMPTY_LABELS,
 	} = config;
@@ -127,30 +123,12 @@ export const ControlBar: FC<ControlBarProps> = ({
 		};
 	}, [playerRef, playerInstance, subtitles]);
 
-	const { persist: persistSubtitles } = useSubtitlesPersistence({
-		enabled: persistPreferences,
-		keyPrefix: persistenceKeyPrefix,
-		isPlayerReady: !!playerInstance,
-		hasTracks: subtitleTracks.length > 0,
-		onRestore: (storedTrackKey) => {
-			if (!playerRef.current) {
-				return false;
-			}
-			const restored = selectSubtitleTrack(playerRef.current, storedTrackKey);
-			if (restored) {
-				setActiveSubtitleTrackKey(storedTrackKey);
-			}
-			return restored;
-		},
-	});
-
 	const handleSelectSubtitleTrack = (trackKey: string | null) => {
 		if (!playerRef.current) {
 			return;
 		}
 		selectSubtitleTrack(playerRef.current, trackKey);
 		setActiveSubtitleTrackKey(trackKey);
-		persistSubtitles(trackKey);
 	};
 
 	// Listens on the whole player root, not just the bar itself, so moving the pointer anywhere
