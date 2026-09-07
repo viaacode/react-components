@@ -186,6 +186,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 	const colorVars: CSSProperties = {
 		['--flowplayer-controls-bg' as string]: mergedColors.backgroundColor,
 		['--flowplayer-controls-fg' as string]: mergedColors.foregroundColor,
+		['--flowplayer-controls-progress' as string]: mergedColors.progressColor,
 		['--flowplayer-controls-accent' as string]: mergedColors.accentColor,
 		['--flowplayer-controls-flyout-bg' as string]: mergedColors.flyoutBackground,
 	};
@@ -234,7 +235,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 							onSeekEnd={handleSeekEnd}
 							showTimestamps={showTimestamps}
 							cuepoints={cuepoints}
-							accentColor={mergedColors.accentColor}
+							accentColor={mergedColors.progressColor}
 							foregroundColor={mergedColors.foregroundColor}
 							ariaLabel={mergedLabels.progressBar}
 						/>

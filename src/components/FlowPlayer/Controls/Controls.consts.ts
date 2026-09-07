@@ -13,7 +13,8 @@ export function isGenericPeakMode(showPeak: boolean | undefined, peakMode: 'data
 export const defaultControlsColors: Required<FlowPlayerControlsColors> = {
 	backgroundColor: '#000000',
 	foregroundColor: '#FFFFFF',
-	accentColor: '#00c8aa',
+	progressColor: '#00CCA9',
+	accentColor: '#009991',
 	flyoutBackground: '#FFFFFF',
 	flyoutForeground: '#000000',
 };

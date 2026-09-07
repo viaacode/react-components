@@ -187,7 +187,8 @@ export interface FlowPlayerCustomControlsConfig {
 export interface FlowPlayerControlsColors {
 	backgroundColor?: string; // control bar background + button backgrounds
 	foregroundColor?: string; // icon color + timestamp text color, against `backgroundColor`
-	accentColor?: string; // progress fill/handle, an active/highlighted button, filled volume bars
+	progressColor?: string; // progress fill/handle
+	accentColor?: string; // background of a highlighted/selected button (muted, subtitles/speed open or on)
 	flyoutBackground?: string; // volume/subtitles/speed popover surface
 	// Text/icon color *inside* a flyout popover, against `flyoutBackground` - deliberately
 	// separate from `foregroundColor`: that one is meant to read against the dark bar, this one
