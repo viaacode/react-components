@@ -25,12 +25,15 @@ export function formatDuration(
 	numSeconds: number | null | undefined,
 	{ includeHours = 'always', padLeadingUnit = true }: FormatDurationOptions = {}
 ): string {
-	const safeSeconds = Number.isFinite(numSeconds) && (numSeconds as number) > 0 ? (numSeconds as number) : 0;
+	const safeSeconds =
+		Number.isFinite(numSeconds) && (numSeconds as number) > 0 ? (numSeconds as number) : 0;
 	const totalSeconds = Math.floor(safeSeconds);
 
 	const showHours = includeHours === 'always' || (includeHours === 'auto' && totalSeconds >= 3600);
 	const hours = Math.floor(totalSeconds / 3600);
-	const minutes = showHours ? Math.floor((totalSeconds % 3600) / 60) : Math.floor(totalSeconds / 60);
+	const minutes = showHours
+		? Math.floor((totalSeconds % 3600) / 60)
+		: Math.floor(totalSeconds / 60);
 	const secs = totalSeconds % 60;
 
 	const pad = (n: number) => String(n).padStart(2, '0');

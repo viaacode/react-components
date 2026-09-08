@@ -1,5 +1,5 @@
-import { Locale } from "../../types";
-import { type Heading } from './RichTextEditor.types';
+import { Locale } from '../../types';
+import type { Heading } from './RichTextEditor.types';
 
 export enum LabelKey {
 	Bold = 'bold',

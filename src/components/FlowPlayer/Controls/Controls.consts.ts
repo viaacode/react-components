@@ -1,4 +1,4 @@
-import { Locale } from "../../../types";
+import { Locale } from '../../../types';
 import {
 	type FlowPlayerControlsColors,
 	FlowPlayerControlsLabelKey,
@@ -10,7 +10,10 @@ export const DEFAULT_SHOW_PEAK = true;
 export const DEFAULT_PEAK_MODE = 'data' as const;
 
 /** Whether the generic built-in waveform (`PeakDisplay`) should render - shared by ControlBar.tsx and FlowPlayer.internal.tsx so they can't drift. */
-export function isGenericPeakMode(showPeak: boolean | undefined, peakMode: 'data' | 'generic' | undefined): boolean {
+export function isGenericPeakMode(
+	showPeak: boolean | undefined,
+	peakMode: 'data' | 'generic' | undefined
+): boolean {
 	return (showPeak ?? DEFAULT_SHOW_PEAK) && (peakMode ?? DEFAULT_PEAK_MODE) === 'generic';
 }
 
@@ -25,10 +28,7 @@ export const defaultControlsColors: Required<FlowPlayerControlsColors> = {
 
 // Base label sets per locale - the consumer's `labels` config overrides individual keys on top
 // of whichever set `locale` resolves to. Defaults to nl, matching the rest of FlowPlayer.consts.ts.
-export const FLOW_PLAYER_CONTROLS_LABELS: Record<
-	Locale,
-	FlowPlayerControlsLabels
-> = {
+export const FLOW_PLAYER_CONTROLS_LABELS: Record<Locale, FlowPlayerControlsLabels> = {
 	[Locale.nl]: {
 		[FlowPlayerControlsLabelKey.Play]: 'Afspelen',
 		[FlowPlayerControlsLabelKey.Pause]: 'Pauzeren',

@@ -32,9 +32,14 @@ export function isSubtitlesEnabled(player: Player): boolean {
 }
 
 /** A stable id for a track. `language`/`label` alone can collide (e.g. two "en" tracks), so ties break by position. */
-export function getSubtitleTrackKey(tracks: FlowplayerTextTrack[], track: FlowplayerTextTrack): string {
+export function getSubtitleTrackKey(
+	tracks: FlowplayerTextTrack[],
+	track: FlowplayerTextTrack
+): string {
 	const base = track.language || track.label || 'track';
-	const sameBase = tracks.filter((candidate) => (candidate.language || candidate.label || 'track') === base);
+	const sameBase = tracks.filter(
+		(candidate) => (candidate.language || candidate.label || 'track') === base
+	);
 	if (sameBase.length <= 1) {
 		return base;
 	}
@@ -72,7 +77,9 @@ function emitTracksUpdated(player: Player, track?: FlowplayerTextTrack) {
  * final state until some unrelated later cue change happens to fire.
  */
 function emitCueChange(player: Player, track: FlowplayerTextTrack) {
-	const emit = (player as unknown as { emit: (event: string, payload?: unknown) => void }).emit.bind(player);
+	const emit = (
+		player as unknown as { emit: (event: string, payload?: unknown) => void }
+	).emit.bind(player);
 	emit('cuechange', { track });
 	track.addEventListener(
 		'cuechange',

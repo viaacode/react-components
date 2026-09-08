@@ -117,7 +117,9 @@ describe('formatDuration', () => {
 
 		it('leaves the leading unit unpadded when disabled, but still pads the trailing units', () => {
 			expect(formatDuration(65, { includeHours: 'never', padLeadingUnit: false })).toEqual('1:05');
-			expect(formatDuration(65, { includeHours: 'always', padLeadingUnit: false })).toEqual('0:01:05');
+			expect(formatDuration(65, { includeHours: 'always', padLeadingUnit: false })).toEqual(
+				'0:01:05'
+			);
 		});
 	});
 });

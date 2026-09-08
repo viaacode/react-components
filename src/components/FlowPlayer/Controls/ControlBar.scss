@@ -40,7 +40,7 @@ $flowplayer-flyout-shadow: 0 0 $g-spacer-unit rgb(0 0 0 / 24%);
 // rather than the checkmark. One divider line between every option, not just at fixed points.
 $flowplayer-flyout-option-padding-block: $g-spacer-unit * 2;
 $flowplayer-flyout-option-padding-inline-start: $g-spacer-unit;
-$flowplayer-flyout-option-padding-inline-end: $g-spacer-unit*2;
+$flowplayer-flyout-option-padding-inline-end: $g-spacer-unit * 2;
 $flowplayer-flyout-option-row-gap: $g-spacer-unit;
 $flowplayer-flyout-option-sublabel-gap: math.div($g-spacer-unit, 2);
 $flowplayer-flyout-option-icon-size: 2rem;
@@ -376,6 +376,7 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 	// Sibling of the control bar, absolutely filling the player area like native's own `.c-peak` canvas.
 	.c-flowplayer-peak-image {
 		@include flowplayer-fill-absolute;
+
 		z-index: 1;
 
 		// No filter/dimming - PeakDisplay renders two real AudioWaveFormDisplay instances (one per

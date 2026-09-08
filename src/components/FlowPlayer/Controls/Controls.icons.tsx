@@ -9,13 +9,25 @@ const baseProps: SVGProps<SVGSVGElement> = {
 // glyph) - no forced uniform grid, flex centering in `.c-flowplayer-control-button` handles it.
 
 export const PlayIcon: FC = () => (
-	<svg {...baseProps} width="14.0859" height="15.375" viewBox="0 0 14.0859 15.375" aria-hidden="true">
+	<svg
+		{...baseProps}
+		width="14.0859"
+		height="15.375"
+		viewBox="0 0 14.0859 15.375"
+		aria-hidden="true"
+	>
 		<path d="M0 0L14.0859 7.6875L0 15.375V0Z" fill="currentColor" />
 	</svg>
 );
 
 export const PauseIcon: FC = () => (
-	<svg {...baseProps} width="9.98438" height="14.0156" viewBox="0 0 9.98438 14.0156" aria-hidden="true">
+	<svg
+		{...baseProps}
+		width="9.98438"
+		height="14.0156"
+		viewBox="0 0 9.98438 14.0156"
+		aria-hidden="true"
+	>
 		<path d="M0 0H3.98438V14.0156H0V0ZM6 0H9.98438V14.0156H6V0Z" fill="currentColor" />
 	</svg>
 );
@@ -30,7 +42,13 @@ export const VolumeIcon: FC = () => (
 );
 
 export const MuteIcon: FC = () => (
-	<svg {...baseProps} width="18.7031" height="18.1406" viewBox="0 0 18.7031 18.1406" aria-hidden="true">
+	<svg
+		{...baseProps}
+		width="18.7031"
+		height="18.1406"
+		viewBox="0 0 18.7031 18.1406"
+		aria-hidden="true"
+	>
 		<path
 			d="M0 5.0625H3.65625L10.0078 0V18.1406L3.65625 13.0781H0V5.0625ZM7.99219 4.14844L4.35938 7.07812H1.99219V11.0625H4.35938L7.99219 13.9922V4.14844ZM18.7031 6.77344L16.4062 9.07031L18.7031 11.3672L17.2969 12.7734L15 10.4766L12.7031 12.7734L11.2969 11.3672L13.5938 9.07031L11.2969 6.77344L12.7031 5.36719L15 7.66406L17.2969 5.36719L18.7031 6.77344Z"
 			fill="currentColor"
@@ -48,7 +66,13 @@ export const FullscreenEnterIcon: FC = () => (
 );
 
 export const FullscreenExitIcon: FC = () => (
-	<svg {...baseProps} width="19.4062" height="19.4062" viewBox="0 0 19.4062 19.4062" aria-hidden="true">
+	<svg
+		{...baseProps}
+		width="19.4062"
+		height="19.4062"
+		viewBox="0 0 19.4062 19.4062"
+		aria-hidden="true"
+	>
 		<path
 			d="M1.71094 12.7031V10.7109H8.69531V17.6953H6.70312V14.1094L1.40625 19.4062L0 18L5.29688 12.7031H1.71094ZM19.4062 1.40625L14.1094 6.70312H17.6953V8.69531H10.7109V1.71094H12.7031V5.29688L18 0L19.4062 1.40625Z"
 			fill="currentColor"
@@ -87,4 +111,3 @@ export const CheckIcon: FC = () => (
 		/>
 	</svg>
 );
-

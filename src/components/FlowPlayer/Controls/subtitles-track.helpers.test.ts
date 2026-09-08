@@ -1,7 +1,15 @@
 import type { Player } from '@flowplayer/player';
-import { getActiveSubtitleTrackKey, getSubtitleTrackKey, selectSubtitleTrack } from './subtitles-track.helpers';
+import {
+	getActiveSubtitleTrackKey,
+	getSubtitleTrackKey,
+	selectSubtitleTrack,
+} from './subtitles-track.helpers';
 
-type FakeTextTrack = TextTrack & { is_active?: boolean; is_hls_embedded?: boolean; track_id?: number };
+type FakeTextTrack = TextTrack & {
+	is_active?: boolean;
+	is_hls_embedded?: boolean;
+	track_id?: number;
+};
 
 // jsdom doesn't implement HTMLMediaElement.addTextTrack, so `player.textTracks` is faked directly
 // with plain objects - Array.from (used throughout subtitles-track.helpers.ts) works the same on
@@ -52,14 +60,16 @@ describe('selectSubtitleTrack', () => {
 		expect(player.emit).toHaveBeenCalledWith('cuechange', { track });
 	});
 
-	it('also forwards the track\'s own native "cuechange" once, to catch the case where the immediate emit above raced the browser (cues/activeCues aren\'t available in the same tick right after a track\'s first activation - confirmed live: empty immediately after the mode flip, populated only after the browser parses/links the cues)', () => {
+	it("also forwards the track's own native \"cuechange\" once, to catch the case where the immediate emit above raced the browser (cues/activeCues aren't available in the same tick right after a track's first activation - confirmed live: empty immediately after the mode flip, populated only after the browser parses/links the cues)", () => {
 		const track = buildTrack({ kind: 'subtitles', label: 'Nederlands', language: 'nl' });
 		const { player } = buildPlayer([track]);
 		const key = getSubtitleTrackKey([track], track);
 
 		selectSubtitleTrack(player, key);
 
-		expect(track.addEventListener).toHaveBeenCalledWith('cuechange', expect.any(Function), { once: true });
+		expect(track.addEventListener).toHaveBeenCalledWith('cuechange', expect.any(Function), {
+			once: true,
+		});
 
 		(player.emit as jest.Mock).mockClear();
 		const [, nativeHandler] = (track.addEventListener as jest.Mock).mock.calls[0];

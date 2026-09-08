@@ -275,8 +275,8 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 			position: absolute;
 			inset: 0;
 			pointer-events: none;
-			background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent 15%),
-				linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent 20%);
+			background-image: linear-gradient(to top, rgb(0 0 0 / 50%), transparent 15%),
+				linear-gradient(to bottom, rgb(0 0 0 / 50%), transparent 20%);
 			opacity: 1;
 			transition: opacity 0.2s ease;
 		}

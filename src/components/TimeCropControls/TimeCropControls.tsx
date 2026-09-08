@@ -45,7 +45,9 @@ const TimeCropControls: FC<TimeCropControlsProps> = ({
 		[skipHourFormatting, minTime, maxTime]
 	);
 
-	const [fragmentStartString, setFragmentStartString] = useState<string>(formatFieldValue(startTime));
+	const [fragmentStartString, setFragmentStartString] = useState<string>(
+		formatFieldValue(startTime)
+	);
 	const [fragmentEndString, setFragmentEndString] = useState<string>(formatFieldValue(endTime));
 
 	useEffect(() => {

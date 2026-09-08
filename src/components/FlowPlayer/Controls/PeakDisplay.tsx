@@ -1,10 +1,10 @@
 import type { FC } from 'react';
+import { clamp } from '../../../utils/clamp';
 import { AudioWaveFormDisplay } from '../../AudioWaveFormDisplay/AudioWaveFormDisplay';
 import {
 	AudioWaveFormDisplaySize,
 	WAVE_FORM_PADDING_X_PERCENT,
 } from '../../AudioWaveFormDisplay/AudioWaveFormDisplay.helpers';
-import { clamp } from '../../../utils/clamp';
 
 export interface PeakDisplayProps {
 	percentagePlayed: number; // 0-1
@@ -27,13 +27,21 @@ export const PeakDisplay: FC<PeakDisplayProps> = ({
 	return (
 		<div className="c-flowplayer-peak-image">
 			<div className="c-flowplayer-peak-image__layer c-flowplayer-peak-image__layer--inactive">
-				<AudioWaveFormDisplay size={AudioWaveFormDisplaySize.Large} waveColor={colorInactive} backgroundColor={colorBackground} />
+				<AudioWaveFormDisplay
+					size={AudioWaveFormDisplaySize.Large}
+					waveColor={colorInactive}
+					backgroundColor={colorBackground}
+				/>
 			</div>
 			<div
 				className="c-flowplayer-peak-image__layer c-flowplayer-peak-image__layer--active"
 				style={{ clipPath: `inset(0 ${100 - revealPct}% 0 0)` }}
 			>
-				<AudioWaveFormDisplay size={AudioWaveFormDisplaySize.Large} waveColor={colorActive} backgroundColor={colorBackground} />
+				<AudioWaveFormDisplay
+					size={AudioWaveFormDisplaySize.Large}
+					waveColor={colorActive}
+					backgroundColor={colorBackground}
+				/>
 			</div>
 		</div>
 	);

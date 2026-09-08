@@ -13,7 +13,7 @@ import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
 import type { ChangeEvent, FunctionComponent, ReactNode } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Locale } from "../../types";
+import { Locale } from '../../types';
 import { RichTextEditorHeadingsDropdown } from './components/RichTextEditorHeadingsDropdown/RichTextEditorHeadingsDropdown';
 import { RichTextEditorLinkDropdown } from './components/RichTextEditorLinkDropdown/RichTextEditorLinkDropdown';
 import { RichTextEditorTableDropdown } from './components/RichTextEditorTableDropdown/RichTextEditorTableDropdown';

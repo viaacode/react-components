@@ -16,9 +16,12 @@ const defaultLabels = {
 };
 
 const renderVolumeControl = (overrides: Partial<VolumeControlProps> = {}) =>
-	render(<VolumeControl muted={false} onToggleMute={jest.fn()} labels={defaultLabels} {...overrides} />);
+	render(
+		<VolumeControl muted={false} onToggleMute={jest.fn()} labels={defaultLabels} {...overrides} />
+	);
 
-const getButton = (container: HTMLElement) => container.querySelector('button') as HTMLButtonElement;
+const getButton = (container: HTMLElement) =>
+	container.querySelector('button') as HTMLButtonElement;
 
 describe('<VolumeControl />', () => {
 	it('does not mark the button active when unmuted', () => {

@@ -64,9 +64,7 @@ export const ControlFlyout: FC<ControlFlyoutProps> = ({
 									onClick={() => onSelect(option.key)}
 								>
 									<span className={`${optionClassName}-row`}>
-										<span className={`${optionClassName}-check`}>
-											{isActive && <CheckIcon />}
-										</span>
+										<span className={`${optionClassName}-check`}>{isActive && <CheckIcon />}</span>
 										<span className={`${optionClassName}-label`}>{option.label}</span>
 										{option.icon && (
 											<span className={`${optionClassName}-icon`}>{option.icon}</span>

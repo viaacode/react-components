@@ -694,7 +694,9 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 				>
 					{/* The generic-peak overlay (ControlBar's PeakDisplay) replaces this canvas
 					entirely, rather than sitting on top of it - not rendered at all in that mode. */}
-					{!useGenericPeak && <canvas ref={peakCanvas} className="c-peak" width="1212" height="779" />}
+					{!useGenericPeak && (
+						<canvas ref={peakCanvas} className="c-peak" width="1212" height="779" />
+					)}
 					{customControls}
 					{isCustomControls && (
 						<ControlBar

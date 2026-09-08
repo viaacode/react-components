@@ -1,7 +1,7 @@
-import {resolve} from 'node:path';
+import { resolve } from 'node:path';
 
 import react from '@vitejs/plugin-react';
-import {defineConfig} from 'vite';
+import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import svgrPlugin from 'vite-plugin-svgr';
 import pkg from './package.json';
@@ -44,11 +44,7 @@ export default defineConfig({
 		sourcemap: true,
 	},
 	resolve: {
-		dedupe: external
+		dedupe: external,
 	},
-	plugins: [
-		react(),
-		svgrPlugin(),
-		dts(),
-	],
+	plugins: [react(), svgrPlugin(), dts()],
 });

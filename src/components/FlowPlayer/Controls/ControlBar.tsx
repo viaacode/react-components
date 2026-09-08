@@ -1,7 +1,15 @@
 import clsx from 'clsx';
-import { type CSSProperties, type FC, useCallback, useEffect, useId, useMemo, useState } from 'react';
-import { Locale } from "../../../types";
-import { type FlowPlayerControlsColors } from '../FlowPlayer.types';
+import {
+	type CSSProperties,
+	type FC,
+	useCallback,
+	useEffect,
+	useId,
+	useMemo,
+	useState,
+} from 'react';
+import { Locale } from '../../../types';
+import type { FlowPlayerControlsColors } from '../FlowPlayer.types';
 import type { ControlBarProps } from './ControlBar.types';
 import {
 	DEFAULT_AUTO_HIDE_DELAY_MS,
@@ -244,7 +252,11 @@ export const ControlBar: FC<ControlBarProps> = ({
 				{hasSecondarySegment && (
 					<div className="c-flowplayer-control-bar__segment c-flowplayer-control-bar__segment--secondary">
 						{showVolume && (
-							<VolumeControl muted={state.muted} onToggleMute={actions.toggleMute} labels={labels} />
+							<VolumeControl
+								muted={state.muted}
+								onToggleMute={actions.toggleMute}
+								labels={labels}
+							/>
 						)}
 
 						{resolvedShowSubtitles && (

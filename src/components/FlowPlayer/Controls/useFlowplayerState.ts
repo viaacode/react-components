@@ -108,7 +108,8 @@ export function useFlowplayerState(
 		};
 
 		const handlePlayPause = () => setState((prev) => ({ ...prev, paused: player.paused }));
-		const handleDurationChange = () => setState((prev) => ({ ...prev, duration: player.duration || 0 }));
+		const handleDurationChange = () =>
+			setState((prev) => ({ ...prev, duration: player.duration || 0 }));
 		const handleRateChange = () =>
 			setState((prev) => ({ ...prev, playbackRate: player.playbackRate || 1 }));
 		const handleFullscreenEnter = () => setState((prev) => ({ ...prev, isFullscreen: true }));
@@ -178,9 +179,10 @@ export function useFlowplayerState(
 			}
 			const opts = player.opts as { keyboard?: { seek_step?: number | string } };
 			const configuredStep = Number(opts?.keyboard?.seek_step);
-			const step = Number.isFinite(configuredStep) && configuredStep > 0
-				? configuredStep
-				: DEFAULT_NATIVE_SEEK_STEP_SECONDS;
+			const step =
+				Number.isFinite(configuredStep) && configuredStep > 0
+					? configuredStep
+					: DEFAULT_NATIVE_SEEK_STEP_SECONDS;
 			player.enqueueSeek(direction * step);
 		},
 		[playerRef]

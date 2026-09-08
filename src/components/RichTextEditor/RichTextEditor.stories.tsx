@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
-import { Locale } from "../../types";
+import { Locale } from '../../types';
 import { selectOptionsMock } from '../Select/__mocks__/select';
 import Select from '../Select/Select';
 

@@ -1,6 +1,10 @@
 import type { Player } from '@flowplayer/player';
 import type { MutableRefObject } from 'react';
-import type { Cuepoints, FlowPlayerCustomControlsConfig, FlowplayerTrackSchema } from '../FlowPlayer.types';
+import type {
+	Cuepoints,
+	FlowPlayerCustomControlsConfig,
+	FlowplayerTrackSchema,
+} from '../FlowPlayer.types';
 
 export interface ControlBarProps {
 	playerRef: MutableRefObject<Player | null>;

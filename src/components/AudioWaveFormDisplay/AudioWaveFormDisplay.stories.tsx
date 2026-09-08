@@ -12,12 +12,28 @@ type Story = StoryObj<typeof AudioWaveFormDisplay>;
 
 export const Default: Story = {
 	render: () => (
-		<div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: '#111', padding: '1rem' }}>
+		<div
+			style={{
+				display: 'flex',
+				flexDirection: 'column',
+				gap: '1rem',
+				background: '#111',
+				padding: '1rem',
+			}}
+		>
 			<div style={{ height: '4rem' }}>
-				<AudioWaveFormDisplay ariaLabel="Waveform" size={AudioWaveFormDisplaySize.Small} waveColor="#fff" />
+				<AudioWaveFormDisplay
+					ariaLabel="Waveform"
+					size={AudioWaveFormDisplaySize.Small}
+					waveColor="#fff"
+				/>
 			</div>
 			<div style={{ height: '4rem' }}>
-				<AudioWaveFormDisplay ariaLabel="Waveform" size={AudioWaveFormDisplaySize.Large} waveColor="#00c8aa" />
+				<AudioWaveFormDisplay
+					ariaLabel="Waveform"
+					size={AudioWaveFormDisplaySize.Large}
+					waveColor="#00c8aa"
+				/>
 			</div>
 		</div>
 	),

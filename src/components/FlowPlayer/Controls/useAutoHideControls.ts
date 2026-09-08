@@ -13,7 +13,12 @@ export interface UseAutoHideControlsOptions {
  * visible while paused or `suppress` is true. Handles `touchstart` itself since native's own
  * tap-to-reveal lives in the UI bundle we're hiding.
  */
-export function useAutoHideControls({ containerRef, delayMs, isPlaying, suppress }: UseAutoHideControlsOptions) {
+export function useAutoHideControls({
+	containerRef,
+	delayMs,
+	isPlaying,
+	suppress,
+}: UseAutoHideControlsOptions) {
 	const [isVisible, setIsVisible] = useState(true);
 	const timeoutRef = useRef<number | null>(null);
 

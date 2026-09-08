@@ -19,7 +19,13 @@ export interface UseKeyboardShortcutsOptions {
  */
 export function useKeyboardShortcuts({ actions }: UseKeyboardShortcutsOptions) {
 	return (event: KeyboardEvent<HTMLElement>) => {
-		if (event.defaultPrevented || event.altKey || event.shiftKey || event.metaKey || event.ctrlKey) {
+		if (
+			event.defaultPrevented ||
+			event.altKey ||
+			event.shiftKey ||
+			event.metaKey ||
+			event.ctrlKey
+		) {
 			return;
 		}
 

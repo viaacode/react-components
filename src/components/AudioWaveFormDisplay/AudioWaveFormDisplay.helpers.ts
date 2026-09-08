@@ -39,9 +39,13 @@ const WAVE_FORM_BAR_COUNT = WAVE_FORM_BAR_HALF_HEIGHTS.length;
 
 // Right margin the reference asset leaves after its last bar, reused to size the large viewBox.
 const WAVE_FORM_RIGHT_MARGIN =
-	WAVE_FORM_VIEW_BOX_WIDTH - (WAVE_FORM_FIRST_BAR_X + (WAVE_FORM_BAR_COUNT - 1) * WAVE_FORM_BAR_SPACING);
+	WAVE_FORM_VIEW_BOX_WIDTH -
+	(WAVE_FORM_FIRST_BAR_X + (WAVE_FORM_BAR_COUNT - 1) * WAVE_FORM_BAR_SPACING);
 
-function buildWaveFormBars(barCount: number, halfHeightAt: (index: number) => number): WaveFormBar[] {
+function buildWaveFormBars(
+	barCount: number,
+	halfHeightAt: (index: number) => number
+): WaveFormBar[] {
 	return Array.from({ length: barCount }, (_, index) => {
 		const x = WAVE_FORM_FIRST_BAR_X + index * WAVE_FORM_BAR_SPACING;
 		const halfHeight = halfHeightAt(index);
@@ -61,7 +65,10 @@ const SMALL_WAVE_FORM_BARS: readonly WaveFormBar[] = buildWaveFormBars(
 // Large: the small waveform immediately followed by its own mirror, on one continuous grid.
 const LARGE_WAVE_FORM_BARS: readonly WaveFormBar[] = buildWaveFormBars(
 	WAVE_FORM_BAR_COUNT * 2,
-	(index) => WAVE_FORM_BAR_HALF_HEIGHTS[index < WAVE_FORM_BAR_COUNT ? index : WAVE_FORM_BAR_COUNT * 2 - 1 - index]
+	(index) =>
+		WAVE_FORM_BAR_HALF_HEIGHTS[
+			index < WAVE_FORM_BAR_COUNT ? index : WAVE_FORM_BAR_COUNT * 2 - 1 - index
+		]
 );
 
 export function getWaveFormBars(size: AudioWaveFormDisplaySize): readonly WaveFormBar[] {
