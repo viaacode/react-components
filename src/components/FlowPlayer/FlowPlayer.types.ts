@@ -68,6 +68,9 @@ export interface FlowplayerTrackSchema {
 	label: string;
 	lang?: string;
 	src: string;
+	/** Raw HTML, rendered below the label/icon row. */
+	subLabel?: string;
+	icon?: ReactNode;
 }
 
 export interface FlowplayerSourceItem {
@@ -139,4 +142,71 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	peakColorActive?: string; // eg: '#00C8AA'
 	peakHeightFactor?: number; // Ratio to make the peaks less or more high. Defaults to 1
 	enableRestartCuePointsButton?: boolean;
+
+	// Custom control bar (opt-in, default behaviour is unaffected)
+	controlsVariant?: 'native' | 'custom'; // default 'native'
+	customControlsConfig?: FlowPlayerCustomControlsConfig;
 }
+
+export interface FlowPlayerCustomControlsConfig {
+	// Per-control visibility. Subtitles/speed default to true only when the corresponding
+	// data (subtitles tracks / speed options) is actually present.
+	showPlayPause?: boolean;
+	showProgressBar?: boolean;
+	showTimestamps?: boolean;
+	showVolume?: boolean;
+	showSubtitles?: boolean;
+	showFullscreen?: boolean;
+	showSpeed?: boolean;
+	showPeak?: boolean; // audio only
+
+	// 'data' (default): the real numeric-peak-data canvas, unchanged regardless of controls mode.
+	// 'generic': a decorative, always-the-same waveform (`AudioWaveFormDisplay`, which sizes
+	// itself off its own rendered box) instead of one driven by real audio data - for content with
+	// no peak data of its own. Colors below mirror the top-level `peakColor*` props' naming/
+	// meaning, just applied to this visual instead of the canvas; `active`/`inactive` are revealed
+	// via the same clip-path progress technique already used for the progress bar's own light/dark
+	// label overlay.
+	peakMode?: 'data' | 'generic'; // default 'data'
+	peakColorActive?: string; // eg: '#00C8AA'
+	peakColorInactive?: string; // eg: '#ADADAD'
+	peakColorBackground?: string; // eg: '#FFFFFF'
+
+	autoHideDelayMs?: number; // default 3000, 0 disables auto-hide
+
+	// Label set to use. Defaults to 'nl'.
+	locale?: 'nl' | 'en';
+
+	// Native mode only ever shows the title/logo overlay in fullscreen (see FlowPlayer.scss) - a
+	// normal embedded player essentially never displays it. Custom mode keeps that same
+	// conservative default (false); opt in for a demo/player-page context where showing it,
+	// fading with the rest of the bar, is actually wanted.
+	showTitleOverlay?: boolean; // default false
+
+	colors?: FlowPlayerControlsColors;
+}
+
+export interface FlowPlayerControlsColors {
+	backgroundColor?: string; // control bar background + button backgrounds
+	foregroundColor?: string; // icon color + timestamp text color, against `backgroundColor`
+	progressColor?: string; // progress fill/handle
+	accentColor?: string; // background of a highlighted/selected button (muted, subtitles/speed open or on)
+	cuepointColor?: string; // progress track cuepoint marker background
+}
+
+export enum FlowPlayerControlsLabelKey {
+	Play = 'play',
+	Pause = 'pause',
+	Mute = 'mute',
+	Unmute = 'unmute',
+	Volume = 'volume',
+	FullscreenEnter = 'fullscreenEnter',
+	FullscreenExit = 'fullscreenExit',
+	Subtitles = 'subtitles',
+	SubtitlesOff = 'subtitlesOff',
+	Speed = 'speed',
+	ProgressBar = 'progressBar',
+	Cuepoint = 'cuepoint',
+}
+
+export type FlowPlayerControlsLabels = Record<FlowPlayerControlsLabelKey, string>;

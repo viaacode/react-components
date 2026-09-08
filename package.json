@@ -35,7 +35,7 @@
     "lint": "npm run lint:ts && npm run lint:scss",
     "lint:ts": "biome lint --write src",
     "lint:scss": "stylelint 'src/**/*.{css,scss}' --allow-empty-input --fix",
-    "format": "biome format --write src",
+    "format": "biome check --write",
     "dev": "storybook dev -p 3020",
     "test": "jest --cache",
     "test:watch": "npm run test -- --watch",

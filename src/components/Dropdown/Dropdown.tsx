@@ -1,6 +1,8 @@
 import {
 	autoUpdate,
 	offset as offsetHelper,
+	shift,
+	size,
 	useClick,
 	useDismiss,
 	useFloating,
@@ -49,6 +51,8 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		variants,
 		isDisabled,
 		offset = 10,
+		shiftPadding,
+		maxHeightPadding,
 	} = props;
 	const { refs, floatingStyles, context } = useFloating({
 		placement,
@@ -57,7 +61,29 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 			open ? onOpen() : onClose();
 		},
 		whileElementsMounted: autoUpdate,
-		middleware: [offsetHelper(offset)],
+		middleware: [
+			offsetHelper(offset),
+			// `shift` nudges the flyout back within its clipping ancestor near an edge, instead of
+			// letting it get clipped. Opt-in via `shiftPadding` so other consumers are unaffected.
+			...(shiftPadding !== undefined ? [shift({ padding: shiftPadding })] : []),
+			// Caps the flyout to whatever space is actually available in its clipping ancestor (e.g.
+			// a small video player) and viewport, scrolling its own content instead of overflowing -
+			// mirrors Flowplayer's native menu (`.fp-menu ol { max-height: 80%; overflow-y: auto }`).
+			// Opt-in via `maxHeightPadding` so other consumers are unaffected.
+			...(maxHeightPadding !== undefined
+				? [
+						size({
+							padding: maxHeightPadding,
+							apply({ availableHeight, elements }) {
+								Object.assign(elements.floating.style, {
+									maxHeight: `${availableHeight}px`,
+									overflowY: 'auto',
+								});
+							},
+						}),
+					]
+				: []),
+		],
 	});
 
 	const click = useClick(context);

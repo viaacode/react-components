@@ -42,11 +42,11 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 
 			if (nextOpen) {
 				const currentNode = editor?.state.doc.nodeAt(from);
-				const linkUrl = (editor?.getAttributes('link').href as string) || ''
+				const linkUrl = (editor?.getAttributes('link').href as string) || '';
 
 				setLinkUrl(linkUrl);
 
-				if(linkUrl) {
+				if (linkUrl) {
 					setLinkText(selectionText || currentNode?.textContent || '');
 				} else {
 					// When no url, there is no link component and thus no node content to select (otherwise we would take paragraphs, strong tags etc

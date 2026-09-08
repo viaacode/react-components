@@ -8,6 +8,11 @@ export interface DefaultComponentProps {
 	variants?: VariantsProp;
 }
 
+export enum Locale {
+	nl = 'nl',
+	en = 'en',
+}
+
 export type VariantsProp = string | string[];
 
 export type RefTypes<T> = MutableRefObject<T> | RefCallback<T> | null;

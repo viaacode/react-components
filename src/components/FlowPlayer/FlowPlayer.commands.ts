@@ -1,3 +1,5 @@
+import type { Player } from '@flowplayer/player';
+import { EMBED_CONTROLS_HIDE_SELECTOR } from './FlowPlayer.consts';
 import type { FlowplayerCommand } from './FlowPlayer.types';
 
 const MESSAGE_TYPE = 'Avovideoplayer';
@@ -13,9 +15,11 @@ function toggleVideoControls(showControls: boolean) {
 	// Not using videoPlayer.controls because the flowPlayer hides those by default and shows its own set of controls
 	// If we would use videoPlayer.controls = showControls, we would see 2 different sets
 
-	// we are hiding .fp-controls since they contain the controls itself
-	// we are hiding .fp-middle to avoid the possibility to click on the video to play/pause the video directly
-	const flowPlayerElements = document.querySelectorAll('.fp-controls, .fp-middle, .fp-header');
+	// EMBED_CONTROLS_HIDE_SELECTOR is native's chrome incl. `.fp-middle` (see FlowPlayer.consts.ts);
+	// [data-flowplayer-controls] is the custom control bar's root when `controlsVariant="custom"`.
+	const flowPlayerElements = document.querySelectorAll(
+		`${EMBED_CONTROLS_HIDE_SELECTOR}, [data-flowplayer-controls]`
+	);
 
 	for (const flowPlayerElement of flowPlayerElements) {
 		if (showControls) {
@@ -26,7 +30,7 @@ function toggleVideoControls(showControls: boolean) {
 	}
 }
 
-async function initializeVideo(videoPlayer: HTMLVideoElement, payload: any) {
+async function initializeVideo(videoPlayer: Player, payload: any) {
 	videoPlayer.muted = true;
 	await videoPlayer.play();
 	videoPlayer.pause();
@@ -35,7 +39,7 @@ async function initializeVideo(videoPlayer: HTMLVideoElement, payload: any) {
 	toggleVideoControls(!!payload.controls);
 }
 
-export function registerCommands(videoPlayer: HTMLVideoElement): void {
+export function registerCommands(videoPlayer: Player): void {
 	// Listen and respond to commands from the parent window.
 	window.addEventListener('message', async (event) => {
 		if (event.data._type !== MESSAGE_TYPE) {

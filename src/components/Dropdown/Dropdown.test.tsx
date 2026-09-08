@@ -170,4 +170,30 @@ describe('<Dropdown />', () => {
 		expect(dropdownFullWidthRoot).not.toHaveClass('c-dropdown__trigger');
 		expect(dropdownFitContentRoot).toHaveClass('c-dropdown__trigger');
 	});
+
+	it('Should render correctly with `shiftPadding` unset (default, unshifted positioning)', async () => {
+		// Regression: `shift` middleware used to be added unconditionally for every Dropdown
+		// consumer, silently changing positioning behaviour for consumers that never opted in.
+		const label = 'Show options';
+		const children = <div>content item</div>;
+		const { container } = renderDropdown({ children, label, isOpen: true, id: 'test-id-5' });
+
+		const dropdownContent = await waitFor(() => container.querySelector('.c-dropdown'));
+		expect(dropdownContent).toBeInTheDocument();
+	});
+
+	it('Should render correctly with `shiftPadding` set', async () => {
+		const label = 'Show options';
+		const children = <div>content item</div>;
+		const { container } = renderDropdown({
+			children,
+			label,
+			isOpen: true,
+			shiftPadding: 8,
+			id: 'test-id-6',
+		});
+
+		const dropdownContent = await waitFor(() => container.querySelector('.c-dropdown'));
+		expect(dropdownContent).toBeInTheDocument();
+	});
 });

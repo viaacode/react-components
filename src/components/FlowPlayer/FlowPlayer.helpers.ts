@@ -1,4 +1,5 @@
-import type { GoogleAnalyticsEvent } from './FlowPlayer.types';
+import { isNil } from '../../utils/is-nil';
+import type { Cuepoints, GoogleAnalyticsEvent } from './FlowPlayer.types';
 
 export function setPlayingVideoSeekTime(seekTime: number): void {
 	const playingVideo: HTMLVideoElement | null = document.querySelector(
@@ -26,3 +27,14 @@ export const convertGAEventsArrayToObject = (googleAnalyticsEvents: GoogleAnalyt
 		return acc;
 	}, {});
 };
+
+/** `isNil`, not truthy - a cuepoint at 0 is real and shouldn't be dropped as "not configured". */
+export function getCuepointsForBar(
+	start: number | null | undefined,
+	end: number | null | undefined
+): Cuepoints | undefined {
+	if (isNil(start) && isNil(end)) {
+		return undefined;
+	}
+	return [{ startTime: start, endTime: end }];
+}

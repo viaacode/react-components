@@ -23,4 +23,18 @@ export interface DropdownProps extends DefaultComponentProps {
 	triggerWidth?: 'fit-content' | 'full-width';
 	isDisabled?: boolean;
 	offset?: number;
+	/**
+	 * Opts into floating-ui's `shift` middleware, nudging the flyout back within its clipping
+	 * ancestor (e.g. a container with `overflow: hidden`) instead of letting it get silently
+	 * clipped. Off by default so existing consumers keep their current positioning unchanged; pass
+	 * a padding value (in px) to enable it.
+	 */
+	shiftPadding?: number;
+	/**
+	 * Opts into floating-ui's `size` middleware, capping the flyout's height to whatever space is
+	 * actually available in its clipping ancestor and the viewport (scrolling its own content
+	 * instead of overflowing past that ancestor's edge), with this many px kept clear on every
+	 * side. Off by default so existing consumers keep their current (unconstrained) height.
+	 */
+	maxHeightPadding?: number;
 }

@@ -5,11 +5,6 @@ export interface CustomRichTextEditorButton {
 	component: ReactNode;
 }
 
-export enum Locale {
-	nl = 'nl',
-	en = 'en',
-}
-
 export type RichTextEditorControl =
 	| 'font-size' // Text size selector
 	| 'font-family' // Text font selector
