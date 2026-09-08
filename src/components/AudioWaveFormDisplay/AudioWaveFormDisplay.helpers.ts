@@ -1,9 +1,15 @@
-export type AudioWaveFormDisplaySize = 'small' | 'large';
+export enum AudioWaveFormDisplaySize {
+	Small = 'small',
+	Large = 'large',
+}
 
 export interface WaveFormBar {
+	/** Horizontal position of the bar (viewBox units). Shared by both endpoints since the bar is a vertical line. */
 	x: number;
-	y1: number;
-	y2: number;
+	/** Y-coordinate of the bar's top endpoint (viewBox units). */
+	yTop: number;
+	/** Y-coordinate of the bar's bottom endpoint (viewBox units). */
+	yBottom: number;
 }
 
 // Bar geometry traced from the original design asset.
@@ -39,7 +45,7 @@ function buildWaveFormBars(barCount: number, halfHeightAt: (index: number) => nu
 	return Array.from({ length: barCount }, (_, index) => {
 		const x = WAVE_FORM_FIRST_BAR_X + index * WAVE_FORM_BAR_SPACING;
 		const halfHeight = halfHeightAt(index);
-		return { x, y1: WAVE_FORM_CENTER_Y - halfHeight, y2: WAVE_FORM_CENTER_Y + halfHeight };
+		return { x, yTop: WAVE_FORM_CENTER_Y - halfHeight, yBottom: WAVE_FORM_CENTER_Y + halfHeight };
 	});
 }
 
@@ -59,7 +65,7 @@ const LARGE_WAVE_FORM_BARS: readonly WaveFormBar[] = buildWaveFormBars(
 );
 
 export function getWaveFormBars(size: AudioWaveFormDisplaySize): readonly WaveFormBar[] {
-	return size === 'large' ? LARGE_WAVE_FORM_BARS : SMALL_WAVE_FORM_BARS;
+	return size === AudioWaveFormDisplaySize.Large ? LARGE_WAVE_FORM_BARS : SMALL_WAVE_FORM_BARS;
 }
 
 // Expands the bars' bounding box to the full display box, per the padding ratios above.

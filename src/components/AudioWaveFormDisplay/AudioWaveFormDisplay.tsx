@@ -1,6 +1,11 @@
 import clsx from 'clsx';
 import { type CSSProperties, type FC, memo } from 'react';
-import { getWaveFormBars, getWaveFormViewBox, WAVE_FORM_STROKE_WIDTH } from './AudioWaveFormDisplay.helpers';
+import {
+	AudioWaveFormDisplaySize,
+	getWaveFormBars,
+	getWaveFormViewBox,
+	WAVE_FORM_STROKE_WIDTH,
+} from './AudioWaveFormDisplay.helpers';
 import type { AudioWaveFormDisplayProps } from './AudioWaveFormDisplay.types';
 
 import './AudioWaveFormDisplay.scss';
@@ -14,7 +19,7 @@ export const AudioWaveFormDisplay: FC<AudioWaveFormDisplayProps> = memo(function
 	ariaLabel,
 	waveColor,
 	backgroundColor,
-	size = 'small',
+	size = AudioWaveFormDisplaySize.Small,
 }) {
 	const bars = getWaveFormBars(size);
 	const viewBox = getWaveFormViewBox(size);
@@ -47,8 +52,8 @@ export const AudioWaveFormDisplay: FC<AudioWaveFormDisplayProps> = memo(function
 							className="c-audio-wave-form-display__bar"
 							x1={bar.x}
 							x2={bar.x}
-							y1={bar.y1}
-							y2={bar.y2}
+							y1={bar.yTop}
+							y2={bar.yBottom}
 							strokeWidth={WAVE_FORM_STROKE_WIDTH}
 							strokeLinecap="round"
 						/>
