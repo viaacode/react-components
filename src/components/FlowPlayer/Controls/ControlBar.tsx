@@ -114,7 +114,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 					// doesn't propagate it onto the runtime TextTrack (`track.language` reads back
 					// empty even when the config's `lang` was set), so label is the only field that
 					// actually round-trips.
-					const trackConfig = subtitles?.find((config) => config.label === track.label);
+					const trackConfig = subtitles?.find((trackSchema) => trackSchema.label === track.label);
 					return {
 						key: getSubtitleTrackKey(tracks, track),
 						label: track.label || track.language || '',

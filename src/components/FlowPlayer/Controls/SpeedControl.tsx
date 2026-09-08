@@ -23,26 +23,31 @@ export const SpeedControl: FC<SpeedControlProps> = ({
 	isOpen,
 	onOpen,
 	onClose,
-}) => (
-	<ControlFlyout
-		id={`${id}__speed`}
-		flyoutClassName="c-flowplayer-speed-flyout"
-		isOpen={isOpen}
-		onOpen={onOpen}
-		onClose={onClose}
-		activeKey={currentRate}
-		onSelect={(key) => onChange(key as number)}
-		trigger={
-			<Button
-				label={`${currentRate}x`}
-				ariaLabel={`${label}: ${currentRate}x`}
-				title={label}
-				rootClassName="c-flowplayer-control-button"
-				className={clsx('c-flowplayer-control-button--slot c-flowplayer-control-button--text', {
-					'c-flowplayer-control-button--active': isOpen,
-				})}
-			/>
-		}
-		options={options}
-	/>
-);
+}) => {
+	const buttonLabel = `${currentRate}x`;
+	const buttonTitle = `${label}: ${buttonLabel}`;
+
+	return (
+		<ControlFlyout
+			id={`${id}__speed`}
+			flyoutClassName="c-flowplayer-speed-flyout"
+			isOpen={isOpen}
+			onOpen={onOpen}
+			onClose={onClose}
+			activeKey={currentRate}
+			onSelect={(key) => onChange(key as number)}
+			trigger={
+				<Button
+					label={buttonLabel}
+					ariaLabel={buttonTitle}
+					title={buttonTitle}
+					rootClassName="c-flowplayer-control-button"
+					className={clsx('c-flowplayer-control-button--slot c-flowplayer-control-button--text', {
+						'c-flowplayer-control-button--active': isOpen,
+					})}
+				/>
+			}
+			options={options}
+		/>
+	);
+};
