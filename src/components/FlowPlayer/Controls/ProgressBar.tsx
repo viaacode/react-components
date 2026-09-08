@@ -19,6 +19,7 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 	cuepoints,
 	accentColor,
 	foregroundColor,
+	cuepointColor,
 	ariaLabel,
 }) => {
 	const playedPct = duration > 0 ? clamp((currentTime / duration) * 100, 0, 100) : 0;
@@ -89,14 +90,6 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 			>
 				<div className="c-flowplayer-progress__track">
 					<div className="c-flowplayer-progress__buffered" style={{ width: `${bufferedPct}%` }} />
-					<div
-						className="c-flowplayer-progress__fill"
-						style={{ width: `${playedPct}%`, backgroundColor: accentColor }}
-					/>
-					<div
-						className="c-flowplayer-progress__handle"
-						style={{ left: `${playedPct}%`, backgroundColor: accentColor }}
-					/>
 					{cuepointMarkers.map((cuepoint, index) => {
 						if (cuepoint.startTime == null) {
 							return null;
@@ -111,10 +104,22 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 								style={{
 									left: `${(start / duration) * 100}%`,
 									width: `${((end - start) / duration) * 100}%`,
+									backgroundColor: `color-mix(in srgb, ${cuepointColor} 60%, transparent)`,
 								}}
 							/>
 						);
 					})}
+					{/* Drawn after the cuepoint markers (later in source order = higher paint order in
+					this shared stacking context) so playback progress stays visible over any cuepoint
+					it has already passed, instead of the marker painting over it. */}
+					<div
+						className="c-flowplayer-progress__fill"
+						style={{ width: `${playedPct}%`, backgroundColor: accentColor }}
+					/>
+					<div
+						className="c-flowplayer-progress__handle"
+						style={{ left: `${playedPct}%`, backgroundColor: accentColor }}
+					/>
 				</div>
 			</div>
 			{showTimestamps && (

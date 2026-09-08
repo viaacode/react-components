@@ -11,5 +11,6 @@ export interface ProgressBarProps {
 	cuepoints?: Cuepoints;
 	accentColor: string;
 	foregroundColor: string;
+	cuepointColor: string;
 	ariaLabel: string;
 }

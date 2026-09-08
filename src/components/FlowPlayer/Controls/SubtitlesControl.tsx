@@ -13,8 +13,6 @@ export interface SubtitlesControlProps {
 	onSelect: (trackKey: string | null) => void;
 	offLabel: string;
 	triggerLabel: string;
-	flyoutForegroundColor: string;
-	flyoutBackground: string;
 	isOpen: boolean;
 	onOpen: () => void;
 	onClose: () => void;
@@ -30,8 +28,6 @@ export const SubtitlesControl: FC<SubtitlesControlProps> = ({
 	onSelect,
 	offLabel,
 	triggerLabel,
-	flyoutForegroundColor,
-	flyoutBackground,
 	isOpen,
 	onOpen,
 	onClose,
@@ -45,8 +41,6 @@ export const SubtitlesControl: FC<SubtitlesControlProps> = ({
 		<ControlFlyout
 			id={`${id}__subtitles`}
 			flyoutClassName="c-flowplayer-subtitles-flyout"
-			flyoutBackground={flyoutBackground}
-			flyoutForegroundColor={flyoutForegroundColor}
 			isOpen={isOpen}
 			onOpen={onOpen}
 			onClose={onClose}

@@ -2,11 +2,6 @@
 @use "../flowplayer-shared" as *;
 
 $g-spacer-unit: 0.8rem;
-
-// Colors are runtime CSS custom properties set by ControlBar.tsx - these are just the fallbacks.
-$flowplayer-controls-default-bg: #000;
-$flowplayer-controls-default-fg: #fff;
-$flowplayer-controls-default-accent: #00c8aa;
 $flowplayer-controls-radius: 99.9rem; // always fully round - clamps automatically to half the shorter side
 
 // Measurements below are taken from the Figma export, not assumed.
@@ -24,17 +19,12 @@ $flowplayer-progress-track-height: math.div($g-spacer-unit, 2); // 0.4rem
 $flowplayer-progress-handle-size: $g-spacer-unit;
 $flowplayer-track-background: #222; // unplayed track
 $flowplayer-buffered-background: #505050; // buffered range
-$flowplayer-cuepoint-background: rgb(255 255 255 / 60%); // not present in any export - unconfirmed, left as-is
 
 // Volume/subtitles/speed share one pill: 4px inset on every edge, then each icon gets a 40x28
 // slot (28 = 36 - 2*4) with zero gap between adjacent slots - they sit flush against each other.
 $flowplayer-slot-inset: math.div($g-spacer-unit, 2); // 0.4rem
 $flowplayer-slot-width: $g-spacer-unit * 5; // 4rem
 $flowplayer-slot-height: $g-spacer-unit * 3.5; // 2.8rem
-
-// Background for a toggled-on slot icon (e.g. muted) or an open flyout trigger - follows the
-// accent color from `colors` (falls back to this when unset).
-$flowplayer-slot-active-background: #009690;
 
 // This codebase's root font-size is 10px (62.5% reset), not the usual 16px - 0.8rem/1.6rem are the correct 8px/16px here.
 $flowplayer-controls-transition: opacity 0.2s ease;
@@ -54,13 +44,14 @@ $flowplayer-flyout-option-padding-inline-end: $g-spacer-unit*2;
 $flowplayer-flyout-option-row-gap: $g-spacer-unit;
 $flowplayer-flyout-option-sublabel-gap: math.div($g-spacer-unit, 2);
 $flowplayer-flyout-option-icon-size: 2rem;
+$flowplayer-flyout-background: #fff;
 $flowplayer-flyout-option-divider-color: #dbdbdb; // silver
 $flowplayer-flyout-option-text-color: #000;
 $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 
 @mixin flowplayer-focus-ring {
 	&:focus-visible {
-		outline: $flowplayer-focus-outline-width solid var(--flowplayer-controls-accent, $flowplayer-controls-default-accent);
+		outline: $flowplayer-focus-outline-width solid var(--flowplayer-controls-accent);
 		outline-offset: $flowplayer-focus-outline-offset;
 	}
 }
@@ -88,7 +79,7 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 		display: flex;
 		align-items: center;
 		gap: $g-spacer-unit; // gap between the 4 top-level segments
-		color: var(--flowplayer-controls-fg, $flowplayer-controls-default-fg);
+		color: var(--flowplayer-controls-fg);
 		transition: $flowplayer-controls-transition;
 		opacity: 1;
 
@@ -108,7 +99,7 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 			align-items: center;
 			height: $flowplayer-icon-button-height;
 			border-radius: $flowplayer-controls-radius;
-			background-color: var(--flowplayer-controls-bg, $flowplayer-controls-default-bg);
+			background-color: var(--flowplayer-controls-bg);
 
 			&--icon {
 				flex: 0 0 auto;
@@ -169,7 +160,7 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 		background: transparent;
 		border: none;
 		cursor: pointer;
-		color: var(--flowplayer-controls-fg, $flowplayer-controls-default-fg);
+		color: var(--flowplayer-controls-fg);
 
 		// Same reasoning, one level down.
 		[class$="__content"],
@@ -191,7 +182,7 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 
 		// Toggled-on slot (e.g. muted) or its flyout open - background only, icon stays regular color.
 		&--active {
-			background-color: var(--flowplayer-controls-accent, $flowplayer-slot-active-background);
+			background-color: var(--flowplayer-controls-accent);
 		}
 
 		// Speed trigger shows the rate as text ("1x") instead of an icon - restore line-height and size it to fit the slot.
@@ -260,11 +251,13 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 			transform: translate(-50%, -50%);
 		}
 
+		// Taller than the track itself (same height as the handle) so it still pokes out above/below
+		// the fill once playback has passed it, instead of being fully hidden at the track's height.
 		&__cuepoint {
 			position: absolute;
-			top: 0;
-			height: 100%;
-			background-color: $flowplayer-cuepoint-background;
+			top: 50%;
+			height: $g-spacer-unit * 1.5;
+			transform: translateY(-50%);
 			border-radius: $flowplayer-controls-radius;
 			pointer-events: none;
 		}
@@ -291,6 +284,7 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 			list-style: none;
 			margin: 0;
 			padding: 0;
+			background-color: $flowplayer-flyout-background;
 		}
 
 		&__option {

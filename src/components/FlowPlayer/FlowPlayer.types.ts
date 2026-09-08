@@ -189,13 +189,7 @@ export interface FlowPlayerControlsColors {
 	foregroundColor?: string; // icon color + timestamp text color, against `backgroundColor`
 	progressColor?: string; // progress fill/handle
 	accentColor?: string; // background of a highlighted/selected button (muted, subtitles/speed open or on)
-	flyoutBackground?: string; // volume/subtitles/speed popover surface
-	// Text/icon color *inside* a flyout popover, against `flyoutBackground` - deliberately
-	// separate from `foregroundColor`: that one is meant to read against the dark bar, this one
-	// against the (by default light) popover, and reusing one token for both goes invisible the
-	// moment the two backgrounds aren't the same shade (confirmed live: white text on a white
-	// popover). Defaults dark to match `flyoutBackground`'s own default of white.
-	flyoutForeground?: string;
+	cuepointColor?: string; // progress track cuepoint marker background
 }
 
 export interface FlowPlayerControlsLabels {

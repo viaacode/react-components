@@ -191,7 +191,6 @@ export const ControlBar: FC<ControlBarProps> = ({
 		['--flowplayer-controls-fg' as string]: mergedColors.foregroundColor,
 		['--flowplayer-controls-progress' as string]: mergedColors.progressColor,
 		['--flowplayer-controls-accent' as string]: mergedColors.accentColor,
-		['--flowplayer-controls-flyout-bg' as string]: mergedColors.flyoutBackground,
 	};
 
 	return (
@@ -240,6 +239,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 							cuepoints={cuepoints}
 							accentColor={mergedColors.progressColor}
 							foregroundColor={mergedColors.foregroundColor}
+							cuepointColor={mergedColors.cuepointColor}
 							ariaLabel={mergedLabels.progressBar}
 						/>
 					</div>
@@ -259,8 +259,6 @@ export const ControlBar: FC<ControlBarProps> = ({
 								onSelect={handleSelectSubtitleTrack}
 								offLabel={mergedLabels.subtitlesOff}
 								triggerLabel={mergedLabels.subtitles}
-								flyoutForegroundColor={mergedColors.flyoutForeground}
-								flyoutBackground={mergedColors.flyoutBackground}
 								isOpen={openFlyout === FlyoutId.subtitles}
 								onOpen={() => openFlyoutHandler(FlyoutId.subtitles)}
 								onClose={() => closeFlyoutHandler(FlyoutId.subtitles)}
@@ -277,8 +275,6 @@ export const ControlBar: FC<ControlBarProps> = ({
 								currentRate={state.playbackRate}
 								onChange={actions.setPlaybackRate}
 								label={mergedLabels.speed}
-								flyoutBackground={mergedColors.flyoutBackground}
-								flyoutForegroundColor={mergedColors.flyoutForeground}
 								isOpen={openFlyout === FlyoutId.speed}
 								onOpen={() => openFlyoutHandler(FlyoutId.speed)}
 								onClose={() => closeFlyoutHandler(FlyoutId.speed)}

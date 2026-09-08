@@ -19,8 +19,6 @@ export interface ControlFlyoutProps {
 	options: FlyoutOptionData[];
 	activeKey: string | number;
 	onSelect: (key: string | number) => void;
-	flyoutBackground: string;
-	flyoutForegroundColor: string;
 	isOpen: boolean;
 	onOpen: () => void;
 	onClose: () => void;
@@ -34,8 +32,6 @@ export const ControlFlyout: FC<ControlFlyoutProps> = ({
 	options,
 	activeKey,
 	onSelect,
-	flyoutBackground,
-	flyoutForegroundColor,
 	isOpen,
 	onOpen,
 	onClose,
@@ -56,10 +52,7 @@ export const ControlFlyout: FC<ControlFlyoutProps> = ({
 		>
 			<DropdownButton>{trigger}</DropdownButton>
 			<DropdownContent>
-				<ul
-					className={`${flyoutClassName}__list`}
-					style={{ backgroundColor: flyoutBackground, color: flyoutForegroundColor }}
-				>
+				<ul className={`${flyoutClassName}__list`}>
 					{options.map((option) => {
 						const isActive = option.key === activeKey;
 						return (

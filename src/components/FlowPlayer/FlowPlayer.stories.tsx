@@ -381,7 +381,6 @@ export const CustomControlsCustomColors: Story = {
 				backgroundColor: '#1d1d1d',
 				foregroundColor: '#f5f5f5',
 				accentColor: '#ff6b6b',
-				flyoutBackground: '#2a2a2a',
 			},
 		},
 	},

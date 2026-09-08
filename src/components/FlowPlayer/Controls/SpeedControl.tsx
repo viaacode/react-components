@@ -9,8 +9,6 @@ export interface SpeedControlProps {
 	currentRate: number;
 	onChange: (rate: number) => void;
 	label: string;
-	flyoutBackground: string;
-	flyoutForegroundColor: string;
 	isOpen: boolean;
 	onOpen: () => void;
 	onClose: () => void;
@@ -22,8 +20,6 @@ export const SpeedControl: FC<SpeedControlProps> = ({
 	currentRate,
 	onChange,
 	label,
-	flyoutBackground,
-	flyoutForegroundColor,
 	isOpen,
 	onOpen,
 	onClose,
@@ -31,8 +27,6 @@ export const SpeedControl: FC<SpeedControlProps> = ({
 	<ControlFlyout
 		id={`${id}__speed`}
 		flyoutClassName="c-flowplayer-speed-flyout"
-		flyoutBackground={flyoutBackground}
-		flyoutForegroundColor={flyoutForegroundColor}
 		isOpen={isOpen}
 		onOpen={onOpen}
 		onClose={onClose}

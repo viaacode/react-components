@@ -15,8 +15,7 @@ export const defaultControlsColors: Required<FlowPlayerControlsColors> = {
 	foregroundColor: '#FFFFFF',
 	progressColor: '#00CCA9',
 	accentColor: '#009991',
-	flyoutBackground: '#FFFFFF',
-	flyoutForeground: '#000000',
+	cuepointColor: '#009991',
 };
 
 // Matches the rest of FlowPlayer.consts.ts: Dutch defaults, overridable by the consumer.
