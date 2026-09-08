@@ -1,60 +1,58 @@
 @use "sass:math";
 @use "../flowplayer-shared" as *;
 
+$g-spacer-unit: 0.8rem;
+
 // Colors are runtime CSS custom properties set by ControlBar.tsx - these are just the fallbacks.
 $flowplayer-controls-default-bg: #000;
 $flowplayer-controls-default-fg: #fff;
 $flowplayer-controls-default-accent: #00c8aa;
-$flowplayer-controls-default-flyout-bg: #fff;
 $flowplayer-controls-radius: 99.9rem; // always fully round - clamps automatically to half the shorter side
 
 // Measurements below are taken from the Figma export, not assumed.
 
 // Play/pause and fullscreen: each a 48x36 "stadium" pill (rx=18). 36px is also the height of
 // every other segment in the bar.
-$flowplayer-icon-button-width: 4.8rem;
-$flowplayer-icon-button-height: 3.6rem;
-$flowplayer-controls-gap: 0.8rem; // gap between the 4 top-level segments
-$flowplayer-controls-edge-offset: 0.8rem; // not in the exports - matches the inter-segment gap; flag if this should differ
+$flowplayer-icon-button-width: $g-spacer-unit * 6; // 4.8rem
+$flowplayer-icon-button-height: $g-spacer-unit * 4.5; // 3.6rem
+$flowplayer-controls-edge-offset: $g-spacer-unit;
 
 // Progress segment: [current time] -- gap -- [track] -- gap -- [duration], same value for the
 // gap and the segment's own inline padding.
 $flowplayer-progress-inline-gap: 1.68rem;
-$flowplayer-progress-track-height: 0.4rem;
-$flowplayer-progress-handle-size: 0.8rem;
+$flowplayer-progress-track-height: math.div($g-spacer-unit, 2); // 0.4rem
+$flowplayer-progress-handle-size: $g-spacer-unit;
 $flowplayer-track-background: #222; // unplayed track
 $flowplayer-buffered-background: #505050; // buffered range
 $flowplayer-cuepoint-background: rgb(255 255 255 / 60%); // not present in any export - unconfirmed, left as-is
 
 // Volume/subtitles/speed share one pill: 4px inset on every edge, then each icon gets a 40x28
 // slot (28 = 36 - 2*4) with zero gap between adjacent slots - they sit flush against each other.
-$flowplayer-slot-inset: 0.4rem;
-$flowplayer-slot-width: 4rem;
-$flowplayer-slot-height: 2.8rem;
+$flowplayer-slot-inset: math.div($g-spacer-unit, 2); // 0.4rem
+$flowplayer-slot-width: $g-spacer-unit * 5; // 4rem
+$flowplayer-slot-height: $g-spacer-unit * 3.5; // 2.8rem
 
 // Background for a toggled-on slot icon (e.g. muted) or an open flyout trigger - follows the
 // accent color from `colors` (falls back to this when unset).
 $flowplayer-slot-active-background: #009690;
 
 // This codebase's root font-size is 10px (62.5% reset), not the usual 16px - 0.8rem/1.6rem are the correct 8px/16px here.
-$flowplayer-controls-padding-block: 0.8rem; // 8px
-$flowplayer-controls-padding-inline: 1.6rem; // 16px
 $flowplayer-controls-transition: opacity 0.2s ease;
 $flowplayer-focus-outline-width: 0.2rem;
 $flowplayer-focus-outline-offset: 0.2rem;
 
 // Subtitles flyout card: 240px wide, square corners, drop shadow, "Off" row + track list.
 $flowplayer-subtitles-flyout-width: 24rem;
-$flowplayer-flyout-shadow: 0 0 0.8rem rgb(0 0 0 / 24%);
+$flowplayer-flyout-shadow: 0 0 $g-spacer-unit rgb(0 0 0 / 24%);
 
 // Option row: checkmark box (reserves its space even when empty) -- gap -- label (+ optional
 // trailing icon), with an optional HTML sublabel below, indented to sit under the label/icon
 // rather than the checkmark. One divider line between every option, not just at fixed points.
-$flowplayer-flyout-option-padding-block: 1.6rem;
-$flowplayer-flyout-option-padding-inline-start: 0.8rem;
-$flowplayer-flyout-option-padding-inline-end: 1.6rem;
-$flowplayer-flyout-option-row-gap: 0.8rem;
-$flowplayer-flyout-option-sublabel-gap: 0.4rem;
+$flowplayer-flyout-option-padding-block: $g-spacer-unit * 2;
+$flowplayer-flyout-option-padding-inline-start: $g-spacer-unit;
+$flowplayer-flyout-option-padding-inline-end: $g-spacer-unit*2;
+$flowplayer-flyout-option-row-gap: $g-spacer-unit;
+$flowplayer-flyout-option-sublabel-gap: math.div($g-spacer-unit, 2);
 $flowplayer-flyout-option-icon-size: 2rem;
 $flowplayer-flyout-option-divider-color: #dbdbdb; // silver
 $flowplayer-flyout-option-text-color: #000;
@@ -89,7 +87,7 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 		z-index: 5;
 		display: flex;
 		align-items: center;
-		gap: $flowplayer-controls-gap;
+		gap: $g-spacer-unit; // gap between the 4 top-level segments
 		color: var(--flowplayer-controls-fg, $flowplayer-controls-default-fg);
 		transition: $flowplayer-controls-transition;
 		opacity: 1;
@@ -314,7 +312,7 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 			// divider. The divider therefore lives on the <li>, where sibling order is real.
 			&-item {
 				&:not(:last-child) {
-					border-bottom: 0.1rem solid $flowplayer-flyout-option-divider-color;
+					border-bottom: 1px solid $flowplayer-flyout-option-divider-color;
 				}
 			}
 
