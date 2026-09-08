@@ -9,13 +9,11 @@ export interface UseKeyboardShortcutsOptions {
 /**
  * Space/F/M/arrow shortcuts while focus is anywhere inside the custom control bar.
  *
- * Volume is mute/unmute only (M) - no granular up/down, since there's no volume-level UI to
- * reflect it (see VolumeControl.tsx).
+ * Volume is mute/unmute only (M) - there's no volume-level UI to reflect finer control.
  *
- * Arrow-key seeking is a deliberate hybrid: Flowplayer's own global keyboard plugin already seeks
- * when the focused element has `aria-valuenow` (true for our progress bar), so we no-op there to
- * avoid double-firing. Everywhere else (play/pause, mute, fullscreen buttons) that plugin doesn't
- * recognize focus, so we call `enqueueSeek` ourselves (see useFlowplayerState.ts) to fill the gap.
+ * Arrow-key seeking is a deliberate hybrid: Flowplayer's global keyboard plugin already seeks when
+ * the focused element has `aria-valuenow` (our progress bar), so we no-op there to avoid double-
+ * firing, and call `enqueueSeek` ourselves everywhere else.
  */
 export function useKeyboardShortcuts({ actions }: UseKeyboardShortcutsOptions) {
 	return (event: KeyboardEvent<HTMLElement>) => {
@@ -30,16 +28,18 @@ export function useKeyboardShortcuts({ actions }: UseKeyboardShortcutsOptions) {
 		}
 
 		const target = event.target as HTMLElement;
-
-		// A focused <button> (play/pause, mute, fullscreen, ...) already activates on Space via
-		// native browser behaviour - don't also run the global action, or the two fire together.
 		const isButton = target.tagName === 'BUTTON';
 
+		// A focused button is clicked directly rather than left to native Space activation:
+		// Flowplayer's global keyboard plugin preventDefaults Space wherever focus is in the player,
+		// which swallows the native click on any button but play/pause (e.g. Space on Mute would
+		// just toggle playback instead of muting).
 		if (keysSpacebar.includes(event.key)) {
 			if (isButton) {
-				return;
+				target.click();
+			} else {
+				actions.togglePlay();
 			}
-			actions.togglePlay();
 			event.preventDefault();
 			event.stopPropagation();
 			return;

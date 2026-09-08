@@ -67,15 +67,20 @@ describe('useKeyboardShortcuts', () => {
 		expect(actions.enqueueSeek).toHaveBeenCalledWith(-1);
 	});
 
-	it('toggles play on Space unless focus is on a button', () => {
+	it('toggles play on Space, but clicks the target directly when it is a button', () => {
 		const actions = buildActions();
 		const { result } = renderHook(() => useKeyboardShortcuts({ actions }));
 
 		result.current(buildEvent(' '));
 		expect(actions.togglePlay).toHaveBeenCalledTimes(1);
 
-		result.current(buildEvent(' ', { tagName: 'BUTTON' }));
+		const buttonEvent = buildEvent(' ', { tagName: 'BUTTON' });
+		const clickSpy = jest.spyOn(buttonEvent.target as HTMLElement, 'click');
+		result.current(buttonEvent);
 		expect(actions.togglePlay).toHaveBeenCalledTimes(1);
+		expect(clickSpy).toHaveBeenCalledTimes(1);
+		expect(buttonEvent.preventDefault).toHaveBeenCalled();
+		expect(buttonEvent.stopPropagation).toHaveBeenCalled();
 	});
 
 	it('toggles fullscreen on F and mute on M', () => {
