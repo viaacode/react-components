@@ -174,6 +174,9 @@ export interface FlowPlayerCustomControlsConfig {
 
 	autoHideDelayMs?: number; // default 3000, 0 disables auto-hide
 
+	// Label set to use. Defaults to 'nl'.
+	locale?: 'nl' | 'en';
+
 	// Native mode only ever shows the title/logo overlay in fullscreen (see FlowPlayer.scss) - a
 	// normal embedded player essentially never displays it. Custom mode keeps that same
 	// conservative default (false); opt in for a demo/player-page context where showing it,
@@ -181,7 +184,6 @@ export interface FlowPlayerCustomControlsConfig {
 	showTitleOverlay?: boolean; // default false
 
 	colors?: FlowPlayerControlsColors;
-	labels?: FlowPlayerControlsLabels;
 }
 
 export interface FlowPlayerControlsColors {
@@ -192,16 +194,18 @@ export interface FlowPlayerControlsColors {
 	cuepointColor?: string; // progress track cuepoint marker background
 }
 
-export interface FlowPlayerControlsLabels {
-	play?: string;
-	pause?: string;
-	mute?: string;
-	unmute?: string;
-	volume?: string;
-	fullscreenEnter?: string;
-	fullscreenExit?: string;
-	subtitles?: string;
-	subtitlesOff?: string;
-	speed?: string;
-	progressBar?: string;
+export enum FlowPlayerControlsLabelKey {
+	Play = 'play',
+	Pause = 'pause',
+	Mute = 'mute',
+	Unmute = 'unmute',
+	Volume = 'volume',
+	FullscreenEnter = 'fullscreenEnter',
+	FullscreenExit = 'fullscreenExit',
+	Subtitles = 'subtitles',
+	SubtitlesOff = 'subtitlesOff',
+	Speed = 'speed',
+	ProgressBar = 'progressBar',
 }
+
+export type FlowPlayerControlsLabels = Record<FlowPlayerControlsLabelKey, string>;

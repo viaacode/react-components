@@ -6,7 +6,7 @@ import { FullscreenEnterIcon, FullscreenExitIcon } from './Controls.icons';
 export interface FullscreenButtonProps {
 	isFullscreen: boolean;
 	onToggle: () => void;
-	labels: Required<FlowPlayerControlsLabels>;
+	labels: FlowPlayerControlsLabels;
 }
 
 export const FullscreenButton: FC<FullscreenButtonProps> = ({ isFullscreen, onToggle, labels }) => (

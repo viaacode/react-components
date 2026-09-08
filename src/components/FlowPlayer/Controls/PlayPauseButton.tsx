@@ -6,7 +6,7 @@ import { PauseIcon, PlayIcon } from './Controls.icons';
 export interface PlayPauseButtonProps {
 	paused: boolean;
 	onToggle: () => void;
-	labels: Required<FlowPlayerControlsLabels>;
+	labels: FlowPlayerControlsLabels;
 }
 
 export const PlayPauseButton: FC<PlayPauseButtonProps> = ({ paused, onToggle, labels }) => (

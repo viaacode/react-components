@@ -1,11 +1,12 @@
 import clsx from 'clsx';
 import { type CSSProperties, type FC, useCallback, useEffect, useId, useMemo, useState } from 'react';
+import { Locale } from "../../../types";
+import { type FlowPlayerControlsColors } from '../FlowPlayer.types';
 import type { ControlBarProps } from './ControlBar.types';
-import type { FlowPlayerControlsColors, FlowPlayerControlsLabels } from '../FlowPlayer.types';
 import {
 	DEFAULT_AUTO_HIDE_DELAY_MS,
 	defaultControlsColors,
-	defaultControlsLabels,
+	FLOW_PLAYER_CONTROLS_LABELS,
 	isGenericPeakMode,
 } from './Controls.consts';
 import { FullscreenButton } from './FullscreenButton';
@@ -33,12 +34,11 @@ enum FlyoutId {
 	speed = 'speed',
 }
 
-// Stable identities for unset `config`/`colors`/`labels` - a `= {}` default in a destructuring
-// pattern allocates a new object every render, which would defeat the `useMemo`s below keyed on
-// `colors`/`labels` whenever the caller doesn't override them (the common case).
+// Stable identities for unset `config`/`colors` - a `= {}` default in a destructuring pattern
+// allocates a new object every render, which would defeat the `useMemo` below keyed on `colors`
+// whenever the caller doesn't override them (the common case).
 const EMPTY_CONFIG: NonNullable<ControlBarProps['config']> = {};
 const EMPTY_COLORS: NonNullable<FlowPlayerControlsColors> = {};
-const EMPTY_LABELS: NonNullable<FlowPlayerControlsLabels> = {};
 
 export const ControlBar: FC<ControlBarProps> = ({
 	playerRef,
@@ -67,14 +67,14 @@ export const ControlBar: FC<ControlBarProps> = ({
 		peakColorBackground,
 		autoHideDelayMs = DEFAULT_AUTO_HIDE_DELAY_MS,
 		colors = EMPTY_COLORS,
-		labels = EMPTY_LABELS,
+		locale = Locale.nl,
 	} = config;
 
 	// Stable per-instance id for the flyout dropdowns - avoids id collisions with multiple players on one page.
 	const controlsId = useId();
 
 	const mergedColors = useMemo(() => ({ ...defaultControlsColors, ...colors }), [colors]);
-	const mergedLabels = useMemo(() => ({ ...defaultControlsLabels, ...labels }), [labels]);
+	const labels = FLOW_PLAYER_CONTROLS_LABELS[locale];
 
 	const resolvedShowSubtitles = showSubtitles ?? hasSubtitles;
 	const resolvedShowSpeed = showSpeed ?? !!speed?.options?.length;
@@ -218,11 +218,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 				{/* Four independently-styled pill segments, matching the design - not one continuous bar. */}
 				{showPlayPause && (
 					<div className="c-flowplayer-control-bar__segment c-flowplayer-control-bar__segment--icon">
-						<PlayPauseButton
-							paused={state.paused}
-							onToggle={actions.togglePlay}
-							labels={mergedLabels}
-						/>
+						<PlayPauseButton paused={state.paused} onToggle={actions.togglePlay} labels={labels} />
 					</div>
 				)}
 
@@ -240,7 +236,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 							accentColor={mergedColors.progressColor}
 							foregroundColor={mergedColors.foregroundColor}
 							cuepointColor={mergedColors.cuepointColor}
-							ariaLabel={mergedLabels.progressBar}
+							ariaLabel={labels.progressBar}
 						/>
 					</div>
 				)}
@@ -248,7 +244,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 				{hasSecondarySegment && (
 					<div className="c-flowplayer-control-bar__segment c-flowplayer-control-bar__segment--secondary">
 						{showVolume && (
-							<VolumeControl muted={state.muted} onToggleMute={actions.toggleMute} labels={mergedLabels} />
+							<VolumeControl muted={state.muted} onToggleMute={actions.toggleMute} labels={labels} />
 						)}
 
 						{resolvedShowSubtitles && (
@@ -257,8 +253,8 @@ export const ControlBar: FC<ControlBarProps> = ({
 								tracks={subtitleTracks}
 								activeTrackKey={activeSubtitleTrackKey}
 								onSelect={handleSelectSubtitleTrack}
-								offLabel={mergedLabels.subtitlesOff}
-								triggerLabel={mergedLabels.subtitles}
+								offLabel={labels.subtitlesOff}
+								triggerLabel={labels.subtitles}
 								isOpen={openFlyout === FlyoutId.subtitles}
 								onOpen={() => openFlyoutHandler(FlyoutId.subtitles)}
 								onClose={() => closeFlyoutHandler(FlyoutId.subtitles)}
@@ -274,7 +270,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 								}))}
 								currentRate={state.playbackRate}
 								onChange={actions.setPlaybackRate}
-								label={mergedLabels.speed}
+								label={labels.speed}
 								isOpen={openFlyout === FlyoutId.speed}
 								onOpen={() => openFlyoutHandler(FlyoutId.speed)}
 								onClose={() => closeFlyoutHandler(FlyoutId.speed)}
@@ -288,7 +284,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 						<FullscreenButton
 							isFullscreen={state.isFullscreen}
 							onToggle={actions.toggleFullscreen}
-							labels={mergedLabels}
+							labels={labels}
 						/>
 					</div>
 				)}

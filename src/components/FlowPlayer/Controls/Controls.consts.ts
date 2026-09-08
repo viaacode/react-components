@@ -1,4 +1,9 @@
-import type { FlowPlayerControlsColors, FlowPlayerControlsLabels } from '../FlowPlayer.types';
+import { Locale } from "../../../types";
+import {
+	type FlowPlayerControlsColors,
+	FlowPlayerControlsLabelKey,
+	type FlowPlayerControlsLabels,
+} from '../FlowPlayer.types';
 
 export const DEFAULT_AUTO_HIDE_DELAY_MS = 3000;
 export const DEFAULT_SHOW_PEAK = true;
@@ -18,17 +23,36 @@ export const defaultControlsColors: Required<FlowPlayerControlsColors> = {
 	cuepointColor: '#009991',
 };
 
-// Matches the rest of FlowPlayer.consts.ts: Dutch defaults, overridable by the consumer.
-export const defaultControlsLabels: Required<FlowPlayerControlsLabels> = {
-	play: 'Afspelen',
-	pause: 'Pauzeren',
-	mute: 'Dempen',
-	unmute: 'Dempen opheffen',
-	volume: 'Volume',
-	fullscreenEnter: 'Volledig scherm',
-	fullscreenExit: 'Volledig scherm sluiten',
-	subtitles: 'Ondertitels',
-	subtitlesOff: 'Uit',
-	speed: 'Snelheid',
-	progressBar: 'Voortgang',
+// Base label sets per locale - the consumer's `labels` config overrides individual keys on top
+// of whichever set `locale` resolves to. Defaults to nl, matching the rest of FlowPlayer.consts.ts.
+export const FLOW_PLAYER_CONTROLS_LABELS: Record<
+	Locale,
+	FlowPlayerControlsLabels
+> = {
+	[Locale.nl]: {
+		[FlowPlayerControlsLabelKey.Play]: 'Afspelen',
+		[FlowPlayerControlsLabelKey.Pause]: 'Pauzeren',
+		[FlowPlayerControlsLabelKey.Mute]: 'Dempen',
+		[FlowPlayerControlsLabelKey.Unmute]: 'Dempen opheffen',
+		[FlowPlayerControlsLabelKey.Volume]: 'Volume',
+		[FlowPlayerControlsLabelKey.FullscreenEnter]: 'Volledig scherm',
+		[FlowPlayerControlsLabelKey.FullscreenExit]: 'Volledig scherm sluiten',
+		[FlowPlayerControlsLabelKey.Subtitles]: 'Ondertitels',
+		[FlowPlayerControlsLabelKey.SubtitlesOff]: 'Uit',
+		[FlowPlayerControlsLabelKey.Speed]: 'Snelheid',
+		[FlowPlayerControlsLabelKey.ProgressBar]: 'Voortgang',
+	},
+	[Locale.en]: {
+		[FlowPlayerControlsLabelKey.Play]: 'Play',
+		[FlowPlayerControlsLabelKey.Pause]: 'Pause',
+		[FlowPlayerControlsLabelKey.Mute]: 'Mute',
+		[FlowPlayerControlsLabelKey.Unmute]: 'Unmute',
+		[FlowPlayerControlsLabelKey.Volume]: 'Volume',
+		[FlowPlayerControlsLabelKey.FullscreenEnter]: 'Enter fullscreen',
+		[FlowPlayerControlsLabelKey.FullscreenExit]: 'Exit fullscreen',
+		[FlowPlayerControlsLabelKey.Subtitles]: 'Subtitles',
+		[FlowPlayerControlsLabelKey.SubtitlesOff]: 'Off',
+		[FlowPlayerControlsLabelKey.Speed]: 'Speed',
+		[FlowPlayerControlsLabelKey.ProgressBar]: 'Progress',
+	},
 };

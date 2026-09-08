@@ -13,6 +13,7 @@ import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
 import type { ChangeEvent, FunctionComponent, ReactNode } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Locale } from "../../types";
 import { RichTextEditorHeadingsDropdown } from './components/RichTextEditorHeadingsDropdown/RichTextEditorHeadingsDropdown';
 import { RichTextEditorLinkDropdown } from './components/RichTextEditorLinkDropdown/RichTextEditorLinkDropdown';
 import { RichTextEditorTableDropdown } from './components/RichTextEditorTableDropdown/RichTextEditorTableDropdown';
@@ -42,7 +43,6 @@ import { LabelKey, RICH_TEXT_EDITOR_LABELS } from './RichTextEditor.labels';
 import {
 	ALL_RICH_TEXT_HEADINGS,
 	type Heading,
-	Locale,
 	type RichTextEditorControl,
 	type RichTextEditorMedia,
 	type RichTextEditorUploadInfo,

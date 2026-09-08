@@ -7,7 +7,7 @@ import { MuteIcon, VolumeIcon } from './Controls.icons';
 export interface VolumeControlProps {
 	muted: boolean;
 	onToggleMute: () => void;
-	labels: Required<FlowPlayerControlsLabels>;
+	labels: FlowPlayerControlsLabels;
 }
 
 /** No flyout/slider - a plain mute/unmute toggle, backed by `muted` rather than `volume` so it
