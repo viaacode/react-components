@@ -206,6 +206,7 @@ export enum FlowPlayerControlsLabelKey {
 	SubtitlesOff = 'subtitlesOff',
 	Speed = 'speed',
 	ProgressBar = 'progressBar',
+	Cuepoint = 'cuepoint',
 }
 
 export type FlowPlayerControlsLabels = Record<FlowPlayerControlsLabelKey, string>;

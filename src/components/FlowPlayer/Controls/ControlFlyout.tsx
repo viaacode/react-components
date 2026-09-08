@@ -1,4 +1,5 @@
-import type { FC, ReactNode } from 'react';
+import { cloneElement, isValidElement } from 'react';
+import type { FC, ReactElement, ReactNode } from 'react';
 import Dropdown from '../../Dropdown/Dropdown';
 import { DropdownButton, DropdownContent } from '../../Dropdown/Dropdown.slots';
 import { CheckIcon } from './Controls.icons';
@@ -38,6 +39,16 @@ export const ControlFlyout: FC<ControlFlyoutProps> = ({
 }) => {
 	const optionClassName = `${flyoutClassName}__option`;
 
+	// Injects the disclosure-widget ARIA wiring onto the caller-supplied trigger without requiring
+	// callers to know about the popup they're attached to.
+	const triggerWithAria = isValidElement(trigger)
+		? cloneElement(trigger as ReactElement<Record<string, unknown>>, {
+				'aria-haspopup': 'menu',
+				'aria-expanded': isOpen,
+				'aria-controls': id,
+			})
+		: trigger;
+
 	return (
 		<Dropdown
 			id={id}
@@ -50,17 +61,18 @@ export const ControlFlyout: FC<ControlFlyoutProps> = ({
 			shiftPadding={8}
 			maxHeightPadding={8}
 		>
-			<DropdownButton>{trigger}</DropdownButton>
+			<DropdownButton>{triggerWithAria}</DropdownButton>
 			<DropdownContent>
-				<ul className={`${flyoutClassName}__list`}>
+				<div className={`${flyoutClassName}__list`} role="menu">
 					{options.map((option) => {
 						const isActive = option.key === activeKey;
 						return (
-							<li key={option.key} className={`${optionClassName}-item`}>
+							<div key={option.key} className={`${optionClassName}-item`} role="none">
 								<button
 									type="button"
 									className={optionClassName}
-									aria-pressed={isActive}
+									role="menuitemradio"
+									aria-checked={isActive}
 									onClick={() => onSelect(option.key)}
 								>
 									<span className={`${optionClassName}-row`}>
@@ -78,10 +90,10 @@ export const ControlFlyout: FC<ControlFlyoutProps> = ({
 										/>
 									)}
 								</button>
-							</li>
+							</div>
 						);
 					})}
-				</ul>
+				</div>
 			</DropdownContent>
 		</Dropdown>
 	);

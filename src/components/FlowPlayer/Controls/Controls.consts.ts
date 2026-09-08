@@ -41,6 +41,7 @@ export const FLOW_PLAYER_CONTROLS_LABELS: Record<Locale, FlowPlayerControlsLabel
 		[FlowPlayerControlsLabelKey.SubtitlesOff]: 'Uit',
 		[FlowPlayerControlsLabelKey.Speed]: 'Snelheid',
 		[FlowPlayerControlsLabelKey.ProgressBar]: 'Voortgang',
+		[FlowPlayerControlsLabelKey.Cuepoint]: 'Geknipt fragment',
 	},
 	[Locale.en]: {
 		[FlowPlayerControlsLabelKey.Play]: 'Play',
@@ -54,5 +55,6 @@ export const FLOW_PLAYER_CONTROLS_LABELS: Record<Locale, FlowPlayerControlsLabel
 		[FlowPlayerControlsLabelKey.SubtitlesOff]: 'Off',
 		[FlowPlayerControlsLabelKey.Speed]: 'Speed',
 		[FlowPlayerControlsLabelKey.ProgressBar]: 'Progress',
+		[FlowPlayerControlsLabelKey.Cuepoint]: 'Highlighted segment',
 	},
 };

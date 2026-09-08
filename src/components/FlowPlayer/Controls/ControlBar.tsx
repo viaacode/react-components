@@ -245,6 +245,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 							foregroundColor={mergedColors.foregroundColor}
 							cuepointColor={mergedColors.cuepointColor}
 							ariaLabel={labels.progressBar}
+							cuepointLabel={labels.cuepoint}
 						/>
 					</div>
 				)}

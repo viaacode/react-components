@@ -13,6 +13,7 @@ const defaultLabels = {
 	subtitlesOff: 'Off',
 	speed: 'Speed',
 	progressBar: 'Progress',
+	cuepoint: 'Highlighted segment',
 };
 
 const renderVolumeControl = (overrides: Partial<VolumeControlProps> = {}) =>
