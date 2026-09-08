@@ -28,7 +28,10 @@ import { VolumeControl } from './VolumeControl';
 
 import './ControlBar.scss';
 
-type FlyoutId = 'subtitles' | 'speed';
+enum FlyoutId {
+	subtitles = 'subtitles',
+	speed = 'speed',
+}
 
 // Stable identities for unset `config`/`colors`/`labels` - a `= {}` default in a destructuring
 // pattern allocates a new object every render, which would defeat the `useMemo`s below keyed on
@@ -258,9 +261,9 @@ export const ControlBar: FC<ControlBarProps> = ({
 								triggerLabel={mergedLabels.subtitles}
 								flyoutForegroundColor={mergedColors.flyoutForeground}
 								flyoutBackground={mergedColors.flyoutBackground}
-								isOpen={openFlyout === 'subtitles'}
-								onOpen={() => openFlyoutHandler('subtitles')}
-								onClose={() => closeFlyoutHandler('subtitles')}
+								isOpen={openFlyout === FlyoutId.subtitles}
+								onOpen={() => openFlyoutHandler(FlyoutId.subtitles)}
+								onClose={() => closeFlyoutHandler(FlyoutId.subtitles)}
 							/>
 						)}
 
@@ -276,9 +279,9 @@ export const ControlBar: FC<ControlBarProps> = ({
 								label={mergedLabels.speed}
 								flyoutBackground={mergedColors.flyoutBackground}
 								flyoutForegroundColor={mergedColors.flyoutForeground}
-								isOpen={openFlyout === 'speed'}
-								onOpen={() => openFlyoutHandler('speed')}
-								onClose={() => closeFlyoutHandler('speed')}
+								isOpen={openFlyout === FlyoutId.speed}
+								onOpen={() => openFlyoutHandler(FlyoutId.speed)}
+								onClose={() => closeFlyoutHandler(FlyoutId.speed)}
 							/>
 						)}
 					</div>
