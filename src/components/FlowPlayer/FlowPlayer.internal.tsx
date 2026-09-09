@@ -402,7 +402,11 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 			controls: isCustomControls ? false : controls,
 
 			// KEYBOARD
-			...(plugins.includes('keyboard') ? { keyboard: { seek_step: '15' } } : {}),
+			// `seek_step` must be a number - Flowplayer's own keyboard plugin only coerces it to one
+			// on the backward arrow (`-1 * seek_step`); forward (`+seek_step`) is added to
+			// `currentTime` as-is, so a string here silently turns forward-seeking into string
+			// concatenation instead of addition once the progress bar (a native tab-stop) has focus.
+			...(plugins.includes('keyboard') ? { keyboard: { seek_step: 15 } } : {}),
 
 			// SPEED
 			...(plugins.includes('speed') && speed
