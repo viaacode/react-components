@@ -124,7 +124,7 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 
 			&--secondary {
 				flex: 0 0 auto;
-				gap: 0; // slots sit flush against each other, no inter-icon gap
+				gap: math.div($g-spacer-unit, 2); // slots sit flush against each other, no inter-icon gap
 				padding: $flowplayer-slot-inset;
 			}
 		}
