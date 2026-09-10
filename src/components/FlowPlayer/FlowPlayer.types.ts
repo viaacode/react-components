@@ -187,11 +187,19 @@ export interface FlowPlayerCustomControlsConfig {
 }
 
 export interface FlowPlayerControlsColors {
-	backgroundColor?: string; // control bar background + button backgrounds
-	foregroundColor?: string; // icon color + timestamp text color, against `backgroundColor`
-	progressColor?: string; // progress fill/handle
-	accentColor?: string; // background of a highlighted/selected button (muted, subtitles/speed open or on)
-	cuepointColor?: string; // progress track cuepoint marker background
+	backgroundColor: string; // control bar background + button backgrounds
+	foregroundColor: string; // timestamp text color, against `backgroundColor`
+	progressColor: string; // progress fill/handle
+	activeButtonColor: string; // background of a highlighted/selected button (muted, subtitles/speed open or on)
+	cuepointColor: string; // progress track cuepoint marker background
+	buttonHoverColor: string; // button background on hover
+	activeButtonHoverColor: string; // active/toggled-on button (`--active`) background on hover
+	buttonPressedColor: string; // button background while pressed (`:active`)
+	activeButtonPressedColor: string; // active/toggled-on button (`--active`) background while pressed (`:active`)
+	progressTrackHoverColor: string; // progress track background while hovering the progress bar
+	buttonFocusColor: string; // button focus-visible outline color
+	buttonTextColor: string; // icon/label color of a regular button, against `backgroundColor`
+	activeButtonTextColor: string; // icon/label color of a highlighted/selected button, against `activeButtonColor`
 }
 
 export enum FlowPlayerControlsLabelKey {

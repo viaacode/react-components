@@ -26,7 +26,7 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 	onSeekEnd,
 	showTimestamps = true,
 	cuepoints,
-	accentColor,
+	progressColor,
 	foregroundColor,
 	cuepointColor,
 	ariaLabel,
@@ -167,11 +167,11 @@ export const ProgressBar: FC<ProgressBarProps> = ({
 					it has already passed, instead of the marker painting over it. */}
 					<div
 						className="c-flowplayer-progress__fill"
-						style={{ width: `${playedPct}%`, backgroundColor: accentColor }}
+						style={{ width: `${playedPct}%`, backgroundColor: progressColor }}
 					/>
 					<div
 						className="c-flowplayer-progress__handle"
-						style={{ left: `${playedPct}%`, backgroundColor: accentColor }}
+						style={{ left: `${playedPct}%`, backgroundColor: progressColor }}
 					/>
 				</div>
 			</div>
