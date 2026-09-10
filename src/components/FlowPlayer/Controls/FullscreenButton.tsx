@@ -16,5 +16,6 @@ export const FullscreenButton: FC<FullscreenButtonProps> = ({ isFullscreen, onTo
 		title={isFullscreen ? labels.fullscreenExit : labels.fullscreenEnter}
 		onClick={onToggle}
 		rootClassName="c-flowplayer-control-button"
+		className="c-flowplayer-control-button--slot"
 	/>
 );

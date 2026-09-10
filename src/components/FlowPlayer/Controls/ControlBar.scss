@@ -28,6 +28,7 @@ $flowplayer-slot-height: $g-spacer-unit * 3.5; // 2.8rem
 
 // This codebase's root font-size is 10px (62.5% reset), not the usual 16px - 0.8rem/1.6rem are the correct 8px/16px here.
 $flowplayer-controls-transition: opacity 0.2s ease;
+$flowplayer-interaction-transition-duration: 0.15s;
 $flowplayer-focus-outline-width: 0.2rem;
 $flowplayer-focus-outline-offset: 0.2rem;
 
@@ -49,9 +50,12 @@ $flowplayer-flyout-option-divider-color: #dbdbdb; // silver
 $flowplayer-flyout-option-text-color: #000;
 $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 
-@mixin flowplayer-focus-ring {
+@mixin flowplayer-focus-ring($color: var(--flowplayer-controls-active-button)) {
+	&:focus {
+		box-shadow: none;
+	}
 	&:focus-visible {
-		outline: $flowplayer-focus-outline-width solid var(--flowplayer-controls-accent);
+		outline: $flowplayer-focus-outline-width solid $color;
 		outline-offset: $flowplayer-focus-outline-offset;
 	}
 }
@@ -104,8 +108,11 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 			&--icon {
 				flex: 0 0 auto;
 
-				// No padding: the button itself is the full 48x36 pill, matching the reference exactly.
-				padding: 0;
+				// Same inset as `&--secondary` below, so a hover/active/pressed background never
+				// touches the segment's own edge here either - without it, only Volume/Subtitles/Speed
+				// (which already sit inset via `--slot`) showed the segment's background peeking
+				// through as an unintentional "border" around them on interaction.
+				padding: $flowplayer-slot-inset;
 			}
 
 			&--progress {
@@ -117,7 +124,7 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 
 			&--secondary {
 				flex: 0 0 auto;
-				gap: 0; // slots sit flush against each other, no inter-icon gap
+				gap: math.div($g-spacer-unit, 2); // slots sit flush against each other, no inter-icon gap
 				padding: $flowplayer-slot-inset;
 			}
 		}
@@ -160,7 +167,18 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 		background: transparent;
 		border: none;
 		cursor: pointer;
-		color: var(--flowplayer-controls-fg);
+		color: var(--flowplayer-controls-button-text);
+		transition:
+			background-color $flowplayer-interaction-transition-duration ease,
+			color $flowplayer-interaction-transition-duration ease;
+
+		&:hover {
+			background-color: var(--flowplayer-controls-button-hover);
+		}
+
+		&:active {
+			background-color: var(--flowplayer-controls-button-pressed);
+		}
 
 		// Same reasoning, one level down.
 		[class$="__content"],
@@ -174,15 +192,27 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 			margin: 0;
 		}
 
-		// Volume/subtitles/speed triggers - share one pill instead of having their own (see `&--secondary` above).
+		// The 40x28 button size inset within its segment's 48x36 pill - shared by every control (not
+		// just Volume/Subtitles/Speed, which also use it to sit flush together in one `&--secondary`
+		// pill) so a hover/active/pressed background always leaves the same 4px margin everywhere.
 		&--slot {
 			width: $flowplayer-slot-width;
 			height: $flowplayer-slot-height;
 		}
 
-		// Toggled-on slot (e.g. muted) or its flyout open - background only, icon stays regular color.
+		// Toggled-on slot (e.g. muted) or its flyout open - own background + icon/label color, since
+		// `activeButtonColor` may be a distinct enough hue that `buttonTextColor` no longer contrasts.
 		&--active {
-			background-color: var(--flowplayer-controls-accent);
+			background-color: var(--flowplayer-controls-active-button);
+			color: var(--flowplayer-controls-active-button-text);
+
+			&:hover {
+				background-color: var(--flowplayer-controls-active-button-hover);
+			}
+
+			&:active {
+				background-color: var(--flowplayer-controls-active-button-pressed);
+			}
 		}
 
 		// Speed trigger shows the rate as text ("1x") instead of an icon - restore line-height and size it to fit the slot.
@@ -196,7 +226,7 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 			}
 		}
 
-		@include flowplayer-focus-ring;
+		@include flowplayer-focus-ring(var(--flowplayer-controls-button-focus));
 	}
 
 	.c-flowplayer-progress {
@@ -220,10 +250,31 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 			height: 100%;
 			display: flex;
 			align-items: center;
-			cursor: pointer;
+			// A drag handle spanning the seekable range - same affordance native uses on its own timeline.
+			cursor: col-resize;
 			touch-action: none;
 
-			@include flowplayer-focus-ring;
+			&:hover {
+				.c-flowplayer-progress__track {
+					background-color: var(--flowplayer-controls-progress-track-hover);
+				}
+
+				.c-flowplayer-progress__handle {
+					transform: translate(-50%, -50%) scale(1.2);
+				}
+			}
+
+			// The hit-area is what's actually focusable (it spans the full segment height for an
+			// easier click/drag target - see the comment above), but a ring around that whole invisible
+			// height looks wrong - draw it tight around the visible `&__track` instead.
+			&:focus {
+				box-shadow: none;
+			}
+
+			&:focus-visible .c-flowplayer-progress__track {
+				outline: $flowplayer-focus-outline-width solid var(--flowplayer-controls-active-button);
+				outline-offset: $flowplayer-focus-outline-offset;
+			}
 		}
 
 		&__track {
@@ -232,6 +283,7 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 			height: $flowplayer-progress-track-height;
 			border-radius: $flowplayer-controls-radius;
 			background-color: $flowplayer-track-background;
+			transition: background-color $flowplayer-interaction-transition-duration ease;
 		}
 
 		&__buffered {
@@ -249,6 +301,8 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 			height: $flowplayer-progress-handle-size;
 			border-radius: 50%;
 			transform: translate(-50%, -50%);
+			// Only `transform` animates - `left` ticks every frame during playback and must stay instant.
+			transition: transform $flowplayer-interaction-transition-duration ease;
 		}
 
 		// Taller than the track itself (same height as the handle) so it still pokes out above/below

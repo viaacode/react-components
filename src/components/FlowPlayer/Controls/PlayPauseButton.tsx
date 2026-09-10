@@ -16,5 +16,6 @@ export const PlayPauseButton: FC<PlayPauseButtonProps> = ({ paused, onToggle, la
 		title={paused ? labels.play : labels.pause}
 		onClick={onToggle}
 		rootClassName="c-flowplayer-control-button"
+		className="c-flowplayer-control-button--slot"
 	/>
 );

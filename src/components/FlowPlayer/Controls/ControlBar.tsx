@@ -1,19 +1,9 @@
 import clsx from 'clsx';
-import {
-	type CSSProperties,
-	type FC,
-	useCallback,
-	useEffect,
-	useId,
-	useMemo,
-	useState,
-} from 'react';
+import { type CSSProperties, type FC, useCallback, useEffect, useId, useState } from 'react';
 import { Locale } from '../../../types';
-import type { FlowPlayerControlsColors } from '../FlowPlayer.types';
 import type { ControlBarProps } from './ControlBar.types';
 import {
 	DEFAULT_AUTO_HIDE_DELAY_MS,
-	defaultControlsColors,
 	FLOW_PLAYER_CONTROLS_LABELS,
 	isGenericPeakMode,
 } from './Controls.consts';
@@ -42,11 +32,10 @@ enum FlyoutId {
 	speed = 'speed',
 }
 
-// Stable identities for unset `config`/`colors` - a `= {}` default in a destructuring pattern
-// allocates a new object every render, which would defeat the `useMemo` below keyed on `colors`
-// whenever the caller doesn't override them (the common case).
+// Stable identity for an unset `config` - a `= {}` default in a destructuring pattern allocates a
+// new object every render, which would defeat the `useMemo` below keyed on `colors` whenever the
+// caller doesn't override them (the common case).
 const EMPTY_CONFIG: NonNullable<ControlBarProps['config']> = {};
-const EMPTY_COLORS: NonNullable<FlowPlayerControlsColors> = {};
 
 export const ControlBar: FC<ControlBarProps> = ({
 	playerRef,
@@ -74,14 +63,13 @@ export const ControlBar: FC<ControlBarProps> = ({
 		peakColorInactive,
 		peakColorBackground,
 		autoHideDelayMs = DEFAULT_AUTO_HIDE_DELAY_MS,
-		colors = EMPTY_COLORS,
+		colors,
 		locale = Locale.nl,
 	} = config;
 
 	// Stable per-instance id for the flyout dropdowns - avoids id collisions with multiple players on one page.
 	const controlsId = useId();
 
-	const mergedColors = useMemo(() => ({ ...defaultControlsColors, ...colors }), [colors]);
 	const labels = FLOW_PLAYER_CONTROLS_LABELS[locale];
 
 	const resolvedShowSubtitles = showSubtitles ?? hasSubtitles;
@@ -195,10 +183,18 @@ export const ControlBar: FC<ControlBarProps> = ({
 	const hasSecondarySegment = showVolume || resolvedShowSubtitles || hasSpeedOptions;
 
 	const colorVars: CSSProperties = {
-		['--flowplayer-controls-bg' as string]: mergedColors.backgroundColor,
-		['--flowplayer-controls-fg' as string]: mergedColors.foregroundColor,
-		['--flowplayer-controls-progress' as string]: mergedColors.progressColor,
-		['--flowplayer-controls-accent' as string]: mergedColors.accentColor,
+		['--flowplayer-controls-bg' as string]: colors?.backgroundColor,
+		['--flowplayer-controls-fg' as string]: colors?.foregroundColor,
+		['--flowplayer-controls-progress' as string]: colors?.progressColor,
+		['--flowplayer-controls-active-button' as string]: colors?.activeButtonColor,
+		['--flowplayer-controls-button-hover' as string]: colors?.buttonHoverColor,
+		['--flowplayer-controls-active-button-hover' as string]: colors?.activeButtonHoverColor,
+		['--flowplayer-controls-button-pressed' as string]: colors?.buttonPressedColor,
+		['--flowplayer-controls-active-button-pressed' as string]: colors?.activeButtonPressedColor,
+		['--flowplayer-controls-progress-track-hover' as string]: colors?.progressTrackHoverColor,
+		['--flowplayer-controls-button-focus' as string]: colors?.buttonFocusColor,
+		['--flowplayer-controls-button-text' as string]: colors?.buttonTextColor,
+		['--flowplayer-controls-active-button-text' as string]: colors?.activeButtonTextColor,
 	};
 
 	return (
@@ -241,9 +237,9 @@ export const ControlBar: FC<ControlBarProps> = ({
 							onSeekEnd={handleSeekEnd}
 							showTimestamps={showTimestamps}
 							cuepoints={cuepoints}
-							accentColor={mergedColors.progressColor}
-							foregroundColor={mergedColors.foregroundColor}
-							cuepointColor={mergedColors.cuepointColor}
+							progressColor={colors?.progressColor}
+							foregroundColor={colors?.foregroundColor}
+							cuepointColor={colors?.cuepointColor}
 							ariaLabel={labels.progressBar}
 							cuepointLabel={labels.cuepoint}
 						/>

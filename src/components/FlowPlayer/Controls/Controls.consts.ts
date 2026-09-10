@@ -1,9 +1,5 @@
 import { Locale } from '../../../types';
-import {
-	type FlowPlayerControlsColors,
-	FlowPlayerControlsLabelKey,
-	type FlowPlayerControlsLabels,
-} from '../FlowPlayer.types';
+import { FlowPlayerControlsLabelKey, type FlowPlayerControlsLabels } from '../FlowPlayer.types';
 
 export const DEFAULT_AUTO_HIDE_DELAY_MS = 3000;
 export const DEFAULT_SHOW_PEAK = true;
@@ -16,15 +12,6 @@ export function isGenericPeakMode(
 ): boolean {
 	return (showPeak ?? DEFAULT_SHOW_PEAK) && (peakMode ?? DEFAULT_PEAK_MODE) === 'generic';
 }
-
-// Sensible defaults only - not "the design". A real theme is applied via the `colors` config.
-export const defaultControlsColors: Required<FlowPlayerControlsColors> = {
-	backgroundColor: '#000000',
-	foregroundColor: '#FFFFFF',
-	progressColor: '#00CCA9',
-	accentColor: '#009991',
-	cuepointColor: '#009991',
-};
 
 // Base label sets per locale - the consumer's `labels` config overrides individual keys on top
 // of whichever set `locale` resolves to. Defaults to nl, matching the rest of FlowPlayer.consts.ts.

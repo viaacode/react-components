@@ -9,9 +9,9 @@ export interface ProgressBarProps {
 	onSeekEnd?: () => void;
 	showTimestamps?: boolean;
 	cuepoints?: Cuepoints;
-	accentColor: string;
-	foregroundColor: string;
-	cuepointColor: string;
+	progressColor?: string;
+	foregroundColor?: string;
+	cuepointColor?: string;
 	ariaLabel: string;
 	cuepointLabel: string;
 }
