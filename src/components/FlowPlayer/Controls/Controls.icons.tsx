@@ -15,6 +15,10 @@ export const PlayIcon: FC = () => (
 		height="15.375"
 		viewBox="0 0 14.0859 15.375"
 		aria-hidden="true"
+		// Triangle shape reads visually heavy on the left; nudge it right to look centered.
+		// transform (not margin) so the flex centering in `.c-flowplayer-control-button` doesn't
+		// halve the offset.
+		style={{ transform: 'translateX(2px)' }}
 	>
 		<path d="M0 0L14.0859 7.6875L0 15.375V0Z" fill="currentColor" />
 	</svg>
