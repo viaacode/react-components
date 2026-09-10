@@ -264,7 +264,17 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 				}
 			}
 
-			@include flowplayer-focus-ring;
+			// The hit-area is what's actually focusable (it spans the full segment height for an
+			// easier click/drag target - see the comment above), but a ring around that whole invisible
+			// height looks wrong - draw it tight around the visible `&__track` instead.
+			&:focus {
+				box-shadow: none;
+			}
+
+			&:focus-visible .c-flowplayer-progress__track {
+				outline: $flowplayer-focus-outline-width solid var(--flowplayer-controls-active-button);
+				outline-offset: $flowplayer-focus-outline-offset;
+			}
 		}
 
 		&__track {
