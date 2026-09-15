@@ -1,23 +1,26 @@
 import type { KeyboardEvent } from 'react';
 import { keysSpacebar } from '../../../utils/key-up';
+import { NATIVE_VOLUME_KEY_STEP } from './Controls.consts';
 import type { FlowplayerControlsActions } from './useFlowplayerState';
 
 export interface UseKeyboardShortcutsOptions {
 	actions: FlowplayerControlsActions;
+	/** Any flyout open. Arrow keys then belong to the flyout, not to the player behind it. */
+	isFlyoutOpen?: boolean;
 }
 
 /**
  * Space/F/M/arrow shortcuts while focus is anywhere inside the custom control bar.
  *
- * Volume isn't handled here: VolumeBars owns the arrow keys while it has focus, and Flowplayer's
- * global keyboard plugin already adjusts volume on ArrowUp/Down from anywhere else in the player.
- * Only M (mute) is ours.
+ * Both arrow axes are handled here rather than left to Flowplayer's global keyboard plugin, which
+ * gets them wrong for us in two ways: its volume nudge never releases the `muted` latch it walks
+ * into at volume 0, and its seek fires even while one of our flyouts is open. Anything we handle is
+ * stopped from propagating so the plugin can't also act on it.
  *
- * Arrow-key seeking is a deliberate hybrid: Flowplayer's global keyboard plugin already seeks when
- * the focused element has `aria-valuenow` (our progress bar), so we no-op there to avoid double-
- * firing, and call `enqueueSeek` ourselves everywhere else.
+ * VolumeBars stops its own arrows before they reach us, so it keeps owning both axes while
+ * focused; the progress bar handles neither, hence the `aria-valuenow` passthrough below.
  */
-export function useKeyboardShortcuts({ actions }: UseKeyboardShortcutsOptions) {
+export function useKeyboardShortcuts({ actions, isFlyoutOpen }: UseKeyboardShortcutsOptions) {
 	return (event: KeyboardEvent<HTMLElement>) => {
 		if (
 			event.defaultPrevented ||
@@ -56,17 +59,24 @@ export function useKeyboardShortcuts({ actions }: UseKeyboardShortcutsOptions) {
 			case 'M':
 				actions.toggleMute();
 				break;
-			case 'ArrowRight':
-				if (target.hasAttribute('aria-valuenow')) {
-					return;
-				}
-				actions.enqueueSeek(1);
+			case 'ArrowUp':
+			case 'ArrowDown':
+				actions.adjustVolume(
+					event.key === 'ArrowUp' ? NATIVE_VOLUME_KEY_STEP : -NATIVE_VOLUME_KEY_STEP
+				);
 				break;
+			case 'ArrowRight':
 			case 'ArrowLeft':
+				// Our progress bar has no `.fp-timeline` class, so the plugin's focused-slider branch
+				// doesn't claim it and its global seek is what actually moves the playhead.
 				if (target.hasAttribute('aria-valuenow')) {
 					return;
 				}
-				actions.enqueueSeek(-1);
+				// Seeking the video out from under an open flyout isn't what pressing an arrow inside
+				// a popover should do. Swallowed below either way, so the plugin can't seek either.
+				if (!isFlyoutOpen) {
+					actions.enqueueSeek(event.key === 'ArrowRight' ? 1 : -1);
+				}
 				break;
 			default:
 				return;

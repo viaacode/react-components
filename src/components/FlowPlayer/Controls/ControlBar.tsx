@@ -163,7 +163,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 		};
 	});
 
-	const handleKeyDown = useKeyboardShortcuts({ actions });
+	const handleKeyDown = useKeyboardShortcuts({ actions, isFlyoutOpen: openFlyout !== null });
 
 	const handleSeekStart = useCallback(() => {
 		actions.setSeeking(true);

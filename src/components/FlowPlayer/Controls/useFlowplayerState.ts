@@ -41,6 +41,8 @@ export interface FlowplayerControlsActions {
 	setSeeking: (seeking: boolean) => void;
 	/** 0-100, matching the percentage Flowplayer's own volume bar passes to its `onseek` handler. */
 	setVolume: (volume: number) => void;
+	/** Relative nudge in percentage points, for the arrow-key shortcuts. */
+	adjustVolume: (delta: number) => void;
 	toggleMute: () => void;
 	toggleFullscreen: () => void;
 	setPlaybackRate: (rate: number) => void;
@@ -69,6 +71,8 @@ export function useFlowplayerState(
 ): [FlowplayerControlsState, FlowplayerControlsActions] {
 	const [state, setState] = useState<FlowplayerControlsState>(INITIAL_STATE);
 	const seekingRef = useRef(false);
+	// Baseline for the mute-latch release in `handleVolumeChange`.
+	const previousVolumeRef = useRef(1);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: playerInstance intentionally re-triggers the subscription when the player is (re)created; only playerRef.current is read
 	useEffect(() => {
@@ -103,10 +107,25 @@ export function useFlowplayerState(
 		};
 
 		const handleVolumeChange = () => {
+			const volume = player.volume ?? 1;
+			const previousVolume = previousVolumeRef.current;
+			previousVolumeRef.current = volume;
+			// Flowplayer latches `muted` on as soon as the volume reaches 0, but never releases it on
+			// the way back up - so anything that moves `player.volume` directly can silence playback
+			// and then be unable to restore it. Its own keyboard plugin does exactly that, from
+			// anywhere in the player rather than only inside our control bar. Flowplayer's own volume
+			// bar releases the latch on any positive volume (`onseek`: `n > 0 && (muted = false)`), so
+			// mirror that here for every path that doesn't go through `setVolume`.
+			const releasesMuteLatch = player.muted && volume > previousVolume;
+			if (releasesMuteLatch) {
+				player.muted = false;
+			}
 			setState((prev) => ({
 				...prev,
-				volume: Math.round((player.volume ?? 1) * 100),
-				muted: player.muted,
+				volume: Math.round(volume * 100),
+				// Not `player.muted` - the assignment above only reaches this state via another
+				// volumechange, which would flash the muted icon for a frame first.
+				muted: releasesMuteLatch ? false : player.muted,
 			}));
 		};
 
@@ -118,6 +137,9 @@ export function useFlowplayerState(
 		const handleFullscreenEnter = () => setState((prev) => ({ ...prev, isFullscreen: true }));
 		const handleFullscreenExit = () => setState((prev) => ({ ...prev, isFullscreen: false }));
 
+		// Seeded after Flowplayer has restored its stored volume, so that restore never reads as a
+		// deliberate rise to the latch release above.
+		previousVolumeRef.current = player.volume ?? 1;
 		syncFromPlayer();
 
 		player.on('play', handlePlayPause);
@@ -217,6 +239,22 @@ export function useFlowplayerState(
 		[playerRef]
 	);
 
+	// Flowplayer's keyboard plugin does this as a bare `player.volume + delta`, which walks the
+	// volume down to 0 - where Flowplayer's own volumechange listener latches `muted` on - and then
+	// never releases that latch on the way back up. Going through `setVolume` does.
+	// Reads the live `player.volume` rather than React state, so a held arrow key isn't quantised
+	// to the render rate.
+	const adjustVolume = useCallback(
+		(delta: number) => {
+			const player = playerRef.current;
+			if (!player) {
+				return;
+			}
+			setVolume((player.volume ?? 1) * 100 + delta);
+		},
+		[playerRef, setVolume]
+	);
+
 	// Flowplayer's own `toggleMute` already bumps volume to 1 when unmuting from 0 - the one case
 	// where its volumechange listener would otherwise re-mute instantly - and leaves any other level
 	// where the user put it.
@@ -245,6 +283,7 @@ export function useFlowplayerState(
 			enqueueSeek,
 			setSeeking,
 			setVolume,
+			adjustVolume,
 			toggleMute,
 			toggleFullscreen,
 			setPlaybackRate,

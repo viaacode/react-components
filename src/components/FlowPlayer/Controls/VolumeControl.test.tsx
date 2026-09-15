@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { VolumeControl, type VolumeControlProps } from './VolumeControl';
 
 const defaultLabels = {
@@ -108,6 +108,29 @@ describe('<VolumeControl />', () => {
 		const { container } = renderVolumeControl({ muted: false, volume: 0 });
 
 		expect(getTrigger(container)).not.toHaveClass(ACTIVE_CLASS);
+	});
+
+	// `keyboard="dialog"`, not `"menu"`: a keyboard user lands inside the flyout, but the arrows stay
+	// with VolumeBars instead of being spent moving between the mute button and the bars.
+	it('moves focus into the flyout on open and leaves the arrow keys to the bars', () => {
+		const { container, rerender } = renderVolumeControl();
+		const props = {
+			id: 'test',
+			volume: 40,
+			muted: false,
+			onVolumeChange: jest.fn(),
+			onToggleMute: jest.fn(),
+			labels: defaultLabels,
+			onOpen: jest.fn(),
+			onClose: jest.fn(),
+		};
+		rerender(<VolumeControl {...props} isOpen={true} />);
+
+		const muteButton = container.querySelectorAll('button')[1] as HTMLButtonElement;
+		expect(muteButton).toHaveFocus();
+
+		fireEvent.keyDown(muteButton, { key: 'ArrowDown' });
+		expect(muteButton).toHaveFocus();
 	});
 
 	it('calls onToggleMute from the in-flyout button', () => {

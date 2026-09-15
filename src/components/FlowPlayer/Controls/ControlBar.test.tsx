@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { ControlBar } from './ControlBar';
 import type { ControlBarProps } from './ControlBar.types';
@@ -17,6 +17,19 @@ describe('<ControlBar />', () => {
 		const { container } = render(<ControlBar {...buildProps()} />);
 
 		expect(container.querySelector('.c-flowplayer-control-bar')).toBeInTheDocument();
+	});
+
+	// The option flyouts are opted into Dropdown's `keyboard="menu"`; this pins that wiring rather
+	// than the navigation itself, which Dropdown's own tests cover.
+	it('opens an option flyout onto its first option on ArrowDown', () => {
+		render(<ControlBar {...buildProps()} speed={{ options: [1, 2], labels: ['1x', '2x'] }} />);
+
+		const trigger = screen.getByRole('button', { name: /snelheid/i });
+		trigger.focus();
+		fireEvent.keyDown(trigger, { key: 'ArrowDown' });
+
+		expect(trigger).toHaveAttribute('aria-expanded', 'true');
+		expect(screen.getByRole('menuitemradio', { name: '1x' })).toHaveFocus();
 	});
 
 	it('gives each dropdown a unique id per instance, instead of a shared hardcoded one', () => {

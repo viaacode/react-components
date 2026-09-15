@@ -399,6 +399,15 @@ $flowplayer-volume-bar-hover-scale: 1.2;
 				background-color: rgb(0 0 0 / 5%);
 			}
 
+			// The 5%-black tint above is a hover affordance, not a focus indicator - far too faint to
+			// be one. Now that arrow keys move focus between these options (Dropdown's
+			// `keyboard="menu"`), that focus has to be visible on its own. Inset so the ring isn't
+			// clipped by the flyout's own rounded corners on the first and last option.
+			&:focus-visible {
+				outline: $flowplayer-focus-outline-width solid var(--flowplayer-controls-active-button);
+				outline-offset: -$flowplayer-focus-outline-width;
+			}
+
 			&-row {
 				display: flex;
 				align-items: center;

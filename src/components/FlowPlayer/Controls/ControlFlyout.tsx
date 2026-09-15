@@ -60,6 +60,9 @@ export const ControlFlyout: FC<ControlFlyoutProps> = ({
 			flyoutClassName={flyoutClassName}
 			shiftPadding={8}
 			maxHeightPadding={8}
+			// An option list: arrows move between the options, and ArrowDown/ArrowUp on the trigger
+			// opens onto the first/last one - the same keys Flowplayer's native menus answer to.
+			keyboard="menu"
 		>
 			<DropdownButton>{triggerWithAria}</DropdownButton>
 			<DropdownContent>

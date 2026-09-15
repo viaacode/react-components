@@ -5,6 +5,11 @@ export const DEFAULT_AUTO_HIDE_DELAY_MS = 3000;
 export const DEFAULT_SHOW_PEAK = true;
 export const DEFAULT_PEAK_MODE = 'data' as const;
 
+// Flowplayer's keyboard plugin moves volume by 0.15 per arrow press, both for a focused volume
+// slider and for its player-wide ArrowUp/ArrowDown. Shared so VolumeBars and useKeyboardShortcuts
+// can't drift to different steps.
+export const NATIVE_VOLUME_KEY_STEP = 15;
+
 /** Whether the generic built-in waveform (`PeakDisplay`) should render - shared by ControlBar.tsx and FlowPlayer.internal.tsx so they can't drift. */
 export function isGenericPeakMode(
 	showPeak: boolean | undefined,

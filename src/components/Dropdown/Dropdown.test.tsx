@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren, useState } from 'react';
 
 import { Button } from '../Button';
 
@@ -195,5 +195,179 @@ describe('<Dropdown />', () => {
 
 		const dropdownContent = await waitFor(() => container.querySelector('.c-dropdown'));
 		expect(dropdownContent).toBeInTheDocument();
+	});
+});
+
+describe('<Dropdown /> keyboard behaviour', () => {
+	const renderMenu = (keyboard: DropdownProps['keyboard'], isOpen = true) =>
+		render(
+			<Dropdown id="kb" isOpen={isOpen} keyboard={keyboard}>
+				<DropdownButton>
+					<Button label="Open" />
+				</DropdownButton>
+				<DropdownContent>
+					<button type="button">One</button>
+					<button type="button">Two</button>
+					<button type="button">Three</button>
+				</DropdownContent>
+			</Dropdown>
+		);
+
+	/** `isOpen` is controlled by the consumer, so opening/closing has to go through their state. */
+	const Controlled = ({ keyboard }: { keyboard: DropdownProps['keyboard'] }) => {
+		const [isOpen, setIsOpen] = useState(false);
+		return (
+			<>
+				<button type="button">before</button>
+				<Dropdown
+					id="kb"
+					isOpen={isOpen}
+					keyboard={keyboard}
+					onOpen={() => setIsOpen(true)}
+					onClose={() => setIsOpen(false)}
+				>
+					<DropdownButton>
+						<Button label="Open" />
+					</DropdownButton>
+					<DropdownContent>
+						<button type="button">One</button>
+						<button type="button">Two</button>
+					</DropdownContent>
+				</Dropdown>
+			</>
+		);
+	};
+
+	it('moves focus between the options on ArrowDown/ArrowUp, wrapping at both ends', () => {
+		renderMenu('menu');
+		const [one, two, three] = ['One', 'Two', 'Three'].map((label) => screen.getByText(label));
+
+		one.focus();
+		fireEvent.keyDown(one, { key: 'ArrowDown' });
+		expect(two).toHaveFocus();
+
+		fireEvent.keyDown(two, { key: 'ArrowUp' });
+		expect(one).toHaveFocus();
+
+		// Wrap: up from the first lands on the last, down from the last on the first.
+		fireEvent.keyDown(one, { key: 'ArrowUp' });
+		expect(three).toHaveFocus();
+		fireEvent.keyDown(three, { key: 'ArrowDown' });
+		expect(one).toHaveFocus();
+	});
+
+	it('jumps to the first and last option on Home/End', () => {
+		renderMenu('menu');
+		const two = screen.getByText('Two');
+
+		two.focus();
+		fireEvent.keyDown(two, { key: 'End' });
+		expect(screen.getByText('Three')).toHaveFocus();
+
+		fireEvent.keyDown(screen.getByText('Three'), { key: 'Home' });
+		expect(screen.getByText('One')).toHaveFocus();
+	});
+
+	// The FlowPlayer control bar seeks and changes volume on arrow keys, so a menu that let them
+	// through would navigate and move the playhead at once.
+	it('stops a handled key from reaching an enclosing widget', () => {
+		const onKeyDown = jest.fn();
+		render(
+			// biome-ignore lint/a11y/noStaticElementInteractions: stands in for an enclosing widget's own key handling
+			<div onKeyDown={onKeyDown}>
+				<Dropdown id="kb" isOpen keyboard="menu">
+					<DropdownButton>
+						<Button label="Open" />
+					</DropdownButton>
+					<DropdownContent>
+						<button type="button">One</button>
+						<button type="button">Two</button>
+					</DropdownContent>
+				</Dropdown>
+			</div>
+		);
+
+		const one = screen.getByText('One');
+		one.focus();
+		fireEvent.keyDown(one, { key: 'ArrowDown' });
+		expect(screen.getByText('Two')).toHaveFocus();
+		expect(onKeyDown).not.toHaveBeenCalled();
+	});
+
+	it('leaves unhandled keys to the content', () => {
+		renderMenu('menu');
+		const one = screen.getByText('One');
+		one.focus();
+
+		fireEvent.keyDown(one, { key: 'ArrowRight' });
+
+		expect(one).toHaveFocus();
+	});
+
+	const getTrigger = () => screen.getByRole('button', { name: 'Open' });
+
+	it('opens onto the first option on ArrowDown and the last on ArrowUp', () => {
+		render(<Controlled keyboard="menu" />);
+		const trigger = getTrigger();
+
+		trigger.focus();
+		fireEvent.keyDown(trigger, { key: 'ArrowDown' });
+		expect(screen.getByText('One')).toHaveFocus();
+
+		fireEvent.keyDown(screen.getByText('One'), { key: 'Escape' });
+		trigger.focus();
+		fireEvent.keyDown(trigger, { key: 'ArrowUp' });
+		expect(screen.getByText('Two')).toHaveFocus();
+	});
+
+	it('moves focus into the flyout on open in dialog mode, without claiming the arrow keys', () => {
+		render(<Controlled keyboard="dialog" />);
+		const trigger = getTrigger();
+
+		fireEvent.click(trigger);
+		expect(screen.getByText('One')).toHaveFocus();
+
+		// A slider or text field inside keeps its own arrows.
+		fireEvent.keyDown(screen.getByText('One'), { key: 'ArrowDown' });
+		expect(screen.getByText('One')).toHaveFocus();
+	});
+
+	it('leaves focus alone on open by default', () => {
+		render(<Controlled keyboard={undefined} />);
+		const trigger = getTrigger();
+
+		trigger.focus();
+		fireEvent.click(trigger);
+
+		expect(trigger).toHaveFocus();
+	});
+
+	// Closing only hides the content, so focus left inside it would be dropped to <body> - the
+	// keyboard user loses their place in the page entirely.
+	it('returns focus to the trigger when it closes while focus is inside, in every mode', () => {
+		for (const keyboard of ['none', 'dialog', 'menu'] as const) {
+			const { unmount } = render(<Controlled keyboard={keyboard} />);
+			const trigger = getTrigger();
+
+			fireEvent.click(trigger);
+			screen.getByText('One').focus();
+			fireEvent.keyDown(screen.getByText('One'), { key: 'Escape' });
+
+			expect(trigger).toHaveFocus();
+			unmount();
+		}
+	});
+
+	it('does not pull focus back when the flyout closes with focus already elsewhere', () => {
+		render(<Controlled keyboard="menu" />);
+		const trigger = getTrigger();
+		const outside = screen.getByText('before');
+
+		fireEvent.click(trigger);
+		screen.getByText('One').focus();
+		outside.focus();
+		fireEvent.click(trigger);
+
+		expect(outside).toHaveFocus();
 	});
 });

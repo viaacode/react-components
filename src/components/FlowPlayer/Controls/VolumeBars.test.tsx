@@ -21,14 +21,14 @@ describe('<VolumeBars />', () => {
 
 	it("moves by 15 per arrow press, matching Flowplayer's own keyboard step", () => {
 		const onChange = jest.fn();
-		const { container } = renderVolumeBars({ value: 35, onChange });
+		const { container } = renderVolumeBars({ value: 50, onChange });
 
 		fireEvent.keyDown(getSlider(container), { key: 'ArrowRight' });
 		fireEvent.keyDown(getSlider(container), { key: 'ArrowUp' });
 		fireEvent.keyDown(getSlider(container), { key: 'ArrowLeft' });
 		fireEvent.keyDown(getSlider(container), { key: 'ArrowDown' });
 
-		expect(onChange.mock.calls.map(([value]) => value)).toEqual([50, 50, 20, 20]);
+		expect(onChange.mock.calls.map(([value]) => value)).toEqual([65, 65, 35, 35]);
 	});
 
 	it('clamps at both ends', () => {

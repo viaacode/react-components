@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import type { FC } from 'react';
+import { type FC, useEffect, useRef } from 'react';
 import { Button } from '../../Button';
 import Dropdown from '../../Dropdown/Dropdown';
 import { DropdownButton, DropdownContent } from '../../Dropdown/Dropdown.slots';
@@ -38,6 +38,15 @@ export const VolumeControl: FC<VolumeControlProps> = ({
 }) => {
 	const flyoutId = `${id}__volume`;
 	const isMutedVisually = muted || volume === 0;
+	const muteButtonRef = useRef<HTMLButtonElement>(null);
+
+	// A keyboard user should land inside the flyout on open, like a native dialog - the arrow keys
+	// stay with VolumeBars rather than being spent moving between the mute button and the bars.
+	useEffect(() => {
+		if (isOpen) {
+			muteButtonRef.current?.focus();
+		}
+	}, [isOpen]);
 
 	return (
 		<Dropdown
@@ -49,6 +58,9 @@ export const VolumeControl: FC<VolumeControlProps> = ({
 			menuWidth="fit-content"
 			flyoutClassName="c-flowplayer-volume-flyout"
 			shiftPadding={8}
+			// `dialog`, not `menu`: focus moves in when it opens, but the arrow keys stay with
+			// VolumeBars rather than being spent navigating between the two controls in here.
+			keyboard="dialog"
 		>
 			<DropdownButton>
 				<Button
@@ -82,6 +94,7 @@ export const VolumeControl: FC<VolumeControlProps> = ({
 					{/* Icon first, not after the bars - otherwise it reads as an indicator, not the
 					button you'd reach for to mute. */}
 					<Button
+						ref={muteButtonRef}
 						icon={isMutedVisually ? <MuteIcon /> : <VolumeIcon />}
 						ariaLabel={isMutedVisually ? labels.unmute : labels.mute}
 						title={isMutedVisually ? labels.unmute : labels.mute}

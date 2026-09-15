@@ -1,13 +1,11 @@
 import clsx from 'clsx';
 import type { FC, KeyboardEvent } from 'react';
+import { NATIVE_VOLUME_KEY_STEP } from './Controls.consts';
 import { useDragValue } from './use-drag-value';
 
 // Flowplayer renders 6 ticks on a tiny player, 8 on a small one and 10 otherwise - a responsive
 // concern our fixed-size flyout doesn't have, so we always use its full-size count.
 const DEFAULT_VOLUME_STEPS = 10;
-
-// Flowplayer's keyboard plugin moves a focused volume slider by 0.15 per arrow press.
-const NATIVE_VOLUME_KEY_STEP = 15;
 
 // Not `utils/clamp`: that helper drops its upper bound whenever it actually applies.
 const clampVolume = (volume: number) => Math.min(Math.max(volume, 0), 100);
