@@ -9,7 +9,9 @@ export interface UseKeyboardShortcutsOptions {
 /**
  * Space/F/M/arrow shortcuts while focus is anywhere inside the custom control bar.
  *
- * Volume is mute/unmute only (M) - there's no volume-level UI to reflect finer control.
+ * Volume isn't handled here: VolumeBars owns the arrow keys while it has focus, and Flowplayer's
+ * global keyboard plugin already adjusts volume on ArrowUp/Down from anywhere else in the player.
+ * Only M (mute) is ours.
  *
  * Arrow-key seeking is a deliberate hybrid: Flowplayer's global keyboard plugin already seeks when
  * the focused element has `aria-valuenow` (our progress bar), so we no-op there to avoid double-

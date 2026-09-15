@@ -19,7 +19,7 @@ describe('<ControlBar />', () => {
 		expect(container.querySelector('.c-flowplayer-control-bar')).toBeInTheDocument();
 	});
 
-	it('gives the speed dropdown a unique id per instance, instead of a shared hardcoded one', () => {
+	it('gives each dropdown a unique id per instance, instead of a shared hardcoded one', () => {
 		// Regression: the volume/subtitles/speed dropdowns used a hardcoded `id="flowplayer-controls"`
 		// with no per-instance identifier, so two players with custom controls on the same page
 		// (a grid, a playlist) produced duplicate DOM ids - invalid HTML and broken aria-controls
@@ -32,13 +32,18 @@ describe('<ControlBar />', () => {
 			</>
 		);
 
-		const flyouts = container.querySelectorAll('.c-flowplayer-speed-flyout');
-		expect(flyouts).toHaveLength(2);
+		for (const [selector, hardcoded] of [
+			['.c-flowplayer-volume-flyout', 'flowplayer-controls__volume'],
+			['.c-flowplayer-speed-flyout', 'flowplayer-controls__speed'],
+		]) {
+			const flyouts = container.querySelectorAll(selector);
+			expect(flyouts).toHaveLength(2);
 
-		const ids = Array.from(flyouts).map((el) => el.id);
-		expect(ids[0]).toBeTruthy();
-		expect(ids[1]).toBeTruthy();
-		expect(ids[0]).not.toEqual(ids[1]);
-		expect(ids[0]).not.toEqual('flowplayer-controls__speed');
+			const ids = Array.from(flyouts).map((el) => el.id);
+			expect(ids[0]).toBeTruthy();
+			expect(ids[1]).toBeTruthy();
+			expect(ids[0]).not.toEqual(ids[1]);
+			expect(ids[0]).not.toEqual(hardcoded);
+		}
 	});
 });

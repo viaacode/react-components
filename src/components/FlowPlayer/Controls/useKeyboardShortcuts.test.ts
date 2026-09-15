@@ -8,6 +8,7 @@ const buildActions = (): FlowplayerControlsActions => ({
 	seek: jest.fn(),
 	enqueueSeek: jest.fn(),
 	setSeeking: jest.fn(),
+	setVolume: jest.fn(),
 	toggleMute: jest.fn(),
 	toggleFullscreen: jest.fn(),
 	setPlaybackRate: jest.fn(),
@@ -35,13 +36,14 @@ function buildEvent(
 }
 
 describe('useKeyboardShortcuts', () => {
-	it('does not act on ArrowUp/ArrowDown - volume is mute/unmute only, no granular control', () => {
+	it("does not act on ArrowUp/ArrowDown - VolumeBars and Flowplayer's own plugin own those", () => {
 		const actions = buildActions();
 		const { result } = renderHook(() => useKeyboardShortcuts({ actions }));
 
 		result.current(buildEvent('ArrowUp'));
 		result.current(buildEvent('ArrowDown'));
 
+		expect(actions.setVolume).not.toHaveBeenCalled();
 		expect(actions.toggleMute).not.toHaveBeenCalled();
 		expect(actions.enqueueSeek).not.toHaveBeenCalled();
 	});

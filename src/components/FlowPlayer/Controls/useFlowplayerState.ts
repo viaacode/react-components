@@ -1,5 +1,6 @@
 import type { Player } from '@flowplayer/player';
 import { type MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { persistVolume } from './volume-persistence';
 
 // `transitionState` is Flowplayer's own undocumented state-transition helper, not in the public
 // API - it produces the native "is-toggling" play/pause flash, which `player.togglePlay()` alone
@@ -38,6 +39,8 @@ export interface FlowplayerControlsActions {
 	/** `direction`: 1 to seek forward, -1 to seek backward, by Flowplayer's own configured step. */
 	enqueueSeek: (direction: 1 | -1) => void;
 	setSeeking: (seeking: boolean) => void;
+	/** 0-100, matching the percentage Flowplayer's own volume bar passes to its `onseek` handler. */
+	setVolume: (volume: number) => void;
 	toggleMute: () => void;
 	toggleFullscreen: () => void;
 	setPlaybackRate: (rate: number) => void;
@@ -192,17 +195,33 @@ export function useFlowplayerState(
 		seekingRef.current = seeking;
 	}, []);
 
+	// Ported from Flowplayer's own volume-bar `onseek` handler, which is the only place it writes
+	// the volume it restores at init - see volume-persistence.ts.
+	const setVolume = useCallback(
+		(volume: number) => {
+			const player = playerRef.current;
+			if (!player) {
+				return;
+			}
+			// Not `utils/clamp`: that helper drops its upper bound whenever it actually applies, and
+			// `player.volume` throws on anything outside 0-1.
+			const clamped = Math.min(Math.max(volume, 0), 100);
+			// Flowplayer's own volumechange listener only ever forces mute *on* (`volume === 0 || muted`),
+			// never off - without this, dragging up from muted moves the bars silently.
+			if (clamped > 0) {
+				player.muted = false;
+			}
+			player.volume = clamped / 100;
+			persistVolume(player, player.volume);
+		},
+		[playerRef]
+	);
+
+	// Flowplayer's own `toggleMute` already bumps volume to 1 when unmuting from 0 - the one case
+	// where its volumechange listener would otherwise re-mute instantly - and leaves any other level
+	// where the user put it.
 	const toggleMute = useCallback(() => {
-		if (!playerRef.current) {
-			return;
-		}
-		const nextMuted = !playerRef.current.muted;
-		playerRef.current.muted = nextMuted;
-		// Volume is mute/unmute only in custom mode (no granular control) - unmuting always lands
-		// back at full volume rather than some other level.
-		if (!nextMuted) {
-			playerRef.current.volume = 1;
-		}
+		playerRef.current?.toggleMute();
 	}, [playerRef]);
 
 	const toggleFullscreen = useCallback(() => {
@@ -225,6 +244,7 @@ export function useFlowplayerState(
 			seek,
 			enqueueSeek,
 			setSeeking,
+			setVolume,
 			toggleMute,
 			toggleFullscreen,
 			setPlaybackRate,

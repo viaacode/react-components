@@ -25,7 +25,7 @@ export interface ControlFlyoutProps {
 	onClose: () => void;
 }
 
-/** Shared Dropdown wiring + option list for the volume/subtitles/speed flyouts - one component so speed and subtitles can't drift apart in structure. */
+/** Shared Dropdown wiring + option list for the subtitles/speed flyouts - one component so they can't drift apart in structure. Volume uses Dropdown directly; it's a slider, not an option list. */
 export const ControlFlyout: FC<ControlFlyoutProps> = ({
 	id,
 	flyoutClassName,

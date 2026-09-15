@@ -50,6 +50,13 @@ $flowplayer-flyout-option-divider-color: #dbdbdb; // silver
 $flowplayer-flyout-option-text-color: #000;
 $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 
+// Volume bars: a row of discrete bars that is itself the slider. Mirrors native's `.fp-tick`,
+// including its `transform: scale(1.2)` hover.
+$flowplayer-volume-bar-width: 0.4rem;
+$flowplayer-volume-bar-hit-padding: 0.2rem; // widens the pointer target without widening the bar
+$flowplayer-volume-bars-height: 2rem;
+$flowplayer-volume-bar-hover-scale: 1.2;
+
 @mixin flowplayer-focus-ring($color: var(--flowplayer-controls-active-button)) {
 	&:focus {
 		box-shadow: none;
@@ -200,7 +207,7 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 			height: $flowplayer-slot-height;
 		}
 
-		// Toggled-on slot (e.g. muted) or its flyout open - own background + icon/label color, since
+		// Toggled-on slot (e.g. subtitles on) or its flyout open - own background + icon/label color, since
 		// `activeButtonColor` may be a distinct enough hue that `buttonTextColor` no longer contrasts.
 		&--active {
 			background-color: var(--flowplayer-controls-active-button);
@@ -339,11 +346,20 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 		}
 	}
 
+	.c-flowplayer-volume-flyout,
 	.c-flowplayer-speed-flyout,
 	.c-flowplayer-subtitles-flyout {
 		// Card chrome: square corners + soft shadow, not the pill radius used elsewhere - this is a popover.
 		border-radius: 0;
 		box-shadow: $flowplayer-flyout-shadow;
+
+		// A closed Dropdown only hides its inner `.c-menu`; the container keeps its full size and
+		// stays hit-testable. Since these three are siblings, a closed one painting later would
+		// swallow the pointer over whichever flyout is actually open (fatal for the short volume
+		// card, which sits entirely within its neighbours' bounds).
+		&.c-dropdown__content-closed {
+			pointer-events: none;
+		}
 
 		// Dropdown.tsx sets `max-height`/`overflow-y` inline (`maxHeightPadding`, floating-ui's `size`
 		// middleware) once the flyout is taller than the player - this element is what actually
@@ -433,6 +449,65 @@ $flowplayer-flyout-option-sublabel-color: #666; // "leisteen"
 	// Fixed width so the option list doesn't reflow per language name.
 	.c-flowplayer-subtitles-flyout {
 		width: $flowplayer-subtitles-flyout-width;
+	}
+
+	.c-flowplayer-volume-flyout {
+		&__content {
+			display: flex;
+			align-items: center;
+			gap: $g-spacer-unit;
+			padding: 0 ($g-spacer-unit * 2) 0 $g-spacer-unit;
+			background-color: $flowplayer-flyout-background;
+
+			// Two classes, so this outranks `--slot`'s own width.
+			.c-flowplayer-control-button {
+				width: auto;
+				padding-inline: $g-spacer-unit;
+				// The bar's own button colors are tuned for the dark pill, not this white card.
+				color: $flowplayer-flyout-option-text-color;
+
+				&:hover {
+					color: $flowplayer-flyout-option-sublabel-color;
+					background-color: transparent;
+				}
+			}
+		}
+	}
+
+	.c-flowplayer-volume-bars {
+		display: flex;
+		// Bars grow upward from a common baseline.
+		align-items: flex-end;
+		// No gap: the spacing lives inside each bar's own padding, so the pointer never falls
+		// between two hover targets.
+		gap: 0;
+		height: $flowplayer-volume-bars-height;
+		cursor: pointer;
+		touch-action: none;
+
+		@include flowplayer-focus-ring(var(--flowplayer-controls-button-focus));
+
+		&__bar {
+			display: inline-block;
+			width: $flowplayer-volume-bar-width + ($flowplayer-volume-bar-hit-padding * 2);
+			height: 100%;
+			padding-inline: $flowplayer-volume-bar-hit-padding;
+			// Paints the content box only, so the bar stays 3px wide while its target is 7px.
+			background-clip: content-box;
+			background-color: $flowplayer-flyout-option-divider-color;
+			border-radius: 0.2rem;
+			transform-origin: bottom;
+			// transform, not height - same as native, and it doesn't reflow the row.
+			transition: transform $flowplayer-interaction-transition-duration ease;
+
+			&--filled {
+				background-color: var(--flowplayer-controls-progress);
+			}
+
+			&:hover {
+				transform: scale($flowplayer-volume-bar-hover-scale);
+			}
+		}
 	}
 
 	// Flowplayer sets its own poster as an inline background-image (hence !important to win) - the

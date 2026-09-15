@@ -7,9 +7,27 @@ import { Modal } from '../Modal';
 import { FlowPlayer } from './FlowPlayer';
 import { setPlayingVideoSeekTime } from './FlowPlayer.helpers';
 import { MOCK_FLOW_PLAYER_PROPS_FULL, MOCK_PLAYLIST_SOURCE } from './FlowPlayer.mock';
-import type { FlowPlayerProps } from './FlowPlayer.types';
+import type { FlowPlayerControlsColors, FlowPlayerProps } from './FlowPlayer.types';
 import peakJson from './Peak/__mock__/peak.json' with { type: 'json' };
 import peakLowAmplitudeJson from './Peak/__mock__/peak-low-amplitude.json' with { type: 'json' };
+
+// `colors` is required and has no SCSS fallbacks, so every custom-controls story needs a palette.
+// This mirrors het-archief's own (see the client's FLOWPLAYER_CUSTOM_CONTROL_COLORS_HET_ARCHIEF).
+const STORY_CONTROL_COLORS: FlowPlayerControlsColors = {
+	backgroundColor: '#000000',
+	foregroundColor: '#ffffff',
+	progressColor: '#00c8aa',
+	progressTrackHoverColor: '#222222',
+	cuepointColor: '#009690',
+	buttonTextColor: '#ffffff',
+	buttonFocusColor: '#00c8aa',
+	buttonHoverColor: '#303030',
+	buttonPressedColor: '#004d47',
+	activeButtonColor: '#00c8aa',
+	activeButtonTextColor: '#000000',
+	activeButtonHoverColor: '#303030',
+	activeButtonPressedColor: '#004d47',
+};
 
 const FlowPlayerStoryComponentSetTimeButtons = ({
 	children,
@@ -348,6 +366,7 @@ export const CustomControls: Story = {
 		src: 'https://archief-media.viaa.be/viaa/TESTBEELD/d97b24406291480aac11d0728335afe011f3d283abde48649a4c4e9079428b8a/browse.mp4',
 		controlsVariant: 'custom',
 		customControlsConfig: {
+			colors: STORY_CONTROL_COLORS,
 			// Off by default (matches native mode's fullscreen-only visibility) - shown here since
 			// this demo has a title/logo/metadata worth actually seeing fade with the bar.
 			showTitleOverlay: true,
@@ -402,6 +421,7 @@ export const CustomControlsSomeHidden: Story = {
 		...MOCK_FLOW_PLAYER_PROPS_FULL,
 		controlsVariant: 'custom',
 		customControlsConfig: {
+			colors: STORY_CONTROL_COLORS,
 			showTimestamps: false,
 			showVolume: false,
 			showFullscreen: false,
@@ -414,6 +434,9 @@ export const CustomControlsWithCuepoints: Story = {
 	args: {
 		...MOCK_FLOW_PLAYER_PROPS_FULL,
 		controlsVariant: 'custom',
+		customControlsConfig: {
+			colors: STORY_CONTROL_COLORS,
+		},
 		start: 60,
 		end: 70,
 	},
@@ -436,6 +459,7 @@ export const CustomControlsAudioWithGenericPeak: Story = {
 			// `peakMode: 'generic'` always renders the built-in `AudioWaveFormDisplay` - no
 			// caller-supplied visual, no size prop (it sizes itself off its own rendered box) -
 			// just colors, same fake-playing progress overlay as before.
+			colors: STORY_CONTROL_COLORS,
 			peakMode: 'generic',
 			peakColorActive: '#00c8aa',
 			peakColorInactive: '#ffffff',

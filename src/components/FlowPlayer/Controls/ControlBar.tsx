@@ -28,6 +28,7 @@ import { VolumeControl } from './VolumeControl';
 import './ControlBar.scss';
 
 enum FlyoutId {
+	volume = 'volume',
 	subtitles = 'subtitles',
 	speed = 'speed',
 }
@@ -250,9 +251,15 @@ export const ControlBar: FC<ControlBarProps> = ({
 					<div className="c-flowplayer-control-bar__segment c-flowplayer-control-bar__segment--secondary">
 						{showVolume && (
 							<VolumeControl
+								id={controlsId}
+								volume={state.volume}
 								muted={state.muted}
+								onVolumeChange={actions.setVolume}
 								onToggleMute={actions.toggleMute}
 								labels={labels}
+								isOpen={openFlyout === FlyoutId.volume}
+								onOpen={() => openFlyoutHandler(FlyoutId.volume)}
+								onClose={() => closeFlyoutHandler(FlyoutId.volume)}
 							/>
 						)}
 
