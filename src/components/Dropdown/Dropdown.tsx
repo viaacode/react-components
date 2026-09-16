@@ -12,6 +12,7 @@ import clsx from 'clsx';
 import type { FC, ReactNode } from 'react';
 import { DropdownButton, DropdownContent } from './Dropdown.slots';
 import type { DropdownProps } from './Dropdown.types';
+import { useDropdownKeyboard } from './useDropdownKeyboard';
 
 import './Dropdown.scss';
 import { useSlot } from '../../hooks';
@@ -53,6 +54,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 		offset = 10,
 		shiftPadding,
 		maxHeightPadding,
+		keyboard = 'none',
 	} = props;
 	const { refs, floatingStyles, context } = useFloating({
 		placement,
@@ -90,6 +92,14 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 	const dismiss = useDismiss(context);
 	const { getFloatingProps, getReferenceProps } = useInteractions([click, dismiss]);
 
+	const { handleTriggerKeyDown, handleFlyoutKeyDown } = useDropdownKeyboard({
+		keyboard,
+		isOpen,
+		onOpen,
+		flyoutRef: refs.floating,
+		triggerRef: refs.domReference,
+	});
+
 	const dropdownButtonSlot = useSlot(DropdownButton, children);
 	const dropdownContentSlot = useSlot(DropdownContent, children);
 
@@ -112,7 +122,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 			<span
 				ref={refs.setReference}
 				style={{ display: 'inline-block' }}
-				{...getReferenceProps()}
+				{...getReferenceProps({ onKeyDown: handleTriggerKeyDown })}
 				className={rootCls}
 			>
 				{triggerButton}
@@ -133,7 +143,7 @@ const Dropdown: FC<DropdownProps> = ({ children, ...props }) => {
 					isOpen ? 'c-dropdown__content-open' : 'c-dropdown__content-closed'
 				)}
 				id={id}
-				{...getFloatingProps()}
+				{...getFloatingProps({ onKeyDown: handleFlyoutKeyDown })}
 			>
 				<Menu isOpen={isOpen} search={searchMenu}>
 					{dropdownContentSlot || children}

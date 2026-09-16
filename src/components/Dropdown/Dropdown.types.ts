@@ -3,6 +3,9 @@ import type { ReactNode } from 'react';
 
 import type { DefaultComponentProps } from '../../types';
 
+/** See `DropdownProps.keyboard`. */
+export type DropdownKeyboard = 'none' | 'dialog' | 'menu';
+
 export interface DropdownProps extends DefaultComponentProps {
 	children: ReactNode;
 	icon?: ReactNode;
@@ -37,4 +40,19 @@ export interface DropdownProps extends DefaultComponentProps {
 	 * side. Off by default so existing consumers keep their current (unconstrained) height.
 	 */
 	maxHeightPadding?: number;
+	/**
+	 * Keyboard behaviour for the flyout, named after the `aria-haspopup` value the trigger
+	 * advertises:
+	 * - `none` (the default): nothing added. Escape still closes the flyout.
+	 * - `dialog`: focus moves into the flyout, onto its first focusable element, when it opens. For
+	 *   content that owns its own keys - a slider, a text field.
+	 * - `menu`: as `dialog`, plus ArrowUp/ArrowDown/Home/End moving between the flyout's focusable
+	 *   items, and ArrowUp/ArrowDown on the trigger opening it onto the last/first one. For option
+	 *   lists; content with a text field would lose those keys to the navigation.
+	 *
+	 * Regardless of this value, focus returns to the trigger whenever the flyout closes while focus
+	 * was still inside it - closing only hides the content, so focus would otherwise be dropped to
+	 * `<body>`.
+	 */
+	keyboard?: DropdownKeyboard;
 }
