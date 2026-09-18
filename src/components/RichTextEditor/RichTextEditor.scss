@@ -162,11 +162,6 @@ $button-color-active: #3498db;
 					pointer-events: none;
 				}
 			}
-
-			.c-editor-image {
-				max-width: 100%;
-				height: auto;
-			}
 		}
 	}
 
@@ -451,5 +446,13 @@ $button-color-active: #3498db;
 				color: #ddd;
 			}
 		}
+	}
+}
+
+
+.c-rich-text-editor__content {
+	.c-editor-image {
+		max-width: 100%;
+		height: auto;
 	}
 }
