@@ -35,6 +35,10 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 	const textInputRef = useRef<HTMLInputElement>(null);
 	const urlInputRef = useRef<HTMLInputElement>(null);
 
+	// An image carries its link on the node itself rather than as a link mark, so it has no
+	// link text to edit: the image is the link content.
+	const isImageSelected = !!editor?.isActive('image');
+
 	const { refs, floatingStyles, context } = useFloating({
 		open,
 		onOpenChange: (nextOpen) => {
@@ -42,7 +46,12 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 			const to = editor?.state.selection.to ?? 0;
 			const selectionText = editor?.state.doc.textBetween(from, to) || '';
 
-			if (nextOpen) {
+			if (nextOpen && isImageSelected) {
+				setLinkText('');
+				setLinkUrl((editor?.getAttributes('image').href as string) || '');
+				setOpenInNewTab((editor?.getAttributes('image').target as string) === '_blank');
+				setTimeout(() => urlInputRef.current?.focus());
+			} else if (nextOpen) {
 				const currentNode = editor?.state.doc.nodeAt(from);
 				const linkUrl = (editor?.getAttributes('link').href as string) || '';
 
@@ -78,13 +87,29 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 	const dismiss = useDismiss(context);
 	const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss]);
 
-	const isActive = !!editor?.isActive('link');
+	const isActive =
+		!!editor?.isActive('link') || (isImageSelected && !!editor?.getAttributes('image').href);
 
 	const applyLink = () => {
 		if (!editor) {
 			return;
 		}
 		const href = linkUrl.trim();
+
+		if (isImageSelected) {
+			if (href) {
+				editor
+					.chain()
+					.focus()
+					.setImageLink({ href, target: openInNewTab ? '_blank' : '_self' })
+					.run();
+			} else {
+				editor.chain().focus().unsetImageLink().run();
+			}
+			setOpen(false);
+			return;
+		}
+
 		if (href) {
 			// First expand the selection to cover the whole link, so the existing link text
 			// gets replaced instead of the new text being inserted next to it
@@ -107,7 +132,11 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 	};
 
 	const removeLink = () => {
-		editor?.chain().focus().unsetLink().run();
+		if (isImageSelected) {
+			editor?.chain().focus().unsetImageLink().run();
+		} else {
+			editor?.chain().focus().unsetLink().run();
+		}
 		setOpen(false);
 	};
 
@@ -141,14 +170,16 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 						className={`${root}__link-popup`}
 						{...getFloatingProps()}
 					>
-						<input
-							ref={textInputRef}
-							type="text"
-							value={linkText}
-							onChange={(e) => setLinkText(e.target.value)}
-							placeholder={labels[LabelKey.Link_InsertLinkText]}
-							onKeyDown={handleKeyDown}
-						/>
+						{!isImageSelected && (
+							<input
+								ref={textInputRef}
+								type="text"
+								value={linkText}
+								onChange={(e) => setLinkText(e.target.value)}
+								placeholder={labels[LabelKey.Link_InsertLinkText]}
+								onKeyDown={handleKeyDown}
+							/>
+						)}
 						<input
 							ref={urlInputRef}
 							type="url"

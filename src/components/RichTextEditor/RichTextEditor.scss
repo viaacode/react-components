@@ -126,6 +126,14 @@ $button-color-active: #3498db;
 				pointer-events: none;
 			}
 
+			// A linked image has to stay clickable, so the click can select the image rather
+			// than follow the link. Navigating is prevented by the editor instead, see the
+			// click handler in RichTextEditorImage.
+			a.c-editor-image-link {
+				cursor: default;
+				pointer-events: auto;
+			}
+
 			p.is-editor-empty:first-child::before {
 				color: #adb5bd;
 				content: attr(data-placeholder);
@@ -466,7 +474,22 @@ $button-color-active: #3498db;
 	.c-editor-image {
 		max-width: 100%;
 		height: auto;
+	}
 
+	.c-editor-image-link {
+		// Shrink wrap the image: an inline anchor would reserve room for the text descenders
+		// below the image, which the selection outline would then draw around.
+		display: inline-block;
+
+		img {
+			display: block;
+		}
+	}
+
+	// A linked image is wrapped in an anchor, which then carries the alignment and the
+	// selection outline, since it is the element taking part in the surrounding layout.
+	.c-editor-image,
+	.c-editor-image-link {
 		// Outline rather than border, so selecting an image does not resize it
 		&.ProseMirror-selectednode {
 			outline: 3px solid var(--c-rich-text-editor-color-active, #{$button-color-active});

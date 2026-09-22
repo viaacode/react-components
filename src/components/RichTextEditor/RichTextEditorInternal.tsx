@@ -17,6 +17,7 @@ import { RichTextEditorHeadingsDropdown } from './components/RichTextEditorHeadi
 import { RichTextEditorImageBubbleMenu } from './components/RichTextEditorImageBubbleMenu/RichTextEditorImageBubbleMenu';
 import { RichTextEditorLinkDropdown } from './components/RichTextEditorLinkDropdown/RichTextEditorLinkDropdown';
 import { RichTextEditorTableDropdown } from './components/RichTextEditorTableDropdown/RichTextEditorTableDropdown';
+import { RichTextEditorImage } from './extensions/RichTextEditorImage';
 import AlignCenterIcon from './icons/align-center.svg?react';
 import AlignJustifyIcon from './icons/align-justify.svg?react';
 import AlignLeftIcon from './icons/align-left.svg?react';
@@ -37,7 +38,6 @@ import SuperscriptIcon from './icons/superscript.svg?react';
 import UnderlineIcon from './icons/underline.svg?react';
 import UndoIcon from './icons/undo.svg?react';
 import UnlinkIcon from './icons/unlink.svg?react';
-import { RichTextEditorImage } from './extensions/RichTextEditorImage';
 import { DEFAULT_CONTROLS } from './RichTextEditor.const';
 import { prettifyHtml } from './RichTextEditor.helpers';
 import { LabelKey, RICH_TEXT_EDITOR_LABELS } from './RichTextEditor.labels';
@@ -388,8 +388,13 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 							key: `unlink-${index}`,
 							label: <UnlinkIcon />,
 							title: labels[LabelKey.RemoveLink],
-							onClick: () => editor?.chain().focus().unsetLink().run(),
-							isDisabled: areToolbarActionsDisabled || !editor?.isActive('link'),
+							onClick: () =>
+								editor?.isActive('image')
+									? editor?.chain().focus().unsetImageLink().run()
+									: editor?.chain().focus().unsetLink().run(),
+							isDisabled:
+								areToolbarActionsDisabled ||
+								(!editor?.isActive('link') && !editor?.getAttributes('image').href),
 						})}
 					</div>
 				);
