@@ -451,8 +451,81 @@ $button-color-active: #3498db;
 
 
 .c-rich-text-editor__content {
+	// Keep floated images contained inside the editor
+	.ProseMirror::after {
+		content: '';
+		display: block;
+		clear: both;
+	}
+
 	.c-editor-image {
 		max-width: 100%;
 		height: auto;
+
+		&[data-align='block-left'] {
+			display: block;
+			margin-inline: 0 auto;
+		}
+
+		&[data-align='block-center'] {
+			display: block;
+			margin-inline: auto;
+		}
+
+		&[data-align='block-right'] {
+			display: block;
+			margin-inline: auto 0;
+		}
+
+		&[data-align='float-left'] {
+			float: left;
+			margin: 0 16px 16px 0;
+		}
+
+		&[data-align='float-right'] {
+			float: right;
+			margin: 0 0 16px 16px;
+		}
+	}
+}
+
+.c-rich-text-editor__image-bubble-menu {
+	display: flex;
+	align-items: center;
+	background: #2e2e2e;
+	border-radius: 4px;
+	box-shadow: 0 4px 16px rgb(0 0 0 / 40%);
+	z-index: 10000;
+	overflow: hidden;
+
+	button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 8px 10px;
+		background: transparent;
+		border: none;
+		color: #fff;
+		cursor: pointer;
+
+		svg {
+			width: 16px;
+			height: 16px;
+			color: inherit;
+		}
+
+		&:hover {
+			background: #3a3a3a;
+		}
+
+		&.is-active {
+			background: #4a4a4a;
+		}
+
+		// The block align icons are reused from the toolbar, where they sit slightly
+		// lower than the image float icons. Nudge them up so all five icons line up.
+		&[data-align-mode^='block'] svg {
+			transform: translateY(-2px);
+		}
 	}
 }

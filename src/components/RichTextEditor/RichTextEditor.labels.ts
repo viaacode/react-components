@@ -51,6 +51,12 @@ export enum LabelKey {
 	Table_AddColumn = 'addColumn',
 	Table_DeleteColumn = 'deleteColumn',
 	Table_DeleteTable = 'deleteTable',
+	// Image bubble menu
+	Image_FloatLeft = 'imageFloatLeft',
+	Image_FloatRight = 'imageFloatRight',
+	Image_BlockLeft = 'imageBlockLeft',
+	Image_BlockCenter = 'imageBlockCenter',
+	Image_BlockRight = 'imageBlockRight',
 }
 
 export type RichTextEditorLabels = Record<LabelKey, string>;
@@ -113,6 +119,11 @@ export const RICH_TEXT_EDITOR_LABELS: Record<Locale, RichTextEditorLabels> = {
 		[LabelKey.Table_AddColumn]: 'Voeg kolom in',
 		[LabelKey.Table_DeleteColumn]: 'Verwijder kolom',
 		[LabelKey.Table_DeleteTable]: 'Verwijder tabel',
+		[LabelKey.Image_FloatLeft]: 'Afbeelding links, tekst ernaast',
+		[LabelKey.Image_FloatRight]: 'Afbeelding rechts, tekst ernaast',
+		[LabelKey.Image_BlockLeft]: 'Afbeelding links uitlijnen',
+		[LabelKey.Image_BlockCenter]: 'Afbeelding centreren',
+		[LabelKey.Image_BlockRight]: 'Afbeelding rechts uitlijnen',
 	},
 	[Locale.en]: {
 		[LabelKey.Bold]: 'Bold',
@@ -161,5 +172,10 @@ export const RICH_TEXT_EDITOR_LABELS: Record<Locale, RichTextEditorLabels> = {
 		[LabelKey.Table_AddColumn]: 'Add column',
 		[LabelKey.Table_DeleteColumn]: 'Delete column',
 		[LabelKey.Table_DeleteTable]: 'Delete table',
+		[LabelKey.Image_FloatLeft]: 'Image left, text alongside',
+		[LabelKey.Image_FloatRight]: 'Image right, text alongside',
+		[LabelKey.Image_BlockLeft]: 'Align image left',
+		[LabelKey.Image_BlockCenter]: 'Center image',
+		[LabelKey.Image_BlockRight]: 'Align image right',
 	},
 };

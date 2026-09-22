@@ -1,4 +1,3 @@
-import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
@@ -15,6 +14,7 @@ import type { ChangeEvent, FunctionComponent, ReactNode } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Locale } from '../../types';
 import { RichTextEditorHeadingsDropdown } from './components/RichTextEditorHeadingsDropdown/RichTextEditorHeadingsDropdown';
+import { RichTextEditorImageBubbleMenu } from './components/RichTextEditorImageBubbleMenu/RichTextEditorImageBubbleMenu';
 import { RichTextEditorLinkDropdown } from './components/RichTextEditorLinkDropdown/RichTextEditorLinkDropdown';
 import { RichTextEditorTableDropdown } from './components/RichTextEditorTableDropdown/RichTextEditorTableDropdown';
 import AlignCenterIcon from './icons/align-center.svg?react';
@@ -37,6 +37,7 @@ import SuperscriptIcon from './icons/superscript.svg?react';
 import UnderlineIcon from './icons/underline.svg?react';
 import UndoIcon from './icons/undo.svg?react';
 import UnlinkIcon from './icons/unlink.svg?react';
+import { RichTextEditorImage } from './extensions/RichTextEditorImage';
 import { DEFAULT_CONTROLS } from './RichTextEditor.const';
 import { prettifyHtml } from './RichTextEditor.helpers';
 import { LabelKey, RICH_TEXT_EDITOR_LABELS } from './RichTextEditor.labels';
@@ -100,7 +101,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 	const editor = useEditor({
 		extensions: [
 			StarterKit, // Already includes link and underline functionality
-			Image.configure({ HTMLAttributes: { class: 'c-editor-image' } }),
+			RichTextEditorImage.configure({ HTMLAttributes: { class: 'c-editor-image' } }),
 			Table.configure({
 				resizable: false,
 				HTMLAttributes: { class: 'c-editor-table' },
@@ -521,6 +522,12 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 				className={clsx(`${root}__content`, {
 					[`${root}__content--hidden`]: isHtmlView,
 				})}
+			/>
+			<RichTextEditorImageBubbleMenu
+				editor={editor}
+				root={root}
+				isDisabled={areToolbarActionsDisabled}
+				labels={labels}
 			/>
 			{media ? (
 				<input
