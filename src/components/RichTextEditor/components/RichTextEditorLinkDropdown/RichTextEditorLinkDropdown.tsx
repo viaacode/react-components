@@ -10,7 +10,7 @@ import {
 } from '@floating-ui/react';
 import type { Editor } from '@tiptap/react';
 import clsx from 'clsx';
-import { type FunctionComponent, type KeyboardEvent, useState } from 'react';
+import { type FunctionComponent, type KeyboardEvent, useRef, useState } from 'react';
 import CrossIcon from '../../icons/cross.svg?react';
 import LinkIcon from '../../icons/link.svg?react';
 import { LabelKey, type RichTextEditorLabels } from '../../RichTextEditor.labels';
@@ -32,6 +32,8 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 	const [linkText, setLinkText] = useState('');
 	const [linkUrl, setLinkUrl] = useState('');
 	const [openInNewTab, setOpenInNewTab] = useState(false);
+	const textInputRef = useRef<HTMLInputElement>(null);
+	const urlInputRef = useRef<HTMLInputElement>(null);
 
 	const { refs, floatingStyles, context } = useFloating({
 		open,
@@ -55,6 +57,14 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 
 				const target = editor?.getAttributes('link').target as string | undefined;
 				setOpenInNewTab(target === '_blank');
+
+				setTimeout(() => {
+					if (selectionText) {
+						urlInputRef.current?.focus();
+					} else {
+						textInputRef.current?.focus();
+					}
+				});
 			} else {
 				setLinkText(selectionText);
 			}
@@ -132,8 +142,7 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 						{...getFloatingProps()}
 					>
 						<input
-							// biome-ignore lint/a11y/noAutofocus: handy to autofocus when dialog is opened
-							autoFocus
+							ref={textInputRef}
 							type="text"
 							value={linkText}
 							onChange={(e) => setLinkText(e.target.value)}
@@ -141,6 +150,7 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 							onKeyDown={handleKeyDown}
 						/>
 						<input
+							ref={urlInputRef}
 							type="url"
 							value={linkUrl}
 							onChange={(e) => setLinkUrl(e.target.value)}
