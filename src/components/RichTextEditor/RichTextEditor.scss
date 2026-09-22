@@ -2,6 +2,11 @@ $button-hover-bg: #0000000d;
 $button-color: #6a6f7b;
 $button-color-active: #3498db;
 
+// Consumers can theme the active/selected accent (blue, green, ...) by setting
+// --c-rich-text-editor-color-active on the editor or on any ancestor. Everything that
+// highlights an active state reads it, falling back to $button-color-active.
+// Deliberately not declared on .c-rich-text-editor itself: an own declaration would
+// beat the inherited value and silently ignore an override set on a parent.
 .c-rich-text-editor {
 	position: relative;
 	border: 1px solid #bac7d1;
@@ -46,7 +51,7 @@ $button-color-active: #3498db;
 			&.is-active {
 				span,
 				svg {
-					color: $button-color-active;
+					color: var(--c-rich-text-editor-color-active, #{$button-color-active});
 				}
 			}
 
@@ -462,6 +467,11 @@ $button-color-active: #3498db;
 		max-width: 100%;
 		height: auto;
 
+		// Outline rather than border, so selecting an image does not resize it
+		&.ProseMirror-selectednode {
+			outline: 3px solid var(--c-rich-text-editor-color-active, #{$button-color-active});
+		}
+
 		&[data-align='block-left'] {
 			display: block;
 			margin-inline: 0 auto;
@@ -519,7 +529,7 @@ $button-color-active: #3498db;
 		}
 
 		&.is-active {
-			background: #4a4a4a;
+			background: var(--c-rich-text-editor-color-active, #{$button-color-active});
 		}
 
 		// The block align icons are reused from the toolbar, where they sit slightly
