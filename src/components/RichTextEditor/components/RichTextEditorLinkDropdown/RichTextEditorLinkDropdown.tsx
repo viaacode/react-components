@@ -76,6 +76,10 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 		}
 		const href = linkUrl.trim();
 		if (href) {
+			// First expand the selection to cover the whole link, so the existing link text
+			// gets replaced instead of the new text being inserted next to it
+			editor.chain().focus().extendMarkRange('link').run();
+
 			const from = editor.state.selection.from;
 			const to = editor.state.selection.to;
 			const text = linkText || editor.state.doc.textBetween(from, to) || href;
@@ -83,7 +87,6 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 			editor
 				.chain()
 				.focus()
-				.extendMarkRange('link')
 				.insertContentAt({ from, to }, `<a href="${href}">${text}</a>`)
 				.setLink({ href, target: openInNewTab ? '_blank' : '_self' })
 				.run();
