@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { cloneElement, type CSSProperties, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 import { Locale } from '../../types';
+import Button from '../Button/Button';
 import { selectOptionsMock } from '../Select/__mocks__/select';
 import Select from '../Select/Select';
 
@@ -56,14 +57,30 @@ const RichTextEditorStoryComponent = ({
 	initialValue?: string;
 }) => {
 	const [value, setValue] = useState(initialValue);
+	const [showOutput, setShowOutput] = useState(false);
 
-	return cloneElement(children, {
-		value,
-		onChange: (newValue: string) => {
-			action('onChange')(newValue);
-			setValue(newValue);
-		},
-	} as any);
+	return (
+		<>
+			<div style={{ marginBottom: '8px' }}>
+				<Button
+					label={showOutput ? 'Show editor' : 'Show output render'}
+					onClick={() => setShowOutput((prev) => !prev)}
+				/>
+			</div>
+			{showOutput ? (
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: story preview of the editor output
+				<div className="c-rich-text-editor__content" dangerouslySetInnerHTML={{ __html: value }} />
+			) : (
+				cloneElement(children, {
+					value,
+					onChange: (newValue: string) => {
+						action('onChange')(newValue);
+						setValue(newValue);
+					},
+				} as any)
+			)}
+		</>
+	);
 };
 
 const LocaleWrapper = ({ children }: { children: (locale: Locale) => ReactElement }) => {
