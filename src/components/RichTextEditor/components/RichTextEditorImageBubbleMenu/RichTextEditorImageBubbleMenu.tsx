@@ -2,7 +2,7 @@ import type { Editor } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';
 import type { FunctionComponent, ReactNode } from 'react';
 import { useCallback } from 'react';
-import type { RichTextEditorImageAlign } from '../../extensions/RichTextEditorImage';
+import { RichTextEditorImageAlign } from '../../extensions/RichTextEditorImage';
 import AlignCenterIcon from '../../icons/align-center.svg?react';
 import AlignLeftIcon from '../../icons/align-left.svg?react';
 import AlignRightIcon from '../../icons/align-right.svg?react';
@@ -25,27 +25,27 @@ interface ImageAlignAction {
 
 const IMAGE_ALIGN_ACTIONS: ImageAlignAction[] = [
 	{
-		align: 'float-left',
+		align: RichTextEditorImageAlign.FLOAT_LEFT,
 		labelKey: LabelKey.Image_FloatLeft,
 		icon: <ImageFloatLeftIcon />,
 	},
 	{
-		align: 'float-right',
+		align: RichTextEditorImageAlign.FLOAT_RIGHT,
 		labelKey: LabelKey.Image_FloatRight,
 		icon: <ImageFloatRightIcon />,
 	},
 	{
-		align: 'block-left',
+		align: RichTextEditorImageAlign.BLOCK_LEFT,
 		labelKey: LabelKey.Image_BlockLeft,
 		icon: <AlignLeftIcon />,
 	},
 	{
-		align: 'block-center',
+		align: RichTextEditorImageAlign.BLOCK_CENTER,
 		labelKey: LabelKey.Image_BlockCenter,
 		icon: <AlignCenterIcon />,
 	},
 	{
-		align: 'block-right',
+		align: RichTextEditorImageAlign.BLOCK_RIGHT,
 		labelKey: LabelKey.Image_BlockRight,
 		icon: <AlignRightIcon />,
 	},

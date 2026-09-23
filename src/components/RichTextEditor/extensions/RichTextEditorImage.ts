@@ -12,20 +12,16 @@ const getImageLink = (event: Event): HTMLAnchorElement | null =>
 		`a.${RICH_TEXT_EDITOR_IMAGE_LINK_CLASS}`
 	) ?? null;
 
-export type RichTextEditorImageAlign =
-	| 'float-left'
-	| 'float-right'
-	| 'block-left'
-	| 'block-center'
-	| 'block-right';
+export enum RichTextEditorImageAlign {
+	FLOAT_LEFT = 'float-left',
+	FLOAT_RIGHT = 'float-right',
+	BLOCK_LEFT = 'block-left',
+	BLOCK_CENTER = 'block-center',
+	BLOCK_RIGHT = 'block-right',
+}
 
-export const RICH_TEXT_EDITOR_IMAGE_ALIGNS: RichTextEditorImageAlign[] = [
-	'float-left',
-	'float-right',
-	'block-left',
-	'block-center',
-	'block-right',
-];
+export const RICH_TEXT_EDITOR_IMAGE_ALIGNS: RichTextEditorImageAlign[] =
+	Object.values(RichTextEditorImageAlign);
 
 declare module '@tiptap/core' {
 	interface Commands<ReturnType> {
