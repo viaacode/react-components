@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { cloneElement, type ReactElement, useState } from 'react';
+import { cloneElement, type CSSProperties, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 import { Locale } from '../../types';
 import { selectOptionsMock } from '../Select/__mocks__/select';
 import Select from '../Select/Select';
 
 import { RichTextEditor } from './RichTextEditor';
-import type { RichTextEditorControl } from './RichTextEditor.types';
+import type { RichTextEditorControl, RichTextEditorMedia } from './RichTextEditor.types';
 
 const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
 	'fullscreen',
@@ -28,6 +28,24 @@ const RICH_TEXT_EDITOR_OPTIONS: RichTextEditorControl[] = [
 
 const MOCK_RICH_TEXT_EDITOR_PROPS = {
 	value: '<h2>Welcome!</h2><p>This prefilled content is all <strong>editable</strong>.</p>',
+};
+
+const MOCK_LOREM_IPSUM =
+	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+
+/**
+ * Stands in for a real upload service: turns the selected file into a data url so the
+ * image ends up in the editor without any backend.
+ */
+const MOCK_RICH_TEXT_EDITOR_MEDIA: RichTextEditorMedia = {
+	uploadFn: (uploadInfo) => {
+		action('uploadFn')(uploadInfo.file.name);
+
+		const reader = new FileReader();
+		reader.onload = () => uploadInfo.success({ url: String(reader.result) });
+		reader.onerror = () => uploadInfo.error(new Error('Could not read the selected file'));
+		reader.readAsDataURL(uploadInfo.file);
+	},
 };
 
 const RichTextEditorStoryComponent = ({
@@ -158,6 +176,30 @@ export const WithLimitedHeadings: Story = {
 		enabledHeadings: ['h3', 'h4', 'h6'],
 	},
 	render: Template,
+};
+
+export const WithImage: Story = {
+	args: {
+		media: MOCK_RICH_TEXT_EDITOR_MEDIA,
+		value: `<img class="c-editor-image" src="https://placehold.co/240x160" data-align="float-left"><p>${MOCK_LOREM_IPSUM}</p>`,
+	},
+	render: Template,
+};
+
+/**
+ * The accent used for active toolbar buttons and the selected image outline is themable
+ * through the --c-rich-text-editor-color-active custom property.
+ */
+export const WithCustomActiveColor: Story = {
+	args: {
+		media: MOCK_RICH_TEXT_EDITOR_MEDIA,
+		value: `<img class="c-editor-image" src="https://placehold.co/240x160" data-align="float-left"><p>${MOCK_LOREM_IPSUM}</p>`,
+	},
+	render: (args: any) => (
+		<div style={{ '--c-rich-text-editor-color-active': '#e74c3c' } as CSSProperties}>
+			<Template {...args} />
+		</div>
+	),
 };
 
 export const WithHtmlView: Story = {
