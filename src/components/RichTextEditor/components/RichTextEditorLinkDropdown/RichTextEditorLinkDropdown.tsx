@@ -50,7 +50,7 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 				setLinkText('');
 				setLinkUrl((editor?.getAttributes('image').href as string) || '');
 				setOpenInNewTab((editor?.getAttributes('image').target as string) === '_blank');
-				setTimeout(() => urlInputRef.current?.focus());
+				setTimeout(() => urlInputRef.current?.focus({ preventScroll: true }));
 			} else if (nextOpen) {
 				const currentNode = editor?.state.doc.nodeAt(from);
 				const linkUrl = (editor?.getAttributes('link').href as string) || '';
@@ -69,9 +69,9 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 
 				setTimeout(() => {
 					if (selectionText) {
-						urlInputRef.current?.focus();
+						urlInputRef.current?.focus({ preventScroll: true });
 					} else {
-						textInputRef.current?.focus();
+						textInputRef.current?.focus({ preventScroll: true });
 					}
 				});
 			} else {
