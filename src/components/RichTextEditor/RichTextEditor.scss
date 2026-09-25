@@ -118,7 +118,8 @@ $button-color-active: #3498db;
 
 		.ProseMirror {
 			outline: none;
-			min-height: 160px;
+			// Fill the whole content box, so clicking anywhere in it focuses the editor
+			min-height: 100%;
 			word-break: normal;
 
 			a {
@@ -471,6 +472,37 @@ $button-color-active: #3498db;
 		content: '';
 		display: block;
 		clear: both;
+	}
+
+	// Tiptap wraps the content of every list item in a <p>, whose paragraph margins
+	// would otherwise add a gap between the items. Keep lists as compact as plain <li> text.
+	ul,
+	ol {
+		margin: 0 0 1em;
+		padding-left: 2.5em;
+	}
+
+	ul {
+		list-style: disc;
+	}
+
+	ol {
+		list-style: decimal;
+	}
+
+	li {
+		margin: 0;
+		padding: 0;
+
+		> p {
+			margin: 0;
+		}
+
+		// Nested lists sit directly under their parent item
+		ul,
+		ol {
+			margin: 0;
+		}
 	}
 
 	.c-editor-image,
