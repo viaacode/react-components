@@ -26,20 +26,24 @@ const Modal: FC<ModalProps> = ({
 	const rootCls = clsx(className, root, getVariantClasses(root, variants));
 
 	const [ready, setReady] = useState(false);
+	const [hideApp, setHideApp] = useState(false);
 
 	// See https://github.com/reactjs/react-modal#examples
 	useEffect(() => {
-		const root = document.body;
+		// Don't use document.body: the modal portal lives in body and would be aria-hidden too
+		const root = document.getElementById('__next') ?? document.getElementById('root');
 
 		if (root) {
 			ReactModal.setAppElement(root);
-			setReady(true);
+			setHideApp(true);
 		}
+		setReady(true);
 	}, []);
 
 	return (
 		<ReactModal
 			isOpen={ready && !!isOpen}
+			ariaHideApp={hideApp}
 			overlayClassName={bem('overlay')}
 			className={rootCls}
 			shouldCloseOnEsc
