@@ -34,6 +34,12 @@ interface TooltipPropsSchema {
 	arrowFillColor?: string; // https://floating-ui.com/docs/floatingarrow#fill
 	arrowStrokeColor?: string; // https://floating-ui.com/docs/floatingarrow#stroke
 	arrowStrokeWidth?: number; // https://floating-ui.com/docs/FloatingArrow#strokewidth
+	/**
+	 * Whether a click or tap on the trigger opens the tooltip, and keeps it open while hovered.
+	 * Defaults to true. Set to false to only open on hover and keyboard focus, which is useful when
+	 * the trigger itself does something on click.
+	 */
+	enableTooltipOnClick?: boolean;
 }
 
 const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
@@ -45,6 +51,7 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	arrowFillColor = '#FFF',
 	arrowStrokeColor,
 	arrowStrokeWidth = 0,
+	enableTooltipOnClick = true,
 }) => {
 	const [show, setShow] = useState(false);
 
@@ -72,7 +79,7 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 		}),
 	});
 	const focus = useFocus(context);
-	const click = useClick(context, { keyboardHandlers: false });
+	const click = useClick(context, { enabled: enableTooltipOnClick, keyboardHandlers: false });
 	const { getFloatingProps, getReferenceProps } = useInteractions([hover, focus, click]);
 
 	return contentElement && triggerElement ? (
