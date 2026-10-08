@@ -121,6 +121,15 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	onEnded?: () => void;
 	onTimeUpdate?: (time: number) => void;
 	onMetadataLoaded?: (evt: Event) => void;
+	/**
+	 * Called once for every player that is mounted (consumers remount it with a `key`), with the
+	 * `video.fp-engine` element that Flowplayer drives, also for audio. The element is there before
+	 * any media event: the way to hook into it (e.g. seek it, or listen to events that `onPlay` and
+	 * `onPause` don't give) without waiting for one such as `loadeddata`, which iOS Safari doesn't
+	 * fire before playback with preload "metadata". Not a dependency of the player: it may change
+	 * every render.
+	 */
+	onReady?: (videoElement: HTMLVideoElement) => void;
 	onError?: () => void;
 	preload?: 'none' | 'auto' | 'metadata';
 	plugins?: FlowplayerPlugin[];

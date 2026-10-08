@@ -71,6 +71,8 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	onEnded,
 	onTimeUpdate,
 	onError,
+	onMetadataLoaded,
+	onReady,
 	canPlay,
 	className,
 	playlistScrollable = false,
@@ -89,7 +91,6 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	peakColorActive,
 	peakHeightFactor,
 	enableRestartCuePointsButton,
-	onMetadataLoaded,
 	controlsVariant = 'native',
 	customControlsConfig,
 }) => {
@@ -125,6 +126,12 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	useEffect(() => {
 		onTimeUpdateRef.current = onTimeUpdate;
 	}, [onTimeUpdate]);
+
+	// A ref, so a callback that changes every render doesn't re-initialise the player
+	const onReadyRef = useRef(onReady);
+	useEffect(() => {
+		onReadyRef.current = onReady;
+	}, [onReady]);
 
 	const [startedPlaying, setStartedPlaying] = useState<boolean>(false);
 	const [drawPeaksTimerId, setDrawPeaksTimerId] = useState<number | null>(null);
@@ -512,6 +519,9 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		registerCommands(tempPlayer);
 
 		setPlayer(tempPlayer);
+
+		// The player is the video element itself
+		onReadyRef.current?.(tempPlayer);
 	}, [
 		drawCustomElements,
 		end,
