@@ -177,3 +177,18 @@ export const TooltipStyling: Story = {
 		</div>
 	),
 };
+
+export const TooltipWithoutClick: Story = {
+	render: () => (
+		<div className="u-text-center" style={{ paddingTop: '200px', paddingLeft: '200px' }}>
+			<Tooltip position="top" enableTooltipOnClick={false}>
+				<TooltipTrigger>
+					<button type="button">Hover me, clicking does not pin the tooltip</button>
+				</TooltipTrigger>
+				<TooltipContent>
+					<span>This is a tooltip</span>
+				</TooltipContent>
+			</Tooltip>
+		</div>
+	),
+};
