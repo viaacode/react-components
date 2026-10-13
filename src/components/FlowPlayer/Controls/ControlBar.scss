@@ -434,6 +434,11 @@ $flowplayer-volume-bar-hover-scale: 1.2;
 				}
 			}
 
+			&-icon {
+				font-size: 2rem;
+				color: #757575;
+			}
+
 			&-label {
 				flex: 1 1 auto;
 				font-size: 1.4rem;
