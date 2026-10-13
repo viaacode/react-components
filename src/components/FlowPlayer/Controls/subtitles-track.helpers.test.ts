@@ -88,6 +88,17 @@ describe('selectSubtitleTrack', () => {
 		expect(track.mode).toBe('disabled');
 	});
 
+	it('emits a "cuechange" for the disabled track when turned off, so the plugin clears the cue that is still on screen', () => {
+		const track = buildTrack({ kind: 'subtitles', label: 'Nederlands', language: 'nl' });
+		const { player } = buildPlayer([track]);
+		selectSubtitleTrack(player, getSubtitleTrackKey([track], track));
+		(player.emit as jest.Mock).mockClear();
+
+		selectSubtitleTrack(player, null);
+
+		expect(player.emit).toHaveBeenCalledWith('cuechange', { track });
+	});
+
 	it('switches the HLS rendition for an HLS-embedded track, mirroring the native subtitles plugin', () => {
 		const track = buildTrack({
 			kind: 'subtitles',

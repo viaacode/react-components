@@ -52,12 +52,14 @@ export function getActiveSubtitleTrackKey(player: Player): string | null {
 	return active ? getSubtitleTrackKey(tracks, active) : null;
 }
 
+// "tracks:text:updated" and "cuechange" aren't in Flowplayer's public emittable event map, so
+// `player.emit` rejects them at the type level.
+function emitSubtitleEvent(player: Player, event: string, payload?: unknown) {
+	(player as unknown as { emit: (event: string, payload?: unknown) => void }).emit(event, payload);
+}
+
 function emitTracksUpdated(player: Player, track?: FlowplayerTextTrack) {
-	// "tracks:text:updated" isn't in the public event map, hence the loose cast.
-	(player as unknown as { emit: (event: string, payload?: unknown) => void }).emit(
-		'tracks:text:updated',
-		track
-	);
+	emitSubtitleEvent(player, 'tracks:text:updated', track);
 }
 
 /**
@@ -77,17 +79,23 @@ function emitTracksUpdated(player: Player, track?: FlowplayerTextTrack) {
  * final state until some unrelated later cue change happens to fire.
  */
 function emitCueChange(player: Player, track: FlowplayerTextTrack) {
-	const emit = (
-		player as unknown as { emit: (event: string, payload?: unknown) => void }
-	).emit.bind(player);
-	emit('cuechange', { track });
+	emitSubtitleEvent(player, 'cuechange', { track });
 	track.addEventListener(
 		'cuechange',
 		() => {
-			emit('cuechange', { track });
+			emitSubtitleEvent(player, 'cuechange', { track });
 		},
 		{ once: true }
 	);
+}
+
+/**
+ * Disabling a track fires no native "cuechange", so the cue that is on screen would stay there.
+ * The plugin's cue renderer reads the emitted track's active cues, and a disabled track has none,
+ * so emitting it empties `.fp-captions` - the same end result as the plugin's own "off".
+ */
+function clearCaptionOverlay(player: Player, track: FlowplayerTextTrack) {
+	emitSubtitleEvent(player, 'cuechange', { track });
 }
 
 /**
@@ -104,6 +112,7 @@ export function selectSubtitleTrack(player: Player, trackKey: string | null): bo
 			currentActive.mode = 'disabled';
 			currentActive.is_active = false;
 			emitTracksUpdated(player);
+			clearCaptionOverlay(player, currentActive);
 		}
 		return true;
 	}
