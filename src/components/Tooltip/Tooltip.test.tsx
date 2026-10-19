@@ -61,6 +61,16 @@ describe('Tooltip', () => {
 		expect(screen.getByText(contentText)).toBeInTheDocument();
 	});
 
+	it('should close the tooltip when Escape is pressed', () => {
+		const { container } = renderTooltip();
+		fireEvent.click(container.getElementsByTagName('span')[0]);
+		expect(screen.getByText(contentText)).toBeInTheDocument();
+
+		fireEvent.keyDown(document.body, { key: 'Escape' });
+
+		expect(screen.queryByText(contentText)).not.toBeInTheDocument();
+	});
+
 	describe('with enableTooltipOnClick set to false', () => {
 		it('should not show the tooltip when the trigger is clicked', () => {
 			const { container } = renderTooltip({ enableTooltipOnClick: false });

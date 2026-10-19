@@ -16,8 +16,10 @@ import {
 	FloatingArrow,
 	offset as floatingOffset,
 	type Placement,
+	shift,
 	safePolygon,
 	useClick,
+	useDismiss,
 	useFloating,
 	useFocus,
 	useHover,
@@ -65,6 +67,8 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 		placement: position,
 		middleware: [
 			floatingOffset({ mainAxis: offset }),
+			// Keeps the tooltip inside clipping ancestors (overflow hidden/auto) instead of being cut off
+			shift(),
 			arrow({
 				element: arrowRef,
 			}),
@@ -80,7 +84,9 @@ const Tooltip: FunctionComponent<TooltipPropsSchema> = ({
 	});
 	const focus = useFocus(context);
 	const click = useClick(context, { enabled: enableTooltipOnClick, keyboardHandlers: false });
-	const { getFloatingProps, getReferenceProps } = useInteractions([hover, focus, click]);
+	// Escape closes it without moving the pointer or focus (WCAG 1.4.13)
+	const dismiss = useDismiss(context);
+	const { getFloatingProps, getReferenceProps } = useInteractions([hover, focus, click, dismiss]);
 
 	return contentElement && triggerElement ? (
 		<>
