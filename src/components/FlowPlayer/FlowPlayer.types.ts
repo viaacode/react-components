@@ -134,6 +134,7 @@ export interface FlowPlayerProps extends DefaultComponentProps {
 	preload?: 'none' | 'auto' | 'metadata';
 	plugins?: FlowplayerPlugin[];
 	subtitles?: FlowplayerTrackSchema[];
+	onSubtitleTrackChange?: (trackKey: string | null) => void;
 	playlistScrollable?: boolean;
 	renderPlaylistTile?: (item: FlowplayerSourceItem) => ReactNode;
 	canPlay?: boolean; // Indicates if the video can play at this time. Eg: will be set to false if a modal is open in front of the video player

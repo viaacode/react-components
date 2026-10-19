@@ -16,6 +16,7 @@ import { noop } from '../../utils/noop';
 
 import { ControlBar } from './Controls/ControlBar';
 import { isGenericPeakMode } from './Controls/Controls.consts';
+import { getActiveSubtitleTrackKey } from './Controls/subtitles-track.helpers';
 import { registerCommands } from './FlowPlayer.commands';
 import {
 	ALL_FLOWPLAYER_PLUGINS,
@@ -73,6 +74,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	onError,
 	onMetadataLoaded,
 	onReady,
+	onSubtitleTrackChange,
 	canPlay,
 	className,
 	playlistScrollable = false,
@@ -132,6 +134,12 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 	useEffect(() => {
 		onReadyRef.current = onReady;
 	}, [onReady]);
+
+	// A ref, so a callback that changes every render doesn't re-initialise the player
+	const onSubtitleTrackChangeRef = useRef(onSubtitleTrackChange);
+	useEffect(() => {
+		onSubtitleTrackChangeRef.current = onSubtitleTrackChange;
+	}, [onSubtitleTrackChange]);
 
 	const [startedPlaying, setStartedPlaying] = useState<boolean>(false);
 	const [drawPeaksTimerId, setDrawPeaksTimerId] = useState<number | null>(null);
@@ -515,6 +523,18 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 		tempPlayer.on('loadeddata', handleLoadedMetadata);
 		tempPlayer.on('timeupdate', handleTimeUpdate);
 		tempPlayer.on('volumechange', () => onMutedChange?.(tempPlayer.muted));
+
+		// The state the player starts in is the baseline and is not reported: it has not switched on its
+		// `default` track yet, and reporting that as "off" would read as the user turning it off.
+		// "tracks:text:updated" isn't in the public event map (see subtitles-track.helpers.ts).
+		let activeSubtitleTrackKey = getActiveSubtitleTrackKey(tempPlayer);
+		tempPlayer.on('tracks:text:updated', () => {
+			const trackKey = getActiveSubtitleTrackKey(tempPlayer);
+			if (trackKey !== activeSubtitleTrackKey) {
+				activeSubtitleTrackKey = trackKey;
+				onSubtitleTrackChangeRef.current?.(trackKey);
+			}
+		});
 
 		registerCommands(tempPlayer);
 
