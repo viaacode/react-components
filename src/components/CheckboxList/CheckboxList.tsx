@@ -17,13 +17,14 @@ const CheckboxList: FC<CheckboxListProps<unknown>> = ({
 }) => {
 	return (
 		<ul className={clsx(className, 'c-checkbox-list')}>
-			{items.map((item) => {
+			{items.map((item, i) => {
 				const value = item.value;
 				const isChecked = !!item.checked;
 
 				return (
 					<li
-						key={`c-checkbox-list--${value}`}
+						// biome-ignore lint/suspicious/noArrayIndexKey: values are not guaranteed to be unique
+						key={`c-checkbox-list--${i}--${value}`}
 						className={clsx('c-checkbox-list__item', itemClassName, {
 							'is-checked': isChecked,
 						})}
