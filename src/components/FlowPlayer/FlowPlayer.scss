@@ -163,7 +163,15 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 
 	.c-title-overlay {
 		display: none;
+
+		// Out of the `.fp-ui` flex column: shown in fullscreen on pause/hover, it would otherwise
+		// push the centered play/seek icons in `.fp-middle` down (ARC-4070)
+		position: absolute;
+		top: 0;
+		left: 0;
 		width: 100%;
+		pointer-events: none;
+		z-index: 1;
 
 		&__title {
 			background-color: rgb(15 23 29 / 75%);
