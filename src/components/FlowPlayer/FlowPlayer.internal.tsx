@@ -691,7 +691,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 					{playlistItems.map((item: FlowplayerSourceItem, itemIndex) => {
 						return (
 							<li
-								key={`${item.src}--${itemIndex}`}
+								key={`${item.src}--${item.title}`}
 								className={`c-video-player__playlist__item${activeItemIndex === itemIndex ? ' c-video-player__playlist__item--active' : ''}`}
 							>
 								<button type="button" onClick={() => handleMediaCardClicked(itemIndex)}>

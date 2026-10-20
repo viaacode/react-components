@@ -23,7 +23,7 @@ export const MoreOptionsDropdown: FunctionComponent<MoreOptionsDropdownPropsSche
 		}
 	};
 
-	return !!menuItems && !!menuItems.length ? (
+	return menuItems && menuItems.length ? (
 		<Dropdown
 			id={`${id}__more-options-dropdown`}
 			isOpen={isOpen}

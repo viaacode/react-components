@@ -17,13 +17,13 @@ const CheckboxList: FC<CheckboxListProps<unknown>> = ({
 }) => {
 	return (
 		<ul className={clsx(className, 'c-checkbox-list')}>
-			{items.map((item, i) => {
+			{items.map((item) => {
 				const value = item.value;
 				const isChecked = !!item.checked;
 
 				return (
 					<li
-						key={`c-checkbox-list--${i}--${value}`}
+						key={`c-checkbox-list--${value}`}
 						className={clsx('c-checkbox-list__item', itemClassName, {
 							'is-checked': isChecked,
 						})}
