@@ -23,6 +23,7 @@ const CheckboxList: FC<CheckboxListProps<unknown>> = ({
 
 				return (
 					<li
+						// biome-ignore lint/suspicious/noArrayIndexKey: values are not guaranteed to be unique
 						key={`c-checkbox-list--${i}--${value}`}
 						className={clsx('c-checkbox-list__item', itemClassName, {
 							'is-checked': isChecked,

@@ -20,7 +20,7 @@ const TagList: FC<TagListProps> = ({
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants));
 
-	return !!tags && !!tags.length ? (
+	return tags?.length ? (
 		<ul className={rootCls}>
 			{tags.map((tag: TagOption) => {
 				const tagVariants = [...getVariantsArray(variants), ...getVariantsArray(tag.variants)];

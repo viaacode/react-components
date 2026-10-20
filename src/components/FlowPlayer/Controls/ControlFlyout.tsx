@@ -1,5 +1,5 @@
-import { cloneElement, isValidElement } from 'react';
 import type { FC, ReactElement, ReactNode } from 'react';
+import { cloneElement, isValidElement } from 'react';
 import Dropdown from '../../Dropdown/Dropdown';
 import { DropdownButton, DropdownContent } from '../../Dropdown/Dropdown.slots';
 import { CheckIcon } from './Controls.icons';

@@ -691,6 +691,7 @@ const FlowPlayerInternal: FunctionComponent<FlowPlayerProps> = ({
 					{playlistItems.map((item: FlowplayerSourceItem, itemIndex) => {
 						return (
 							<li
+								// biome-ignore lint/suspicious/noArrayIndexKey: the same item can appear multiple times in a playlist
 								key={`${item.src}--${itemIndex}`}
 								className={`c-video-player__playlist__item${activeItemIndex === itemIndex ? ' c-video-player__playlist__item--active' : ''}`}
 							>

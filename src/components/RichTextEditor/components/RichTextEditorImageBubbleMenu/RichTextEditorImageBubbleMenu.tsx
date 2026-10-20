@@ -82,9 +82,7 @@ export const RichTextEditorImageBubbleMenu: FunctionComponent<
 					key={action.align}
 					type="button"
 					data-align-mode={action.align}
-					className={
-						editor.isActive('image', { align: action.align }) ? 'is-active' : undefined
-					}
+					className={editor.isActive('image', { align: action.align }) ? 'is-active' : undefined}
 					title={labels[action.labelKey]}
 					onClick={() => editor.chain().focus().setImageAlign(action.align).run()}
 				>

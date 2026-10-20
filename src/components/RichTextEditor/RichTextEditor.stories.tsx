@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { cloneElement, type CSSProperties, type ReactElement, useState } from 'react';
+import { type CSSProperties, cloneElement, type ReactElement, useState } from 'react';
 import { action } from 'storybook/actions';
 import { Locale } from '../../types';
 import Button from '../Button/Button';
