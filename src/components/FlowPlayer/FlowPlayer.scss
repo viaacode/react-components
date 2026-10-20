@@ -131,13 +131,18 @@ $fp-dragger-width: 1em; // em because flowplayer uses em units
 		display: none;
 	}
 
-	// `no-controls` reserves `padding-bottom: 3.6em` on `.fp-middle`, so its flex-centered seek
-	// zones end up 1.8em above the play button, which is centered on the whole player
-	// (`icon-layout`). Mirror the reservation at the top to center them on the same line (ARC-4070)
+	// `no-controls` reserves `padding-bottom: 3.6em` on `.fp-middle`, which centers its zones 1.8em
+	// above the middle of the player. Offset the seek zones and the play button by the same 3.6em
+	// (in `em`, not px, since the player's font size differs per breakpoint and per app) so all
+	// three end up on the same line (ARC-4070)
 	&.no-controls {
 		.fp-left-zone,
 		.fp-right-zone {
 			padding-top: 3.6em;
+		}
+
+		.fp-switch {
+			margin-top: 3.6em;
 		}
 	}
 
