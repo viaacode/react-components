@@ -61,6 +61,7 @@ $flowplayer-volume-bar-hover-scale: 1.2;
 	&:focus {
 		box-shadow: none;
 	}
+
 	&:focus-visible {
 		outline: $flowplayer-focus-outline-width solid $color;
 		outline-offset: $flowplayer-focus-outline-offset;
@@ -257,6 +258,7 @@ $flowplayer-volume-bar-hover-scale: 1.2;
 			height: 100%;
 			display: flex;
 			align-items: center;
+
 			// A drag handle spanning the seekable range - same affordance native uses on its own timeline.
 			cursor: col-resize;
 			touch-action: none;
@@ -308,6 +310,7 @@ $flowplayer-volume-bar-hover-scale: 1.2;
 			height: $flowplayer-progress-handle-size;
 			border-radius: 50%;
 			transform: translate(-50%, -50%);
+
 			// Only `transform` animates - `left` ticks every frame during playback and must stay instant.
 			transition: transform $flowplayer-interaction-transition-duration ease;
 		}
@@ -477,6 +480,7 @@ $flowplayer-volume-bar-hover-scale: 1.2;
 			.c-flowplayer-control-button {
 				width: auto;
 				padding-inline: $g-spacer-unit;
+
 				// The bar's own button colors are tuned for the dark pill, not this white card.
 				color: $flowplayer-flyout-option-text-color;
 
@@ -490,8 +494,10 @@ $flowplayer-volume-bar-hover-scale: 1.2;
 
 	.c-flowplayer-volume-bars {
 		display: flex;
+
 		// Bars grow upward from a common baseline.
 		align-items: flex-end;
+
 		// No gap: the spacing lives inside each bar's own padding, so the pointer never falls
 		// between two hover targets.
 		gap: 0;
@@ -506,11 +512,13 @@ $flowplayer-volume-bar-hover-scale: 1.2;
 			width: $flowplayer-volume-bar-width + ($flowplayer-volume-bar-hit-padding * 2);
 			height: 100%;
 			padding-inline: $flowplayer-volume-bar-hit-padding;
+
 			// Paints the content box only, so the bar stays 3px wide while its target is 7px.
 			background-clip: content-box;
 			background-color: $flowplayer-flyout-option-divider-color;
 			border-radius: 0.2rem;
 			transform-origin: bottom;
+
 			// transform, not height - same as native, and it doesn't reflow the row.
 			transition: transform $flowplayer-interaction-transition-duration ease;
 

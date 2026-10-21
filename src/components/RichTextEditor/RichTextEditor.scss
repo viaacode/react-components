@@ -118,6 +118,7 @@ $button-color-active: #3498db;
 
 		.ProseMirror {
 			outline: none;
+
 			// Fill the whole content box, so clicking anywhere in it focuses the editor
 			min-height: 100%;
 			word-break: normal;
