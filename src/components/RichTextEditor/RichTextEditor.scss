@@ -557,6 +557,12 @@ $button-color-active: #3498db;
 			margin: 0 0 16px 16px;
 		}
 	}
+
+	// A block aligned anchor would otherwise span the full width, leaving the image inside it
+	// at the left edge, whatever the alignment. https://meemoo.atlassian.net/browse/ARC-4085
+	.c-editor-image-link[data-align^='block-'] {
+		width: fit-content;
+	}
 }
 
 .c-rich-text-editor__image-bubble-menu {
