@@ -21,3 +21,12 @@ export const Spinner: Story = {
 		showSpinner: true,
 	},
 };
+
+export const Indeterminate: Story = {
+	args: {
+		label: 'Some items selected',
+		indeterminate: true,
+		checkIcon: '✓',
+		indeterminateIcon: '–',
+	},
+};
