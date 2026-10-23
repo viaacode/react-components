@@ -61,6 +61,30 @@ describe('components/<Checkbox />', () => {
 		expect(input).toHaveAttribute('checked');
 	});
 
+	it('Should be able to set as indeterminate', () => {
+		const { container, queryByDisplayValue } = renderCheckbox({
+			checked: true,
+			indeterminate: true,
+			checkIcon: <span>check</span>,
+			indeterminateIcon: <span>minus</span>,
+		});
+
+		const checkbox = container.querySelector('label');
+		const input = queryByDisplayValue(mockValue) as HTMLInputElement;
+		expect(checkbox).toHaveClass('c-checkbox--indeterminate');
+		expect(checkbox).not.toHaveClass('c-checkbox--checked');
+		expect(input.indeterminate).toBe(true);
+		expect(container.querySelector('.c-checkbox__check-icon')).toHaveTextContent('minus');
+	});
+
+	it('Should not be indeterminate by default', () => {
+		const { container, queryByDisplayValue } = renderCheckbox({});
+
+		const input = queryByDisplayValue(mockValue) as HTMLInputElement;
+		expect(container.querySelector('label')).not.toHaveClass('c-checkbox--indeterminate');
+		expect(input.indeterminate).toBe(false);
+	});
+
 	it('Should be able to set id and name', () => {
 		const id = 'id-check';
 		const name = 'name-check';
