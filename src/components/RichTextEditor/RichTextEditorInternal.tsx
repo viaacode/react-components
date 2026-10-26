@@ -1,14 +1,4 @@
-import Placeholder from '@tiptap/extension-placeholder';
-import Subscript from '@tiptap/extension-subscript';
-import Superscript from '@tiptap/extension-superscript';
-import { Table } from '@tiptap/extension-table';
-import TableCell from '@tiptap/extension-table-cell';
-import TableHeader from '@tiptap/extension-table-header';
-import TableRow from '@tiptap/extension-table-row';
-import TextAlign from '@tiptap/extension-text-align';
-import { TextStyle } from '@tiptap/extension-text-style';
 import { EditorContent, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
 import type { ChangeEvent, FunctionComponent, ReactNode } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -17,7 +7,6 @@ import { RichTextEditorHeadingsDropdown } from './components/RichTextEditorHeadi
 import { RichTextEditorImageBubbleMenu } from './components/RichTextEditorImageBubbleMenu/RichTextEditorImageBubbleMenu';
 import { RichTextEditorLinkDropdown } from './components/RichTextEditorLinkDropdown/RichTextEditorLinkDropdown';
 import { RichTextEditorTableDropdown } from './components/RichTextEditorTableDropdown/RichTextEditorTableDropdown';
-import { RichTextEditorImage } from './extensions/RichTextEditorImage';
 import AlignCenterIcon from './icons/align-center.svg?react';
 import AlignJustifyIcon from './icons/align-justify.svg?react';
 import AlignLeftIcon from './icons/align-left.svg?react';
@@ -39,6 +28,7 @@ import UnderlineIcon from './icons/underline.svg?react';
 import UndoIcon from './icons/undo.svg?react';
 import UnlinkIcon from './icons/unlink.svg?react';
 import { DEFAULT_CONTROLS } from './RichTextEditor.const';
+import { getRichTextEditorExtensions } from './RichTextEditor.extensions';
 import { prettifyHtml } from './RichTextEditor.helpers';
 import { LabelKey, RICH_TEXT_EDITOR_LABELS } from './RichTextEditor.labels';
 import {
@@ -99,22 +89,7 @@ const RichTextEditorInternal: FunctionComponent<RichTextEditorInternalProps> = (
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
 
 	const editor = useEditor({
-		extensions: [
-			StarterKit, // Already includes link and underline functionality
-			RichTextEditorImage.configure({ HTMLAttributes: { class: 'c-editor-image' } }),
-			Table.configure({
-				resizable: false,
-				HTMLAttributes: { class: 'c-editor-table' },
-			}),
-			TableRow,
-			TableCell,
-			TableHeader,
-			Subscript,
-			Superscript,
-			TextAlign.configure({ types: ['heading', 'paragraph'] }),
-			TextStyle,
-			Placeholder.configure({ placeholder }),
-		],
+		extensions: getRichTextEditorExtensions(placeholder),
 		content: value || '',
 		editable: !disabled,
 		immediatelyRender: false,
