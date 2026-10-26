@@ -77,6 +77,23 @@ describe('components/<Checkbox />', () => {
 		expect(container.querySelector('.c-checkbox__check-icon')).toHaveTextContent('minus');
 	});
 
+	it('Should call onChange and stay indeterminate when an indeterminate checkbox is clicked', () => {
+		const onChange = jest.fn();
+		const { queryByDisplayValue } = renderCheckbox({
+			checked: false,
+			indeterminate: true,
+			onChange,
+		});
+
+		const input = queryByDisplayValue(mockValue) as HTMLInputElement;
+		fireEvent.click(input);
+
+		expect(onChange).toHaveBeenCalledTimes(1);
+		// The parent decides the new state, until then the checkbox keeps the state of its props
+		expect(input.indeterminate).toBe(true);
+		expect(input.checked).toBe(false);
+	});
+
 	it('Should not be indeterminate by default', () => {
 		const { container, queryByDisplayValue } = renderCheckbox({});
 

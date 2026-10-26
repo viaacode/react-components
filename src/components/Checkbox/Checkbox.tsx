@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { type FC, forwardRef, useEffect, useRef } from 'react';
+import { type ChangeEvent, type FC, forwardRef, useLayoutEffect, useRef } from 'react';
 
 import { useEnterKeyClick } from '../../hooks';
 import { bemCls, getVariantClasses, mergeRefs } from '../../utils';
@@ -35,12 +35,19 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 		});
 
 		// Indeterminate can only be set through javascript, not as an html attribute
-		// Clicking the input clears it, so it is set again on every render
-		useEffect(() => {
+		// A layout effect sets it before the browser paints, so the checkbox never shows the wrong state
+		useLayoutEffect(() => {
 			if (inputRef.current) {
 				inputRef.current.indeterminate = indeterminate;
 			}
 		});
+
+		const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
+			// Clicking the input clears the indeterminate flag, restore it from the props,
+			// otherwise screen readers announce a different state than the one shown when the parent does not re-render
+			evt.currentTarget.indeterminate = indeterminate;
+			onChange(evt);
+		};
 
 		return (
 			<label className={rootCls}>
@@ -52,7 +59,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 					ref={mergeRefs([ref, inputRef])}
 					type="checkbox"
 					value={value}
-					onChange={onChange}
+					onChange={handleChange}
 					onKeyDown={useEnterKeyClick({ disabled })}
 				/>
 				{showSpinner && <Spinner />}
