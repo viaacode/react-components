@@ -523,7 +523,7 @@ $flowplayer-volume-bar-hover-scale: 1.2;
 			transition: transform $flowplayer-interaction-transition-duration ease;
 
 			&--filled {
-				background-color: var(--flowplayer-controls-progress);
+				background-color: var(--flowplayer-controls-volume);
 			}
 
 			&:hover {
