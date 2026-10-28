@@ -200,6 +200,7 @@ export interface FlowPlayerControlsColors {
 	backgroundColor: string; // control bar background + button backgrounds
 	foregroundColor: string; // timestamp text color, against `backgroundColor`
 	progressColor: string; // progress fill/handle
+	volumeColor?: string; // filled volume bars, defaults to `progressColor`
 	activeButtonColor: string; // background of a highlighted/selected button (muted, subtitles/speed open or on)
 	cuepointColor: string; // progress track cuepoint marker background
 	buttonHoverColor: string; // button background on hover

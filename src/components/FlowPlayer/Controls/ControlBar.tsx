@@ -187,6 +187,7 @@ export const ControlBar: FC<ControlBarProps> = ({
 		['--flowplayer-controls-bg' as string]: colors?.backgroundColor,
 		['--flowplayer-controls-fg' as string]: colors?.foregroundColor,
 		['--flowplayer-controls-progress' as string]: colors?.progressColor,
+		['--flowplayer-controls-volume' as string]: colors?.volumeColor ?? colors?.progressColor,
 		['--flowplayer-controls-active-button' as string]: colors?.activeButtonColor,
 		['--flowplayer-controls-button-hover' as string]: colors?.buttonHoverColor,
 		['--flowplayer-controls-active-button-hover' as string]: colors?.activeButtonHoverColor,
