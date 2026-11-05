@@ -33,4 +33,8 @@ export interface TextInputProps extends DefaultComponentProps {
 	autoComplete?: 'on' | 'off' | string;
 	autoCorrect?: 'on' | 'off' | '';
 	spellCheck?: boolean;
+	/**
+	 * Adds attributes that tell common password managers (1Password, LastPass, Bitwarden, Dashlane) to ignore this field
+	 */
+	ignorePasswordManagers?: boolean;
 }

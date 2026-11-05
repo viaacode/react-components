@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { type FC, forwardRef, type KeyboardEvent, type ReactNode } from 'react';
 
-import { bemCls, getVariantClasses } from '../../utils';
+import { bemCls, getPasswordManagerIgnoreAttributes, getVariantClasses } from '../../utils';
 import { isFunction } from '../../utils/is-function';
 import type { TextInputProps } from './TextInput.types';
 
@@ -41,6 +41,7 @@ export const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextIn
 			autoComplete,
 			autoCorrect,
 			spellCheck,
+			ignorePasswordManagers,
 		},
 		ref
 	) => {
@@ -102,6 +103,7 @@ export const TextInput: FC<TextInputProps> = forwardRef<HTMLInputElement, TextIn
 					autoComplete={autoComplete}
 					autoCorrect={autoCorrect}
 					spellCheck={spellCheck}
+					{...getPasswordManagerIgnoreAttributes(ignorePasswordManagers)}
 				/>
 				{iconEnd &&
 					renderIcon(

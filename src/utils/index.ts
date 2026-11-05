@@ -5,4 +5,5 @@ export * from './hash-string';
 export * from './key-up';
 export * from './merge-refs';
 export * from './parsers';
+export * from './password-manager-ignore-attributes';
 export * from './variant-classes';
