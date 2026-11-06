@@ -217,6 +217,33 @@ export const WithAlignedLinkedImage: Story = {
 };
 
 /**
+ * AVO-4153: a content block with two text columns, both holding a centered image. Select the
+ * image in the right column and add a link with the link button in the toolbar: the image has to
+ * stay centered, in the editor as well as in the output render.
+ */
+export const WithAlignedLinkedImageInColumns: Story = {
+	args: {
+		media: MOCK_RICH_TEXT_EDITOR_MEDIA,
+	},
+	render: (args: any) => (
+		<div style={{ display: 'flex', gap: '24px' }}>
+			<div style={{ flex: 1, minWidth: 0 }}>
+				<Template
+					{...args}
+					value={`<p>Linked</p><a href="https://onderwijs.hetarchief.be" target="_blank" rel="noopener noreferrer" data-align="block-center" class="c-editor-image-link"><img class="c-editor-image" src="https://placehold.co/160x240?text=centered+link"></a><p>${MOCK_LOREM_IPSUM}</p>`}
+				/>
+			</div>
+			<div style={{ flex: 1, minWidth: 0 }}>
+				<Template
+					{...args}
+					value={`<p>Not linked yet</p><img class="c-editor-image" src="https://placehold.co/160x240?text=centered" data-align="block-center"><p>${MOCK_LOREM_IPSUM}</p>`}
+				/>
+			</div>
+		</div>
+	),
+};
+
+/**
  * Content saved by the previous editor (Braft): linked, aligned and resized images wrapped in a
  * media-wrap div. Their link, alignment and size are kept when the content is loaded.
  */

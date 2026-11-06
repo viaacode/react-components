@@ -1,6 +1,9 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { Editor } from '@tiptap/core';
-import { RICH_TEXT_EDITOR_IMAGE_LINK_CLASS } from './extensions/RichTextEditorImage';
+import {
+	RICH_TEXT_EDITOR_IMAGE_ALIGNS,
+	RICH_TEXT_EDITOR_IMAGE_LINK_CLASS,
+} from './extensions/RichTextEditorImage';
 import RichTextEditorInternal from './RichTextEditorInternal';
 
 const IMAGE_SRC = 'https://assets.hetarchief.be/avo2/CONTENT_BLOCK_IMAGE/image.webp';
@@ -93,6 +96,50 @@ describe('RichTextEditor - image bubble menu', () => {
 
 		expect(getOutput()).toEqual(
 			`<a href="${LINK_HREF}" data-align="block-right" class="${RICH_TEXT_EDITOR_IMAGE_LINK_CLASS}"><img class="c-editor-image" src="${IMAGE_SRC}"></a><p>Text</p>`
+		);
+	});
+});
+
+/**
+ * AVO-4153: a centered image in a text column jumped to the left when it got a link through the
+ * link button in the toolbar, while it was selected. The alignment has to stay on the anchor that
+ * wraps the image, since that anchor is the element taking part in the layout.
+ */
+describe('RichTextEditor - toolbar link on an aligned image', () => {
+	it.each(RICH_TEXT_EDITOR_IMAGE_ALIGNS)(
+		'Should keep the %s alignment of a selected image when it gets a link from the toolbar',
+		async (align) => {
+			const { editor, getOutput } = await renderEditor(
+				`<p>Intro</p><img class="c-editor-image" src="${IMAGE_SRC}" data-align="${align}"><p>Outro</p>`
+			);
+			selectImage(editor);
+
+			fireEvent.click(screen.getByTitle('Link invoegen'));
+			fireEvent.change(await screen.findByPlaceholderText('Link URL invoeren'), {
+				target: { value: LINK_HREF },
+			});
+			fireEvent.click(screen.getByText('Bevestig'));
+
+			const expectedHtml = `<p>Intro</p><a href="${LINK_HREF}" target="_self" data-align="${align}" class="${RICH_TEXT_EDITOR_IMAGE_LINK_CLASS}"><img class="c-editor-image" src="${IMAGE_SRC}"></a><p>Outro</p>`;
+			expect(getOutput()).toEqual(expectedHtml);
+			// The image stays selected and keeps its alignment in the editor itself as well
+			expect(editor.isActive('image', { align, href: LINK_HREF })).toBe(true);
+			expect(
+				document.querySelector(`.ProseMirror a.${RICH_TEXT_EDITOR_IMAGE_LINK_CLASS}`)
+			).toHaveAttribute('data-align', align);
+		}
+	);
+
+	it('Should keep the alignment of an image when its link is removed with the toolbar unlink button', async () => {
+		const { editor, getOutput } = await renderEditor(
+			`<a href="${LINK_HREF}" data-align="block-center" class="${RICH_TEXT_EDITOR_IMAGE_LINK_CLASS}"><img class="c-editor-image" src="${IMAGE_SRC}"></a><p>Text</p>`
+		);
+		selectImage(editor);
+
+		fireEvent.click(screen.getByTitle('Link verwijderen'));
+
+		expect(getOutput()).toEqual(
+			`<img class="c-editor-image" src="${IMAGE_SRC}" data-align="block-center"><p>Text</p>`
 		);
 	});
 });
