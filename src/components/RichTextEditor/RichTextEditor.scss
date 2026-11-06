@@ -506,17 +506,16 @@ $button-color-active: #3498db;
 		}
 	}
 
-	.c-editor-image,
-	.c-editor-image-link {
-		// Outline rather than border, so selecting an image does not resize it
-		&.ProseMirror-selectednode {
-			outline: 3px solid var(--c-rich-text-editor-color-active, #{$button-color-active});
-		}
-	}
-
 	.c-editor-image {
 		max-width: 100%;
-		height: auto;
+
+		// The size set in the editor is stored in the width and height attributes. Scale the height
+		// along with the width, so the image keeps its aspect ratio when max-width kicks in. Only an
+		// image with just a height (Braft content) takes the height attribute as is.
+		&:not([height]),
+		&[width] {
+			height: auto;
+		}
 	}
 
 	.c-editor-image-link {
@@ -529,10 +528,15 @@ $button-color-active: #3498db;
 		}
 	}
 
-	// A linked image is wrapped in an anchor, which then carries the alignment,
-	// since it is the element taking part in the surrounding layout.
+	// A linked image is wrapped in an anchor, which then carries the alignment and the selection
+	// outline, since it is the element taking part in the surrounding layout.
 	.c-editor-image,
 	.c-editor-image-link {
+		// Outline rather than border, so selecting an image does not resize it
+		&.ProseMirror-selectednode {
+			outline: 3px solid var(--c-rich-text-editor-color-active, #{$button-color-active});
+		}
+
 		&[data-align='block-left'] {
 			display: block;
 			margin-inline: 0 auto;
@@ -568,12 +572,45 @@ $button-color-active: #3498db;
 
 .c-rich-text-editor__image-bubble-menu {
 	display: flex;
-	align-items: center;
+	flex-direction: column;
 	background: #2e2e2e;
 	border-radius: 4px;
 	box-shadow: 0 4px 16px rgb(0 0 0 / 40%);
 	z-index: 10000;
 	overflow: hidden;
+}
+
+.c-rich-text-editor__image-bubble-menu-separator {
+	width: 1px;
+	height: 20px;
+	margin: 0 2px;
+	background: #555;
+}
+
+// The link and size forms, which open below the buttons, inside the bubble menu
+.c-rich-text-editor__link-popup.c-rich-text-editor__image-bubble-menu-panel {
+	border-top: 1px solid #444;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.c-rich-text-editor__image-size-fields {
+	display: flex;
+	gap: 12px;
+
+	label {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		gap: 4px;
+		color: #ddd;
+		font-size: 13px;
+	}
+}
+
+.c-rich-text-editor__image-bubble-menu-buttons {
+	display: flex;
+	align-items: center;
 
 	button {
 		display: flex;

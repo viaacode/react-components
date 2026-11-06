@@ -23,6 +23,65 @@ export enum RichTextEditorImageAlign {
 export const RICH_TEXT_EDITOR_IMAGE_ALIGNS: RichTextEditorImageAlign[] =
 	Object.values(RichTextEditorImageAlign);
 
+/**
+ * The previous editor (Braft) wrapped every image in `<div class="media-wrap image-wrap ...">`,
+ * with the alignment as a class on that wrapper (and on the image itself).
+ */
+const BRAFT_MEDIA_WRAP_SELECTOR = '.media-wrap';
+const BRAFT_ALIGN_CLASSES: Record<string, RichTextEditorImageAlign> = {
+	'float-left': RichTextEditorImageAlign.FLOAT_LEFT,
+	'float-right': RichTextEditorImageAlign.FLOAT_RIGHT,
+	'align-left': RichTextEditorImageAlign.BLOCK_LEFT,
+	'align-center': RichTextEditorImageAlign.BLOCK_CENTER,
+	'align-right': RichTextEditorImageAlign.BLOCK_RIGHT,
+};
+
+const isImageAlign = (value: string | null | undefined): value is RichTextEditorImageAlign =>
+	!!value && (RICH_TEXT_EDITOR_IMAGE_ALIGNS as string[]).includes(value);
+
+const getBraftAlign = (element: Element | null | undefined): RichTextEditorImageAlign | null => {
+	const alignClass = Array.from(element?.classList ?? []).find(
+		(className) => BRAFT_ALIGN_CLASSES[className]
+	);
+	return alignClass ? BRAFT_ALIGN_CLASSES[alignClass] : null;
+};
+
+const parseImageAlign = (image: HTMLElement): RichTextEditorImageAlign | null => {
+	const align =
+		image.getAttribute('data-align') ??
+		image.parentElement?.closest('a')?.getAttribute('data-align');
+
+	if (isImageAlign(align)) {
+		return align;
+	}
+
+	return getBraftAlign(image) ?? getBraftAlign(image.closest(BRAFT_MEDIA_WRAP_SELECTOR));
+};
+
+/**
+ * Image dimension in pixels (number) or as a percentage (string, eg: "50%"). Braft stored it
+ * with a unit, both as attribute and inline style: width="291px" style="width:291px".
+ */
+export type RichTextEditorImageSize = number | `${number}%` | null;
+
+export const parseImageSize = (value: string | null | undefined): RichTextEditorImageSize => {
+	const trimmed = value?.trim() ?? '';
+
+	if (/^\d+(\.\d+)?%$/.test(trimmed)) {
+		return trimmed as `${number}%`;
+	}
+
+	if (/^\d+(\.\d+)?(px)?$/.test(trimmed)) {
+		const pixels = Math.round(Number.parseFloat(trimmed));
+		return pixels > 0 ? pixels : null;
+	}
+
+	return null;
+};
+
+const parseImageDimension = (image: HTMLElement, dimension: 'width' | 'height') =>
+	parseImageSize(image.getAttribute(dimension)) ?? parseImageSize(image.style[dimension]);
+
 declare module '@tiptap/core' {
 	interface Commands<ReturnType> {
 		richTextEditorImage: {
@@ -38,6 +97,13 @@ declare module '@tiptap/core' {
 			 * Remove the link around the currently selected image.
 			 */
 			unsetImageLink: () => ReturnType;
+			/**
+			 * Resize the currently selected image. Pass null for both to restore its original size.
+			 */
+			setImageSize: (size: {
+				width: RichTextEditorImageSize;
+				height: RichTextEditorImageSize;
+			}) => ReturnType;
 		};
 	}
 }
@@ -127,6 +193,9 @@ const RichTextEditorImageClick = Extension.create<{ nodeName: string }>({
  * The default image extension has no notion of alignment. We add an `align` attribute,
  * serialised as `data-align`, so it stays readable in the html view and round trips
  * through setContent / getHTML. The actual positioning is done in RichTextEditor.scss.
+ * Content saved by Braft carries its alignment as a class instead, which is converted.
+ *
+ * The size is stored in the `width` and `height` attributes of the image, without unit.
  *
  * An image is a block node, so it cannot carry the link mark the way text does. Instead we
  * store the link on the node itself (`href` / `target`) and render a wrapping anchor. The
@@ -137,11 +206,17 @@ export const RichTextEditorImage = Image.extend({
 	addAttributes() {
 		return {
 			...this.parent?.(),
+			width: {
+				default: null,
+				parseHTML: (element) => parseImageDimension(element, 'width'),
+			},
+			height: {
+				default: null,
+				parseHTML: (element) => parseImageDimension(element, 'height'),
+			},
 			align: {
 				default: null,
-				parseHTML: (element) =>
-					element.getAttribute('data-align') ??
-					element.parentElement?.closest('a')?.getAttribute('data-align'),
+				parseHTML: parseImageAlign,
 				renderHTML: (attributes) => (attributes.align ? { 'data-align': attributes.align } : {}),
 			},
 			href: {
@@ -196,6 +271,10 @@ export const RichTextEditorImage = Image.extend({
 				() =>
 				({ commands }) =>
 					commands.updateAttributes(this.name, { href: null, target: null }),
+			setImageSize:
+				({ width, height }) =>
+				({ commands }) =>
+					commands.updateAttributes(this.name, { width, height }),
 		};
 	},
 

@@ -98,6 +98,57 @@ describe('RichTextEditor - legacy Braft content', () => {
 		expect(getImageLinks(loadIntoEditor(html))).toEqual(imageLinks);
 	});
 
+	it.each([
+		{ braftClass: 'align-left', align: 'block-left' },
+		{ braftClass: 'align-center', align: 'block-center' },
+		{ braftClass: 'align-right', align: 'block-right' },
+		{ braftClass: 'float-left', align: 'float-left' },
+		{ braftClass: 'float-right', align: 'float-right' },
+	])('Should keep the $braftClass alignment of a linked Braft image', ({ braftClass, align }) => {
+		const braftHtml = `<div class="media-wrap image-wrap ${braftClass}"><a style="display:inline-block" href="${PDF_HREF}" target="_blank"><img class="media-wrap image-wrap ${braftClass}" src="${IMAGE_SRC}"/></a></div>`;
+
+		expect(loadIntoEditor(braftHtml)).toEqual(
+			`<a href="${PDF_HREF}" target="_blank" rel="noopener noreferrer" data-align="${align}" class="${RICH_TEXT_EDITOR_IMAGE_LINK_CLASS}"><img class="c-editor-image" src="${IMAGE_SRC}"></a>`
+		);
+	});
+
+	it('Should keep the alignment of a Braft image without link', () => {
+		const braftHtml = `<div class="media-wrap image-wrap align-center" style="text-align:center"><img src="${IMAGE_SRC}"/></div>`;
+
+		expect(loadIntoEditor(braftHtml)).toEqual(
+			`<img class="c-editor-image" src="${IMAGE_SRC}" data-align="block-center">`
+		);
+	});
+
+	it.each([
+		{
+			name: 'width and height with unit',
+			image: `<img src="${IMAGE_SRC}" width="291px" height="211px" style="width:291px;height:211px"/>`,
+			size: 'width="291" height="211"',
+		},
+		{
+			name: 'only an inline style',
+			image: `<img src="${IMAGE_SRC}" style="width:400px"/>`,
+			size: 'width="400"',
+		},
+		{
+			name: 'only a height',
+			image: `<img src="${IMAGE_SRC}" height="250px" style="height:250px"/>`,
+			size: 'height="250"',
+		},
+		{
+			name: 'a percentage',
+			image: `<img src="${IMAGE_SRC}" width="50%"/>`,
+			size: 'width="50%"',
+		},
+	])('Should keep the size of a linked Braft image with $name', ({ image, size }) => {
+		const braftHtml = `<div class="media-wrap image-wrap"><a style="display:inline-block" href="${PDF_HREF}">${image}</a></div>`;
+
+		expect(loadIntoEditor(braftHtml)).toEqual(
+			`<a href="${PDF_HREF}" class="${RICH_TEXT_EDITOR_IMAGE_LINK_CLASS}"><img class="c-editor-image" src="${IMAGE_SRC}" ${size}></a>`
+		);
+	});
+
 	it('Should keep every image and its link in a block with several images', () => {
 		const html = `<p>Kies je pakket:</p>
 <div class="media-wrap image-wrap"><a style="display:inline-block" href="/dewarmsteweek" target="_blank"><img src="https://assets.hetarchief.be/avo2/1.webp"/></a></div>
@@ -129,7 +180,7 @@ describe('RichTextEditor - legacy Braft content', () => {
 	});
 
 	it('Should leave converted content unchanged when it is loaded again', () => {
-		const braftHtml = `<div class="media-wrap image-wrap"><a style="display:inline-block" href="${PDF_HREF}" target="_blank"><img src="${IMAGE_SRC}"/></a></div>`;
+		const braftHtml = `<div class="media-wrap image-wrap align-center"><a style="display:inline-block" href="${PDF_HREF}" target="_blank"><img src="${IMAGE_SRC}" width="291px" height="211px"/></a></div>`;
 		const tiptapHtml = loadIntoEditor(braftHtml);
 
 		expect(loadIntoEditor(tiptapHtml)).toEqual(tiptapHtml);

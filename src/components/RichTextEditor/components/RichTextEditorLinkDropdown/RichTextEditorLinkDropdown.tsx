@@ -14,6 +14,7 @@ import { type FunctionComponent, type KeyboardEvent, useRef, useState } from 're
 import CrossIcon from '../../icons/cross.svg?react';
 import LinkIcon from '../../icons/link.svg?react';
 import { LabelKey, type RichTextEditorLabels } from '../../RichTextEditor.labels';
+import { RichTextEditorImageLinkForm } from '../RichTextEditorImageLinkForm/RichTextEditorImageLinkForm';
 
 interface RichTextEditorLinkDropdownProps {
 	editor: Editor | null;
@@ -36,7 +37,7 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 	const urlInputRef = useRef<HTMLInputElement>(null);
 
 	// An image carries its link on the node itself rather than as a link mark, so it has no
-	// link text to edit: the image is the link content.
+	// link text to edit: the image is the link content. Its link is edited with a separate form.
 	const isImageSelected = !!editor?.isActive('image');
 
 	const { refs, floatingStyles, context } = useFloating({
@@ -46,12 +47,8 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 			const to = editor?.state.selection.to ?? 0;
 			const selectionText = editor?.state.doc.textBetween(from, to) || '';
 
-			if (nextOpen && isImageSelected) {
-				setLinkText('');
-				setLinkUrl((editor?.getAttributes('image').href as string) || '');
-				setOpenInNewTab((editor?.getAttributes('image').target as string) === '_blank');
-				setTimeout(() => urlInputRef.current?.focus({ preventScroll: true }));
-			} else if (nextOpen) {
+			// For an image, RichTextEditorImageLinkForm reads the link from the image itself
+			if (nextOpen && !isImageSelected) {
 				const currentNode = editor?.state.doc.nodeAt(from);
 				const linkUrl = (editor?.getAttributes('link').href as string) || '';
 
@@ -74,7 +71,7 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 						textInputRef.current?.focus({ preventScroll: true });
 					}
 				});
-			} else {
+			} else if (!nextOpen) {
 				setLinkText(selectionText);
 			}
 			setOpen(nextOpen);
@@ -95,20 +92,6 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 			return;
 		}
 		const href = linkUrl.trim();
-
-		if (isImageSelected) {
-			if (href) {
-				editor
-					.chain()
-					.focus()
-					.setImageLink({ href, target: openInNewTab ? '_blank' : '_self' })
-					.run();
-			} else {
-				editor.chain().focus().unsetImageLink().run();
-			}
-			setOpen(false);
-			return;
-		}
 
 		if (href) {
 			// First expand the selection to cover the whole link, so the existing link text
@@ -132,11 +115,7 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 	};
 
 	const removeLink = () => {
-		if (isImageSelected) {
-			editor?.chain().focus().unsetImageLink().run();
-		} else {
-			editor?.chain().focus().unsetLink().run();
-		}
+		editor?.chain().focus().unsetLink().run();
 		setOpen(false);
 	};
 
@@ -170,53 +149,70 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 						className={`${root}__link-popup`}
 						{...getFloatingProps()}
 					>
-						{!isImageSelected && (
-							<input
-								ref={textInputRef}
-								type="text"
-								value={linkText}
-								onChange={(e) => setLinkText(e.target.value)}
-								placeholder={labels[LabelKey.Link_InsertLinkText]}
-								onKeyDown={handleKeyDown}
+						{isImageSelected && editor ? (
+							<RichTextEditorImageLinkForm
+								editor={editor}
+								root={root}
+								labels={labels}
+								onClose={() => setOpen(false)}
 							/>
+						) : (
+							<>
+								<input
+									ref={textInputRef}
+									type="text"
+									value={linkText}
+									onChange={(e) => setLinkText(e.target.value)}
+									placeholder={labels[LabelKey.Link_InsertLinkText]}
+									onKeyDown={handleKeyDown}
+								/>
+								<input
+									ref={urlInputRef}
+									type="url"
+									value={linkUrl}
+									onChange={(e) => setLinkUrl(e.target.value)}
+									placeholder={labels[LabelKey.Link_InsertLinkUrl]}
+									onKeyDown={handleKeyDown}
+								/>
+								<div
+									className={`${root}__link-popup-toggle`}
+									onClick={() => setOpenInNewTab((prev) => !prev)}
+									onKeyDown={(e) => {
+										if (e.key === ' ' || e.key === 'Enter') {
+											setOpenInNewTab((prev) => !prev);
+										}
+									}}
+									role="switch"
+									aria-checked={openInNewTab}
+									tabIndex={0}
+								>
+									<span className={clsx(`${root}__link-popup-switch`, { 'is-on': openInNewTab })} />
+									{labels[LabelKey.Link_OpenInNewWindow]}
+								</div>
+								<div className={`${root}__link-popup-footer`}>
+									<button
+										type="button"
+										className={`${root}__link-popup-delete`}
+										onClick={removeLink}
+									>
+										<CrossIcon />
+										{labels[LabelKey.Link_DeleteLink]}
+									</button>
+									<div>
+										<button type="button" onClick={() => setOpen(false)}>
+											{labels[LabelKey.Link_Cancel]}
+										</button>
+										<button
+											type="button"
+											className={`${root}__link-popup-confirm`}
+											onClick={applyLink}
+										>
+											{labels[LabelKey.Link_Confirm]}
+										</button>
+									</div>
+								</div>
+							</>
 						)}
-						<input
-							ref={urlInputRef}
-							type="url"
-							value={linkUrl}
-							onChange={(e) => setLinkUrl(e.target.value)}
-							placeholder={labels[LabelKey.Link_InsertLinkUrl]}
-							onKeyDown={handleKeyDown}
-						/>
-						<div
-							className={`${root}__link-popup-toggle`}
-							onClick={() => setOpenInNewTab((prev) => !prev)}
-							onKeyDown={(e) => {
-								if (e.key === ' ' || e.key === 'Enter') {
-									setOpenInNewTab((prev) => !prev);
-								}
-							}}
-							role="switch"
-							aria-checked={openInNewTab}
-							tabIndex={0}
-						>
-							<span className={clsx(`${root}__link-popup-switch`, { 'is-on': openInNewTab })} />
-							{labels[LabelKey.Link_OpenInNewWindow]}
-						</div>
-						<div className={`${root}__link-popup-footer`}>
-							<button type="button" className={`${root}__link-popup-delete`} onClick={removeLink}>
-								<CrossIcon />
-								{labels[LabelKey.Link_DeleteLink]}
-							</button>
-							<div>
-								<button type="button" onClick={() => setOpen(false)}>
-									{labels[LabelKey.Link_Cancel]}
-								</button>
-								<button type="button" className={`${root}__link-popup-confirm`} onClick={applyLink}>
-									{labels[LabelKey.Link_Confirm]}
-								</button>
-							</div>
-						</div>
 					</div>
 				</FloatingPortal>
 			)}

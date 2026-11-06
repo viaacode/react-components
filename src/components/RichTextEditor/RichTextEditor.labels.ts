@@ -57,6 +57,11 @@ export enum LabelKey {
 	Image_BlockLeft = 'imageBlockLeft',
 	Image_BlockCenter = 'imageBlockCenter',
 	Image_BlockRight = 'imageBlockRight',
+	Image_Link = 'imageLink',
+	Image_Size = 'imageSize',
+	Image_Width = 'imageWidth',
+	Image_Height = 'imageHeight',
+	Image_OriginalSize = 'imageOriginalSize',
 }
 
 export type RichTextEditorLabels = Record<LabelKey, string>;
@@ -124,6 +129,11 @@ export const RICH_TEXT_EDITOR_LABELS: Record<Locale, RichTextEditorLabels> = {
 		[LabelKey.Image_BlockLeft]: 'Afbeelding links uitlijnen',
 		[LabelKey.Image_BlockCenter]: 'Afbeelding centreren',
 		[LabelKey.Image_BlockRight]: 'Afbeelding rechts uitlijnen',
+		[LabelKey.Image_Link]: 'Link achter afbeelding',
+		[LabelKey.Image_Size]: 'Grootte afbeelding',
+		[LabelKey.Image_Width]: 'Breedte',
+		[LabelKey.Image_Height]: 'Hoogte',
+		[LabelKey.Image_OriginalSize]: 'Originele grootte',
 	},
 	[Locale.en]: {
 		[LabelKey.Bold]: 'Bold',
@@ -177,5 +187,10 @@ export const RICH_TEXT_EDITOR_LABELS: Record<Locale, RichTextEditorLabels> = {
 		[LabelKey.Image_BlockLeft]: 'Align image left',
 		[LabelKey.Image_BlockCenter]: 'Center image',
 		[LabelKey.Image_BlockRight]: 'Align image right',
+		[LabelKey.Image_Link]: 'Link image',
+		[LabelKey.Image_Size]: 'Image size',
+		[LabelKey.Image_Width]: 'Width',
+		[LabelKey.Image_Height]: 'Height',
+		[LabelKey.Image_OriginalSize]: 'Original size',
 	},
 };

@@ -204,6 +204,31 @@ export const WithImage: Story = {
 };
 
 /**
+ * A centered image with a link that opens in a new window, next to a floated, resized one.
+ * Click an image to change its alignment, link or size in the bubble menu. The link can also be
+ * edited with the link button in the toolbar, while the image is selected.
+ */
+export const WithAlignedLinkedImage: Story = {
+	args: {
+		media: MOCK_RICH_TEXT_EDITOR_MEDIA,
+		value: `<p>${MOCK_LOREM_IPSUM}</p><a href="https://onderwijs.hetarchief.be" target="_blank" rel="noopener noreferrer" data-align="block-center" class="c-editor-image-link"><img class="c-editor-image" src="https://placehold.co/240x160?text=centered+link"></a><a href="https://meemoo.be" target="_self" data-align="float-right" class="c-editor-image-link"><img class="c-editor-image" src="https://placehold.co/240x160?text=float+right+link" width="120" height="80"></a><p>${MOCK_LOREM_IPSUM}</p>`,
+	},
+	render: Template,
+};
+
+/**
+ * Content saved by the previous editor (Braft): linked, aligned and resized images wrapped in a
+ * media-wrap div. Their link, alignment and size are kept when the content is loaded.
+ */
+export const WithLegacyBraftImages: Story = {
+	args: {
+		media: MOCK_RICH_TEXT_EDITOR_MEDIA,
+		value: `<p>${MOCK_LOREM_IPSUM}</p><div class="media-wrap image-wrap align-center" style="text-align:center"><a style="display:inline-block" href="https://onderwijs.hetarchief.be" target="_blank"><img class="media-wrap image-wrap align-center" src="https://placehold.co/240x160?text=braft+centered" width="291px" height="194px" style="width:291px;height:194px"/></a></div><div class="media-wrap image-wrap float-left" style="float:left"><a style="display:inline-block" href="/zoeken"><img class="media-wrap image-wrap float-left" src="https://placehold.co/240x160?text=braft+float+left"/></a></div><p>${MOCK_LOREM_IPSUM}</p>`,
+	},
+	render: Template,
+};
+
+/**
  * The accent used for active toolbar buttons and the selected image outline is themable
  * through the --c-rich-text-editor-color-active custom property.
  */

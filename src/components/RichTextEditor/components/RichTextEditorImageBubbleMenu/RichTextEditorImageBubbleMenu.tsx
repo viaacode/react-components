@@ -1,14 +1,19 @@
 import type { Editor } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';
+import clsx from 'clsx';
 import type { FunctionComponent, ReactNode } from 'react';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { RichTextEditorImageAlign } from '../../extensions/RichTextEditorImage';
 import AlignCenterIcon from '../../icons/align-center.svg?react';
 import AlignLeftIcon from '../../icons/align-left.svg?react';
 import AlignRightIcon from '../../icons/align-right.svg?react';
 import ImageFloatLeftIcon from '../../icons/image-float-left.svg?react';
 import ImageFloatRightIcon from '../../icons/image-float-right.svg?react';
+import ImageSizeIcon from '../../icons/image-size.svg?react';
+import LinkIcon from '../../icons/link.svg?react';
 import { LabelKey, type RichTextEditorLabels } from '../../RichTextEditor.labels';
+import { RichTextEditorImageLinkForm } from '../RichTextEditorImageLinkForm/RichTextEditorImageLinkForm';
+import { RichTextEditorImageSizeForm } from '../RichTextEditorImageSizeForm/RichTextEditorImageSizeForm';
 
 interface RichTextEditorImageBubbleMenuProps {
 	editor: Editor | null;
@@ -51,9 +56,14 @@ const IMAGE_ALIGN_ACTIONS: ImageAlignAction[] = [
 	},
 ];
 
+type ImagePanel = 'link' | 'size';
+
 /**
  * Floating toolbar that appears over a selected image, offering the alignment modes that
- * control how the surrounding text reflows around it.
+ * control how the surrounding text reflows around it, and the link and size of the image.
+ *
+ * The link and size forms are rendered inside the bubble menu rather than in a portal: the
+ * bubble menu hides itself when the editor loses focus, unless the focus moves into the menu.
  */
 export const RichTextEditorImageBubbleMenu: FunctionComponent<
 	RichTextEditorImageBubbleMenuProps
@@ -65,10 +75,26 @@ export const RichTextEditorImageBubbleMenu: FunctionComponent<
 		({ editor }: { editor: Editor }) => !isDisabled && editor.isActive('image'),
 		[isDisabled]
 	);
+	// The panel is remembered together with the image it was opened for, so it closes as soon as
+	// another image, or no image at all, gets selected.
+	const [panelState, setPanelState] = useState<{ panel: ImagePanel; imagePos: number } | null>(
+		null
+	);
 
 	if (!editor) {
 		return null;
 	}
+
+	const selectedImagePos = editor.isActive('image') ? editor.state.selection.from : null;
+	const openPanel = panelState?.imagePos === selectedImagePos ? panelState.panel : null;
+
+	const togglePanel = (panel: ImagePanel) =>
+		setPanelState(
+			openPanel === panel || selectedImagePos === null
+				? null
+				: { panel, imagePos: selectedImagePos }
+		);
+	const closePanel = () => setPanelState(null);
 
 	return (
 		<BubbleMenu
@@ -77,18 +103,67 @@ export const RichTextEditorImageBubbleMenu: FunctionComponent<
 			shouldShow={shouldShow}
 			className={`${root}__image-bubble-menu`}
 		>
-			{IMAGE_ALIGN_ACTIONS.map((action) => (
+			<div className={`${root}__image-bubble-menu-buttons`}>
+				{IMAGE_ALIGN_ACTIONS.map((action) => (
+					<button
+						key={action.align}
+						type="button"
+						data-align-mode={action.align}
+						className={editor.isActive('image', { align: action.align }) ? 'is-active' : undefined}
+						title={labels[action.labelKey]}
+						onClick={() => editor.chain().focus().setImageAlign(action.align).run()}
+					>
+						{action.icon}
+					</button>
+				))}
+				<span className={`${root}__image-bubble-menu-separator`} />
 				<button
-					key={action.align}
 					type="button"
-					data-align-mode={action.align}
-					className={editor.isActive('image', { align: action.align }) ? 'is-active' : undefined}
-					title={labels[action.labelKey]}
-					onClick={() => editor.chain().focus().setImageAlign(action.align).run()}
+					data-image-panel="link"
+					className={clsx({
+						'is-active': openPanel === 'link' || !!editor.getAttributes('image').href,
+					})}
+					title={labels[LabelKey.Image_Link]}
+					aria-expanded={openPanel === 'link'}
+					onClick={() => togglePanel('link')}
 				>
-					{action.icon}
+					<LinkIcon />
 				</button>
-			))}
+				<button
+					type="button"
+					data-image-panel="size"
+					className={clsx({
+						'is-active':
+							openPanel === 'size' ||
+							!!editor.getAttributes('image').width ||
+							!!editor.getAttributes('image').height,
+					})}
+					title={labels[LabelKey.Image_Size]}
+					aria-expanded={openPanel === 'size'}
+					onClick={() => togglePanel('size')}
+				>
+					<ImageSizeIcon />
+				</button>
+			</div>
+			{openPanel && (
+				<div className={clsx(`${root}__link-popup`, `${root}__image-bubble-menu-panel`)}>
+					{openPanel === 'link' ? (
+						<RichTextEditorImageLinkForm
+							editor={editor}
+							root={root}
+							labels={labels}
+							onClose={closePanel}
+						/>
+					) : (
+						<RichTextEditorImageSizeForm
+							editor={editor}
+							root={root}
+							labels={labels}
+							onClose={closePanel}
+						/>
+					)}
+				</div>
+			)}
 		</BubbleMenu>
 	);
 };

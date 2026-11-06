@@ -9,6 +9,9 @@ export default {
 		// Handle CSS imports (without CSS modules)
 		'^.+\\.(css|sass|scss)$': '<rootDir>/jest/__mocks__/style-mock.js',
 
+		// Handle svg imports as react components (vite-plugin-svgr)
+		'^.+\\.svg\\?react$': '<rootDir>/jest/__mocks__/svg-react-mock.js',
+
 		/* Handle image imports
 		https://jestjs.io/docs/webpack#handling-static-assets */
 		'^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$': '<rootDir>/jest/__mocks__/file-mock.js',
