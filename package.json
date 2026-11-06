@@ -1,6 +1,6 @@
 {
   "name": "@meemoo/react-components",
-  "version": "6.0.33",
+  "version": "6.0.34",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
