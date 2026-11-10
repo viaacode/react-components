@@ -75,6 +75,11 @@ export interface FlowplayerTrackSchema {
 
 export interface FlowplayerSourceItem {
 	src: string;
+	/**
+	 * Mime type of the src, eg: audio/mp4
+	 * If omitted, flowplayer guesses "video/<file extension>", which browsers refuse for eg: m4a or mp3 files
+	 */
+	type?: string;
 	title: string;
 	category: AvoContentTypeEnglish;
 	provider: string;
