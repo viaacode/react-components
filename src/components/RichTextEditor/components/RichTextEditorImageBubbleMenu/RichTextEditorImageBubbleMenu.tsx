@@ -2,7 +2,7 @@ import type { Editor } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';
 import clsx from 'clsx';
 import type { FunctionComponent, ReactNode } from 'react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { RichTextEditorImageAlign } from '../../extensions/RichTextEditorImage';
 import AlignCenterIcon from '../../icons/align-center.svg?react';
 import AlignLeftIcon from '../../icons/align-left.svg?react';
@@ -58,6 +58,10 @@ const IMAGE_ALIGN_ACTIONS: ImageAlignAction[] = [
 
 type ImagePanel = 'link' | 'size';
 
+// Module level, so it stays referentially stable across renders. Keeps the menu, and its link
+// and size panels, a bit away from the screen edges.
+const BUBBLE_MENU_OPTIONS = { flip: { padding: 8 }, shift: { padding: 8 } };
+
 /**
  * Floating toolbar that appears over a selected image, offering the alignment modes that
  * control how the surrounding text reflows around it, and the link and size of the image.
@@ -81,12 +85,25 @@ export const RichTextEditorImageBubbleMenu: FunctionComponent<
 		null
 	);
 
+	const selectedImagePos = editor?.isActive('image') ? editor.state.selection.from : null;
+	const openPanel = panelState?.imagePos === selectedImagePos ? panelState.panel : null;
+
+	// The bubble menu only repositions on editor transactions, so after opening or closing a panel
+	// it keeps the position computed for its old size and can stick out of the screen.
+	// https://meemoo.atlassian.net/browse/AVO-4137
+	// biome-ignore lint/correctness/useExhaustiveDependencies: openPanel changes the menu size
+	useEffect(() => {
+		if (!editor || editor.isDestroyed) {
+			return;
+		}
+		editor.view.dispatch(
+			editor.state.tr.setMeta('richTextEditorImageBubbleMenu', 'updatePosition')
+		);
+	}, [editor, openPanel]);
+
 	if (!editor) {
 		return null;
 	}
-
-	const selectedImagePos = editor.isActive('image') ? editor.state.selection.from : null;
-	const openPanel = panelState?.imagePos === selectedImagePos ? panelState.panel : null;
 
 	const togglePanel = (panel: ImagePanel) =>
 		setPanelState(
@@ -102,6 +119,7 @@ export const RichTextEditorImageBubbleMenu: FunctionComponent<
 			pluginKey="richTextEditorImageBubbleMenu"
 			shouldShow={shouldShow}
 			className={`${root}__image-bubble-menu`}
+			options={BUBBLE_MENU_OPTIONS}
 		>
 			<div className={`${root}__image-bubble-menu-buttons`}>
 				{IMAGE_ALIGN_ACTIONS.map((action) => (

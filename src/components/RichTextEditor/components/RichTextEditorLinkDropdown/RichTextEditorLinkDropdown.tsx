@@ -1,4 +1,5 @@
 import {
+	autoUpdate,
 	FloatingPortal,
 	flip,
 	offset,
@@ -76,6 +77,9 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 			}
 			setOpen(nextOpen);
 		},
+		// Keep repositioning while open: the popup's size is only known once its content rendered,
+		// so a single computation can leave it partly off screen. https://meemoo.atlassian.net/browse/AVO-4137
+		whileElementsMounted: autoUpdate,
 		middleware: [offset(6), flip(), shift({ padding: 8 })],
 		placement: 'bottom',
 	});
