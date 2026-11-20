@@ -106,11 +106,21 @@ export const RichTextEditorLinkDropdown: FunctionComponent<RichTextEditorLinkDro
 			const to = editor.state.selection.to;
 			const text = linkText || editor.state.doc.textBetween(from, to) || href;
 
+			// Insert the text with the link mark (incl. target) in one go. Inserting an html <a> tag
+			// without target and calling setLink afterwards doesn't work: the selection is collapsed
+			// after inserting, so setLink never reaches the new link, which then falls back to the
+			// default target _blank. This also avoids the text and url being interpreted as html.
 			editor
 				.chain()
 				.focus()
-				.insertContentAt({ from, to }, `<a href="${href}">${text}</a>`)
-				.setLink({ href, target: openInNewTab ? '_blank' : '_self' })
+				.insertContentAt(
+					{ from, to },
+					{
+						type: 'text',
+						text,
+						marks: [{ type: 'link', attrs: { href, target: openInNewTab ? '_blank' : '_self' } }],
+					}
+				)
 				.run();
 		} else {
 			editor.chain().focus().unsetLink().run();
