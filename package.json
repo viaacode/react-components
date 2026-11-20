@@ -1,6 +1,9 @@
 {
   "name": "@meemoo/react-components",
   "version": "6.0.36",
+  "sideEffects": [
+    "*.css"
+  ],
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
