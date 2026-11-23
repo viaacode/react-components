@@ -40,6 +40,16 @@ export default defineConfig({
 		},
 		rolldownOptions: {
 			external,
+			output: {
+				// One file per source module (instead of one big index.js), so the consuming apps
+				// can tree-shake the components, icons and dependencies they don't use.
+				preserveModules: true,
+				preserveModulesRoot: 'src',
+				// npm publish always drops nested node_modules folders, so bundled dependencies
+				// must not end up in dist/**/node_modules. A ? (eg: from svgr's icon.svg?react) would be read as a query string by webpack
+				entryFileNames: (chunk) =>
+					`${chunk.name.replace(/node_modules/g, 'vendor').replace(/\?/g, '_')}.js`,
+			},
 		},
 		sourcemap: true,
 	},
