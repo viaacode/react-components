@@ -13,6 +13,11 @@ type Story = StoryObj<typeof Breadcrumbs>;
 export const Default: Story = {
 	args: {
 		icon: <span>-</span>,
+		linkComponent: ({ href, className, children, style }) => (
+			<a href={href} className={className} style={style}>
+				{children}
+			</a>
+		),
 		items: MOCK_BREADCRUMBS,
 	},
 };

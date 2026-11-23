@@ -34,15 +34,18 @@ type Story = StoryObj<typeof MoreOptionsDropdown>;
 
 export const Default: Story = {
 	render: () => (
-		<MoreOptionsDropdownStory>
-			<MoreOptionsDropdown
-				id="test-id"
-				onOptionClicked={() => console.info('clicked menu item')}
-				menuItems={menuItems}
-				isOpen={false}
-				onOpen={() => {}}
-				onClose={() => {}}
-			/>
-		</MoreOptionsDropdownStory>
+		<div style={{ marginLeft: 300 }}>
+			<MoreOptionsDropdownStory>
+				<MoreOptionsDropdown
+					id="test-id"
+					icon={<span aria-hidden="true">⋯</span>}
+					onOptionClicked={() => console.info('clicked menu item')}
+					menuItems={menuItems}
+					isOpen={false}
+					onOpen={() => {}}
+					onClose={() => {}}
+				/>
+			</MoreOptionsDropdownStory>
+		</div>
 	),
 };

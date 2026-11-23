@@ -7,8 +7,8 @@ import { CheckIcon } from './Controls.icons';
 export interface FlyoutOptionData {
 	key: string | number;
 	label: ReactNode;
-	/** Raw HTML, rendered below the label/icon row. */
-	subLabel?: string;
+	/** Raw HTML string or React node, rendered below the label/icon row. */
+	subLabel?: ReactNode | string;
 	icon?: ReactNode;
 }
 
@@ -85,13 +85,16 @@ export const ControlFlyout: FC<ControlFlyoutProps> = ({
 											<span className={`${optionClassName}-icon`}>{option.icon}</span>
 										)}
 									</span>
-									{option.subLabel && (
-										<span
-											className={`${optionClassName}-sublabel`}
-											// biome-ignore lint/security/noDangerouslySetInnerHtml: subLabel is developer/CMS-supplied markup, not user input
-											dangerouslySetInnerHTML={{ __html: option.subLabel }}
-										/>
-									)}
+									{option.subLabel &&
+										(typeof option.subLabel === 'string' ? (
+											<span
+												className={`${optionClassName}-sublabel`}
+												// biome-ignore lint/security/noDangerouslySetInnerHtml: subLabel is developer/CMS-supplied markup, not user input
+												dangerouslySetInnerHTML={{ __html: option.subLabel }}
+											/>
+										) : (
+											<span className={`${optionClassName}-sublabel`}>{option.subLabel}</span>
+										))}
 								</button>
 							</div>
 						);

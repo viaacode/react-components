@@ -68,8 +68,8 @@ export interface FlowplayerTrackSchema {
 	label: string;
 	lang?: string;
 	src: string;
-	/** Raw HTML, rendered below the label/icon row. */
-	subLabel?: string;
+	/** Raw HTML string or React node, rendered below the label/icon row. */
+	subLabel?: ReactNode | string;
 	icon?: ReactNode;
 }
 
