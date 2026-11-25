@@ -1,5 +1,7 @@
 FROM node:26-alpine
 
+ENV NPM_CONFIG_UPDATE_NOTIFIER=false
+
 # install dependencies first, in a different location for easier app bind mounting for local development
 RUN mkdir /opt/react-app
 WORKDIR /opt/react-app

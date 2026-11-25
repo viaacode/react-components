@@ -16,6 +16,9 @@ pipeline {
         // set a timeout of 45 minutes for this pipeline builds are way to slow need to figure out why
         timeout(time: 45, unit: 'MINUTES')
     }
+    environment {
+        NPM_CONFIG_UPDATE_NOTIFIER = 'false'
+    }
     stages {
         stage('preamble') {
             steps {

@@ -39,6 +39,7 @@ pipeline {
 		disableConcurrentBuilds()
 	}
 	environment {
+		NPM_CONFIG_UPDATE_NOTIFIER = 'false'
 		OC_PROJECT = 'hetarchief'
 		BASE_IMG = 'node:26-alpine'
 		OC_URL = 'https://c113-e.private.eu-de.containers.cloud.ibm.com:30227'
