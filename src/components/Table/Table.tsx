@@ -34,7 +34,9 @@ const Table = <RowDataType extends TableData>({
 	enableRowFocusOnClick = false,
 }: TableProps<RowDataType>) => {
 	const [focusedRowId, setFocusedRowId] = useState<string | null>(null);
-	const [sorting, setSorting] = useState<SortingState>([]);
+	// Seed the controlled sorting state with the initial sorting, otherwise it is ignored and
+	// onSortChange is called with an empty sort on mount, which resets the sort of the consumer
+	const [sorting, setSorting] = useState<SortingState>(options.initialState?.sorting ?? []);
 
 	const bem = bemCls.bind(root);
 	const rootCls = clsx(className, root, getVariantClasses(root, variants));
