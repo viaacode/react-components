@@ -108,6 +108,28 @@ describe('<Table />', () => {
 		}
 	});
 
+	it('Should start from and communicate the initial sorting state', () => {
+		const onSortChange = jest.fn();
+
+		renderTable({
+			options: {
+				columns: mockColumns,
+				data: mockData,
+				initialState: {
+					sorting: [{ id: 'created_at', desc: true }],
+				},
+			},
+			onSortChange,
+		});
+
+		expect(onSortChange).toHaveBeenCalledTimes(1);
+		expect(onSortChange.mock.calls[0]).toEqual(['created_at', 'desc']);
+
+		fireEvent.click(screen.getByText(/Created at/));
+
+		expect(onSortChange.mock.calls[1]).toEqual(['created_at', 'asc']);
+	});
+
 	it('Should keep track of and communicate sorting state', () => {
 		const onSortChange = jest.fn();
 
